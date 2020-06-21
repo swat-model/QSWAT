@@ -1,0 +1,5 @@
+21 June 2020 Version 1.0
+------------------------
+
+First official release of QSWAT3, port of QSWAT t0 Python 3
+

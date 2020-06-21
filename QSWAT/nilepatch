@@ -1,0 +1,9 @@
+insert into DBUtils.getSoilName:
+
+
+
+        # Nilepatch
+        if sid < 32000:
+            return 'HWSD' + str(sid)
+        elif sid > 100000:
+            return 'AF' + str(sid)

@@ -1,0 +1,39 @@
+# This file contains metadata for your plugin. Beginning
+# with version 1.8 this is the preferred way to supply information about a
+# plugin. The current method of embedding metadata in __init__.py will
+# be supported until version 2.0
+
+# This file should be included when you package your plugin.
+
+# Mandatory items:
+
+
+[general]
+name=QSWAT3
+qgisMinimumVersion=3.0
+#qgisMaximumVersion=
+description=Create SWAT inputs
+version=1.0
+author=Chris George
+email=cgeorge@mcmaster.ca
+
+# end of mandatory metadata
+
+# Optional items:
+
+# Uncomment the following line and add your changelog entries:
+# changelog=
+
+# tags are comma separated with spaces allowed
+tags=SWAT, watershed model
+
+homepage=http://swat.tamu.edu/software/qswat/
+tracker=
+repository=
+icon=SWAT32.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version
+deprecated=False
+

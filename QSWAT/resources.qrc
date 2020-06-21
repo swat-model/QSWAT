@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="QSWAT">
+    <file>pause-24x24.png</file>
+    <file>play-24x24.png</file>
+    <file>rewind-24x24.png</file>
+    <file>SWAT32.png</file>
+    <file>QSWAT-Icon/QSWAT-Icon-SWAT-16.ico</file>
+    <file>QSWAT-Icon/SWAT-Logo.png</file>
+    <file>QSWAT-Icon/QSWAT-Icon-QS-32.ico</file>
+  </qresource>
+</RCC>

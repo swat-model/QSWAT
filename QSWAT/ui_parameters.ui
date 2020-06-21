@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ParametersDialog</class>
+ <widget class="QDialog" name="ParametersDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>579</width>
+    <height>171</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QSWAT Parameters</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>QSWAT-Icon/QSWAT-Icon-SWAT-16.ico</normaloff>QSWAT-Icon/QSWAT-Icon-SWAT-16.ico</iconset>
+  </property>
+  <widget class="QLineEdit" name="editorBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>471</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="editorButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>30</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Browse to select SWAT editor directory</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>. . .</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="editorlLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>141</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>This is the directory where the SWAT Editor is located.  On Windows it is usually C:\SWAT\SWATEditor.</string>
+   </property>
+   <property name="text">
+    <string>SWAT editor directory</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="MPIBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>100</y>
+     <width>471</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="MPIButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>100</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Browse to select MPI bin directory</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>. . .</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkUseMPI">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>121</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>If you have a multi-core processor then using the Message Passing Interface (MPI) can speed up the TauDEM programs used for watershed delineation.  If you install MP you should set this directory to where the mpiexec program is located.  On Windows this is probably C:\Program Files\Microsoft MPI\Bin.</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Use MPI</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="MPILabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>121</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>If you have a multi-core processor then using the Message Passing Interface (MPI) can speed up the TauDEM programs used for watershed delineation.  If you install MP you should set this directory to where the mpiexec program is located.  On Windows this is probably C:\Program Files\Microsoft MPI\Bin.</string>
+   </property>
+   <property name="text">
+    <string>MPI bin directory</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveButton">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

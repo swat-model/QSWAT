@@ -1,0 +1,3 @@
+LIBRARY jenks.pyd
+EXPORTS
+initjenks

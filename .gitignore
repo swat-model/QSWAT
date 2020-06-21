@@ -1,0 +1,9 @@
+*.pyc
+/html/
+/help/
+/cover/
+/build/
+/old/
+*.pyd
+*.so
+ui_*.py

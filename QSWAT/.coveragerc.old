@@ -1,0 +1,7 @@
+# .coveragerc to control coverage.py
+[run]
+# branch = True
+
+include = QSwat\*.*
+
+omit = QSwat\visualise.py, QSwat\waterbaseicon.py
