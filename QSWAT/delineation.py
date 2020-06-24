@@ -1278,8 +1278,7 @@ class Delineation(QObject):
         msgBox.move(self._gv.selectOutletPos)
         msgBox.setWindowTitle('Select inlets/outlets')
         text = """
-        Hold Ctrl and select the points by dragging the mouse 
-        to make a small rectangle around them.
+        Hold Ctrl and select the points by clicking on them.
         Selected points will turn yellow, and a count is shown 
         at the bottom left of the main window.
         If you want to start again release Ctrl and click somewhere

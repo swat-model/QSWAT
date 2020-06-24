@@ -231,7 +231,7 @@ class Visualise(QObject):
         self._dlg.pauseCommand.clicked.connect(self.doPause)
         self._dlg.rewindCommand.clicked.connect(self.doRewind)
         self._dlg.recordButton.clicked.connect(self.record)
-        self._dlg.recordButton.setStyleSheet("background-color: green")
+        self._dlg.recordButton.setStyleSheet("background-color: green; border: none;")
         self._dlg.playButton.clicked.connect(self.playRecording)
         self._dlg.spinBox.valueChanged.connect(self.changeSpeed)
         self.animateTimer.timeout.connect(self.doStep)
@@ -353,12 +353,10 @@ class Visualise(QObject):
         if self._gv.useGridModel:
             keepVisible = lambda n: n.startswith(QSWATUtils._GRIDSTREAMSLEGEND) or \
                                     n.startswith(QSWATUtils._DRAINSTREAMSLEGEND) or \
-                                    n.startswith(QSWATUtils._GRIDLEGEND) or \
-                                    n.startswith(QSWATUtils._HRUSLEGEND)
+                                    n.startswith(QSWATUtils._GRIDLEGEND)
         else:  
             keepVisible = lambda n: n.startswith(QSWATUtils._WATERSHEDLEGEND) or \
-                                    n.startswith(QSWATUtils._REACHESLEGEND) or \
-                                    n.startswith(QSWATUtils._ACTHRUSLEGEND) 
+                                    n.startswith(QSWATUtils._REACHESLEGEND)
         for layer in watershedLayers:
             layer.setItemVisibilityChecked(keepVisible(layer.name()))
     
@@ -1381,9 +1379,9 @@ class Visualise(QObject):
         canvas = self._iface.mapCanvas()
         if self.mapTitle is not None:
             canvas.scene().removeItem(self.mapTitle)
-            canvas.update()
+            canvas.refresh()
         self.mapTitle = MapTitle(canvas, self.title, layer)
-        canvas.update()
+        canvas.refresh()
         if self.useSubs():
             self.internalChangeToSubRenderer = False
             self.keepSubColours = keepColours
@@ -1543,7 +1541,7 @@ class Visualise(QObject):
 #             if self.mapTitle is not None:
 #                 canvas.scene().removeItem(self.mapTitle)
 #             self.mapTitle = MapTitle(canvas, self.title, animations[0])
-#             canvas.update()
+#             canvas.refresh()
         
     def createAnimationComposition(self) -> None:
         """Create print composer to capture each animation step."""
@@ -1607,7 +1605,14 @@ class Visualise(QObject):
         self.animationTemplate = QSWATUtils.join(self._gv.tablesOutDir, 'AnimationTemplate.qpt')
         # make substitution table
         subs = dict()
-        subs['%%NorthArrow%%'] = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), Visualise._NORTHARROW)
+        northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), Visualise._NORTHARROW)
+        if not os.path.isfile(northArrow):
+            # may be qgis-ltr for example
+            northArrowRel = Visualise._NORTHARROW.replace('qgis', QSWATUtils.qgisName(), 1)
+            northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), northArrowRel)
+        if not os.path.isfile(northArrow):
+            QSWATUtils.error('Failed to find north arrow {0}.  You will need to repair the layout.'.format(northArrow), self._gv.isBatch)
+        subs['%%NorthArrow%%'] = northArrow
         subs['%%ProjectName%%'] = self.title
         numLayers = len(animationLayers)
         if count > numLayers:
@@ -1639,7 +1644,7 @@ class Visualise(QObject):
         segSize = 10 ** int(math.log10((xmax - xmin) / (width / 10)) + 0.5)
         layerStr = '<Layer source="{0}" provider="ogr" name="{1}">{2}</Layer>'
         for i in range(count):
-            layer = animationLayers[i]
+            layer = animationLayers[i].layer()
             subs['%%LayerId{0}%%'.format(i)] = layer.id()
             subs['%%LayerName{0}%%'.format(i)] = layer.name()
             subs['%%YMin{0}%%'.format(i)] = str(ymin)
@@ -1647,6 +1652,7 @@ class Visualise(QObject):
             subs['%%YMax{0}%%'.format(i)] = str(ymax)
             subs['%%XMax{0}%%'.format(i)] = str(xmax)
             subs['%%ScaleSegSize%%'] = str(segSize)
+            subs['%%Layer{0}%%'.format(i)] = layerStr.format(QSWATUtils.layerFilename(layer), layer.name(), layer.id())
         for i in range(6):  # 6 entries in template for background layers
             if i < len(watershedLayers):
                 wLayer = watershedLayers[i].layer()
@@ -1770,7 +1776,8 @@ class Visualise(QObject):
                 animateLayers = [self.animateLayer]
             else:
                 root = QgsProject.instance().layerTreeRoot()
-                animateLayers = QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, root, visible=False)
+                animateTreeLayers = QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, root, visible=False)
+                animateLayers = [layer.layer() for layer in animateTreeLayers if layer is not None]
             for animateLayer in animateLayers:
                 assert animateLayer is not None
                 layerId = animateLayer.id()
@@ -1821,7 +1828,6 @@ class Visualise(QObject):
         self.animateLayer.triggerRepaint()
         canvas = self._iface.mapCanvas()
         canvas.refresh()
-        canvas.update()
         self.currentStillNumber += 1
         base, suffix = os.path.splitext(self.stillFileBase)
         nextStillFile = base + '{0:05d}'.format(self.currentStillNumber) + suffix
@@ -2395,12 +2401,12 @@ class Visualise(QObject):
             self.clearPngDir()
             if self._dlg.printAnimation.isChecked():
                 self.createAnimationComposition()
-            self._dlg.recordButton.setStyleSheet('background-color: red')
+            self._dlg.recordButton.setStyleSheet('background-color: red; border: none;')
             self._dlg.recordLabel.setText('Stop recording')
             self._dlg.playButton.setEnabled(False)
         else:
             self._dlg.setCursor(Qt.WaitCursor)
-            self._dlg.recordButton.setStyleSheet('background-color: green')
+            self._dlg.recordButton.setStyleSheet('background-color: green; border: none;')
             self._dlg.recordLabel.setText('Start recording')
             self.saveVideo()
             self._dlg.playButton.setEnabled(True)
@@ -2750,14 +2756,31 @@ class Visualise(QObject):
 #         return len(breaks) - 1 
 #===============================================================================
 
+    def clearMapTitle(self):
+        """Can often end up with more than one map title.  Remove all of them from the canvas, prior to resetting one required."""
+        canvas = self._iface.mapCanvas()
+        scene = canvas.scene()
+        if self.mapTitle is not None:
+            scene.removeItem(self.mapTitle)
+            self.mapTitle = None
+        for item in scene.items():
+            # testing by isinstance is insufficient as a MapTitle item can have a wrappertype
+            # and the test returns false
+            #if isinstance(item, MapTitle):
+            try:
+                isMapTitle = item.identifyMapTitle() == 'MapTitle'
+            except Exception:
+                isMapTitle = False
+            if isMapTitle:
+                scene.removeItem(item)
+        canvas.refresh()
+
     def setAnimateLayer(self) -> None:
         """Set self.animateLayer to first visible layer in Animations group, retitle as appropriate."""
         canvas = self._iface.mapCanvas()
         root = QgsProject.instance().layerTreeRoot()
         animationLayers = QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, root, visible=True)
         if len(animationLayers) == 0:
-            if self.mapTitle is not None:
-                canvas.scene().removeItem(self.mapTitle)
             self.animateLayer = None
             self.setResultsLayer()
             return
@@ -2765,7 +2788,7 @@ class Visualise(QObject):
             mapLayer = treeLayer.layer()
             if self.mapTitle is None:
                 self.mapTitle = MapTitle(canvas, self.title, mapLayer)
-                canvas.update()
+                canvas.refresh()
                 self.animateLayer = mapLayer
                 return
             elif mapLayer == self.mapTitle.layer:
@@ -2773,18 +2796,15 @@ class Visualise(QObject):
                 return
             else:
                 # first visible animation layer not current titleLayer
-                canvas.scene().removeItem(self.mapTitle)
-                canvas.update()
+                self.clearMapTitle()
                 dat = self.sliderValToDate()
                 date = self.dateToString(dat)
                 self.mapTitle = MapTitle(canvas, self.title, mapLayer, line2=date)
-                canvas.update()
+                canvas.refresh()
                 self.animateLayer = mapLayer
                 return
         # if we get here, no visible animation layers
-        if self.mapTitle is not None:
-            canvas.scene().removeItem(self.mapTitle)
-            self.mapTitle = None
+        self.clearMapTitle()
         self.animateLayer = None
         return     
     
@@ -2796,23 +2816,18 @@ class Visualise(QObject):
         animationLayers = QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, root, visible=True)
         if len(animationLayers) > 0:
             return
+        self.clearMapTitle()
         resultsLayers = QSWATUtils.getLayersInGroup(QSWATUtils._RESULTS_GROUP_NAME, root, visible=True) 
         if len(resultsLayers) == 0:
-            if self.mapTitle is not None:
-                canvas.scene().removeItem(self.mapTitle)
-                canvas.update()
             self.currentResultsLayer = None
             return
         else:
             for treeLayer in resultsLayers:
                 mapLayer = treeLayer.layer()
-                if self.mapTitle is not None:
-                    canvas.scene().removeItem(self.mapTitle)
-                    canvas.update()
                 self.currentResultsLayer = mapLayer
                 assert self.currentResultsLayer is not None
                 self.mapTitle = MapTitle(canvas, self.title, mapLayer)
-                canvas.update()
+                canvas.refresh()
                 return     
     
     def clearAnimationDir(self) -> None:
@@ -2899,6 +2914,10 @@ class MapTitle(QgsMapCanvasItem):
         self.rect = QRectF(0, self.rect01.top(), 
                             max(self.rect01.width(), rect2.width()), 
                             self.rect01.height() + rect2.height())
+    
+    def identifyMapTitle(self) -> str:
+        """Function used to identify a MapTitle object even when it has a wrapper."""    
+        return 'MapTitle'
         
 
        

@@ -12,6 +12,7 @@ set MYPYPATH=C:\Users\Public\mypy_stubs
 rem user installed plugins
 set PYTHONPATH=%PYTHONPATH%;QSWATPlus
 
+pushd QSWAT
 mypy.exe %1
-
+popd
 

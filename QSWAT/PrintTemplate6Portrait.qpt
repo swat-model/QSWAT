@@ -91,13 +91,13 @@
   <ComposerMap mapRotation="0" keepLayerSet="true" id="1" previewMode="Cache" drawCanvasItems="true">
    <Extent ymin="%%YMin1%%" xmin="%%XMin1%%" ymax="%%YMax1%%" xmax="%%XMax1%%"/>
    <LayerSet>
-    <Layer>%%LayerId1%%</Layer>
-    <Layer>%%WshedLayerId0%%</Layer>
-    <Layer>%%WshedLayerId1%%</Layer>
-    <Layer>%%WshedLayerId2%%</Layer>
-    <Layer>%%WshedLayerId3%%</Layer>
-    <Layer>%%WshedLayerId4%%</Layer>
-    <Layer>%%WshedLayerId5%%</Layer>
+    %%Layer1%%
+    %%WshedLayer0%%
+    %%WshedLayer1%%
+    %%WshedLayer2%%
+    %%WshedLayer3%%
+    %%WshedLayer4%%
+    %%WshedLayer5%%
    </LayerSet>
    <Grid/>
    <ComposerMapGrid leftAnnotationDirection="0" annotationFont="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" gridFramePenThickness="0.5" showAnnotation="0" bottomAnnotationDirection="0" bottomAnnotationPosition="1" name="Grid 1" gridStyle="0" intervalX="0" intervalY="0" gridFrameStyle="0" rightAnnotationPosition="1" topAnnotationDirection="0" leftAnnotationPosition="1" blendMode="0" show="0" frameFillColor1="255,255,255,255" gridFrameWidth="2" frameFillColor2="0,0,0,255" annotationFontColor="0,0,0,255" gridFrameSideFlags="15" gridFramePenColor="0,0,0,255" offsetX="0" annotationPrecision="3" offsetY="0" frameAnnotationDistance="1" unit="0" uuid="{f7c08b53-ef45-40b8-8401-2ca9f995e02c}" topAnnotationPosition="1" rightAnnotationDirection="0" annotationFormat="0" crossLength="3">
@@ -179,13 +179,13 @@
   <ComposerMap mapRotation="0" keepLayerSet="true" id="2" previewMode="Cache" drawCanvasItems="true">
    <Extent ymin="%%YMin2%%" xmin="%%XMin2%%" ymax="%%YMax2%%" xmax="%%XMax2%%"/>
    <LayerSet>
-    <Layer>%%LayerId2%%</Layer>
-    <Layer>%%WshedLayerId0%%</Layer>
-    <Layer>%%WshedLayerId1%%</Layer>
-    <Layer>%%WshedLayerId2%%</Layer>
-    <Layer>%%WshedLayerId3%%</Layer>
-    <Layer>%%WshedLayerId4%%</Layer>
-    <Layer>%%WshedLayerId5%%</Layer>
+    %%Layer2%%
+    %%WshedLayer0%%
+    %%WshedLayer1%%
+    %%WshedLayer2%%
+    %%WshedLayer3%%
+    %%WshedLayer4%%
+    %%WshedLayer5%%
    </LayerSet>
    <Grid/>
    <ComposerMapGrid leftAnnotationDirection="0" annotationFont="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" gridFramePenThickness="0.5" showAnnotation="0" bottomAnnotationDirection="0" bottomAnnotationPosition="1" name="Grid 1" gridStyle="0" intervalX="0" intervalY="0" gridFrameStyle="0" rightAnnotationPosition="1" topAnnotationDirection="0" leftAnnotationPosition="1" blendMode="0" show="0" frameFillColor1="255,255,255,255" gridFrameWidth="2" frameFillColor2="0,0,0,255" annotationFontColor="0,0,0,255" gridFrameSideFlags="15" gridFramePenColor="0,0,0,255" offsetX="0" annotationPrecision="3" offsetY="0" frameAnnotationDistance="1" unit="0" uuid="{f7c08b53-ef45-40b8-8401-2ca9f995e02c}" topAnnotationPosition="1" rightAnnotationDirection="0" annotationFormat="0" crossLength="3">
@@ -267,13 +267,13 @@
   <ComposerMap mapRotation="0" keepLayerSet="true" id="0" previewMode="Cache" drawCanvasItems="true">
    <Extent ymin="%%YMin0%%" xmin="%%XMin0%%" ymax="%%YMax0%%" xmax="%%XMax0%%"/>
    <LayerSet>
-    <Layer>%%LayerId0%%</Layer>
-    <Layer>%%WshedLayerId0%%</Layer>
-    <Layer>%%WshedLayerId1%%</Layer>
-    <Layer>%%WshedLayerId2%%</Layer>
-    <Layer>%%WshedLayerId3%%</Layer>
-    <Layer>%%WshedLayerId4%%</Layer>
-    <Layer>%%WshedLayerId5%%</Layer>
+    %%Layer0%%
+    %%WshedLayer0%%
+    %%WshedLayer1%%
+    %%WshedLayer2%%
+    %%WshedLayer3%%
+    %%WshedLayer4%%
+    %%WshedLayer5%%
    </LayerSet>
    <Grid/>
    <ComposerMapGrid leftAnnotationDirection="0" annotationFont="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" gridFramePenThickness="0.5" showAnnotation="0" bottomAnnotationDirection="0" bottomAnnotationPosition="1" name="Grid 1" gridStyle="0" intervalX="0" intervalY="0" gridFrameStyle="0" rightAnnotationPosition="1" topAnnotationDirection="0" leftAnnotationPosition="1" blendMode="0" show="0" frameFillColor1="255,255,255,255" gridFrameWidth="2" frameFillColor2="0,0,0,255" annotationFontColor="0,0,0,255" gridFrameSideFlags="15" gridFramePenColor="0,0,0,255" offsetX="0" annotationPrecision="3" offsetY="0" frameAnnotationDistance="1" unit="0" uuid="{70e204e4-010e-4bfa-987f-93f6edf0b174}" topAnnotationPosition="1" rightAnnotationDirection="0" annotationFormat="0" crossLength="3">
@@ -355,13 +355,13 @@
   <ComposerMap mapRotation="0" keepLayerSet="true" id="3" previewMode="Cache" drawCanvasItems="true">
    <Extent ymin="%%YMin3%%" xmin="%%XMin3%%" ymax="%%YMax3%%" xmax="%%XMax3%%"/>
    <LayerSet>
-    <Layer>%%LayerId3%%</Layer>
-    <Layer>%%WshedLayerId0%%</Layer>
-    <Layer>%%WshedLayerId1%%</Layer>
-    <Layer>%%WshedLayerId2%%</Layer>
-    <Layer>%%WshedLayerId3%%</Layer>
-    <Layer>%%WshedLayerId4%%</Layer>
-    <Layer>%%WshedLayerId5%%</Layer>
+    %%Layer3%%
+    %%WshedLayer0%%
+    %%WshedLayer1%%
+    %%WshedLayer2%%
+    %%WshedLayer3%%
+    %%WshedLayer4%%
+    %%WshedLayer5%%
    </LayerSet>
    <Grid/>
    <ComposerMapGrid leftAnnotationDirection="0" annotationFont="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" gridFramePenThickness="0.5" showAnnotation="0" bottomAnnotationDirection="0" bottomAnnotationPosition="1" name="Grid 1" gridStyle="0" intervalX="0" intervalY="0" gridFrameStyle="0" rightAnnotationPosition="1" topAnnotationDirection="0" leftAnnotationPosition="1" blendMode="0" show="0" frameFillColor1="255,255,255,255" gridFrameWidth="2" frameFillColor2="0,0,0,255" annotationFontColor="0,0,0,255" gridFrameSideFlags="15" gridFramePenColor="0,0,0,255" offsetX="0" annotationPrecision="3" offsetY="0" frameAnnotationDistance="1" unit="0" uuid="{70e204e4-010e-4bfa-987f-93f6edf0b174}" topAnnotationPosition="1" rightAnnotationDirection="0" annotationFormat="0" crossLength="3">
@@ -443,13 +443,13 @@
   <ComposerMap mapRotation="0" keepLayerSet="true" id="4" previewMode="Cache" drawCanvasItems="true">
    <Extent ymin="%%YMin4%%" xmin="%%XMin4%%" ymax="%%YMax4%%" xmax="%%XMax4%%"/>
    <LayerSet>
-    <Layer>%%LayerId4%%</Layer>
-    <Layer>%%WshedLayerId0%%</Layer>
-    <Layer>%%WshedLayerId1%%</Layer>
-    <Layer>%%WshedLayerId2%%</Layer>
-    <Layer>%%WshedLayerId3%%</Layer>
-    <Layer>%%WshedLayerId4%%</Layer>
-    <Layer>%%WshedLayerId5%%</Layer>
+    %%Layer4%%
+    %%WshedLayer0%%
+    %%WshedLayer1%%
+    %%WshedLayer2%%
+    %%WshedLayer3%%
+    %%WshedLayer4%%
+    %%WshedLayer5%%
    </LayerSet>
    <Grid/>
    <ComposerMapGrid leftAnnotationDirection="0" annotationFont="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" gridFramePenThickness="0.5" showAnnotation="0" bottomAnnotationDirection="0" bottomAnnotationPosition="1" name="Grid 1" gridStyle="0" intervalX="0" intervalY="0" gridFrameStyle="0" rightAnnotationPosition="1" topAnnotationDirection="0" leftAnnotationPosition="1" blendMode="0" show="0" frameFillColor1="255,255,255,255" gridFrameWidth="2" frameFillColor2="0,0,0,255" annotationFontColor="0,0,0,255" gridFrameSideFlags="15" gridFramePenColor="0,0,0,255" offsetX="0" annotationPrecision="3" offsetY="0" frameAnnotationDistance="1" unit="0" uuid="{70e204e4-010e-4bfa-987f-93f6edf0b174}" topAnnotationPosition="1" rightAnnotationDirection="0" annotationFormat="0" crossLength="3">
@@ -531,13 +531,13 @@
   <ComposerMap mapRotation="0" keepLayerSet="true" id="5" previewMode="Cache" drawCanvasItems="true">
    <Extent ymin="%%YMin5%%" xmin="%%XMin5%%" ymax="%%YMax5%%" xmax="%%XMax5%%"/>
    <LayerSet>
-    <Layer>%%LayerId5%%</Layer>
-    <Layer>%%WshedLayerId0%%</Layer>
-    <Layer>%%WshedLayerId1%%</Layer>
-    <Layer>%%WshedLayerId2%%</Layer>
-    <Layer>%%WshedLayerId3%%</Layer>
-    <Layer>%%WshedLayerId4%%</Layer>
-    <Layer>%%WshedLayerId5%%</Layer>
+    %%Layer5%%
+    %%WshedLayer0%%
+    %%WshedLayer1%%
+    %%WshedLayer2%%
+    %%WshedLayer3%%
+    %%WshedLayer4%%
+    %%WshedLayer5%%
    </LayerSet>
    <Grid/>
    <ComposerMapGrid leftAnnotationDirection="0" annotationFont="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" gridFramePenThickness="0.5" showAnnotation="0" bottomAnnotationDirection="0" bottomAnnotationPosition="1" name="Grid 1" gridStyle="0" intervalX="0" intervalY="0" gridFrameStyle="0" rightAnnotationPosition="1" topAnnotationDirection="0" leftAnnotationPosition="1" blendMode="0" show="0" frameFillColor1="255,255,255,255" gridFrameWidth="2" frameFillColor2="0,0,0,255" annotationFontColor="0,0,0,255" gridFrameSideFlags="15" gridFramePenColor="0,0,0,255" offsetX="0" annotationPrecision="3" offsetY="0" frameAnnotationDistance="1" unit="0" uuid="{70e204e4-010e-4bfa-987f-93f6edf0b174}" topAnnotationPosition="1" rightAnnotationDirection="0" annotationFormat="0" crossLength="3">

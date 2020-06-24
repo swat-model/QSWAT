@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//QSWAT/DBUtils.py=utf-8
+encoding//QSWAT/QSWATTopology.py=utf-8
 encoding//QSWAT/QSWATUtils.py=utf-8
 encoding//QSWAT/TauDEMUtils.py=utf-8
 encoding//QSWAT/convertdialog.py=utf-8
@@ -11,6 +12,7 @@ encoding//QSWAT/polygonizeInC.pyx=utf-8
 encoding//QSWAT/polygonizeInC2.pyx=utf-8
 encoding//QSWAT/qswat.py=utf-8
 encoding//QSWAT/selectsubs.py=utf-8
+encoding//QSWAT/split.py=utf-8
 encoding//QSWAT/ui_convert.py=utf-8
 encoding//QSWAT/visualise.py=utf-8
 encoding/test_polygonize.py=utf-8

@@ -46,6 +46,7 @@ from qgis.core import Qgis, \
                         QgsVectorLayer, \
                         QgsGeometry, \
                         QgsWkbTypes, \
+                        QgsFeatureRequest, \
                         QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem  # @UnusedImport
 import os.path
 import posixpath
@@ -330,6 +331,14 @@ class QSWATUtils:
             if name.startswith(legend):
                 lIds.append(treeLayer.layerId())
         QgsProject.instance().removeMapLayers(lIds)
+        
+    @staticmethod
+    def removeAllFeatures(layer: QgsVectorLayer) -> bool:
+        """Remove all features from layer."""
+        provider = layer.dataProvider()
+        request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry)
+        ids = [feature.id() for feature in provider.getFeatures(request)]
+        return provider.deleteFeatures(ids)
         
     @staticmethod
     def setLayerVisibility(layer: QgsMapLayer, visibility: bool, root: QgsLayerTreeGroup) -> None:
@@ -1335,6 +1344,7 @@ class FileTypes:
         index = 0
         # allow for duplicated landuses while using same colour for same landuse
         colourMap: Dict[str, QColor] = dict()
+        #QSWATUtils.loginfo('Landuse values: {0}'.format(db.landuseVals))
         for i in db.landuseVals:
             luse: str = db.getLanduseCode(i)
             colour = colourMap.setdefault(luse, colours[index])
@@ -1363,6 +1373,7 @@ class FileTypes:
             # allow for duplicated colours while using same colour for same soil
             colourMap: Dict[str, QColor] = dict()
             colours = QgsLimitedRandomColorRamp.randomColors(len(db.soilVals))
+            #QSWATUtils.loginfo('Soil values: {0}'.format(db.soilVals))
             for i in db.soilVals:
                 name = db.getSoilName(i)
                 colour = colourMap.setdefault(name, colours[index])

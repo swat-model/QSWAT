@@ -169,6 +169,8 @@ class QSWATTopology:
         self.verticalFactor = 1
         ## DEM nodata value
         self.demNodata = 0
+        ## DEM extent
+        self.demExtent = None
         ## map from basin to outlet point (used for calculating basin flow length)
         self.outlets = dict()
         ## map from basin to near outlet point (used for placing extra reservoirs)
@@ -205,6 +207,7 @@ class QSWATTopology:
         self.dx = demLayer.rasterUnitsPerPixelX() * factor
         self.dy = demLayer.rasterUnitsPerPixelY() * factor
         QSWATUtils.loginfo('Factor is {0}, cell width is {1}, cell depth is {2}'.format(factor, self.dx, self.dy))
+        self.demExtent = demLayer.extent()  # type: ignore
         self.verticalFactor = verticalFactor
         self.outletAtStart = self.hasOutletAtStart(streamLayer)
         QSWATUtils.loginfo('Outlet at start is {0!s}'.format(self.outletAtStart))

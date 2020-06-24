@@ -15,4 +15,5 @@ set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis-ltr\qtplugins;%OSGEO4W_ROOT%\apps\qt
 
 rem nosetests
 python3 -m unittest test_qswat
+python3 -m unittest test_polygonize
 python3 -m unittest test_polygonizeInC2

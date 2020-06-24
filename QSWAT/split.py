@@ -179,9 +179,9 @@ class Split:
         # copy data to globals
         # clear globals first
         self._gv.splitLanduses.clear()
-        for luse, subs in self._splitLanduses.iteritems():
+        for luse, subs in self._splitLanduses.items():
             self._gv.splitLanduses[luse] = dict()
-            for subluse, percent in subs.iteritems():
+            for subluse, percent in subs.items():
                 self._gv.splitLanduses[luse][subluse] = percent
         self._dlg.close()
     
@@ -205,7 +205,7 @@ class Split:
                 self.saveEdit()
             else:
                 self.clearTable()
-        for subluse, percent in self._splitLanduses[luse].iteritems():
+        for subluse, percent in self._splitLanduses[luse].items():
             self.addSplitItems(luse, subluse, percent)
         self._dlg.splitCombo.setCurrentIndex(-1)
     
@@ -219,9 +219,9 @@ class Split:
             if j >= 0:
                 self._dlg.newCombo.removeItem(j)
         # copy any data from globals
-        for luse, subs in self._gv.splitLanduses.iteritems():
+        for luse, subs in self._gv.splitLanduses.items():
             self._splitLanduses[luse] = dict()
-            for subluse, percent in subs.iteritems():
+            for subluse, percent in subs.items():
                 self._splitLanduses[luse][subluse] = percent
                
     def clearTable(self):

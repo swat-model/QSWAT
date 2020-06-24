@@ -81,7 +81,7 @@ RESOURCE_FILES = resources_rc.py
 
 HELP = help/build/html
 
-HTML = html
+HTML = ../html
 
 EXAMPLEDATASET = ExampleDataset
 
@@ -131,7 +131,7 @@ compile: $(RESOURCE_FILES) $(PYD_FILES)
 # The deploy  target only works on unix like operating system where
 # the Python plugin directory is located at:
 # $HOME/$(QGISDIR)/python/plugins
-deploy: compile doc transcompile
+deploy: compile # doc transcompile
 	mkdir -p "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
 	cp -vuf $(PY_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
 	cp -vuf $(PYX_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
@@ -209,4 +209,5 @@ clean:
 doc:
 #	cd help; make html
 # use doxygen
-	$(DOXYGEN)
+	cd ..; $(DOXYGEN)
+	
