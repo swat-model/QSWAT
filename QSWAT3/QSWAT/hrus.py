@@ -370,17 +370,19 @@ class HRUs(QObject):
                 self._dlg.setCursor(Qt.ArrowCursor)
                 return False
             # now have occurrences of landuses and soils, so can make proper colour schemes and legend entries
-            FileTypes.colourLanduses(self.landuseLayer, self._db)
-            FileTypes.colourSoils(self.soilLayer, self._db)
-            treeModel = QgsLayerTreeModel(root)
-            assert self.landuseLayer is not None
-            landuseTreeLayer = root.findLayer(self.landuseLayer.id())
-            assert landuseTreeLayer is not None
-            treeModel.refreshLayerLegend(landuseTreeLayer)
-            assert self.soilLayer is not None
-            soilTreeLayer = root.findLayer(self.soilLayer.id())
-            assert soilTreeLayer is not None
-            treeModel.refreshLayerLegend(soilTreeLayer)
+            # causes problems for HUC models, and no point in any case when batch
+            if not self._gv.isBatch:
+                FileTypes.colourLanduses(self.landuseLayer, self._db)
+                FileTypes.colourSoils(self.soilLayer, self._db)
+                treeModel = QgsLayerTreeModel(root)
+                assert self.landuseLayer is not None
+                landuseTreeLayer = root.findLayer(self.landuseLayer.id())
+                assert landuseTreeLayer is not None
+                treeModel.refreshLayerLegend(landuseTreeLayer)
+                assert self.soilLayer is not None
+                soilTreeLayer = root.findLayer(self.soilLayer.id())
+                assert soilTreeLayer is not None
+                treeModel.refreshLayerLegend(soilTreeLayer)
             if len(self._gv.db.slopeLimits) > 0:
                 slopeBandsLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.slopeBandsFile, FileTypes._SLOPEBANDS, 
                                                                         self._gv, None, QSWATUtils._SLOPE_GROUP_NAME)

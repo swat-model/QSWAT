@@ -1362,7 +1362,7 @@ class FileTypes:
         index = 0
         if db.useSSURGO:
             colours = QgsLimitedRandomColorRamp.randomColors(len(db.SSURGOsoils))
-            for i in db.ssurgoSoils:
+            for i in db.SSURGOsoils:
                 item = QgsPalettedRasterRenderer.Class(int(i), colours[index], str(i))
                 items.append(item)
                 index += 1    
