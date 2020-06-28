@@ -69,8 +69,8 @@ class DummyInterface(object):
         return QgsProject.instance().mapLayers().values()
 iface = DummyInterface()
 
-QCoreApplication.setOrganizationName('QGIS')
-QCoreApplication.setApplicationName('QGIS2')
+#QCoreApplication.setOrganizationName('QGIS')
+#QCoreApplication.setApplicationName('QGIS2')
 
 class runHUC():
     
