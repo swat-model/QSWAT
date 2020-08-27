@@ -52,12 +52,12 @@ SUBDIR = QSWAT
 PY_FILES = $(addprefix $(SUBDIR)/, __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py \
 		hrusdialog.py outletsdialog.py exempt.py exemptdialog.py split.py splitdialog.py selectlu.py \
 		selectludialog.py parameters.py parametersdialog.py elevationbands.py elevationbandsdialog.py \
-		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py \
+		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py QSWATData.py \
 		QSWATUtils.py DBUtils.py polygonize.py QSWATTopology.py TauDEMUtils.py globals.py swatgraph.py graphdialog.py graphdialog1.py \
 		convertToPlus.py convertdialog.py convertFromArc.py arc_convertdialog.py \
 		setuppyx.py make_uis.py)				
 
-UPPER_PY_FILES = __init__.py runHUC.py test_qswat.py test_polygonize.py test_polygonizeInC.py
+UPPER_PY_FILES = __init__.py runHUC.py merge14dbs.py test_qswat.py test_polygonize.py test_polygonizeInC.py
 
 PYC_FILES = $(PY_FILES:.py=.pyc)
 
@@ -80,7 +80,7 @@ QPT_FILES = $(addprefix $(SUBDIR)/, PrintTemplate1Landscape.qpt PrintTemplate1Po
 			PrintTemplate4Landscape.qpt PrintTemplate4Portrait.qpt PrintTemplate6Landscape.qpt \
 			PrintTemplate6Portrait.qpt)
 
-BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat 
+BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat merge14dbs.bat
 
 RESOURCE_FILES = $(SUBDIR)/resources_rc.py
 
@@ -118,7 +118,7 @@ compile: $(RESOURCE_FILES) $(PYD_FILES)
 # %OSGEO4W_ROOT%\bin\qt5_env.bat
 # %OSGEO4W_ROOT%\bin\py3_env.bat
 # python3 -m PyQt5.pyrcc_main -o resources_rc.py  resources.qrc
-	
+
 #%.py : %.ui
 #	pyuic5 -o $@ $<
 # instead of the above, 
@@ -212,4 +212,4 @@ doc:
 #	cd help; make html
 # use doxygen
 	$(DOXYGEN)
-	
+

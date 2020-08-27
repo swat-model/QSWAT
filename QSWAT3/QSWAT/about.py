@@ -44,7 +44,7 @@ class AboutQSWAT:
         self._dlg.SWATHomeButton.clicked.connect(self.openSWATUrl)
         self._dlg.closeButton.clicked.connect(self._dlg.close)
         text = """
-QSWAT version: {0}
+QSWAT3 version: {0}
 
 Minimum QGIS version: 3.0
 
@@ -60,7 +60,7 @@ Current restrictions:
             self._gv.aboutPos = self._dlg.pos()
         
     def openSWATUrl(self):
-        """OPen SWAT website."""
+        """Open SWAT website."""
         webbrowser.open('http://swat.tamu.edu/')
         
         

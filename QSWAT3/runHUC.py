@@ -107,7 +107,7 @@ class runHUC():
         self.delin._dlg.selectWshed.setText(self.projDir + '/Watershed/Shapes/demwshed.shp')
         self.delin._dlg.selectNet.setText(self.projDir + '/Watershed/Shapes/channels.shp')
         self.delin._dlg.selectExistOutlets.setText(self.projDir + '/Watershed/Shapes/points.shp')
-        self.delin._dlg.recalcButton.setChecked(False)  # want to use length field in channels shapwefile
+        self.delin._dlg.recalcButton.setChecked(False)  # want to use length field in channels shapefile
         self.delin._dlg.numProcesses.setValue(0)
         gv.useGridModel = False
         gv.existingWshed = True
@@ -124,9 +124,13 @@ class runHUC():
         #landCombo = hrudlg.selectLanduseTable
         #landIndex = landCombo.findText('nlcd2001_landuses')
         #landCombo.setCurrentIndex(landIndex)
-        self.hrus.landuseTable = 'nlcd2001_landuses'
-        # hrudlg.SSURGOButton.setChecked(True)
+        #self.hrus.landuseTable = 'nlcd2001_landuses'
+        isCDL = 'Fields_CDL' in self.projDir
+        self.hrus.landuseTable = 'landuse_fields_CDL_01' if isCDL else 'landuse_fields_01'
+        hrudlg.SSURGOButton.setChecked(True)
         gv.db.useSSURGO = True
+        gv.elevBandsThreshold = 500
+        gv.numElevBands = 5
         if not self.hrus.readFiles():
             hrudlg.close()
             return
@@ -136,9 +140,7 @@ class runHUC():
         self.hrus.setLanduseThreshold()
         hrudlg.soilVal.setText('0')
         self.hrus.setSoilThreshold()
-        hrudlg.slopeVal.setText('0')
-        gv.elevBandsThreshold = 500
-        gv.numElevBands = 5
+        #hrudlg.slopeVal.setText('0')
         self.hrus.calcHRUs()
         hrudlg.close()
         

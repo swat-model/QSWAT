@@ -72,7 +72,7 @@ class QSWATUtils:
     _SOIL_GROUP_NAME = 'Soil'
     _WATERSHED_GROUP_NAME = 'Watershed'
     _RESULTS_GROUP_NAME = 'Results'
-    _ANIMATION_GROUP_NAME = 'Animations'
+    _ANIMATION_GROUP_NAME = 'Animations' 
     
     _DEMLEGEND: str = 'DEM'
     _SNAPPEDLEGEND = 'Snapped inlets/outlets'
@@ -1360,10 +1360,10 @@ class FileTypes:
         """Layer colouring function for soil grid."""
         items: List[QgsPalettedRasterRenderer.Class] = []
         index = 0
-        if db.useSSURGO:
+        if len(db.SSURGOsoils) > 0:  # which means isHUC is true
             colours = QgsLimitedRandomColorRamp.randomColors(len(db.SSURGOsoils))
-            for i in db.SSURGOsoils:
-                item = QgsPalettedRasterRenderer.Class(int(i), colours[index], str(i))
+            for i, val in db.SSURGOsoils.items():
+                item = QgsPalettedRasterRenderer.Class(int(i), colours[index], str(val))
                 items.append(item)
                 index += 1    
         else:

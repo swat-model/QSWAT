@@ -26,16 +26,18 @@ from PyQt5.QtWidgets import * # @UnusedWildImport
 from qgis.core import * # @UnusedWildImport
 import os.path
 import pyodbc  # type: ignore
+import sqlite3
 import shutil
 import hashlib
 import csv
 import datetime
 import traceback
+import re
 from typing import Set, Any, List, Dict, Iterable, Optional, Tuple  # @UnusedImport @Reimport
 
-from .QSWATUtils import QSWATUtils, ListFuns  # type: ignore  # @UnresolvedImport
-from .hrus import BasinData, CellData  # type: ignore  # @UnresolvedImport
-from .parameters import Parameters  # type: ignore  # @UnresolvedImport
+from .QSWATUtils import QSWATUtils, ListFuns  # type: ignore
+from .QSWATData import BasinData, CellData  # type: ignore
+from .parameters import Parameters  # type: ignore
 
 class DBUtils:
     
@@ -47,25 +49,45 @@ class DBUtils:
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
+        ## project directory
+        self.projDir = projDir
         ## project name
         self.projName = projName
         ## project database
         dbSuffix = os.path.splitext(dbProjTemplate)[1]
-        self.dbFile = QSWATUtils.join(projDir,  projName + dbSuffix)
+        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC else QSWATUtils.join(projDir,  projName + dbSuffix)
+        if not isHUC:
+            self._connStr = Parameters._ACCESSSTRING + self.dbFile
+            # copy template project database to project folder if not already there
+            if not os.path.exists(self.dbFile):
+                shutil.copyfile(dbProjTemplate, self.dbFile)
+            else:
+                self.updateProjDb(Parameters._SWATEDITORVERSION)
         ## reference database
         self.dbRefFile = QSWATUtils.join(projDir, Parameters._DBREF)
-        self._connStr = Parameters._ACCESSSTRING + self.dbFile
-        self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
-        # copy template project database to project folder if not already there
-        if not os.path.exists(self.dbFile):
-            shutil.copyfile(dbProjTemplate, self.dbFile)
+        if isHUC:
+            # search up from project directory for reference database, so allowing it to be shared
+            if not os.path.isfile(self.dbRefFile):
+                currentDir = os.path.split(os.path.abspath(self.dbRefFile))[0]
+                found = False
+                while not found:
+                    try:
+                        currentDir = os.path.split(currentDir)[0]
+                        self.dbRefFile = QSWATUtils.join(currentDir, Parameters._DBREF)
+                        found = os.path.isfile(self.dbRefFile)
+                    except Exception:
+                        break
+                if not found:
+                    QSWATUtils.error('Failed to find HUC reference database {0}'.format(Parameters._DBREF), self.isBatch)
+                    return
+            self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
         else:
-            self.updateProjDb(Parameters._SWATEDITORVERSION)
-        # copy template reference database to project folder if not already there
-        if not os.path.exists(self.dbRefFile):
-            shutil.copyfile(dbRefTemplate, self.dbRefFile)
-        else:
-            self.updateRefDb(Parameters._SWATEDITORVERSION, dbRefTemplate)
+            self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
+            # copy template reference database to project folder if not already there
+            if not os.path.exists(self.dbRefFile):
+                shutil.copyfile(dbRefTemplate, self.dbRefFile)
+            else:
+                self.updateRefDb(Parameters._SWATEDITORVERSION, dbRefTemplate)
         ## Tables in project database containing 'landuse'
         self.landuseTableNames: List[str] = []
         ## Tables in project database containing 'soil'
@@ -138,18 +160,25 @@ class DBUtils:
         ## map of SSURGO map values to SSURGO MUID (only used with HUC)
         self.SSURGOsoils: Dict[int, int] = dict()
         ## SSURGO soil database (only used with HUC)
-        self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB)
+        self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
         ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
         self.SSURGOUndefined = -1
+        ## regular expression for checking if SSURGO soils are water (only used with HUC)
+        self.waterPattern = re.compile(r'\bwaters?\b', re.IGNORECASE)
+        if self.isHUC:
+            self.writeSubmapping()
         
     def connect(self, readonly=False) -> Any:
         
         """Connect to project database."""
         
-        if not os.path.exists(self.dbFile):
+        if not self.isHUC and not os.path.exists(self.dbFile):
             QSWATUtils.error('Cannot find project database {0}.  Have you opened the project?'.format(self.dbFile), self.isBatch) 
         try:
-            if readonly:
+            if self.isHUC:
+                conn = sqlite3.connect(self.dbFile)
+                conn.row_factory = sqlite3.Row
+            elif readonly:
                 conn = pyodbc.connect(self._connStr, readonly=True)
             else:
                 # use autocommit when writing to tables, hoping to save storing rollback data
@@ -310,13 +339,24 @@ class DBUtils:
         with self.connect(readonly=True) as conn:
             if conn:
                 try:
-                    for row in conn.cursor().tables(tableType='TABLE'):
-                        table = row.table_name
-                        if 'landuse' in table:
-                            self.landuseTableNames.append(table)
-                        elif 'soil' in table:
-                            self.soilTableNames.append(table)
-                        self._allTableNames.append(table)
+                    if self.isHUC:
+                        sql = 'SELECT name FROM sqlite_master WHERE TYPE="table"'
+                        for row in conn.execute(sql):
+                            table = row[0]
+                            if 'landuse' in table:
+                                self.landuseTableNames.append(table)
+                            elif 'soil' in table and 'usersoil' not in table:
+                                self.soilTableNames.append(table)
+                            self._allTableNames.append(table)
+                    
+                    else:
+                        for row in conn.cursor().tables(tableType='TABLE'):
+                            table = row.table_name
+                            if 'landuse' in table:
+                                self.landuseTableNames.append(table)
+                            elif 'soil' in table and 'usersoil' not in table:
+                                self.soilTableNames.append(table)
+                            self._allTableNames.append(table)
                 except Exception:
                     QSWATUtils.error('Could not read tables in project database {0}'.format(self.dbFile), self.isBatch)
                     return
@@ -339,8 +379,8 @@ class DBUtils:
                 try:
                     sql = self.sqlSelect(landuseTable, 'LANDUSE_ID, SWAT_CODE', '', '')
                     for row in conn.cursor().execute(sql):
-                        nxt = int(row.LANDUSE_ID)
-                        landuseCode = row.SWAT_CODE
+                        nxt = int(row['LANDUSE_ID'] if self.isHUC else row.LANDUSE_ID)
+                        landuseCode = row['SWAT_CODE'] if self.isHUC else row.SWAT_CODE
                         if self.defaultLanduse < 0:
                             self.defaultLanduse = nxt
                             self.defaultLanduseCode = landuseCode
@@ -507,6 +547,8 @@ class DBUtils:
     def getSoilName(self, sid: int) -> str:
         """Return name for soil id sid."""
         if self.useSSURGO:
+            if self.isHUC:
+                return str(sid)
             return str(sid)
 #         # Nilepatch for AFSIS soils
 #         if sid < 33000:
@@ -602,31 +644,33 @@ class DBUtils:
         muid = self.SSURGOsoils.get(sid, -1)
         if muid > 0:
             return muid
-        sql = self.sqlSelect('SSURGO_Lookup_LKEY', 'Source, MUKEY', '', 'LKEY=?')
-        with self.connect(readonly=True) as conn, self.connectDb(self.SSURGODbFile, readonly=True) as SSURGOConn:
-            lookup_row = conn.execute(sql, sid).fetchone()
-            if lookup_row is None:
-                QSWATUtils.error('SSURGO soil map value {0} not defined in SSURGO_Lookup_LKEY'.format(sid), self.isBatch)
-                self._undefinedSoilIds.append(sid)
-                return sid
-            # only an information issue, not an error for now 
-            if lookup_row[0].upper().strip() == 'STATSGO':
-                QSWATUtils.information('SSURGO soil map value {0} is a STATSGO soil according to SSURGO_Lookup_LKEY'.format(sid), self.isBatch)
-                # self._undefinedSoilIds.append(sid)
-                # return sid
-            sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
-            row = SSURGOConn.execute(sql, lookup_row[1]).fetchone()
-            if row is None:
-                QSWATUtils.error('SSURGO soil {0} not defined'.format(lookup_row[1]), self.isBatch)
-                self._undefinedSoilIds.append(sid)
-                return self.SSURGOUndefined
-            if row[0].lower().strip() == 'water':
-                self.SSURGOsoils[int(sid)] = Parameters._SSURGOWater
-                return Parameters._SSURGOWater
-            else:
-                muid = int(lookup_row[1])
-                self.SSURGOsoils[int(sid)] = muid
-                return muid
+        sql = self.sqlSelect('statsgo_ssurgo_lkey', 'Source, MUKEY', '', 'LKEY=?')
+        conn = self.connect(readonly=True)
+        SSURGOConn = self.connectDb(self.SSURGODbFile, readonly=True)
+        lookup_row = conn.execute(sql, (sid,)).fetchone()
+        if lookup_row is None:
+            QSWATUtils.error('SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey'.format(sid), self.isBatch)
+            self._undefinedSoilIds.append(sid)
+            return sid
+        # only an information issue, not an error for now 
+        if lookup_row[0].upper().strip() == 'STATSGO':
+            QSWATUtils.information('SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch)
+            # self._undefinedSoilIds.append(sid)
+            # return sid
+        sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
+        row = SSURGOConn.execute(sql, lookup_row[1]).fetchone()
+        if row is None:
+            QSWATUtils.error('SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch)
+            self._undefinedSoilIds.append(sid)
+            return self.SSURGOUndefined
+        #if row[0].lower().strip() == 'water':
+        if re.search(self.waterPattern, row[0]) is not None:
+            self.SSURGOsoils[int(sid)] = Parameters._SSURGOWater
+            return Parameters._SSURGOWater
+        else:
+            muid = int(lookup_row[1])
+            self.SSURGOsoils[int(sid)] = muid
+            return muid
     
     def populateAllLanduses(self, listBox: QListWidget) -> None:
         """Make list of all landuses in listBox."""
@@ -641,13 +685,13 @@ class DBUtils:
             listBox.clear()
             try:
                 for row in cursor.execute(landuseSql):
-                    listBox.addItem(row.CPNM + ' (' + row.CROPNAME + ')')
+                    listBox.addItem(row[0] + ' (' + row[1] + ')')
             except Exception:
                 QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(landuseTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return
             try:
                 for row in cursor.execute(urbanSql):
-                    listBox.addItem(row.URBNAME + ' (' + row.URBFLNM + ')')
+                    listBox.addItem(row[0] + ' (' + row[1] + ')')
             except Exception:
                 QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(urbanTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return
@@ -719,7 +763,7 @@ class DBUtils:
     
     _BASINSDATA2 = 'BASINSDATA2'
     _BASINSDATA2TABLE = \
-    '([ID] AUTOINCREMENT(1,1), ' + \
+    '([ID] INTEGER, ' + \
     '[basin] INTEGER, ' + \
     '[crop] INTEGER, ' + \
     '[soil] INTEGER, ' + \
@@ -731,7 +775,7 @@ class DBUtils:
     
     _ELEVATIONBANDTABLEINDEX = 'OID'
     _ELEVATIONBANDTABLE = \
-    '([OID] AUTOINCREMENT(1,1), ' + \
+    '([OID] INTEGER, ' + \
     '[SUBBASIN] INTEGER, ' + \
     '[ELEVB1] DOUBLE, ' + \
     '[ELEVB2] DOUBLE, ' + \
@@ -760,21 +804,45 @@ class DBUtils:
         
         Return true if successful, else false.
         """
-        table = 'MasterProgress'
-        cursor = conn.cursor()
-        dropSQL = 'DROP TABLE ' + table
-        try:
-            cursor.execute(dropSQL)
-        except Exception:
-            QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
-            return False
-        createSQL = 'CREATE TABLE ' + table + ' ' + self._MASTERPROGRESSTABLE
-        try:
-            cursor.execute(createSQL)
-        except Exception:
-            QSWATUtils.error('Could not create table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
-            return False
+        if self.isHUC:
+            cursor = conn.cursor()
+            sql0 = 'DROP TABLE IF EXISTS MasterProgress'
+            cursor.execute(sql0)
+            sql1 = DBUtils._MASTERPROGRESSCREATESQL
+            cursor.execute(sql1)
+        else:
+            table = 'MasterProgress'
+            cursor = conn.cursor()
+            dropSQL = 'DROP TABLE ' + table
+            try:
+                cursor.execute(dropSQL)
+            except Exception:
+                QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
+                return False
+            createSQL = 'CREATE TABLE ' + table + ' ' + self._MASTERPROGRESSTABLE
+            try:
+                cursor.execute(createSQL)
+            except Exception:
+                QSWATUtils.error('Could not create table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
+                return False
         return True
+    
+    def writeSubmapping(self):
+        """Write submapping table for HUC projects."""
+        conn = sqlite3.connect(self.dbFile)
+        cursor = conn.cursor()
+        sql0 = 'DROP TABLE IF EXISTS submapping'
+        cursor.execute(sql0)
+        sql1 = DBUtils._SUBMAPPINGCREATESQL
+        cursor.execute(sql1)
+        sql2 = 'INSERT INTO submapping VALUES(?,?,?)'
+        submapping = QSWATUtils.join(self.projDir, 'submapping.csv')
+        with open(submapping, 'r') as csvFile:
+            reader = csv.reader(csvFile)
+            _ = next(reader)  # skip heading
+            for line in reader:
+                cursor.execute(sql2, (int(line[0]), line[1], int(line[2])))
+        conn.commit()
     
     def createBasinsDataTables(self) -> Tuple[Any, Optional[str], Optional[str]]:
         """Create BASINSDATA1 and 2 tables in project database.""" 
@@ -826,20 +894,31 @@ class DBUtils:
             if index < 0:
                 # error occurred - no point in repeating the failure
                 break
-        self.hashDbTable(conn, self._BASINSDATA1)
-        self.hashDbTable(conn, self._BASINSDATA2)
+        if self.isHUC:
+            conn.commit()
+        else:
+            self.hashDbTable(conn, self._BASINSDATA1)
+            self.hashDbTable(conn, self._BASINSDATA2)
         conn.close()
         
     def writeBasinsDataItem(self, basin: int, data: BasinData, curs: Any, sql1: str, sql2: str, index: int) -> int:
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 
         # note we coerce all double values to float to avoid 'SQLBindParameter' error if an int becomes a long
         try:
-            curs.execute(sql1, basin, data.cellCount, float(data.area), float(data.drainArea),  \
-                         float(data.totalElevation), float(data.totalSlope), \
-                         data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
-                         float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
-                         data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
-                         float(data.cropSoilSlopeArea), data.relHru)
+            if self.isHUC:
+                curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
+                             float(data.totalElevation), float(data.totalSlope), \
+                             data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
+                             float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
+                             data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
+                             float(data.cropSoilSlopeArea), data.relHru))
+            else:
+                curs.execute(sql1, basin, data.cellCount, float(data.area), float(data.drainArea),  \
+                             float(data.totalElevation), float(data.totalSlope), \
+                             data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
+                             float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
+                             data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
+                             float(data.cropSoilSlopeArea), data.relHru)
         except Exception:
             QSWATUtils.error('Could not write to table {0} in project database {1}: {2}'.format(self._BASINSDATA1, self.dbFile, traceback.format_exc()), self.isBatch)
             return -1
@@ -849,7 +928,10 @@ class DBUtils:
                     cd = data.hruMap[hru]
                     index += 1
                     try:
-                        curs.execute(sql2, index, basin, crop, soil, slope, hru, cd.cellCount, float(cd.area), float(cd.totalSlope))
+                        if self.isHUC:
+                            curs.execute(sql2, (index, basin, crop, soil, slope, hru, cd.cellCount, float(cd.area), float(cd.totalSlope)))
+                        else:
+                            curs.execute(sql2, index, basin, crop, soil, slope, hru, cd.cellCount, float(cd.area), float(cd.totalSlope))
                     except Exception:
                         QSWATUtils.error('Could not write to table {0} in project database {1}: {2}'.format(self._BASINSDATA2, self.dbFile, traceback.format_exc()), self.isBatch)
                         return -1
@@ -860,41 +942,79 @@ class DBUtils:
         try:
             basins = dict()
             with self.connect(readonly=True) as conn:
-                try:
-                    for row in conn.cursor().execute(self.sqlSelect(self._BASINSDATA1, '*', '', '')):
-                        bd = BasinData(row.outletCol, row.outletRow, row.outletElevation, row.startCol, \
-                                       row.startRow, row.startToOutletDistance, row.startToOutletDrop, row.farDistance, self.isBatch)
-                        bd.cellCount = row.cellCount
-                        bd.area = row.area
-                        bd.drainArea = row.drainArea
-                        bd.totalElevation = row.totalElevation
-                        bd.totalSlope = row.totalSlope
-                        bd.maxElevation = row.maxElevation
-                        bd.farCol = row.farCol
-                        bd.farRow = row.farRow
-                        bd.farthest = row.farthest
-                        bd.farElevation = row.farElevation
-                        bd.cropSoilSlopeArea = row.cropSoilSlopeArea
-                        bd.relHru = row.hru
-                        basin = row.basin
-                        basins[basin] = bd
-                        sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
-                        for row in conn.cursor().execute(sql, basin):
-                            crop = row.crop
-                            soil = row.soil
-                            slope = row.slope
-                            if crop not in bd.cropSoilSlopeNumbers:
-                                bd.cropSoilSlopeNumbers[crop] = dict()
-                                ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
-                            if soil not in bd.cropSoilSlopeNumbers[crop]:
-                                bd.cropSoilSlopeNumbers[crop][soil] = dict()
-                            bd.cropSoilSlopeNumbers[crop][soil][slope] = row.hru
-                            cellData = CellData(row.cellcount, row.area, row.totalSlope, crop)
-                            bd.hruMap[row.hru] = cellData
-                except Exception:
-                    if not ignoreerrors:
-                        QSWATUtils.error('Could not read basins data from project database {0}: {1}'.format(self.dbFile, traceback.format_exc()), self.isBatch)
-                    return (None, False)
+                if self.isHUC:
+                    conn.row_factory = sqlite3.Row
+                    try:
+                        for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATA1, '*', '', '')):
+                            bd = BasinData(row1['outletCol'], row1['outletrow1'], row1['outletElevation'], row1['startCol'],
+                                           row1['startrow1'], row1['startToOutletDistance'], row1['startToOutletDrop'], row1['farDistance'], self.isBatch)
+                            bd.cellCount = row1['cellCount']
+                            bd.area = row1['area']
+                            bd.drainArea = row1['drainArea']
+                            bd.totalElevation = row1['totalElevation']
+                            bd.totalSlope = row1['totalSlope']
+                            bd.maxElevation = row1['maxElevation']
+                            bd.farCol = row1['farCol']
+                            bd.farRow = row1['farRow']
+                            bd.farthest = row1['farthest']
+                            bd.farElevation = row1['farElevation']
+                            bd.cropSoilSlopeArea = row1['cropSoilSlopeArea']
+                            bd.relHru = row1['hru']
+                            basin = int(row1['basin'])
+                            basins[basin] = bd
+                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
+                            for row2 in conn.cursor().execute(sql, (basin,)):
+                                crop = row2['crop']
+                                soil = row2['soil']
+                                slope = row2['slope']
+                                if crop not in bd.cropSoilSlopeNumbers:
+                                    bd.cropSoilSlopeNumbers[crop] = dict()
+                                    ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
+                                if soil not in bd.cropSoilSlopeNumbers[crop]:
+                                    bd.cropSoilSlopeNumbers[crop][soil] = dict()
+                                bd.cropSoilSlopeNumbers[crop][soil][slope] = row2['hru']
+                                cellData = CellData(row2['cellcount'], row2['area'], row2['totalSlope'], crop)
+                                bd.hruMap[row2['hru']] = cellData
+                    except Exception:
+                        if not ignoreerrors:
+                            QSWATUtils.error('Could not read basins data from project database {0}: {1}'.format(self.dbFile, traceback.format_exc()), self.isBatch)
+                        return (None, False)
+                else:
+                    try:
+                        for row in conn.cursor().execute(self.sqlSelect(self._BASINSDATA1, '*', '', '')):
+                            bd = BasinData(row.outletCol, row.outletRow, row.outletElevation, row.startCol,
+                                           row.startRow, row.startToOutletDistance, row.startToOutletDrop, row.farDistance, self.isBatch)
+                            bd.cellCount = row.cellCount
+                            bd.area = row.area
+                            bd.drainArea = row.drainArea
+                            bd.totalElevation = row.totalElevation
+                            bd.totalSlope = row.totalSlope
+                            bd.maxElevation = row.maxElevation
+                            bd.farCol = row.farCol
+                            bd.farRow = row.farRow
+                            bd.farthest = row.farthest
+                            bd.farElevation = row.farElevation
+                            bd.cropSoilSlopeArea = row.cropSoilSlopeArea
+                            bd.relHru = row.hru
+                            basin = row.basin
+                            basins[basin] = bd
+                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
+                            for row in conn.cursor().execute(sql, basin):
+                                crop = row.crop
+                                soil = row.soil
+                                slope = row.slope
+                                if crop not in bd.cropSoilSlopeNumbers:
+                                    bd.cropSoilSlopeNumbers[crop] = dict()
+                                    ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
+                                if soil not in bd.cropSoilSlopeNumbers[crop]:
+                                    bd.cropSoilSlopeNumbers[crop][soil] = dict()
+                                bd.cropSoilSlopeNumbers[crop][soil][slope] = row.hru
+                                cellData = CellData(row.cellcount, row.area, row.totalSlope, crop)
+                                bd.hruMap[row.hru] = cellData
+                    except Exception:
+                        if not ignoreerrors:
+                            QSWATUtils.error('Could not read basins data from project database {0}: {1}'.format(self.dbFile, traceback.format_exc()), self.isBatch)
+                        return (None, False)
             return (basins, True)
         except Exception:
             if not ignoreerrors:
@@ -903,28 +1023,36 @@ class DBUtils:
         
     ## Write ElevationBand table.
     #  Note this table name changed from ElevationBands to ElevationBand in SWAT Editor 2012.10_2.18
-    def writeElevationBands(self, basinElevBands: Dict[int, Optional[List[Tuple[float, float]]]], numElevBands: int) -> None:
+    def writeElevationBands(self, basinElevBands: Dict[int, Optional[List[Tuple[float, float, float]]]]) -> None:
         with self.connect() as conn:
             if not conn:
                 return
-            table = 'ElevationBand'
-            oldTable = 'ElevationBands'
             cursor = conn.cursor()
-            ## allow for old database
-            if table in self._allTableNames:
-                dropSQL = 'DROP TABLE ' + table
+            table = 'ElevationBand'
+            if self.isHUC:
+                dropSQL = 'DROP TABLE IF EXISTS ' + table
                 try:
                     cursor.execute(dropSQL)
                 except Exception:
                     QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
                     return
-            elif oldTable in self._allTableNames:
-                dropSQL = 'DROP TABLE ' + oldTable
-                try:
-                    cursor.execute(dropSQL)
-                except Exception:
-                    QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(oldTable, self.dbFile, traceback.format_exc()), self.isBatch)
-                    return
+            else:
+                oldTable = 'ElevationBands'
+                ## allow for old database
+                if table in self._allTableNames:
+                    dropSQL = 'DROP TABLE ' + table
+                    try:
+                        cursor.execute(dropSQL)
+                    except Exception:
+                        QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
+                        return
+                elif oldTable in self._allTableNames:
+                    dropSQL = 'DROP TABLE ' + oldTable
+                    try:
+                        cursor.execute(dropSQL)
+                    except Exception:
+                        QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(oldTable, self.dbFile, traceback.format_exc()), self.isBatch)
+                        return
             createSQL = 'CREATE TABLE ' + table + ' ' + self._ELEVATIONBANDTABLE
             try:
                 cursor.execute(createSQL)
@@ -937,20 +1065,16 @@ class DBUtils:
             for (SWATBasin, bands) in basinElevBands.items():
                 oid += 1
                 if bands:
-                    # need mid-points of bands, but list has start values
-                    el1 = bands[0][0]
-                    el2 = bands[1][0]
-                    semiWidth = (el2 - el1) / 2.0
                     row = '({0!s},{1!s},'.format(oid, SWATBasin)
                     for i in range(10):
-                        if i < numElevBands:
-                            el = bands[i][0] + semiWidth
+                        if i < len(bands):
+                            el = bands[i][1]  # mid point elevation
                         else:
                             el = 0
                         row += '{:.2F},'.format(el)
                     for i in range(10):
-                        if i < numElevBands:
-                            frac = bands[i][1]
+                        if i < len(bands):
+                            frac = bands[i][2]
                         else:
                             frac = 0
                         row += '{:.4F}'.format(frac / 100.0) # fractions were percentages
@@ -964,7 +1088,10 @@ class DBUtils:
                 except Exception:
                     QSWATUtils.error('Could not write to table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
                     return
-            self.hashDbTable(conn, table)
+            if self.isHUC:
+                conn.commit()
+            else:
+                self.hashDbTable(conn, table)
             
     _LANDUSELOOKUPTABLE = '([LANDUSE_ID] INTEGER, [SWAT_CODE] TEXT(4))'
     
@@ -1136,4 +1263,101 @@ class DBUtils:
             QSWATUtils.loginfo('Hash for table {0}: {1}'.format(table, result))
             return result
         return ''
+            
+    _WATERSHEDCREATESQL = \
+    """
+    CREATE TABLE Watershed (
+        OBJECTID INTEGER,
+        Shape    BLOB,
+        GRIDCODE INTEGER,
+        Subbasin INTEGER,
+        Area     REAL,
+        Slo1     REAL,
+        Len1     REAL,
+        Sll      REAL,
+        Csl      REAL,
+        Wid1     REAL,
+        Dep1     REAL,
+        Lat      REAL,
+        Long_    REAL,
+        Elev     REAL,
+        ElevMin  REAL,
+        ElevMax  REAL,
+        Bname    TEXT,
+        Shape_Length  REAL,
+        Shape_Area    REAL,
+        HydroID  INTEGER,
+        OutletID INTEGER
+    );
+    """
+    
+    _HRUSCREATESQL= \
+    """
+    CREATE TABLE hrus (
+        OID      INTEGER,
+        SUBBASIN INTEGER,
+        ARSUB    REAL,
+        LANDUSE  TEXT,
+        ARLU     REAL,
+        SOIL     TEXT,
+        ARSO     REAL,
+        SLP      TEXT,
+        ARSLP    REAL,
+        SLOPE    REAL,
+        UNIQUECOMB TEXT,
+        HRU_ID   INTEGER,
+        HRU_GIS  TEXT
+    );
+    """
+    
+    _UNCOMBCREATESQL= \
+    """
+    CREATE TABLE uncomb (
+        OID        INTEGER,
+        SUBBASIN   INTEGER,
+        LU_NUM     INTEGER,
+        LU_CODE    TEXT,
+        SOIL_NUM   INTEGER,
+        SOIL_CODE  TEXT,
+        SLOPE_NUM  INTEGER,
+        SLOPE_CODE TEXT,
+        MEAN_SLOPE REAL,
+        AREA       REAL,
+        UNCOMB     TEXT
+    );
+    """
+    
+    _SUBMAPPINGCREATESQL= \
+    """
+    CREATE TABLE submapping (
+        SUBBASIN    INTEGER,
+        HUC_ID      TEXT,
+        IsEnding    INTEGER
+        );
+    """
+    
+    _MASTERPROGRESSCREATESQL= \
+    """
+    CREATE TABLE MasterProgress (
+        WorkDir            TEXT,
+        OutputGDB          TEXT,
+        RasterGDB          TEXT,
+        SwatGDB            TEXT,
+        WshdGrid           TEXT,
+        ClipDemGrid        TEXT,
+        SoilOption         TEXT,
+        NumLuClasses       INTEGER,
+        DoneWSDDel         INTEGER,
+        DoneSoilLand       INTEGER,
+        DoneWeather        INTEGER,
+        DoneModelSetup     INTEGER,
+        OID                INTEGER,
+        MGT1_Checked       INTEGER,
+        ArcSWAT_V_Create   TEXT,
+        ArcSWAT_V_Curr     TEXT,
+        AccessExePath      TEXT,
+        DoneModelRun       INTEGER
+    );
+    """
+
     

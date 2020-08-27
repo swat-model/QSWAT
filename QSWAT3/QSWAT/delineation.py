@@ -565,6 +565,7 @@ class Delineation(QObject):
                 ok, path = QSWATUtils.removeLayerAndFiles(burnedDemFile, root)
                 if not ok:
                     QSWATUtils.error('Failed to remove old burn file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
+                    self._dlg.setCursor(Qt.ArrowCursor)
                     return
                 self.progress('Burning streams ...')
                 #burnRasterFile = self.streamToRaster(demLayer, burnFile, root)
@@ -852,6 +853,7 @@ class Delineation(QObject):
         self._dlg.setCursor(Qt.WaitCursor)
         self._dlg.taudemOutput.clear()
         # create Dinf slopes
+        felFile = base + 'fel' + suffix
         slpFile = base + 'slp' + suffix
         angFile = base + 'ang' + suffix
         QSWATUtils.removeLayer(slpFile, root)
@@ -861,10 +863,17 @@ class Delineation(QObject):
         if willRun:
             if self._dlg.showTaudem.isChecked():
                 self._dlg.tabWidget.setCurrentIndex(3)
-            ok = TauDEMUtils.runDinfFlowDir(demFile, slpFile, angFile, numProcesses, self._dlg.taudemOutput)  
+            ok = TauDEMUtils.runPitFill(demFile, felFile, numProcesses, self._dlg.taudemOutput)
             if not ok:
+                QSWATUtils.error('Cannot generate pitfilled file from dem {0}'.format(demFile), self._gv.isBatch)
                 self.cleanUp(3)
                 return
+            ok = TauDEMUtils.runDinfFlowDir(felFile, slpFile, angFile, numProcesses, self._dlg.taudemOutput)  
+            if not ok:
+                QSWATUtils.error('Cannot generate slope file from pitfilled dem {0}'.format(felFile), self._gv.isBatch)
+                self.cleanUp(3)
+                return
+        self.progress('DinfFlowDir done')
         if self._gv.useGridModel:
             # set centroids
             basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)
@@ -924,6 +933,7 @@ class Delineation(QObject):
         except Exception:
             QSWATUtils.loginfo('Failure to read DEM units: {0}'.format(traceback.format_exc()))
             return False
+        QgsProject.instance().setCrs(demLayer.crs())
         provider = demLayer.dataProvider()
         self._gv.xBlockSize = provider.xBlockSize()
         self._gv.yBlockSize = provider.yBlockSize()
@@ -1300,7 +1310,7 @@ class Delineation(QObject):
         if result != QMessageBox.Save:
             selFromLayer.removeSelection()
             return
-        selectedIds = selFromLayer.selectedFeaturesIds()
+        selectedIds = selFromLayer.selectedFeatureIds()
         # QSWATUtils.information('Selected feature ids: {0!s}'.format(selectedIds), self._gv.isBatch)
         selFromLayer.removeSelection()
         # make a copy of selected layer's file, then remove non-selected features from it
@@ -1999,51 +2009,56 @@ class Delineation(QObject):
         """Create watershed shapefile wshedFile from watershed grid wFile."""
         if QSWATUtils.isUpToDate(wFile, wshedFile):
             return
-        ok, path = QSWATUtils.removeLayerAndFiles(wshedFile, root)
-        if not ok:
-            QSWATUtils.error('Failed to remove old watershed file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-            return
         driver = ogr.GetDriverByName('ESRI Shapefile')
         if driver is None:
             QSWATUtils.error('ESRI Shapefile driver is not available - cannot write watershed shapefile', self._gv.isBatch)
             return
-        if os.path.exists(wshedFile):
-            driver.DeleteDataSource(wshedFile)
-        ds = driver.CreateDataSource(wshedFile)
-        if ds is None:
-            QSWATUtils.error('Cannot create watershed shapefile {0}'.format(wshedFile), self._gv.isBatch)
-            return
-        fileInfo = QFileInfo(wshedFile)
-        wshedLayer = ds.CreateLayer(str(fileInfo.baseName()), geom_type=ogr.wkbPolygon)
-        if wshedLayer is None:
-            QSWATUtils.error('Cannot create layer for watershed shapefile {0}'.format(wshedFile), self._gv.isBatch)
-            return
-        idFieldDef = ogr.FieldDefn(QSWATTopology._POLYGONID, ogr.OFTInteger)
-        if idFieldDef is None:
-            QSWATUtils.error('Cannot create field {0}'.format(QSWATTopology._POLYGONID), self._gv.isBatch)
-            return
-        index = wshedLayer.CreateField(idFieldDef)
-        if index != 0:
-            QSWATUtils.error('Cannot create field {0} in {1}'.format(QSWATTopology._POLYGONID, wshedFile), self._gv.isBatch)
-            return
-        areaFieldDef = ogr.FieldDefn(QSWATTopology._AREA, ogr.OFTReal)
-        areaFieldDef.SetWidth(20)
-        areaFieldDef.SetPrecision(0)
-        if areaFieldDef is None:
-            QSWATUtils.error('Cannot create field {0}'.format(QSWATTopology._AREA), self._gv.isBatch)
-            return
-        index = wshedLayer.CreateField(areaFieldDef)
-        if index != 0:
-            QSWATUtils.error('Cannot create field {0} in {1}'.format(QSWATTopology._AREA, wshedFile), self._gv.isBatch)
-            return
-        subbasinFieldDef = ogr.FieldDefn(QSWATTopology._SUBBASIN, ogr.OFTInteger)
-        if subbasinFieldDef is None:
-            QSWATUtils.error('Cannot create field {0}'.format(QSWATTopology._SUBBASIN), self._gv.isBatch)
-            return
-        index = wshedLayer.CreateField(subbasinFieldDef)
-        if index != 0:
-            QSWATUtils.error('Cannot create field {0} in {1}'.format(QSWATTopology._SUBBASIN, wshedFile), self._gv.isBatch)
-            return
+        if QSWATUtils.shapefileExists(wshedFile):
+            ds = driver.Open(wshedFile, 1)
+            wshedLayer = ds.GetLayer()
+            for feature in wshedLayer:
+                wshedLayer.DeleteFeature(feature.GetFID())
+        else:
+            ok, path = QSWATUtils.removeLayerAndFiles(wshedFile, root)
+            if not ok:
+                QSWATUtils.error('Failed to remove old watershed file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
+                self._dlg.setCursor(Qt.ArrowCursor)
+                return
+            ds = driver.CreateDataSource(wshedFile)
+            if ds is None:
+                QSWATUtils.error('Cannot create watershed shapefile {0}'.format(wshedFile), self._gv.isBatch)
+                return
+            fileInfo = QFileInfo(wshedFile)
+            wshedLayer = ds.CreateLayer(str(fileInfo.baseName()), geom_type=ogr.wkbPolygon)
+            if wshedLayer is None:
+                QSWATUtils.error('Cannot create layer for watershed shapefile {0}'.format(wshedFile), self._gv.isBatch)
+                return
+            idFieldDef = ogr.FieldDefn(QSWATTopology._POLYGONID, ogr.OFTInteger)
+            if idFieldDef is None:
+                QSWATUtils.error('Cannot create field {0}'.format(QSWATTopology._POLYGONID), self._gv.isBatch)
+                return
+            index = wshedLayer.CreateField(idFieldDef)
+            if index != 0:
+                QSWATUtils.error('Cannot create field {0} in {1}'.format(QSWATTopology._POLYGONID, wshedFile), self._gv.isBatch)
+                return
+            areaFieldDef = ogr.FieldDefn(QSWATTopology._AREA, ogr.OFTReal)
+            areaFieldDef.SetWidth(20)
+            areaFieldDef.SetPrecision(0)
+            if areaFieldDef is None:
+                QSWATUtils.error('Cannot create field {0}'.format(QSWATTopology._AREA), self._gv.isBatch)
+                return
+            index = wshedLayer.CreateField(areaFieldDef)
+            if index != 0:
+                QSWATUtils.error('Cannot create field {0} in {1}'.format(QSWATTopology._AREA, wshedFile), self._gv.isBatch)
+                return
+            subbasinFieldDef = ogr.FieldDefn(QSWATTopology._SUBBASIN, ogr.OFTInteger)
+            if subbasinFieldDef is None:
+                QSWATUtils.error('Cannot create field {0}'.format(QSWATTopology._SUBBASIN), self._gv.isBatch)
+                return
+            index = wshedLayer.CreateField(subbasinFieldDef)
+            if index != 0:
+                QSWATUtils.error('Cannot create field {0} in {1}'.format(QSWATTopology._SUBBASIN, wshedFile), self._gv.isBatch)
+                return
         
         sourceRaster = gdal.Open(wFile)
         if sourceRaster is None:
@@ -2115,6 +2130,7 @@ class Delineation(QObject):
         ok, path = QSWATUtils.removeLayerAndFiles(wFile, root)
         if not ok:
             QSWATUtils.error('Failed to remove old {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
+            self._dlg.setCursor(Qt.ArrowCursor)
             return ''
         assert not os.path.exists(wFile)
         xSize = demLayer.rasterUnitsPerPixelX()
@@ -2495,6 +2511,7 @@ class Delineation(QObject):
     #     ok, path = QSWATUtils.removeLayerAndFiles(wFile, root)
     #     if not ok:
     #         QSWATUtils.error('Failed to remove {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
+    #         self._dlg.setCursor(Qt.ArrowCursor)
     #         return ''
     #     assert not os.path.exists(rasterFile)
     #     extent = demLayer.extent()
@@ -2622,6 +2639,7 @@ class Delineation(QObject):
         ok, path = QSWATUtils.removeLayerAndFiles(filePath, root)
         if not ok:
             QSWATUtils.error('Failed to remove old inlet/outlet file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
+            self._dlg.setCursor(Qt.ArrowCursor)
             return False
         shpDriver = ogr.GetDriverByName("ESRI Shapefile")
         if os.path.exists(filePath):

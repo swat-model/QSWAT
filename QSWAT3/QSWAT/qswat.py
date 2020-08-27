@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.0'
+    __version__ = '1.1'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -253,13 +253,20 @@ class QSwat(QObject):
         self._odlg.projPath.setText('Restarting project ...')
         title = QFileInfo(proj.fileName()).baseName()
         proj.setTitle(title)
-        isHUCFromProjfile, found = proj.readBoolEntry(title, 'delin/isHUC', False)
+        #QSWATUtils.information('isHUC initially {0}'.format(isHUC), isBatch)
+        # there is a bug in readBoolEntry that always returns found as true
+        # readNumEntry seems to work properly, so we'll use it to see if delin/isHUC is present
+        # isHUCFromProjfile, found = proj.readBoolEntry(title, 'delin/isHUC', False)
+        _, found = proj.readNumEntry(title, 'delin/isHUC', -1)
         if not found:
             # isHUC not previously set.  Use parameter above and record
-            proj.writeEntry(title, 'delin/isHUC', isHUC)
+            proj.writeEntryBool(title, 'delin/isHUC', isHUC)
+            #QSWATUtils.information('isHUC not found in proj file: set to {0}'.format(isHUC), isBatch)
         else:
             # use value in project file
+            isHUCFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHUC', False)
             isHUC = isHUCFromProjfile
+            #QSWATUtils.information('isHUC found in proj file: set to {0}'.format(isHUC), isBatch)
         # now have project so initiate global vars
         # if we do this earlier we cannot for example find the project database
         self._gv = GlobalVars(self._iface, isBatch, isHUC)

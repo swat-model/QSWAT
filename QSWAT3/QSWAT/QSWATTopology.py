@@ -32,12 +32,12 @@ import traceback
 from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 
 try:
-    from .QSWATUtils import QSWATUtils, FileTypes, ListFuns  # @UnresolvedImport
-    from .parameters import Parameters  # @UnresolvedImport
+    from .QSWATUtils import QSWATUtils, FileTypes, ListFuns
+    from .parameters import Parameters
 except ImportError:
     # for convert from Arc and to plus
-    from QSWATUtils import QSWATUtils, FileTypes, ListFuns  # @UnresolvedImport
-    from parameters import Parameters  # @UnresolvedImport
+    from QSWATUtils import QSWATUtils, FileTypes, ListFuns
+    from parameters import Parameters
     
 
 class ReachData():
@@ -357,8 +357,6 @@ class QSWATTopology:
                         if QSWATTopology.reachable(dsLink, [link], us):
                             QSWATUtils.error(u'Circular drainage network from link {0}'.format(dsLink), self.isBatch)
                             return False
-            else:
-                self.outletLinks.add(link)
             if self.isHUC:
                 self.drainAreas[link] = attrs[totDAIndex] * 1E6  # sq km to sq m
         # create drainAreas here for non-HUC models as we now have maxLink value to size the numpy array
@@ -804,8 +802,14 @@ class QSWATTopology:
                 return
             curs = conn.cursor()
             table = 'MonitoringPoint'
-            clearSQL = 'DELETE FROM ' + table
-            curs.execute(clearSQL)
+            if self.isHUC:
+                sql0 = 'DROP TABLE IF EXISTS MonitoringPoint'
+                curs.execute(sql0)
+                sql1 = QSWATTopology._MONITORINGPOINTCREATESQL
+                curs.execute(sql1)
+            else:
+                clearSQL = 'DELETE FROM ' + table
+                curs.execute(clearSQL)
             self.MonitoringPointFid = 1
             time1 = time.process_time()
             # Add outlets from subbasins
@@ -850,9 +854,12 @@ class QSWATTopology:
                 self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'R')
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing MonitoringPoint table took {0} seconds'.format(int(time2 - time1)))
-            self.db.hashDbTable(conn, table)
+            if self.isHUC:
+                conn.commit()
+            else:
+                self.db.hashDbTable(conn, table)
     
-    def addMonitoringPoint(self, cursor: Any, demLayer: QgsRasterLayer, streamLayer: QgsVectorLayer, 
+    def addMonitoringPoint(self, cursor: Any, demLayer: QgsRasterLayer, streamLayer: QgsVectorLayer,  # @UnusedVariable
                            link: int, data: ReachData, typ: str) -> None:
         """Add a point to the MonitoringPoint table."""
         table = 'MonitoringPoint'
@@ -882,8 +889,12 @@ class QSWATTopology:
         elev = 0 # only used for weather gauges
         name = '' # only used for weather gauges
         sql = "INSERT INTO " + table + " VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?)"
-        cursor.execute(sql, self.MonitoringPointFid, POINTID, GRID_CODE, \
-                       float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID)
+        if self.isHUC:
+            cursor.execute(sql, (self.MonitoringPointFid, POINTID, GRID_CODE, \
+                           float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID))
+        else:
+            cursor.execute(sql, self.MonitoringPointFid, POINTID, GRID_CODE, \
+                           float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID)
         self.MonitoringPointFid += 1;
     
     def writeReachTable(self, streamLayer: QgsVectorLayer, gv: Any) -> Optional[QgsVectorLayer]:  # setting type of gv to GlobalVars prevents plugin loading
@@ -985,10 +996,16 @@ class QSWATTopology:
         with self.db.connect() as conn:
             if not conn:
                 return None
-            curs = conn.cursor()
             table = 'Reach'
-            clearSQL = 'DELETE FROM ' + table
-            curs.execute(clearSQL)
+            curs = conn.cursor()
+            if self.isHUC:
+                sql0 = 'DROP TABLE IF EXISTS Reach'
+                curs.execute(sql0)
+                sql1 = QSWATTopology._REACHCREATESQL
+                curs.execute(sql1)
+            else:
+                clearSQL = 'DELETE FROM ' + table
+                curs.execute(clearSQL)
             oid = 0
             time1 = time.process_time()
             wid2Data = dict()
@@ -1046,12 +1063,20 @@ class QSWATTopology:
                     mmap[fid1][OutletIdIdx] = SWATBasin + 100000
                 oid += 1
                 sql = "INSERT INTO " + table + " VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-                curs.execute(sql, oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
-                             drainAreaHa, length, slopePercent, channelWidth, channelDepth, minEl, maxEl, \
-                             length, SWATBasin + 200000, SWATBasin + 100000)
+                if self.isHUC:
+                    curs.execute(sql, (oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
+                                 drainAreaHa, length, slopePercent, channelWidth, channelDepth, minEl, maxEl, \
+                                 length, SWATBasin + 200000, SWATBasin + 100000))
+                else:
+                    curs.execute(sql, oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
+                                 drainAreaHa, length, slopePercent, channelWidth, channelDepth, minEl, maxEl, \
+                                 length, SWATBasin + 200000, SWATBasin + 100000)
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing Reach table took {0} seconds'.format(int(time2 - time1)))
-            self.db.hashDbTable(conn, table)
+            if self.isHUC:
+                conn.commit()
+            else:
+                self.db.hashDbTable(conn, table)
         if addToRiv1:
             OK = provider1.changeAttributeValues(mmap)
             if not OK:
@@ -1545,6 +1570,50 @@ class QSWATTopology:
         col = int((x - transform[0]) / transform[1])
         row = int((y - transform[3]) / transform[5])
         return (col, row)
+        
+    _REACHCREATESQL = \
+    """
+    CREATE TABLE Reach (
+        OBJECTID INTEGER,
+        Shape    BLOB,
+        ARCID    INTEGER,
+        GRID_CODE INTEGER,
+        FROM_NODE INTEGER,
+        TO_NODE  INTEGER,
+        Subbasin INTEGER,
+        SubbasinR INTEGER,
+        AreaC    REAL,
+        Len2     REAL,
+        Slo2     REAL,
+        Wid2     REAL,
+        Dep2     REAL,
+        MinEl    REAL,
+        MaxEl    REAL,
+        Shape_Length  REAL,
+        HydroID  INTEGER,
+        OutletID INTEGER
+    );
+    """
+    
+    _MONITORINGPOINTCREATESQL= \
+    """
+    CREATE TABLE MonitoringPoint (
+        OBJECTID   INTEGER,
+        Shape      BLOB,
+        POINTID    INTEGER,
+        GRID_CODE  INTEGER,
+        Xpr        REAL,
+        Ypr        REAL,
+        Lat        REAL,
+        Long_      REAL,
+        Elev       REAL,
+        Name       TEXT,
+        Type       TEXT,
+        Subbasin   INTEGER,
+        HydroID    INTEGER,
+        OutletID   INTEGER
+    );
+    """
     
 
             

@@ -94,7 +94,7 @@ class GlobalVars:
         ## Path of DEM after burning-in
         self.burnedDemFile = ''
         ## Path of D8 flow direction grid
-        self.pFile = ''
+        self.pFile = '' 
         ## Path of basins grid
         self.basinFile = ''
         ## Path of outlets shapefile
@@ -334,8 +334,11 @@ class GlobalVars:
                 for subluse, percent in subs.items():
                     oid += 1
                     cursor.execute(sql, oid, luse, subluse, percent)
-            self.db.hashDbTable(conn, exemptTable)
-            self.db.hashDbTable(conn, splitTable)
+            if self.isHUC:
+                conn.commit()
+            else:
+                self.db.hashDbTable(conn, exemptTable)
+                self.db.hashDbTable(conn, splitTable)
         return True
         
     def getExemptSplit(self) -> None:
@@ -386,18 +389,25 @@ class GlobalVars:
                 soilOption = 'stmuid'
             else:
                 soilOption = 'name'
-            row = conn.cursor().execute(self.db.sqlSelect(table, '*', '', '')).fetchone()
+            # allow table not to exist for HUC
+            try:
+                row = conn.cursor().execute(self.db.sqlSelect(table, '*', '', '')).fetchone()
+            except Exception:
+                row = None    
             if row:
                 if doneDelin == -1:
-                    doneDelinNum = row.DoneWSDDel
+                    doneDelinNum = row['DoneWSDDel'] if self.isHUC else row.DoneWSDDel
                 else:
                     doneDelinNum = doneDelin
                 if doneSoilLand == -1:
-                    doneSoilLandNum = row.DoneSoilLand
+                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC else row.DoneSoilLand
                 else:
                     doneSoilLandNum = doneSoilLand
                 sql = 'UPDATE ' + table + ' SET SoilOption=?,NumLuClasses=?,DoneWSDDel=?,DoneSoilLand=?'
-                conn.cursor().execute(sql, soilOption, numLUs, doneDelinNum, doneSoilLandNum)
+                if self.isHUC:
+                    conn.cursor().execute(sql, (soilOption, numLUs, doneDelinNum, doneSoilLandNum))
+                else:
+                    conn.cursor().execute(sql, soilOption, numLUs, doneDelinNum, doneSoilLandNum)
             else:
                 if doneDelin == -1:
                     doneDelinNum = 0
@@ -411,8 +421,14 @@ class GlobalVars:
                 # so easiest to make a new table with this field, so we know how many fields to fill
                 if self.db.createMasterProgressTable(conn):
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                    conn.cursor().execute(sql, workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
-                                      doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0)
+                    if self.isHUC:
+                        conn.cursor().execute(sql, (workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
+                                          doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0))
+                    else:
+                        conn.cursor().execute(sql, workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
+                                          doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0)
+            if self.isHUC:
+                conn.commit()
                     
     def isDelinDone(self) -> bool:
         """Return true if delineation done according to MasterProgress table."""
@@ -427,7 +443,7 @@ class GlobalVars:
             if row is None:
                 return False
             else:
-                return int(row.DoneWSDDel) == 1
+                return int(row[0]) == 1
                     
     def isHRUsDone(self) -> bool:
         """Return true if HRU creation is done according to MasterProgress table."""
@@ -442,7 +458,7 @@ class GlobalVars:
             if row is None:
                 return False
             else:
-                return int(row.DoneSoilLand) == 1
+                return int(row[0]) == 1
   
     def setSWATEditorParams(self) -> None:
         """Save SWAT Editor initial parameters in its configuration file."""

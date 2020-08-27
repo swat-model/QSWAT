@@ -18,16 +18,16 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-'''
+''' 
 # Import the PyQt and QGIS libraries
 from PyQt5.QtCore import *  # @UnusedWildImport
 from PyQt5.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
 from PyQt5.QtWidgets import * # @UnusedWildImport
 from PyQt5.QtXml import * # @UnusedWildImport
-from qgis.core import QgsApplication, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol  # @UnusedImport
+from qgis.core import QgsApplication, QgsPointXY, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol, QgsTextAnnotation  # @UnusedImport
 from qgis.gui import * # @UnusedWildImport
 import os
-#import random
+# import random
 import numpy
 import subprocess
 from osgeo.gdalconst import *  # type: ignore # @UnusedWildImport
@@ -445,7 +445,7 @@ class Visualise(QObject):
         if self._dlg.tabWidget.currentIndex() != 2:
             return False
         indexes = self._dlg.tableWidget.selectedIndexes()
-        return indexes and len(indexes) > 0
+        return indexes is not None and len(indexes) > 0
                 
     def setSummary(self) -> None:
         """Fill summary combo."""
@@ -499,25 +499,25 @@ class Visualise(QObject):
             self.setFinishDate(finishDate)
         else:
             if requestedFinishDate > finishDate:
-                QSWATUtils.information('Chosen period finishes than scenario {0} period: changing chosen finish'.format(self.scenario), self._gv.isBatch)
+                QSWATUtils.information('Chosen period finishes later than scenario {0} period: changing chosen finish'.format(self.scenario), self._gv.isBatch)
                 self.setFinishDate(finishDate)
         
     def setPeriods(self) -> bool:
         """Define period of current scenario in days, months and years.  Return true if OK."""
         requestedStartDate = self.readStartDate()
         requestedFinishDate = self.readFinishDate()
-        if not (requestedStartDate and requestedFinishDate):
+        if requestedStartDate is None or requestedFinishDate is None:
             QSWATUtils.error('Cannot read chosen period', self._gv.isBatch)
             return False
         if requestedFinishDate <= requestedStartDate:
             QSWATUtils.error('Finish date must be later than start date', self._gv.isBatch)
             return False
         self.periodsUpToDate = self.startDay == requestedStartDate.day and \
-        self.startMonth == requestedStartDate.month and \
-        self.startYear == requestedStartDate.year and \
-        self.finishDay == requestedFinishDate.day and \
-        self.finishMonth == requestedFinishDate.month and \
-        self.finishYear == requestedFinishDate.year
+            self.startMonth == requestedStartDate.month and \
+            self.startYear == requestedStartDate.year and \
+            self.finishDay == requestedFinishDate.day and \
+            self.finishMonth == requestedFinishDate.month and \
+            self.finishYear == requestedFinishDate.year
         if self.periodsUpToDate:
             return True
         self.startDay = requestedStartDate.day
@@ -611,7 +611,6 @@ class Visualise(QObject):
         
     def doClose(self) -> None:
         """Close the db connection, timer, clean up from animation, and close the form."""
-        self.conn = None
         self.animateTimer.stop()
         # empty animation and png directories
         self.clearAnimationDir()
@@ -620,6 +619,8 @@ class Visualise(QObject):
         proj = QgsProject.instance()
         for animation in QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, proj.layerTreeRoot()):
             proj.removeMapLayer(animation.layer().id())
+        # only close connection after removing animation layers as the map title is affected and recalculation needs connection
+        self.conn = None
         self._dlg.close()
         
     def plotSetSub(self) -> None:
@@ -1334,7 +1335,7 @@ class Visualise(QObject):
         layer.setName('{0} {1} {2}'.format(self.scenario, selectVar, self._dlg.summaryCombo.currentText()))
         if not keepColours:
             count = 5
-            opacity = 65.0 if self.useSubs() or self.useHRUs() else 1.0
+            opacity = 0.65 if self.useSubs() or self.useHRUs() else 1.0
         else:
             # same layer as currently - try to use same range size and colours, and same transparency
             try:
@@ -1347,7 +1348,7 @@ class Visualise(QObject):
                 # don't care if no suitable colours, so no message, just revert to defaults
                 keepColours = False
                 count = 5
-                opacity = 65.0 if self.useSubs() or self.useHRUs() else 1.0
+                opacity = 0.65 if self.useSubs() or self.useHRUs() else 1.0
         if not keepColours:
             ramp, invert = self.chooseColorRamp(self.table, selectVar)
             if invert:
@@ -1377,9 +1378,7 @@ class Visualise(QObject):
         layer.triggerRepaint()
         self._gv.iface.layerTreeView().refreshLayerSymbology(layer.id())
         canvas = self._iface.mapCanvas()
-        if self.mapTitle is not None:
-            canvas.scene().removeItem(self.mapTitle)
-            canvas.refresh()
+        self.clearMapTitle()
         self.mapTitle = MapTitle(canvas, self.title, layer)
         canvas.refresh()
         if self.useSubs():
@@ -1491,7 +1490,7 @@ class Visualise(QObject):
         Assumes allAnimateVals is suitably populated.
         """
         count = 5
-        opacity = 65 if self.useSubs() or self.useHRUs() else 1
+        opacity = 0.65 if self.useSubs() or self.useHRUs() else 1.0
         ramp, invert = self.chooseColorRamp(self.table, self.animateVar)
         # replaced by Cython code
         #=======================================================================
@@ -1664,11 +1663,11 @@ class Visualise(QObject):
             with open(self.animationTemplate, 'w') as outFile:
                 for line in inFile:
                     outFile.write(Visualise.replaceInLine(line, subs))
-        QSWATUtils.loginfo(u'Print composer template {0} written'.format(self.animationTemplate))
+        QSWATUtils.loginfo('Print layout template {0} written'.format(self.animationTemplate))
         self.animationDOM = QDomDocument()
         f = QFile(self.animationTemplate)
         if f.open(QIODevice.ReadOnly):
-            OK = self.animationDOM.setContent(f)
+            OK = self.animationDOM.setContent(f)[0]
             if not OK:
                 QSWATUtils.error(u'Cannot parse template file {0}'.format(self.animationTemplate), self._gv.isBatch)
                 return
@@ -1713,7 +1712,7 @@ class Visualise(QObject):
         self.animationDOM = QDomDocument()
         f = QFile(self.animationTemplate)
         if f.open(QIODevice.ReadOnly):
-            OK = self.animationDOM.setContent(f)
+            OK = self.animationDOM.setContent(f)[0]
             if not OK:
                 QSWATUtils.error(u'Cannot parse template file {0}'.format(self.animationTemplate), self._gv.isBatch)
                 return
@@ -1779,7 +1778,8 @@ class Visualise(QObject):
                 animateTreeLayers = QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, root, visible=False)
                 animateLayers = [layer.layer() for layer in animateTreeLayers if layer is not None]
             for animateLayer in animateLayers:
-                assert animateLayer is not None
+                if animateLayer is None:
+                    continue
                 layerId = animateLayer.id()
                 data = cast(Dict[str, Dict[int, Dict[int, float]]], self.resultsData)[layerId][dat]
                 assert self.mapTitle is not None
@@ -1987,6 +1987,7 @@ class Visualise(QObject):
             return
         if not self.setPeriods():
             return
+        self._dlg.setCursor(Qt.WaitCursor)
         self.resultsFileUpToDate = self.resultsFileUpToDate and self.resultsFile == self._dlg.resultsFileEdit.text()
         if not self.resultsFileUpToDate or not self.periodsUpToDate:
             if not self.readData('', True, self.table, '', ''):
@@ -2003,6 +2004,7 @@ class Visualise(QObject):
             else:
                 return
         self.colourResultsFile()
+        self._dlg.setCursor(Qt.ArrowCursor)
         
     def printResults(self) -> None:
         """Create print composer by instantiating template file."""
@@ -2128,7 +2130,7 @@ class Visualise(QObject):
         templateDoc = QDomDocument()
         f = QFile(templateOut)
         if f.open(QIODevice.ReadOnly):
-            OK = templateDoc.setContent(f)
+            OK = templateDoc.setContent(f)[0]
             if not OK:
                 QSWATUtils.error(u'Cannot parse template file {0}'.format(templateOut), self._gv.isBatch)
                 return
@@ -2848,6 +2850,66 @@ class Visualise(QObject):
                     pass
         self.currentStillNumber = 0
         
+    # started developing this but incomplete: not clear how to render the annotation
+    # also not clear if multiple annotated visible layers would give clashing annotations
+    # could continue with MapTitle below, and perhaps use QgsMapCanvasAnnotationItem as the QgsMapCanvasItem,
+    # but looks as if it would be more complicated than current version
+# class MapTitle2(QgsTextAnnotation):
+# 
+#     def __init__(self, canvas: QgsMapCanvas, title: str, 
+#                  layer: QgsMapLayer, line2: Optional[str]=None):
+#         super().__init__() 
+#         ## normal font
+#         self.normFont = QFont()
+#         ## normal metrics object
+#         self.metrics = QFontMetricsF(self.normFont)
+#         # bold metrics object
+#         boldFont = QFont()
+#         boldFont.setBold(True)
+#         metricsBold = QFontMetricsF(boldFont)
+#         ## titled layer
+#         self.layer = layer
+#         ## project line of title
+#         self.line0 = 'Project: {0}'.format(title)
+#         ## First line of title
+#         self.line1 = layer.name()
+#         ## second line of title (or None)
+#         self.line2 = line2
+#         rect0 = metricsBold.boundingRect(self.line0)
+#         rect1 = self.metrics.boundingRect(self.line1)
+#         ## bounding rectange of first 2 lines 
+#         self.rect01 = QRectF(0, rect0.top() + rect0.height(),
+#                             max(rect0.width(), rect1.width()),
+#                             rect0.height() + rect1.height())
+#         ## bounding rectangle
+#         self.rect = None
+#         if line2 is None:
+#             self.rect = self.rect01
+#         else:
+#             self.updateLine2(line2)
+#         text = QTextDocument()
+#         text.setDefaultFont(self.normFont)
+#         if self.line2 is None:
+#             text.setHtml('<p><b>{0}</b><br/>{1}</p>'.format(self.line0, self.line1))
+#         else:
+#             text.setHtml('<p><b>{0}</b><br/>{1}<br/>{2}</p>'.format(self.line0, self.line1, self.line2))
+#         canvasRect = canvas.extent()
+#         self.setMapPosition(QgsPointXY(canvasRect.xMinimum(), canvasRect.yMaximum()))
+#         self.setHasFixedMapPosition(True)
+#         self.setFrameSize(self.rect.size())
+#         self.setDocument(text)
+#         self.setMapLayer(layer)
+#     
+#     def updateLine2(self, line2: str) -> None:
+#         """Change second line."""
+#         self.line2 = line2
+#         rect2 = self.metrics.boundingRect(self.line2)
+#         self.rect = QRectF(0, self.rect01.top(), 
+#                             max(self.rect01.width(), rect2.width()), 
+#                             self.rect01.height() + rect2.height())
+#         
+#     def renderAnnotation(self, context, size):
+        
 
 class MapTitle(QgsMapCanvasItem):
     
@@ -2918,7 +2980,5 @@ class MapTitle(QgsMapCanvasItem):
     def identifyMapTitle(self) -> str:
         """Function used to identify a MapTitle object even when it has a wrapper."""    
         return 'MapTitle'
-        
-
-       
+          
     

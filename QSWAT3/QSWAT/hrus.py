@@ -35,14 +35,15 @@ import math
 from typing import Dict, List, Tuple, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
     
 
-from .hrusdialog import HrusDialog  # type: ignore  # @UnresolvedImport
-from .QSWATUtils import QSWATUtils, FileTypes, ListFuns, fileWriter  # type: ignore  # @UnresolvedImport
-from .QSWATTopology import QSWATTopology  # type: ignore  # @UnresolvedImport
-from .parameters import Parameters  # type: ignore  # @UnresolvedImport
-from .exempt import Exempt  # type: ignore  # @UnresolvedImport
-from .split import Split  # type: ignore  # @UnresolvedImport
-from .elevationbands import ElevationBands  # type: ignore  # @UnresolvedImport
-    
+from .hrusdialog import HrusDialog  # type: ignore
+from .QSWATUtils import QSWATUtils, FileTypes, ListFuns, fileWriter  # type: ignore
+from .QSWATData import BasinData, HRUData, CellData
+from .QSWATTopology import QSWATTopology  # type: ignore
+from .parameters import Parameters  # type: ignore
+from .exempt import Exempt  # type: ignore
+from .split import Split  # type: ignore
+from .elevationbands import ElevationBands  # type: ignore
+from .DBUtils import DBUtils    
 
 
 useSlowPolygonize = False
@@ -338,14 +339,8 @@ class HRUs(QObject):
             root = QgsProject.instance().layerTreeRoot()
             if self._dlg.generateFullHRUs.isChecked():
                 self.CreateHRUs.fullHRUsWanted = True
-                ok, path = QSWATUtils.removeLayerAndFiles(self._gv.fullHRUsFile, root)
-                if not ok:
-                    QSWATUtils.error('Failed to remove old fullHRUs file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-                    return False
-                ok, path = QSWATUtils.removeLayerAndFiles(self._gv.actHRUsFile, root)
-                if not ok:
-                    QSWATUtils.error('Failed to remove old actHRUs file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-                    return False
+                QSWATUtils.removeLayer(self._gv.fullHRUsFile, root)
+                QSWATUtils.removeLayer(self._gv.actHRUsFile, root)
             else:
                 # remove any full and actual HRUs layers and files
                 self.CreateHRUs.fullHRUsWanted = False
@@ -383,13 +378,13 @@ class HRUs(QObject):
                 soilTreeLayer = root.findLayer(self.soilLayer.id())
                 assert soilTreeLayer is not None
                 treeModel.refreshLayerLegend(soilTreeLayer)
-            if len(self._gv.db.slopeLimits) > 0:
-                slopeBandsLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.slopeBandsFile, FileTypes._SLOPEBANDS, 
-                                                                        self._gv, None, QSWATUtils._SLOPE_GROUP_NAME)
-                if slopeBandsLayer:
-                    slopeBandsTreeLayer = root.findLayer(slopeBandsLayer.id())
-                    assert slopeBandsTreeLayer is not None
-                    treeModel.refreshLayerLegend(slopeBandsTreeLayer)
+                if len(self._gv.db.slopeLimits) > 0:
+                    slopeBandsLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.slopeBandsFile, FileTypes._SLOPEBANDS, 
+                                                                            self._gv, None, QSWATUtils._SLOPE_GROUP_NAME)
+                    if slopeBandsLayer:
+                        slopeBandsTreeLayer = root.findLayer(slopeBandsLayer.id())
+                        assert slopeBandsTreeLayer is not None
+                        treeModel.refreshLayerLegend(slopeBandsTreeLayer)
             if self._gv.isBatch:
                 QSWATUtils.information('Writing landuse and soil report ...', True)
             if not self._gv.useGridModel or not self._gv.isBig:
@@ -1082,399 +1077,7 @@ class HRUs(QObject):
         proj.writeEntry(title, 'hru/targetVal', self.CreateHRUs.targetVal)
         proj.write()
             
-class CellData:
-    """Data collected about cells in watershed grid that make an HRU."""
-    def __init__(self, count: int, area: float, slope: float, crop: int) -> None:
-        """Constructor."""
-        ## Cell count
-        self.cellCount = count
-        ## Total area in square metres
-        self.area = area
-        ## Total slope (for calculating mean slope)
-        self.totalSlope = slope
-        ## Original crop number (for use with split landuses)
-        self.crop = crop
-        
-    def addCell(self, area: float, slope: float) -> None:
-        """Add data for 1 cell."""
-        self.cellCount += 1
-        self.area += area
-        self.totalSlope += slope
-        
-    def addCells(self, cd: Any) -> None:
-        """Add a cell data to this one."""
-        self.cellCount += cd.cellCount
-        self.area += cd.area
-        self.totalSlope += cd.totalSlope
-        
-    def multiply(self, factor: float) -> None:
-        """Multiply cell values by factor."""
-        self.cellCount = int(self.cellCount * factor + 0.5) 
-        self.area *= factor
-        self.totalSlope *= factor 
-        
-class BasinData:
-    """Data held about subbasin."""
-    def __init__(self, outletCol: int, outletRow: int, outletElevation: float, 
-                 startCol: int, startRow:int, length: float, drop: float, minDist: float, 
-                 isBatch: bool) -> None:
-        """Initialise class variables."""
-        ## Number of cells in subbasin
-        self.cellCount = 0
-        ## Area of subbasin in square metres
-        self.area = 0.0
-        ## Area draining through outlet of subbasin in square metres
-        self.drainArea = 0.0
-        ## Total of elevation values in the subbasin (to compute mean)
-        self.totalElevation = 0.0
-        ## Total of slope values for the subbasin (to compute mean)
-        self.totalSlope = 0.0
-        ## Column in DEM of outlet point of the subbasin
-        self.outletCol = outletCol
-        ## Row in DEM of outlet point of the subbasin
-        self.outletRow = outletRow
-        ## Elevation in metres of outlet point of the subbasin
-        self.outletElevation = outletElevation
-        ## Elevation in metres of highest point of the subbasin
-        self.maxElevation = 0.0
-        ## Column in DEM of start point of the main channel of the subbasin
-        self.startCol = startCol
-        ## Row in DEM of start point of the main channel of the subbasin
-        self.startRow = startRow
-        ## Channel distance in metres from main channel start to outlet
-        self.startToOutletDistance = length
-        ## Drop in metres from main channel start to outlet
-        self.startToOutletDrop = drop
-        ## No longer used 
-        self.farCol = 0
-        ## No longer used
-        self.farRow = 0
-        ## No longer used
-        self.farthest = 0
-        ## Elevation in metres of farthest (longest channel length) point from the outlet
-        self.farElevation = outletElevation
-        ## Longest channel length in metres.  
-        #
-        # Make it initially min of x and y resolutions of DEM so cannot be zero.
-        self.farDistance = minDist
-        ## Area with not-Nodata crop, soil, and slope values (equals sum of hruMap areas).
-        self.cropSoilSlopeArea = 0.0
-        ## Map hru (relative) number -> CellData.
-        self.hruMap: Dict[int, CellData] = dict()
-        ## Nested map crop -> soil -> slope -> hru number.
-        # Range of cropSoilSlopeNumbers must be same as domain of cropSoilMap
-        self.cropSoilSlopeNumbers: Dict[int, Dict[int, Dict[int, int]]] = dict()
-        ## Latest created relative HRU number for this subbasin.
-        self.relHru = 0
-        ## Map of crop to area of crop in subbasin.
-        #
-        # This and the similar maps for soil and slope are duplicated:
-        # an original version created after basin data is calculated and 
-        # before HRUs are created, and another after HRUs are created.
-        self.cropAreas: Dict[int, float] = dict()
-        ## Original crop area map
-        self.originalCropAreas: Dict[int, float] = dict()
-        ## Map of soil to area of soil in subbasin.
-        self.soilAreas: Dict[int, float] = dict()
-        ## Original soil area map
-        self.originalSoilAreas: Dict[int, float] = dict()
-        ## Map of slope to area of slope in subbasin.
-        self.slopeAreas: Dict[int, float] = dict()
-        ## Original slope area map
-        self.originalSlopeAreas: Dict[int, float] = dict()
-        ## Flag to show if batch run
-        self.isBatch = isBatch
-        
-    def addCell(self, crop: int, soil: int, slope: int, area: float, 
-                elevation: float, slopeValue: float, dist: float, _gv: Any):
-        """Add data for 1 cell in watershed raster."""
-        hru = 0
-        self.cellCount += 1
-        self.area += area
-        # drain area calculated separately
-        if slopeValue != _gv.slopeNoData:
-            self.totalSlope += slopeValue
-        if elevation != _gv.elevationNoData:
-            self.totalElevation += elevation
-            if dist != _gv.distNoData and dist > self.farDistance:
-                # We have found a new  (by flow distance) point from the outlet, store distance and its elevation
-                self.farDistance = dist
-                self.farElevation = elevation
-            if elevation > self.maxElevation:
-                self.maxElevation = elevation
-        if ((crop != _gv.cropNoData) and (soil != _gv.soilNoData) and (slopeValue != _gv.slopeNoData)):
-            self.cropSoilSlopeArea += area
-            hru = BasinData.getHruNumber(self.cropSoilSlopeNumbers, self.relHru, crop, soil, slope)
-            if hru in self.hruMap:
-                cellData = self.hruMap[hru]
-                cellData.addCell(area, slopeValue)
-                self.hruMap[hru] = cellData
-            else:
-                # new hru
-                cellData = CellData(1, area, slopeValue, crop)
-                self.hruMap[hru] = cellData
-                self.relHru = hru
-    
-    @staticmethod
-    def getHruNumber(cropSoilSlopeNumbers: Dict[int, Dict[int, Dict[int, int]]], 
-                     hru: int, crop: int, soil: int, slope: int) -> int:
-        """Return HRU number (new if necessary, adding one to input hru number) 
-        for the crop/soil/slope combination.
-        """
-        resultHru = hru
-        if crop in cropSoilSlopeNumbers:
-            soilSlopeNumbers = cropSoilSlopeNumbers[crop]
-            if soil in soilSlopeNumbers:
-                slopeNumbers = soilSlopeNumbers[soil]
-                if slope in slopeNumbers:
-                    return slopeNumbers[slope]
-                else:
-                    # new slope for existing crop and soil
-                    resultHru += 1
-                    slopeNumbers[slope] = resultHru
-            else:
-                # new soil for existing crop
-                resultHru += 1
-                slopeNumbers = dict()
-                slopeNumbers[slope] = resultHru
-                soilSlopeNumbers[soil] = slopeNumbers
-                cropSoilSlopeNumbers[crop] = soilSlopeNumbers
-        else:
-            # new crop
-            resultHru += 1
-            slopeNumbers = dict()
-            slopeNumbers[slope] = resultHru
-            soilSlopeNumbers = dict()
-            soilSlopeNumbers[soil] = slopeNumbers
-            cropSoilSlopeNumbers[crop] = soilSlopeNumbers
-        return resultHru
-    
-    def setAreas(self, isOriginal: bool, redistributeNodata=True) -> None:
-        """Set area maps for crop, soil and slope.
-        Add nodata area to HRUs if redistributeNodata, else reduce basin cellCount, area and totalSlope to total of defined HRUs."""
-        if isOriginal:
-            if redistributeNodata:
-                # nodata area is included in final areas: need to add to original
-                # so final and original tally
-                self.redistributeNodata()
-            else:
-                # if we are not redistributing nodata, need to correct the basin area, cell count and totalSlope, which may be reduced 
-                # as we are removing nodata area from the model
-                self.area = self.cropSoilSlopeArea
-                self.cellCount = self.totalHRUCellCount()
-                self.totalSlope = self.totalHRUSlopes()
-        self.setCropAreas(isOriginal)
-        self.setSoilAreas(isOriginal)
-        self.setSlopeAreas(isOriginal)
-        
-    def redistributeNodata(self) -> None:
-        """Redistribute nodata area in each HRU."""
-        # It is tempting to use self.area as the full area and self.cropSoilSlopeArea as the 
-        # area with defined crop, soil and slope values, but these values are constant,
-        # so if this function is called more than once the HRU areas keep growing.
-        # We need to compare self.area with the total HRU areas.
-        areaToRedistribute = self.area - self.totalHRUAreas()
-        if self.area > areaToRedistribute > 0:
-            redistributeFactor = self.area / (self.area - areaToRedistribute)
-            self.redistribute(redistributeFactor)
-            
-    def totalHRUCellCount(self) -> int:
-        """Total cell count of HRUs in this subbasin."""
-        totalCellCount = 0
-        for hruData in self.hruMap.values():
-            totalCellCount += hruData.cellCount
-        return totalCellCount
-            
-    def totalHRUAreas(self) -> float:
-        """Total area in square metres of HRUs in this subbasin."""
-        totalArea = 0.0
-        for hruData in self.hruMap.values():
-            totalArea += hruData.area
-        return totalArea
-            
-    def totalHRUSlopes(self) -> float:
-        """Total slope values of HRUs in this subbasin."""
-        totalSlope = 0.0
-        for hruData in self.hruMap.values():
-            totalSlope += hruData.totalSlope
-        return totalSlope
-                  
-    def setCropAreas(self, isOriginal: bool) -> None:
-        '''Make map crop -> area from hruMap and cropSoilSlopeNumbers.'''
-        cmap = self.originalCropAreas if isOriginal else self.cropAreas
-        cmap.clear()
-        for crop, soilSlopeNumbers in self.cropSoilSlopeNumbers.items():
-            area = 0.0
-            for slopeNumbers in soilSlopeNumbers.values():
-                for hru in slopeNumbers.values():
-                    try:
-                        cellData = self.hruMap[hru]
-                    except Exception:
-                        QSWATUtils.error('Hru {0} not in hruMap'.format(hru), self.isBatch)
-                        continue
-                    area += cellData.area
-            cmap[crop] = area
-        
-    def setSoilAreas(self, isOriginal: bool) -> None:
-        '''Make map soil -> area from hruMap and cropSoilSlopeNumbers.'''
-        smap = self.originalSoilAreas if isOriginal else self.soilAreas
-        smap.clear()
-        for soilSlopeNumbers in self.cropSoilSlopeNumbers.values():
-            for soil, slopeNumbers in soilSlopeNumbers.items():
-                for hru in slopeNumbers.values():
-                    try:
-                        cellData = self.hruMap[hru]
-                    except Exception:
-                        QSWATUtils.error('Hru {0} not in hruMap'.format(hru), self.isBatch)
-                        continue
-                    if  soil in smap:
-                        area = smap[soil]
-                        smap[soil] = area + cellData.area
-                    else:
-                        smap[soil] = cellData.area
-    
-    def setSlopeAreas(self, isOriginal: bool) -> None:
-        '''Make map slope -> area from hruMap and cropSoilSlopeNumbers.'''
-        smap = self.originalSlopeAreas if isOriginal else self.slopeAreas
-        smap.clear()
-        for soilSlopeNumbers in self.cropSoilSlopeNumbers.values():
-            for slopeNumbers in soilSlopeNumbers.values():
-                for slope, hru in slopeNumbers.items():
-                    try:
-                        cellData = self.hruMap[hru]
-                    except Exception:
-                        QSWATUtils.error('Hru {0} not in hruMap'.format(hru), self.isBatch)
-                        continue
-                    if slope in smap:
-                        area = smap[slope]
-                        smap[slope] = area + cellData.area
-                    else:
-                        smap[slope] = cellData.area
-                        
-    def cropSoilAreas(self, crop: int) -> Dict[int, float]:
-        '''Map of soil -> area in square metres for this crop.'''
-        assert crop in self.cropSoilSlopeNumbers
-        csmap = dict()
-        for soil in self.cropSoilSlopeNumbers[crop].keys():
-            csmap[soil] = self.cropSoilArea(crop, soil)
-        return csmap
-    
-    def cropArea(self, crop: int) -> float:
-        '''Area in square metres for crop.'''
-        # use when cropAreas may not be set
-        assert crop in self.cropSoilSlopeNumbers, u'Landuse {0} not in basin data'.format(crop)
-        area = 0.0
-        for slopeNumbers in self.cropSoilSlopeNumbers[crop].values():
-            for hru in slopeNumbers.values():
-                try:
-                    cellData = self.hruMap[hru]
-                except Exception:
-                    QSWATUtils.error(u'Hru {0} not in hruMap'.format(hru), self.isBatch)
-                    continue
-                area += cellData.area
-        return area
-    
-    def cropSoilArea(self, crop: int, soil: int) -> float:
-        '''Area in square metres for crop-soil combination.'''
-        assert crop in self.cropSoilSlopeNumbers and soil in self.cropSoilSlopeNumbers[crop]
-        area = 0.0
-        slopeNumbers = self.cropSoilSlopeNumbers[crop][soil]
-        for hru in slopeNumbers.values():
-            try:
-                cellData = self.hruMap[hru]
-            except Exception:
-                QSWATUtils.error(u'Hru {0} not in hruMap'.format(hru), self.isBatch)
-                continue
-            area += cellData.area
-        return area
-    
-    def cropSoilSlopeAreas(self, crop: int, soil: int) -> Dict[int, float]:
-        '''Map of slope -> area in square metres for this crop and soil.'''
-        assert crop in self.cropSoilSlopeNumbers and soil in self.cropSoilSlopeNumbers[crop]
-        cssmap = dict()
-        for (slope, hru) in self.cropSoilSlopeNumbers[crop][soil].items():
-            cssmap[slope] = self.hruMap[hru].area
-        return cssmap
-    
-    @staticmethod
-    def dominantKey(table: Dict[int, float]) -> int:
-        '''Find the dominant key for a dictionary table of numeric values, 
-        i.e. the key to the largest value.
-        '''
-        maxKey = -1
-        maxVal = 0.0
-        for (key, val) in table.items():
-            if val > maxVal:
-                maxKey = key
-                maxVal = val
-        return maxKey
-    
-    def getDominantHRU(self) -> Tuple[int, int, int]:
-        '''Find the HRU with the largest area, 
-        and return its crop, soil and slope.
-        '''
-        maxArea = 0.0
-        maxCrop = 0
-        maxSoil = 0
-        maxSlope = 0
-        for (crop, soilSlopeNumbers) in self.cropSoilSlopeNumbers.items():
-            for (soil, slopeNumbers) in soilSlopeNumbers.items():
-                for (slope, hru) in slopeNumbers.items():
-                    cellData = self.hruMap[hru]
-                    area = cellData.area
-                    if area > maxArea:
-                        maxArea = area
-                        maxCrop = crop
-                        maxSoil = soil
-                        maxSlope = slope
-        return (maxCrop, maxSoil, maxSlope)
-            
-    def redistribute(self, factor: float) -> None:
-        '''Multiply all the HRU areas by factor.'''
-        # note use of items rather than items as we change hruMap in the loop
-        for (hru, cellData) in self.hruMap.items():
-            cellData.multiply(factor)
-            self.hruMap[hru] = cellData
-            
-    def removeHRU(self, hru: int, crop: int, soil: int, slope: int) -> None:
-        '''Remove an HRU from the hruMap and the cropSoilSlopeNumbers map.'''
-        assert crop in self.cropSoilSlopeNumbers and \
-            soil in self.cropSoilSlopeNumbers[crop] and \
-            slope in self.cropSoilSlopeNumbers[crop][soil] and \
-            hru == self.cropSoilSlopeNumbers[crop][soil][slope]
-        del self.hruMap[hru]
-        del self.cropSoilSlopeNumbers[crop][soil][slope]
-        if len(self.cropSoilSlopeNumbers[crop][soil]) == 0:
-            del self.cropSoilSlopeNumbers[crop][soil]
-            if len(self.cropSoilSlopeNumbers[crop]) == 0:
-                del self.cropSoilSlopeNumbers[crop]
-                
-class HRUData:
-    """Data about an HRU."""
-    def __init__(self, basin: int, crop: int, origCrop: int, soil: int, 
-                 slope: int, cellCount: int, area: float, totalSlope: float, 
-                 cellArea: float, relHru: int) -> None:
-        """Constructor."""
-        ## Basin number
-        self.basin = basin
-        ## Landuse number
-        self.crop = crop
-        ## Original landuse number (for split landuses)
-        self.origCrop = origCrop
-        ## Soil number
-        self.soil = soil
-        ## Slope index
-        self.slope = slope
-        ## Number of DEM cells
-        self.cellCount = cellCount
-        ## Area in square metres
-        self.area = area
-        ## Originally used cellCount for mean slope, 
-        # but cellCounts (which are integer) are inaccurate when small,
-        # and may even round to zero because of split and exempt landuses.
-        self.meanSlope = totalSlope * cellArea / area
-        ## HRU number within the subbasin
-        self.relHru = relHru
+
         
 class CreateHRUs(QObject):
     
@@ -2348,12 +1951,14 @@ class CreateHRUs(QObject):
                 layer = QgsVectorLayer(self._gv.fullHRUsFile, '{0} ({1})'.format(legend, QFileInfo(self._gv.fullHRUsFile).baseName()), 'ogr')
             if not QSWATUtils.removeAllFeatures(layer):
                 QSWATUtils.error('Failed to delete features from {0}.  Please delete the file manually and try again'.format(self._gv.fullHRUsFile), self._gv.isBatch)
+                self._dlg.setCursor(Qt.ArrowCursor)
                 return False
             fields = layer.fields()
         else:
             ok, path = QSWATUtils.removeLayerAndFiles(self._gv.fullHRUsFile, root)
             if not ok:
                 QSWATUtils.error('Failed to remove old fullHRUs file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
+                self._dlg.setCursor(Qt.ArrowCursor)
                 return False
             fields = QgsFields()
             fields.append(QgsField(QSWATTopology._SUBBASIN, QVariant.Int))
@@ -3153,7 +2758,7 @@ class CreateHRUs(QObject):
                         try:
                             bands = self.writeTopoReportSection(mapp, fw, 'subbasin')
                         except Exception:
-                            QSWATUtils.error('Internal error: cannot write topo report for SWAT basin {0} (basin {1})'.format(SWATBasin, basin), self._gv.isBatch)
+                            QSWATUtils.exceptionError('Internal error: cannot write topo report for SWAT basin {0} (basin {1})'.format(SWATBasin, basin), self._gv.isBatch)
                             bands = None
                     else:
                         bands = None
@@ -3162,10 +2767,12 @@ class CreateHRUs(QObject):
         self._reportsCombo.setVisible(True)
         if self._reportsCombo.findText(Parameters._TOPOITEM) < 0:
             self._reportsCombo.addItem(Parameters._TOPOITEM)
-        self._gv.db.writeElevationBands(self.basinElevBands, self._gv.numElevBands)
+        self._gv.db.writeElevationBands(self.basinElevBands)
                 
-    def writeTopoReportSection(self, mapp: List[int], fw: fileWriter, string: str) -> Optional[List[Tuple[float, float]]]:
-        """Write topographic report file section for 1 subbasin."""
+    def writeTopoReportSection(self, mapp: List[int], fw: fileWriter, string: str) -> Optional[List[Tuple[float, float, float]]]:
+        """Write topographic report file section for 1 subbasin.
+        
+        Returns list of (start, midpoint, percent of subbasin at start)"""
         fw.writeLine('')
         fw.writeLine(QSWATUtils.trans('Statistics: All elevations reported in meters'))
         fw.writeLine('-----------')
@@ -3183,9 +2790,18 @@ class CreateHRUs(QObject):
         summ = 0.0
         if string == 'subbasin' and self._gv.elevBandsThreshold > 0  and \
         self._gv.numElevBands > 0 and maximum + self.minElev > self._gv.elevBandsThreshold:
-            bandWidth = float(maximum - minimum) / self._gv.numElevBands
-            bands = [(minimum + self.minElev, 0.0)]
-            nextBand = minimum + self.minElev + bandWidth
+            if self._gv.isHUC:
+                # HUC models use fixed bandwidth of 500m
+                bandWidth = 500
+                self._gv.numElevBands = int(1 + (maximum - minimum) / bandWidth)
+                thisWidth = min(maximum + 1 - minimum, bandWidth)  # guard against first band < 500 wide
+                midPoint = minimum + self.minElev + (thisWidth - 1) / 2.0
+                bands = [(minimum + self.minElev, midPoint, 0.0)]
+                nextBand = minimum + self.minElev + thisWidth 
+            else:
+                bandWidth = float(maximum + 1 - minimum) / self._gv.numElevBands
+                bands = [(minimum + self.minElev, minimum + self.minElev + (bandWidth - 1) / 2.0, 0.0)]
+                nextBand = minimum + self.minElev + bandWidth
         else:
             bands = None  # type: ignore
         for i in range(minimum, maximum+1):
@@ -3195,12 +2811,14 @@ class CreateHRUs(QObject):
             upto = (summ / totalFreq) * 100.0
             percent = (freq / totalFreq) * 100.0
             if bands:
-                if elev > nextBand: # start a new band
-                    bands.append((nextBand, percent))
-                    nextBand += bandWidth
+                if elev >= nextBand: # start a new band
+                    nextWidth = min(maximum + 1 + self.minElev - elev, bandWidth)
+                    nextMidPoint = elev + (nextWidth -1) / 2.0
+                    bands.append((nextBand, nextMidPoint, percent))
+                    nextBand = min(nextBand + bandWidth, maximum + 1 + self.minElev)
                 else: 
-                    el, frac = bands[-1]
-                    bands[-1] = (el, frac + percent)
+                    el, mid, frac = bands[-1]
+                    bands[-1] = (el, mid, frac + percent)
             fw.write(str(elev).rjust(20))
             fw.write(('{:.2F}'.format(upto)).rjust(25))
             fw.writeLine(('{:.2F}'.format(percent)).rjust(25))
@@ -3344,15 +2962,28 @@ class CreateHRUs(QObject):
                     if not conn:
                         return
                     curs = conn.cursor()
-                    table = 'hrus'
-                    clearSQL = 'DELETE FROM ' + table
-                    curs.execute(clearSQL)
-                    table = 'uncomb'
-                    clearSQL = 'DELETE FROM ' + table
-                    curs.execute(clearSQL)
+                    if self._gv.isHUC:
+                        sql0 = 'DROP TABLE IF EXISTS hrus'
+                        curs.execute(sql0)
+                        sql0a = 'DROP TABLE IF EXISTS uncomb'
+                        curs.execute(sql0a)
+                        sql1 = DBUtils._HRUSCREATESQL
+                        curs.execute(sql1)
+                        sql1a = DBUtils._UNCOMBCREATESQL
+                        curs.execute(sql1a)
+                    else:
+                        table = 'hrus'
+                        clearSQL = 'DELETE FROM ' + table
+                        curs.execute(clearSQL)
+                        table = 'uncomb'
+                        clearSQL = 'DELETE FROM ' + table
+                        curs.execute(clearSQL)
                     self.printBasinsDetails(basinHa, True, fw, hrusCsv, conn, fullHRUsLayer, horizLine)
-                    self._gv.db.hashDbTable(conn, 'hrus')
-                    self._gv.db.hashDbTable(conn, 'uncomb')
+                    if self._gv.isHUC:
+                        conn.commit()
+                    else:
+                        self._gv.db.hashDbTable(conn, 'hrus')
+                        self._gv.db.hashDbTable(conn, 'uncomb')
             else:
                 self.printBasinsDetails(basinHa, False, fw, hrusCsv, None, fullHRUsLayer, horizLine)
         self._reportsCombo.setVisible(True)
@@ -3459,8 +3090,8 @@ class CreateHRUs(QObject):
                     cropSoilSlope = lu + '/' + soil + '/' + slp
                     meanSlopePercent = float(hrudata.meanSlope) * 100
                     hruha = float(hrudata.area) / 10000
-                    arlu = float(basinData.cropAreas[hrudata.crop]) / 10000
-                    arso = basinData.cropSoilArea(hrudata.crop, hrudata.soil) / 10000
+                    arlu = float(basinData.cropAreas[hrudata.crop]) / 10000 if self.isMultiple else hruha
+                    arso = basinData.cropSoilArea(hrudata.crop, hrudata.soil) / 10000 if self.isMultiple else hruha
                     arslp = hruha
                     uc = lu + '_' + soil + '_' + slp
                     SWATBasin = self._gv.topo.basinToSWATBasin[basin]
@@ -3477,12 +3108,20 @@ class CreateHRUs(QObject):
                     oid += 1
                     table = 'hrus'
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                    conn.cursor().execute(sql, oid, float(SWATBasin), float(subArea), lu, float(arlu), soil, float(arso), slp, \
-                                          float(arslp), float(meanSlopePercent), uc, hru, filebase)
+                    if self._gv.isHUC:
+                        conn.cursor().execute(sql, (oid, float(SWATBasin), float(subArea), lu, float(arlu), soil, float(arso), slp, \
+                                              float(arslp), float(meanSlopePercent), uc, hru, filebase))
+                    else:
+                        conn.cursor().execute(sql, oid, float(SWATBasin), float(subArea), lu, float(arlu), soil, float(arso), slp, \
+                                              float(arslp), float(meanSlopePercent), uc, hru, filebase)
                     table = 'uncomb'
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?)'
-                    conn.cursor().execute(sql, oid, float(SWATBasin), hrudata.crop, lu, hrudata.soil, soil, hrudata.slope, slp, \
-                                          float(meanSlopePercent), float(hruha), uc)
+                    if self._gv.isHUC:
+                        conn.cursor().execute(sql, (oid, float(SWATBasin), hrudata.crop, lu, hrudata.soil, soil, hrudata.slope, slp, \
+                                              float(meanSlopePercent), float(hruha), uc))
+                    else:
+                        conn.cursor().execute(sql, oid, float(SWATBasin), hrudata.crop, lu, hrudata.soil, soil, hrudata.slope, slp, \
+                                              float(meanSlopePercent), float(hruha), uc)
                     hrusCsv.writeLine('{0},{1}'.format(hru, hruha))
         return oid
     
@@ -3508,8 +3147,11 @@ class CreateHRUs(QObject):
                 if basin in self._gv.topo.basinToSWATBasin:
                     lu = self._gv.db.getLanduseCode(hrudata.crop)
                     soil = self._gv.db.getSoilName(hrudata.soil)
-                    slp = self._gv.db.slopeRange(hrudata.slope)
                     meanSlopePercent = float(hrudata.meanSlope) * 100
+                    if self._gv.isHUC:
+                        slp = CreateHRUs.HUCSlopeClass(meanSlopePercent)
+                    else:
+                        slp = self._gv.db.slopeRange(hrudata.slope)
                     hruha = float(hrudata.area) / 10000
                     arlu = float(basinData.cropAreas[hrudata.crop]) / 10000
                     arso = basinData.cropSoilArea(hrudata.crop, hrudata.soil) / 10000
@@ -3523,6 +3165,15 @@ class CreateHRUs(QObject):
                                       float(arslp), float(meanSlopePercent), uc, hru, filebase)
                     curs.execute(sql2, oid, SWATBasin, hrudata.crop, lu, hrudata.soil, soil, hrudata.slope, slp, \
                                           meanSlopePercent, hruha, uc)
+                    
+    @staticmethod
+    def HUCSlopeClass(slopePercent: float) -> str:
+        """Return slope class as 0-2, 2-8 or 8-100."""
+        if slopePercent < 2:
+            return '0-2'
+        if slopePercent < 8:
+            return '2-8'
+        return '8-100'
 
     def clearHRUGISNums(self, fullHRUsLayer: QgsVectorLayer, hrugisIndx: int) -> None:
         """Set HRUGIS values to NA."""
@@ -3714,10 +3365,16 @@ class CreateHRUs(QObject):
         with self._gv.db.connect() as conn:
             if not conn:
                 return
-            curs = conn.cursor()
             table = 'Watershed'
-            clearSQL = 'DELETE FROM ' + table
-            curs.execute(clearSQL)
+            curs = conn.cursor()
+            if self._gv.isHUC:
+                sql0 = 'DROP TABLE IF EXISTS Watershed'
+                curs.execute(sql0)
+                sql1 = DBUtils._WATERSHEDCREATESQL
+                curs.execute(sql1)
+            else:
+                clearSQL = 'DELETE FROM ' + table
+                curs.execute(clearSQL)
             if self._gv.useGridModel:
                 iterator: Callable[[], Iterable[int]] = lambda: self.basins.keys()
             else:
@@ -3784,11 +3441,20 @@ class CreateHRUs(QObject):
                     mmap[fid][hydroIdIdx] = SWATBasin + 300000 
                     mmap[fid][OutletIdIdx] = SWATBasin + 100000 
                 sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                curs.execute(sql, SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
-                             float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
-                             float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
-                             SWATBasin + 300000, SWATBasin + 100000)
-            self._gv.db.hashDbTable(conn, table)
+                if self._gv.isHUC:
+                    curs.execute(sql, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
+                                 float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
+                                 float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
+                                 SWATBasin + 300000, SWATBasin + 100000))
+                else:
+                    curs.execute(sql, SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
+                                 float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
+                                 float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
+                                 SWATBasin + 300000, SWATBasin + 100000)
+            if self._gv.isHUC:
+                conn.commit()
+            else:
+                self._gv.db.hashDbTable(conn, table)
         if addToSubs1:
             OK = provider1.changeAttributeValues(mmap)
             if not OK:
