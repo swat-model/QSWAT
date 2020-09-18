@@ -1539,7 +1539,7 @@ class CreateHRUs(QObject):
                             cropCol = col if cropSameCoords else QSWATTopology.xToCol(x, cropTransform)
                             if 0 <= cropCol < cropNumberCols:
                                 crop = cast(int, cropData[cropRow - cropTopRow, cropCol])
-                                if crop is None:
+                                if crop is None or math.isnan(crop):
                                     crop = cropNoData
                             else:
                                 crop = cropNoData 
@@ -1558,7 +1558,7 @@ class CreateHRUs(QObject):
                             soilCol = col if soilSameCoords else QSWATTopology.xToCol(x, soilTransform)
                             if 0 <= soilCol < soilNumberCols:
                                 soil = cast(int, soilData[soilRow - soilTopRow, soilCol])
-                                if soil is None:
+                                if soil is None or math.isnan(soil):
                                     soil = soilNoData
                             else:
                                 soil = soilNoData 
@@ -1661,7 +1661,7 @@ class CreateHRUs(QObject):
                         cropCol = col if cropSameCoords else QSWATTopology.xToCol(x, cropTransform)
                         if 0 <= cropCol < cropNumberCols and 0 <= cropRow < cropNumberRows:
                             crop = cast(int, cropData[0, cropCol])
-                            if crop is None:
+                            if crop is None or math.isnan(crop):
                                 crop = cropNoData
                         else:
                             crop = cropNoData
@@ -1678,7 +1678,7 @@ class CreateHRUs(QObject):
                         soilCol = col if soilSameCoords else QSWATTopology.xToCol(x, soilTransform)
                         if 0 <= soilCol < soilNumberCols and 0 <= soilRow < soilNumberRows:
                             soil = cast(int, soilData[0, soilCol])
-                            if soil is None:
+                            if soil is None or math.isnan(soil):
                                 soil = soilNoData
                         else:
                             soil = soilNoData
@@ -1688,6 +1688,9 @@ class CreateHRUs(QObject):
                             soilCount += 1
                             # use an equivalent soil if any
                             soil = self._gv.db.translateSoil(int(soil))
+                            if self._gv.isHUC and soil == self._gv.db.SSURGOUndefined:
+                                soilCount -= 1
+                                soilNoDataCount += 1
                         # make sure crop and soil do not conflict about water
                         isWet = False
                         if crop != cropNoData:
@@ -1800,19 +1803,22 @@ class CreateHRUs(QObject):
             QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined landuse values.\n If this percentage is zero check your landuse map has the same projection as your DEM.'.format(landusePercent), self._gv.isBatch)
         soilPercent = (float(soilCount) / (soilCount + soilNoDataCount)) * 100
         QSWATUtils.loginfo('Soil cover percent: {:.1F}'.format(soilPercent))
-        if soilPercent < 95:
-            if self._gv.isHUC:
-                if soilPercent < 1:
-                    QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed has defined soil values'.format(soilPercent), self._gv.isBatch)
-                    return False
+        under95 = False
+        if self._gv.isHUC:
+            if soilPercent < 1:
+                QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed has defined soil values'.format(soilPercent), self._gv.isBatch)
+                return False
+            elif soilPercent < 95:
                 # start of message is key word for HUC12Models
                 QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed has defined soil values.'
                                        .format(soilPercent), self._gv.isBatch)
-            else:
-                QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined soil values.\n If this percentage is zero check your soil map has the same projection as your DEM.'.format(soilPercent), self._gv.isBatch)
-            under95 = True
+                under95 = True
+            elif soilPercent < 100: # always give statistic for HUC models
+                QSWATUtils.information('WARNING: {:.1F} percent of the watershed has defined soil values.'.format(soilPercent), self._gv.isBatch)
         else:
-            under95 = False
+            if soilPercent < 95:
+                QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined soil values.\n If this percentage is zero check your soil map has the same projection as your DEM.'.format(soilPercent), self._gv.isBatch)
+                under95 = True
         if self.fullHRUsWanted:
             # for TestingFullHRUs add these instead of addRow few lines above
             # shapes.addRow([1,1,1], 0, 3, -1)
@@ -2051,6 +2057,7 @@ class CreateHRUs(QObject):
             return result
             
         # build us relation from downlinks map
+        assert self._gv.isHUC, "Internal error: definedDrainAreas called for non-HUC model"
         us: Dict[int, List[int]] = dict()
         for link, dsLink in self._gv.topo.downLinks.items():
             if dsLink >= 0:
@@ -2069,7 +2076,7 @@ class CreateHRUs(QObject):
                     SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                     channelWidth = float(1.29 * drainAreaKm ** 0.6)
                     channelDepth = float(0.13 * drainAreaKm ** 0.4)
-                    conn.execute(sql, basinData.drainArea / 1E4, channelWidth, channelDepth, SWATBasin)
+                    conn.execute(sql, (basinData.drainArea / 1E4, channelWidth, channelDepth, SWATBasin))
     
     def basinsToHRUs(self) -> None:
         """Convert basin data to HRU data."""
