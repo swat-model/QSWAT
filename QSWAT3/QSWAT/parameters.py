@@ -52,9 +52,9 @@ class Parameters:
     _DBPROJ = 'QSWATProj2012.mdb'
     # TODO: the reference database is the official one with crop table extended for global landuses
     _DBREF = 'QSWATRef2012.mdb'
-    # TODO: this is a later driver; don't know how common it is
-    # _ACCESSSTRING = 'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='
-    _ACCESSSTRING = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ='
+    # Use later driver
+    _ACCESSSTRING = 'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='
+    # _ACCESSSTRING = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ='
     _TABLESOUT = 'TablesOut'
     _ANIMATION = 'Animation'
     _PNG = 'Png'

@@ -20,10 +20,10 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import * # @UnusedWildImport
+from PyQt5.QtCore import Qt, QPoint, QVariant  # @UnresolvedImport @UnusedImport
 #from PyQt5.QtGui import * # @UnusedWildImport
-from PyQt5.QtWidgets import * # @UnusedWildImport
-from qgis.core import * # @UnusedWildImport
+from PyQt5.QtWidgets import QComboBox, QListWidget  # @UnresolvedImport
+from qgis.core import QgsPointXY  # @UnresolvedImport
 import os.path
 import pyodbc  # type: ignore
 import sqlite3
@@ -164,7 +164,7 @@ class DBUtils:
         ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
         self.SSURGOUndefined = -1
         ## regular expression for checking if SSURGO soils are water (only used with HUC)
-        self.waterPattern = re.compile(r'\bwaters?\b', re.IGNORECASE)
+        self.waterPattern = re.compile(r'\bwaters?\b', re.IGNORECASE)  # @UndefinedVariable
         if self.isHUC:
             self.writeSubmapping()
         
@@ -176,8 +176,8 @@ class DBUtils:
             QSWATUtils.error('Cannot find project database {0}.  Have you opened the project?'.format(self.dbFile), self.isBatch) 
         try:
             if self.isHUC:
-                conn = sqlite3.connect(self.dbFile)
-                conn.row_factory = sqlite3.Row
+                conn = sqlite3.connect(self.dbFile)  # @UndefinedVariable
+                conn.row_factory = sqlite3.Row  # @UndefinedVariable
             elif readonly:
                 conn = pyodbc.connect(self._connStr, readonly=True)
             else:
@@ -829,7 +829,7 @@ class DBUtils:
     
     def writeSubmapping(self):
         """Write submapping table for HUC projects."""
-        conn = sqlite3.connect(self.dbFile)
+        conn = sqlite3.connect(self.dbFile)  # @UndefinedVariable
         cursor = conn.cursor()
         sql0 = 'DROP TABLE IF EXISTS submapping'
         cursor.execute(sql0)
@@ -943,7 +943,7 @@ class DBUtils:
             basins = dict()
             with self.connect(readonly=True) as conn:
                 if self.isHUC:
-                    conn.row_factory = sqlite3.Row
+                    conn.row_factory = sqlite3.Row  # @UndefinedVariable
                     try:
                         for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATA1, '*', '', '')):
                             bd = BasinData(row1['outletCol'], row1['outletrow1'], row1['outletElevation'], row1['startCol'],
