@@ -998,19 +998,24 @@ class DBUtils:
                             bd.relHru = row.hru
                             basin = row.basin
                             basins[basin] = bd
-                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
-                            for row in conn.cursor().execute(sql, basin):
-                                crop = row.crop
-                                soil = row.soil
-                                slope = row.slope
+                            # avoid WHERE x = n bug
+                            #sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
+                            #for row2 in conn.cursor().execute(sql, basin):
+                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', '')
+                            for row2 in conn.cursor().execute(sql):
+                                if row2.basin != basin:
+                                    continue
+                                crop = row2.crop
+                                soil = row2.soil
+                                slope = row2.slope
                                 if crop not in bd.cropSoilSlopeNumbers:
                                     bd.cropSoilSlopeNumbers[crop] = dict()
                                     ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
                                 if soil not in bd.cropSoilSlopeNumbers[crop]:
                                     bd.cropSoilSlopeNumbers[crop][soil] = dict()
-                                bd.cropSoilSlopeNumbers[crop][soil][slope] = row.hru
-                                cellData = CellData(row.cellcount, row.area, row.totalSlope, crop)
-                                bd.hruMap[row.hru] = cellData
+                                bd.cropSoilSlopeNumbers[crop][soil][slope] = row2.hru
+                                cellData = CellData(row2.cellcount, row2.area, row2.totalSlope, crop)
+                                bd.hruMap[row2.hru] = cellData
                     except Exception:
                         if not ignoreerrors:
                             QSWATUtils.error('Could not read basins data from project database {0}: {1}'.format(self.dbFile, traceback.format_exc()), self.isBatch)

@@ -640,9 +640,16 @@ class Visualise(QObject):
         sub = int(substr)
         # find maximum hru number in hru table for this subbasin
         maxHru = 0
-        sql = self._gv.db.sqlSelect('hru', QSWATTopology._HRUGIS, '', 'SUB=?')
-        for row in self.conn.cursor().execute(sql, sub):
-            hru = int(row.HRUGIS[6:])
+        # need to avoid WHERE x = n clause
+        #sql = self._gv.db.sqlSelect('hru', QSWATTopology._HRUGIS, '', 'SUB=?')
+        #for row in self.conn.cursor().execute(sql, (sub,)):
+        #    hru = int(row.HRUGIS[6:])
+        varz = '[SUB], [{0}]'.format(QSWATTopology._HRUGIS)
+        sql = self._gv.db.sqlSelect('hru', varz, '', '')
+        for row in self.conn.cursor().execute(sql):
+            if row[0] != sub:
+                continue
+            hru = int(row[1][6:])
             maxHru = max(maxHru, hru)
         for i in range(maxHru):
             self._dlg.hruPlot.addItem(str(i+1))
@@ -689,12 +696,15 @@ class Visualise(QObject):
                     # note that HRUGIS string as stored seems to have preceding space
                     where = "HRUGIS=' {0:09}'".format(hrugis)
                     num = hrugis if self.HRUsSetting == 2 else int(sub)
+                    whereNum = 0
                 elif table == 'rch' or table == 'sub':
                     where = 'SUB={0}'.format(sub)
                     num = int(sub)
+                    whereNum = num
                 elif table == 'sed' or table == 'wql':
                     where = 'RCH={0}'.format(sub)
                     num = int(sub)
+                    whereNum = num
                 else:
                     QSWATUtils.error('Unknown table {0} in row {1}'.format(table, i+1), self._gv.isBatch)
                     return
@@ -702,12 +712,12 @@ class Visualise(QObject):
                 if scenario != self.scenario:
                     # need to change database
                     self.setConnection(scenario)
-                    if not self.readData('', False, table, var, where):
+                    if not self.readData('', False, table, var, where, whereNum=whereNum):
                         return
                     # restore database
                     self.setConnection(self.scenario)
                 else:
-                    if not self.readData('', False, table, var, where):
+                    if not self.readData('', False, table, var, where, whereNum=whereNum):
                         return
                 (year, mon) = self.startYearMon()
                 (finishYear, finishMon) = self.finishYearMon()
@@ -790,8 +800,11 @@ class Visualise(QObject):
         graph = SWATGraph(csvFile)
         graph.run()
     
-    def readData(self, layerId: str, isStatic: bool, table: str, var: str, where: str) -> bool:
-        """Read data from database table into staticData.  Return True if no error detected."""
+    def readData(self, layerId: str, isStatic: bool, table: str, var: str, where: str, whereNum: int=0) -> bool:
+        """Read data from database table into staticData.  Return True if no error detected.
+        
+        whereNum if positive causes the where clause to be replaced by the empty string and a filter index = whereNum used on the 
+        SELECT results, to avoid the bug that WHERE x = n with n a number causes an Internal OLE Automation error"""
         if not self.conn:
             return False
         # clear existing data for layerId
@@ -844,11 +857,18 @@ class Visualise(QObject):
             return False
         selectString = preString + ', '.join(varz)
         cursor = self.conn.cursor()
+        # fudge to deal with WHERE x = n problem 
+        if whereNum > 0:
+            where = ''
         sql = self._gv.db.sqlSelect(table, selectString, '', where)
         # QSWATUtils.information('SQL: {0}'.format(sql), self._gv.isBatch)
         for row in cursor.execute(sql):
             # index is subbasin number unless multiple hrus, when it is the integer parsing of HRUGIS
             index = int(row[0])
+            # fudge to deal with WHERE x = n problem 
+            if whereNum > 0:
+                if index != whereNum:
+                    continue
             year = int(row[1])
             mon = int(row[2])
             if not self.inPeriod(year, mon):
