@@ -22,7 +22,7 @@
 Acknowledgement: Copied from: https://github.com/perrygeo/jenks
 '''
 
-import numpy as np 
+import numpy as np
 cimport numpy as np
 cimport cython 
 

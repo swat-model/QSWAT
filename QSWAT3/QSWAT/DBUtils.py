@@ -186,9 +186,9 @@ class DBUtils:
             if conn:
                 return conn
             else:
-                QSWATUtils.error('Failed to connect to project database {0}'.format(self.dbFile), self.isBatch)
+                QSWATUtils.error('Failed to connect to project database {0}.\n{1}'.format(self.dbFile, self.connectionProblem()), self.isBatch)
         except Exception:
-            QSWATUtils.error('Failed to connect to project database {0}: {1}.\n\nAre you running a 64-bit version of QGIS?  QSWAT requires a 32-bit version.'.format(self.dbFile, traceback.format_exc()), self.isBatch)
+            QSWATUtils.error('Failed to connect to project database {0}: {1}.\n{2}'.format(self.dbFile, traceback.format_exc(), self.connectionProblem()), self.isBatch)
         return None
     
     def connectRef(self, readonly=False) -> Any:
@@ -207,9 +207,9 @@ class DBUtils:
             if conn:
                 return conn
             else:
-                QSWATUtils.error('Failed to connect to reference database {0}'.format(self.dbRefFile), self.isBatch)
+                QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
         except Exception:
-            QSWATUtils.error('Failed to connect to reference database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
+            QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
         return None
     
     def connectDb(self, db: str, readonly=False) -> Any:
@@ -228,10 +228,24 @@ class DBUtils:
             if conn:
                 return conn
             else:
-                QSWATUtils.error('Failed to connect to database {0}'.format(db), self.isBatch)
+                QSWATUtils.error('Failed to connect to database {0}\n{1}'.format(db, self.connectionProblem()), self.isBatch)
         except Exception:
-            QSWATUtils.error('Failed to connect to database {0}: {1}'.format(db, traceback.format_exc()), self.isBatch)
+            QSWATUtils.error('Failed to connect to database {0}: {1}\n{2}'.format(db, traceback.format_exc(), self.connectionProblem()), self.isBatch)
         return None
+    
+    def connectionProblem(self) -> str:
+        is64 = 'QSWAT3_64' in __file__
+        if is64:
+            return """
+If you have a 32 bit version of Microsoft Office You need to install a 32 bit version of QGIS and use QSWAT3.
+
+Otherwise you may need to install Microsoft's Access Database Engine 2016 or later, the 64 bit version."""
+        else:
+            return """
+If you have a 64 bit version of Microsoft Office you need to install a 64 bit version of QGIS and use QSWAT3_64.  
+You will also need to install Microsoft's Access Database Engine 2016 or later, the 64 bit version.
+
+If you have a 32 bit version of Microsoft Access you need to install Microsoft's Access Database Engine 2016 or later, the 32 bit version."""
     
     def hasData(self, table: str) -> bool:
         

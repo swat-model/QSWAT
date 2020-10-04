@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.1'
+    __version__ = '1.1.1'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""

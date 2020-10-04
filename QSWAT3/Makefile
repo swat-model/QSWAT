@@ -32,69 +32,33 @@ TRANSLATIONS =
 
 # global
 PLUGINNAME = $(QSWAT_PROJECT)
+export PLUGINNAME
 
 ifeq ($(QSWAT_PROJECT), QSWAT3)
-	COMPILER = msvc
-	METADATA = metadata.txt
-	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
-else ifeq ($(QSWAT_PROJECT), QSWATGrid)
-	COMPILER = msvc
-	METADATA = metadatagrid.txt
-	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
-else # QSWAT64
-	COMPILER = msvc
+	METADATA = metadata32.txt
+	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat merge14dbs.bat
+else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	METADATA = metadata64.txt
-	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
+	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat
+else ifeq ($(QSWAT_PROJECT), QSWATGrid)
+	METADATA = metadatagrid.txt
+	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat merge14dbs.bat
 endif
 
 SUBDIR = QSWAT
+export SUBDIR
 
-PY_FILES = $(addprefix $(SUBDIR)/, __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py \
-		hrusdialog.py outletsdialog.py exempt.py exemptdialog.py split.py splitdialog.py selectlu.py \
-		selectludialog.py parameters.py parametersdialog.py elevationbands.py elevationbandsdialog.py \
-		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py QSWATData.py \
-		QSWATUtils.py DBUtils.py polygonize.py QSWATTopology.py TauDEMUtils.py globals.py swatgraph.py graphdialog.py graphdialog1.py \
-		convertToPlus.py convertdialog.py convertFromArc.py arc_convertdialog.py \
-		setuppyx.py make_uis.py)				
-
-UPPER_PY_FILES = __init__.py runHUC.py merge14dbs.py test_qswat.py test_polygonize.py test_polygonizeInC.py
-
-PYC_FILES = $(PY_FILES:.py=.pyc)
-
-PYX_FILES = $(addprefix $(SUBDIR)/, polygonizeInC.pyx jenks.pyx polygonizeInC2.pyx)
-
-C_FILES = $(PYX_FILES:.pyx=.c)
+UPPER_PY_FILES = __init__.py runHUC.py merge14dbs.py test_qswat.py test_polygonize.py  test_polygonizeInC.py test_polygonizeInC2.py
 
 EXTRAS = Changelog.txt Makefile
 
-LOGO = $(SUBDIR)/SWAT32.png
+# HELP = help/build/html
 
-UI_FILES = $(addprefix $(SUBDIR)/, ui_qswat.py ui_delineation.py ui_hrus.py ui_outlets.py ui_exempt.py ui_split.py ui_selectlu.py \
-		ui_parameters.py ui_elevationbands.py ui_selectsubs.py ui_about.py ui_visualise.py ui_graph.py ui_graph1.py \
-		ui_convert.py ui_arc_convert.py)
-
-QML_FILES = $(addprefix $(SUBDIR)/, dem.qml fullhrus.qml outlets.qml stream.qml subresults.qml wshed.qml wshed2.qml existingwshed.qml subbasins.qml)
-
-QPT_FILES = $(addprefix $(SUBDIR)/, PrintTemplate1Landscape.qpt PrintTemplate1Portrait.qpt PrintTemplate2Landscape.qpt \
-			PrintTemplate2Portrait.qpt PrintTemplate3Landscape.qpt PrintTemplate3Portrait.qpt \
-			PrintTemplate4Landscape.qpt PrintTemplate4Portrait.qpt PrintTemplate6Landscape.qpt \
-			PrintTemplate6Portrait.qpt)
-
-BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat merge14dbs.bat
-
-RESOURCE_FILES = $(SUBDIR)/resources_rc.py
-
-HELP = help/build/html
-
-HTML = html
+# HTML = html
 
 EXAMPLEDATASET = ExampleDataset
 
-DATABASES = $(SUBDIR)/Databases
-
 GLOBALDATA = GlobalData
-
-EXTRAPACKAGES = $(addprefix $(SUBDIR)/, imageio PIL)
 
 TOOLS = Tools/runConvertFromArc.bat Tools/runConvertToPlus.bat
 
@@ -105,12 +69,7 @@ TESTDATA = testdata
 TESTOUTPUT = testdata/test
 
 default: deploy
-
-compile: $(RESOURCE_FILES) $(PYD_FILES)
-
-%.cp37-win32.pyd : $(SUBDIR)/%.pyx
-	cd $(SUBDIR); python setuppyx.py build_ext --inplace --compiler=$(COMPILER)
-
+	
 #%_rc.py : %.qrc
 #	pyrcc5 -o $*_rc.py  $<
 # instead of the above, resources_rc.py was made by running
@@ -131,23 +90,14 @@ $(SUBDIR)/%.qm : $(SUBDIR)/%.ts
 # The deploy  target only works on unix like operating system where
 # the Python plugin directory is located at:
 # $HOME/$(QGISDIR)/python/plugins
-deploy: compile # doc transcompile
+deploy: # doc transcompile
 	mkdir -p "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(RESOURCE_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(PYX_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(PYD_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(PY_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
+	cd $(SUBDIR) && $(MAKE)
 	cp -vuf $(UPPER_PY_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
-	cp -vuf $(UI_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(QML_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(QPT_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(LOGO) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vufr $(EXTRAPACKAGES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vuf $(METADATA) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/metadata.txt"
 	cp -vuf $(EXTRAS) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
 	cp -vuf $(BAT_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
 	cp -vufr $(EXAMPLEDATASET) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
-	cp -vufr $(DATABASES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vufr $(GLOBALDATA) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
 	cp -vufr i18n "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 #	cp -vufr $(HELP) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
@@ -201,8 +151,7 @@ transclean:
 	rm -f i18n/*.qm
 
 clean:
-	rm -f $(RESOURCE_FILES) $(PYC_FILES) $(C_FILES) $(PYD_FILES)
-	rm -fr $(HTML)
+#	rm -fr $(HTML)
 	rm -fr $(TESTOUTPUT)
 	rm -rf cover
 	rm -rf build

@@ -24,7 +24,7 @@
  Cython version of Polygonize
 '''
 
-from qgis.core import * # @UnusedWildImport
+from qgis.core import * # @UnusedWildImport 
 from qgis.gui import * # @UnusedWildImport
 #from multiprocessing import Pool # cannot translate this
 #from multiprocessing import Process

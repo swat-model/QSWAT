@@ -98,7 +98,7 @@ class runHUC():
         gdal.UseExceptions()
         ogr.UseExceptions()
         
-    def runProject(self):
+    def runProject(self, minHRUha):
         """Run QSWAT project."""
         gv = self.plugin._gv
         self.delin = Delineation(gv, self.plugin._demIsProcessed)
@@ -125,8 +125,9 @@ class runHUC():
         #landIndex = landCombo.findText('nlcd2001_landuses')
         #landCombo.setCurrentIndex(landIndex)
         #self.hrus.landuseTable = 'nlcd2001_landuses'
+        huc2 = os.path.split(self.projDir)[1][3:5]
         isCDL = 'Fields_CDL' in self.projDir
-        self.hrus.landuseTable = 'landuse_fields_CDL_01' if isCDL else 'landuse_fields_01'
+        self.hrus.landuseTable = 'landuse_fields_CDL_{0}'.format(huc2) if isCDL else 'landuse_fields_{0}'.format(huc2)
         hrudlg.SSURGOButton.setChecked(True)
         gv.db.useSSURGO = True
         gv.elevBandsThreshold = 500
@@ -134,13 +135,9 @@ class runHUC():
         if not self.hrus.readFiles():
             hrudlg.close()
             return
-        hrudlg.filterLanduseButton.setChecked(True)
-        hrudlg.percentButton.setChecked(True)
-        hrudlg.landuseVal.setText('0')
-        self.hrus.setLanduseThreshold()
-        hrudlg.soilVal.setText('0')
-        self.hrus.setSoilThreshold()
-        #hrudlg.slopeVal.setText('0')
+        hrudlg.filterAreaButton.setChecked(True)
+        hrudlg.areaButton.setChecked(True)
+        hrudlg.areaVal.setText(str(minHRUha))
         self.hrus.calcHRUs()
         hrudlg.close()
         
@@ -193,12 +190,14 @@ class runHUC():
 if __name__ == '__main__':
     #for arg in sys.argv:
     #    print('Argument: {0}'.format(arg)) 
-    if len(sys.argv) < 3:
-        print('You must supply a directory and 0 or a inlet number as argument')
+    if len(sys.argv) < 4:
+        print('You must supply a directory, a minimum HRU size in ha, and 0 or a inlet number as argument')
         exit()
     direc = sys.argv[1]
     #print('direc is {0}'.format(direc))
-    inletId = int(sys.argv[2])
+    minHRUha = int(sys.argv[2])
+    #print('Minimum HRU size {0} ha'.format(minHRUha))
+    inletId = int(sys.argv[3])
     #print('inletId is {0}'.format(inletId))
     if inletId > 0:
         # add inlet point with this id to MonitoringPoint table of existing project
@@ -213,7 +212,7 @@ if __name__ == '__main__':
                 print('Running project {0}'.format(d))
                 try:
                     huc = runHUC(d)
-                    huc.runProject()
+                    huc.runProject(minHRUha)
                     print('Completed project {0}'.format(d))
                 except Exception:
                     print('ERROR: exception: {0}'.format(traceback.format_exc()))

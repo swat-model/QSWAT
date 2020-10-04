@@ -23,7 +23,7 @@
 '''  
 # Based closely on GDALRasterPolygonEnumeratorT and GDAL's polygonize, for which many thanks.
 
-# Differences from GDAL:
+# Differences from GDAL: 
 # 1. Incoming rows are only read once
 # 2. Multipolygons are created instead of collections of polygons.  This is necessary for HRUs shapefiles
 #    so that selecting a shape will select the whole HRU.
