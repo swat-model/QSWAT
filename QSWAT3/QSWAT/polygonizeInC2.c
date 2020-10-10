@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "QSWAT.polygonizeInC2",
+        "name": "QSWAT3.QSWAT.polygonizeInC2",
         "sources": [
             "polygonizeInC2.pyx"
         ]
     },
-    "module_name": "QSWAT.polygonizeInC2"
+    "module_name": "QSWAT3.QSWAT.polygonizeInC2"
 }
 END: Cython Metadata */
 
@@ -603,8 +603,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__QSWAT__polygonizeInC2
-#define __PYX_HAVE_API__QSWAT__polygonizeInC2
+#define __PYX_HAVE__QSWAT3__QSWAT__polygonizeInC2
+#define __PYX_HAVE_API__QSWAT3__QSWAT__polygonizeInC2
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -882,7 +882,7 @@ typedef struct {
 } __Pyx_BufFmt_Context;
 
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":776
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":776
  * # in Cython to enable them only on the right systems.
  * 
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -891,7 +891,7 @@ typedef struct {
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":777
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":777
  * 
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -900,7 +900,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":778
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":778
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -909,7 +909,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":779
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":779
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -918,7 +918,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":783
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":783
  * #ctypedef npy_int128     int128_t
  * 
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -927,7 +927,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":784
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":784
  * 
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -936,7 +936,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":785
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":785
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -945,7 +945,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":786
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":786
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -954,7 +954,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":790
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":790
  * #ctypedef npy_uint128    uint128_t
  * 
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -963,7 +963,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":791
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":791
  * 
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -972,7 +972,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":800
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":800
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -981,7 +981,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":801
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":801
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t             # <<<<<<<<<<<<<<
@@ -990,7 +990,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_long_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":802
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":802
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -999,7 +999,7 @@ typedef npy_longlong __pyx_t_5numpy_long_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":804
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":804
  * ctypedef npy_longlong   longlong_t
  * 
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -1008,7 +1008,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":805
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":805
  * 
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t             # <<<<<<<<<<<<<<
@@ -1017,7 +1017,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":806
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":806
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -1026,7 +1026,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":808
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":808
  * ctypedef npy_ulonglong  ulonglong_t
  * 
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -1035,7 +1035,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":809
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":809
  * 
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -1044,7 +1044,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":811
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":811
  * ctypedef npy_uintp      uintp_t
  * 
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -1053,7 +1053,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":812
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":812
  * 
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -1062,7 +1062,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":813
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":813
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -1096,12 +1096,12 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon;
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape;
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset;
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize;
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon;
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape;
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset;
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":815
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":815
  * ctypedef npy_longdouble longdouble_t
  * 
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -1110,7 +1110,7 @@ struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize;
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":816
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":816
  * 
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -1119,7 +1119,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":817
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":817
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -1128,7 +1128,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":819
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":819
  * ctypedef npy_clongdouble clongdouble_t
  * 
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -1136,46 +1136,46 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex;
+struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex;
 
-/* "QSWAT/polygonizeInC2.pyx":108
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":108
  * 
  * 
  * cdef struct Vertex:             # <<<<<<<<<<<<<<
  *     int x
  *     int y
  */
-struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex {
+struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex {
   int x;
   int y;
 };
 
-/* "QSWAT/polygonizeInC2.pyx":116
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":116
  *     return '(' + str(v.x) + ',' + str(v.y) + ')'
  * 
  * cdef class Polygon:             # <<<<<<<<<<<<<<
  * 
  *     """A polygon is a list of deques of vertices.  During construction these may not be closed.
  */
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon {
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *__pyx_vtab;
+  struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_vtab;
   PyObject *rings;
   int connected4;
   PyObject *fw;
 };
 
 
-/* "QSWAT/polygonizeInC2.pyx":314
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":314
  *         poly.rings = None
  * 
  * cdef class Shape:             # <<<<<<<<<<<<<<
  *     """A shape is a collection of polygons."""
  * 
  */
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape {
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Shape *__pyx_vtab;
+  struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_vtab;
   int nextPolyId;
   PyObject *polygons;
   PyObject *polyIdMap;
@@ -1185,16 +1185,16 @@ struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape {
 };
 
 
-/* "QSWAT/polygonizeInC2.pyx":401
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":401
  *             #self.fw.writeFlush('After coalesce: {0}'.format(str(poly)))
  * 
  * cdef class Offset:             # <<<<<<<<<<<<<<
  * 
  *     """Holds data about conversion of grid vertices to geographic points,
  */
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset {
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *__pyx_vtab;
+  struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_vtab;
   PyObject *origin;
   double dx;
   double dy;
@@ -1202,16 +1202,16 @@ struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset {
 };
 
 
-/* "QSWAT/polygonizeInC2.pyx":447
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":447
  *         return QgsGeometry.fromMultiPolygonXY(self.polygonsToPointsPolygons(shape.polygons.values()))
  * 
  * cdef class Polygonize:             # <<<<<<<<<<<<<<
  * 
  *     cdef:
  */
-struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize {
+struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygonize *__pyx_vtab;
+  struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_vtab;
   PyArrayObject *lastVals;
   PyArrayObject *thisVals;
   PyArrayObject *lastIds;
@@ -1221,13 +1221,13 @@ struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize {
   PyObject *shapes;
   int connected4;
   int noData;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *offset;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *offset;
   PyObject *fw;
 };
 
 
 
-/* "QSWAT/polygonizeInC2.pyx":116
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":116
  *     return '(' + str(v.x) + ',' + str(v.y) + ')'
  * 
  * cdef class Polygon:             # <<<<<<<<<<<<<<
@@ -1235,16 +1235,16 @@ struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize {
  *     """A polygon is a list of deques of vertices.  During construction these may not be closed.
  */
 
-struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon {
-  void (*coalesce)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch);
-  void (*join)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, PyObject *, PyObject *, int, int);
-  void (*addLink)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch);
-  void (*addPoly)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon {
+  void (*coalesce)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch);
+  void (*join)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, PyObject *, PyObject *, int, int);
+  void (*addLink)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch);
+  void (*addPoly)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *__pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygon;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon;
 
 
-/* "QSWAT/polygonizeInC2.pyx":314
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":314
  *         poly.rings = None
  * 
  * cdef class Shape:             # <<<<<<<<<<<<<<
@@ -1252,16 +1252,16 @@ static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *__pyx_vtabptr_5Q
  * 
  */
 
-struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Shape {
-  int (*newPoly)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
-  void (*checkMerge)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int, int, int __pyx_skip_dispatch);
-  void (*addLink)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch);
-  void (*coalesce)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Shape {
+  int (*newPoly)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
+  void (*checkMerge)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int, int, int __pyx_skip_dispatch);
+  void (*addLink)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch);
+  void (*coalesce)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Shape *__pyx_vtabptr_5QSWAT_14polygonizeInC2_Shape;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Shape;
 
 
-/* "QSWAT/polygonizeInC2.pyx":401
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":401
  *             #self.fw.writeFlush('After coalesce: {0}'.format(str(poly)))
  * 
  * cdef class Offset:             # <<<<<<<<<<<<<<
@@ -1269,18 +1269,18 @@ static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Shape *__pyx_vtabptr_5QSW
  *     """Holds data about conversion of grid vertices to geographic points,
  */
 
-struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset {
-  PyObject *(*vertexToPoint)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex);
-  double (*area)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
-  PyObject *(*ringToPointsRing)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *);
-  PyObject *(*ringsToPointsRings)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *);
-  PyObject *(*polygonsToPointsPolygons)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *);
-  PyObject *(*makeGeometry)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset {
+  PyObject *(*vertexToPoint)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex);
+  double (*area)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
+  PyObject *(*ringToPointsRing)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *);
+  PyObject *(*ringsToPointsRings)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *);
+  PyObject *(*polygonsToPointsPolygons)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *);
+  PyObject *(*makeGeometry)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *__pyx_vtabptr_5QSWAT_14polygonizeInC2_Offset;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Offset;
 
 
-/* "QSWAT/polygonizeInC2.pyx":447
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":447
  *         return QgsGeometry.fromMultiPolygonXY(self.polygonsToPointsPolygons(shape.polygons.values()))
  * 
  * cdef class Polygonize:             # <<<<<<<<<<<<<<
@@ -1288,15 +1288,15 @@ static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *__pyx_vtabptr_5QS
  *     cdef:
  */
 
-struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygonize {
-  PyObject *(*addRow)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, PyArrayObject *, int, int __pyx_skip_dispatch);
-  PyObject *(*finish)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch);
-  PyObject *(*getGeometry)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch);
-  PyObject *(*shapesToString)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch);
-  int (*cellCount)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch);
-  double (*area)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize {
+  PyObject *(*addRow)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, PyArrayObject *, int, int __pyx_skip_dispatch);
+  PyObject *(*finish)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch);
+  PyObject *(*getGeometry)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch);
+  PyObject *(*shapesToString)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch);
+  int (*cellCount)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch);
+  double (*area)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygonize *__pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygonize;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1965,8 +1965,8 @@ typedef struct {
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
-struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex;
-static PyObject* __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex s);
+struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex;
+static PyObject* __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex s);
 /* RealImag.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -2096,26 +2096,26 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_firstl, PyObject *__pyx_v_secondl, int __pyx_v_i, int __pyx_v_inPlace); /* proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly, int __pyx_skip_dispatch); /* proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v); /* proto*/
-static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_ring); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inrings); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygons(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inpolys); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch); /* proto*/
-static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_firstl, PyObject *__pyx_v_secondl, int __pyx_v_i, int __pyx_v_inPlace); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v); /* proto*/
+static double __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_ring); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inrings); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygons(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inpolys); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch); /* proto*/
+static double __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'cpython.buffer' */
 
@@ -2146,26 +2146,26 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from 'QSWAT.polygonizeInC2' */
-static PyTypeObject *__pyx_ptype_5QSWAT_14polygonizeInC2_Polygon = 0;
-static PyTypeObject *__pyx_ptype_5QSWAT_14polygonizeInC2_Shape = 0;
-static PyTypeObject *__pyx_ptype_5QSWAT_14polygonizeInC2_Offset = 0;
-static PyTypeObject *__pyx_ptype_5QSWAT_14polygonizeInC2_Polygonize = 0;
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *, int __pyx_skip_dispatch); /*proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *, int __pyx_skip_dispatch); /*proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, PyObject *); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, PyObject *); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, PyObject *); /*proto*/
-static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(PyObject *); /*proto*/
+/* Module declarations from 'QSWAT3.QSWAT.polygonizeInC2' */
+static PyTypeObject *__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon = 0;
+static PyTypeObject *__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape = 0;
+static PyTypeObject *__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Offset = 0;
+static PyTypeObject *__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize = 0;
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClockwise(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClosed(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, PyObject *); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, PyObject *); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, PyObject *); /*proto*/
+static struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5numpy_int_t = { "int_t", NULL, sizeof(__pyx_t_5numpy_int_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_5numpy_int_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_5numpy_int_t), 0 };
-#define __Pyx_MODULE_NAME "QSWAT.polygonizeInC2"
-extern int __pyx_module_is_main_QSWAT__polygonizeInC2;
-int __pyx_module_is_main_QSWAT__polygonizeInC2 = 0;
+#define __Pyx_MODULE_NAME "QSWAT3.QSWAT.polygonizeInC2"
+extern int __pyx_module_is_main_QSWAT3__QSWAT__polygonizeInC2;
+int __pyx_module_is_main_QSWAT3__QSWAT__polygonizeInC2 = 0;
 
-/* Implementation of 'QSWAT.polygonizeInC2' */
+/* Implementation of 'QSWAT3.QSWAT.polygonizeInC2' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_StopIteration;
 static PyObject *__pyx_builtin_ValueError;
@@ -2276,10 +2276,10 @@ static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_fromMultiPolygonXY[] = "fromMultiPolygonXY";
 static const char __pyx_k_pyx_unpickle_Shape[] = "__pyx_unpickle_Shape";
 static const char __pyx_k_pyx_unpickle_Offset[] = "__pyx_unpickle_Offset";
-static const char __pyx_k_QSWAT_polygonizeInC2[] = "QSWAT.polygonizeInC2";
 static const char __pyx_k_pyx_unpickle_Polygon[] = "__pyx_unpickle_Polygon";
 static const char __pyx_k_Failed_to_close_ring_0[] = "Failed to close ring {0}";
 static const char __pyx_k_pyx_unpickle_Polygonize[] = "__pyx_unpickle_Polygonize";
+static const char __pyx_k_QSWAT3_QSWAT_polygonizeInC2[] = "QSWAT3.QSWAT.polygonizeInC2";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_No_clockwise_ring_in_polygon_0[] = "No clockwise ring in polygon {0}";
 static const char __pyx_k_QSWAT_A_QGIS_plugin_Create_SWAT[] = "\n/***************************************************************************\n QSWAT\n                                 A QGIS plugin\n Create SWAT inputs\n                              -------------------\n        begin                : 2014-07-18\n        copyright            : (C) 2014 by Chris George\n        email                : cgeorge@mcmaster.ca\n ***************************************************************************/\n\n/***************************************************************************\n *                                                                         *\n *   This program is free software you can redistribute it and/or modify  *\n *   it under the terms of the GNU General Public License as published by  *\n *   the Free Software Foundation either version 2 of the License, or     *\n *   (at your option) any later version.                                   *\n *                                                                         *\n ***************************************************************************/\n";
@@ -2314,7 +2314,7 @@ static PyObject *__pyx_n_s_Offset;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_Polygon;
 static PyObject *__pyx_n_s_Polygonize;
-static PyObject *__pyx_n_s_QSWAT_polygonizeInC2;
+static PyObject *__pyx_n_s_QSWAT3_QSWAT_polygonizeInC2;
 static PyObject *__pyx_n_s_QgsGeometry;
 static PyObject *__pyx_n_s_QgsPointXY;
 static PyObject *__pyx_n_s_RuntimeError;
@@ -2419,53 +2419,53 @@ static PyObject *__pyx_n_s_v2;
 static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_y;
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring); /* proto */
-static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_connected4, PyObject *__pyx_v_fw); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_connected4, PyObject *__pyx_v_fw); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
-static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_p, double __pyx_v_dx, double __pyx_v_dy); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_connected4, int __pyx_v_numCols, int __pyx_v_noData, PyObject *__pyx_v_p, double __pyx_v_dX, double __pyx_v_dY, PyObject *__pyx_v_fw); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring); /* proto */
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_connected4, PyObject *__pyx_v_fw); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_connected4, PyObject *__pyx_v_fw); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_p, double __pyx_v_dx, double __pyx_v_dy); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_connected4, int __pyx_v_numCols, int __pyx_v_noData, PyObject *__pyx_v_p, double __pyx_v_dX, double __pyx_v_dY, PyObject *__pyx_v_fw); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Polygon(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Shape(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Offset(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Polygonize(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Shape(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Offset(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_get = {0, &__pyx_n_s_get, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_values = {0, &__pyx_n_s_values, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_pop = {0, &__pyx_n_s_pop, 0, 0, 0};
@@ -2495,7 +2495,7 @@ static PyObject *__pyx_codeobj__22;
 static PyObject *__pyx_codeobj__24;
 /* Late includes */
 
-/* "QSWAT/polygonizeInC2.pyx":52
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":52
  * import os
  * 
  * cpdef str ringToString(object ring):             # <<<<<<<<<<<<<<
@@ -2503,16 +2503,16 @@ static PyObject *__pyx_codeobj__24;
  *     cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_1ringToString(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_ring, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_1ringToString(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_ring, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_v_res = 0;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
   PyObject *__pyx_v_i = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_2;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   Py_ssize_t __pyx_t_4;
   PyObject *(*__pyx_t_5)(PyObject *);
@@ -2520,7 +2520,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
   int __pyx_t_7;
   __Pyx_RefNannySetupContext("ringToString", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":58
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":58
  *         Vertex v1, v2
  * 
  *     res = vertexToString(ring[0]) + ': '             # <<<<<<<<<<<<<<
@@ -2529,9 +2529,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
  */
   __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_vertexToString(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_vertexToString(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_1, __pyx_kp_u_); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -2539,7 +2539,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
   __pyx_v_res = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":59
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":59
  * 
  *     res = vertexToString(ring[0]) + ': '
  *     for i in range(len(ring) - 1):             # <<<<<<<<<<<<<<
@@ -2595,7 +2595,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":60
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":60
  *     res = vertexToString(ring[0]) + ': '
  *     for i in range(len(ring) - 1):
  *         v1 = ring[i]             # <<<<<<<<<<<<<<
@@ -2604,11 +2604,11 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
  */
     __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_ring, __pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_2 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_v1 = __pyx_t_2;
 
-    /* "QSWAT/polygonizeInC2.pyx":61
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":61
  *     for i in range(len(ring) - 1):
  *         v1 = ring[i]
  *         v2 = ring[i+1]             # <<<<<<<<<<<<<<
@@ -2620,11 +2620,11 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
     __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_ring, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_2 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_6); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_2 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_6); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_v2 = __pyx_t_2;
 
-    /* "QSWAT/polygonizeInC2.pyx":62
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":62
  *         v1 = ring[i]
  *         v2 = ring[i+1]
  *         if v1.x == v2.x:             # <<<<<<<<<<<<<<
@@ -2634,7 +2634,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
     __pyx_t_7 = ((__pyx_v_v1.x == __pyx_v_v2.x) != 0);
     if (__pyx_t_7) {
 
-      /* "QSWAT/polygonizeInC2.pyx":63
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":63
  *         v2 = ring[i+1]
  *         if v1.x == v2.x:
  *             if v1.y > v2.y: res += 'u'*(v1.y - v2.y)             # <<<<<<<<<<<<<<
@@ -2657,7 +2657,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
         goto __pyx_L6;
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":64
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":64
  *         if v1.x == v2.x:
  *             if v1.y > v2.y: res += 'u'*(v1.y - v2.y)
  *             else: res += 'd'*(v2.y - v1.y)             # <<<<<<<<<<<<<<
@@ -2679,7 +2679,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
       }
       __pyx_L6:;
 
-      /* "QSWAT/polygonizeInC2.pyx":62
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":62
  *         v1 = ring[i]
  *         v2 = ring[i+1]
  *         if v1.x == v2.x:             # <<<<<<<<<<<<<<
@@ -2689,7 +2689,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
       goto __pyx_L5;
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":65
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":65
  *             if v1.y > v2.y: res += 'u'*(v1.y - v2.y)
  *             else: res += 'd'*(v2.y - v1.y)
  *         elif v1.x > v2.x: res += 'l'*(v1.x - v2.x)             # <<<<<<<<<<<<<<
@@ -2712,7 +2712,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
       goto __pyx_L5;
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":66
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":66
  *             else: res += 'd'*(v2.y - v1.y)
  *         elif v1.x > v2.x: res += 'l'*(v1.x - v2.x)
  *         else: res += 'r'*(v2.x - v1.x)             # <<<<<<<<<<<<<<
@@ -2734,7 +2734,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
     }
     __pyx_L5:;
 
-    /* "QSWAT/polygonizeInC2.pyx":59
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":59
  * 
  *     res = vertexToString(ring[0]) + ': '
  *     for i in range(len(ring) - 1):             # <<<<<<<<<<<<<<
@@ -2744,7 +2744,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":67
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":67
  *         elif v1.x > v2.x: res += 'l'*(v1.x - v2.x)
  *         else: res += 'r'*(v2.x - v1.x)
  *     return res             # <<<<<<<<<<<<<<
@@ -2756,7 +2756,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":52
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":52
  * import os
  * 
  * cpdef str ringToString(object ring):             # <<<<<<<<<<<<<<
@@ -2769,7 +2769,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.ringToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.ringToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_res);
@@ -2780,25 +2780,25 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_ringToString(PyObject *__pyx_v_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_1ringToString(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_1ringToString(PyObject *__pyx_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_1ringToString(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_1ringToString(PyObject *__pyx_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("ringToString (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_ringToString(__pyx_self, ((PyObject *)__pyx_v_ring));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(__pyx_self, ((PyObject *)__pyx_v_ring));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("ringToString", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_ringToString(__pyx_v_ring, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(__pyx_v_ring, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2807,7 +2807,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyO
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.ringToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.ringToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2815,7 +2815,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":69
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":69
  *     return res
  * 
  * cpdef bint isClockwise(object ring):             # <<<<<<<<<<<<<<
@@ -2823,13 +2823,13 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_ringToString(CYTHON_UNUSED PyO
  *     cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_3isClockwise(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_3isClockwise(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_minx;
   int __pyx_v_y1;
   int __pyx_v_y2;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -2837,7 +2837,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
   int __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_6;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
@@ -2847,7 +2847,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
   __Pyx_RefNannySetupContext("isClockwise", 0);
   __Pyx_INCREF(__pyx_v_ring);
 
-  /* "QSWAT/polygonizeInC2.pyx":73
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":73
  *     cdef:
  *         int minx
  *         int y1 = 0             # <<<<<<<<<<<<<<
@@ -2856,7 +2856,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
   __pyx_v_y1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":74
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":74
  *         int minx
  *         int y1 = 0
  *         int y2 = 0             # <<<<<<<<<<<<<<
@@ -2865,7 +2865,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
   __pyx_v_y2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":77
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":77
  *         Vertex v1, v2
  * 
  *     if ring is None or len(ring) < 4:             # <<<<<<<<<<<<<<
@@ -2885,7 +2885,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "QSWAT/polygonizeInC2.pyx":78
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":78
  * 
  *     if ring is None or len(ring) < 4:
  *         return False             # <<<<<<<<<<<<<<
@@ -2895,7 +2895,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":77
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":77
  *         Vertex v1, v2
  * 
  *     if ring is None or len(ring) < 4:             # <<<<<<<<<<<<<<
@@ -2904,7 +2904,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":79
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":79
  *     if ring is None or len(ring) < 4:
  *         return False
  *     ring = iter(ring)             # <<<<<<<<<<<<<<
@@ -2916,7 +2916,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
   __Pyx_DECREF_SET(__pyx_v_ring, __pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":80
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":80
  *         return False
  *     ring = iter(ring)
  *     v1 = next(ring)             # <<<<<<<<<<<<<<
@@ -2925,11 +2925,11 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
   __pyx_t_5 = __Pyx_PyIter_Next(__pyx_v_ring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_v1 = __pyx_t_6;
 
-  /* "QSWAT/polygonizeInC2.pyx":82
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":82
  *     v1 = next(ring)
  *     # make v1 the first candidate
  *     minx = v1.x + 1             # <<<<<<<<<<<<<<
@@ -2938,7 +2938,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
   __pyx_v_minx = (__pyx_v_v1.x + 1);
 
-  /* "QSWAT/polygonizeInC2.pyx":83
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":83
  *     # make v1 the first candidate
  *     minx = v1.x + 1
  *     try:             # <<<<<<<<<<<<<<
@@ -2954,7 +2954,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
     __Pyx_XGOTREF(__pyx_t_9);
     /*try:*/ {
 
-      /* "QSWAT/polygonizeInC2.pyx":84
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":84
  *     minx = v1.x + 1
  *     try:
  *         while True:             # <<<<<<<<<<<<<<
@@ -2963,7 +2963,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
       while (1) {
 
-        /* "QSWAT/polygonizeInC2.pyx":85
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":85
  *     try:
  *         while True:
  *             if v1.x < minx:             # <<<<<<<<<<<<<<
@@ -2973,7 +2973,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
         __pyx_t_1 = ((__pyx_v_v1.x < __pyx_v_minx) != 0);
         if (__pyx_t_1) {
 
-          /* "QSWAT/polygonizeInC2.pyx":86
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":86
  *         while True:
  *             if v1.x < minx:
  *                 v2 = next(ring)             # <<<<<<<<<<<<<<
@@ -2982,11 +2982,11 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
           __pyx_t_5 = __Pyx_PyIter_Next(__pyx_v_ring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 86, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_5);
-          __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L6_error)
+          __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L6_error)
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
           __pyx_v_v2 = __pyx_t_6;
 
-          /* "QSWAT/polygonizeInC2.pyx":87
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":87
  *             if v1.x < minx:
  *                 v2 = next(ring)
  *                 if v2.x == v1.x:             # <<<<<<<<<<<<<<
@@ -2996,7 +2996,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
           __pyx_t_1 = ((__pyx_v_v2.x == __pyx_v_v1.x) != 0);
           if (__pyx_t_1) {
 
-            /* "QSWAT/polygonizeInC2.pyx":88
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":88
  *                 v2 = next(ring)
  *                 if v2.x == v1.x:
  *                     y1 = v1.y             # <<<<<<<<<<<<<<
@@ -3006,7 +3006,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
             __pyx_t_10 = __pyx_v_v1.y;
             __pyx_v_y1 = __pyx_t_10;
 
-            /* "QSWAT/polygonizeInC2.pyx":89
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":89
  *                 if v2.x == v1.x:
  *                     y1 = v1.y
  *                     y2 = v2.y             # <<<<<<<<<<<<<<
@@ -3016,7 +3016,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
             __pyx_t_10 = __pyx_v_v2.y;
             __pyx_v_y2 = __pyx_t_10;
 
-            /* "QSWAT/polygonizeInC2.pyx":90
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":90
  *                     y1 = v1.y
  *                     y2 = v2.y
  *                     minx = v1.x             # <<<<<<<<<<<<<<
@@ -3026,7 +3026,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
             __pyx_t_10 = __pyx_v_v1.x;
             __pyx_v_minx = __pyx_t_10;
 
-            /* "QSWAT/polygonizeInC2.pyx":87
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":87
  *             if v1.x < minx:
  *                 v2 = next(ring)
  *                 if v2.x == v1.x:             # <<<<<<<<<<<<<<
@@ -3035,7 +3035,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
           }
 
-          /* "QSWAT/polygonizeInC2.pyx":91
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":91
  *                     y2 = v2.y
  *                     minx = v1.x
  *                 v1 = v2             # <<<<<<<<<<<<<<
@@ -3044,7 +3044,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
           __pyx_v_v1 = __pyx_v_v2;
 
-          /* "QSWAT/polygonizeInC2.pyx":85
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":85
  *     try:
  *         while True:
  *             if v1.x < minx:             # <<<<<<<<<<<<<<
@@ -3054,7 +3054,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
           goto __pyx_L14;
         }
 
-        /* "QSWAT/polygonizeInC2.pyx":93
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":93
  *                 v1 = v2
  *             else:
  *                 v1 = next(ring)             # <<<<<<<<<<<<<<
@@ -3064,14 +3064,14 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
         /*else*/ {
           __pyx_t_5 = __Pyx_PyIter_Next(__pyx_v_ring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 93, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_5);
-          __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L6_error)
+          __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L6_error)
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
           __pyx_v_v1 = __pyx_t_6;
         }
         __pyx_L14:;
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":83
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":83
  *     # make v1 the first candidate
  *     minx = v1.x + 1
  *     try:             # <<<<<<<<<<<<<<
@@ -3086,7 +3086,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
     __pyx_L6_error:;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":94
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":94
  *             else:
  *                 v1 = next(ring)
  *     except StopIteration:             # <<<<<<<<<<<<<<
@@ -3095,13 +3095,13 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
  */
     __pyx_t_10 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_StopIteration);
     if (__pyx_t_10) {
-      __Pyx_AddTraceback("QSWAT.polygonizeInC2.isClockwise", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.isClockwise", __pyx_clineno, __pyx_lineno, __pyx_filename);
       if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_11, &__pyx_t_12) < 0) __PYX_ERR(0, 94, __pyx_L8_except_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_GOTREF(__pyx_t_12);
 
-      /* "QSWAT/polygonizeInC2.pyx":95
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":95
  *                 v1 = next(ring)
  *     except StopIteration:
  *         return y1 > y2             # <<<<<<<<<<<<<<
@@ -3117,7 +3117,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
     goto __pyx_L8_except_error;
     __pyx_L8_except_error:;
 
-    /* "QSWAT/polygonizeInC2.pyx":83
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":83
  *     # make v1 the first candidate
  *     minx = v1.x + 1
  *     try:             # <<<<<<<<<<<<<<
@@ -3138,7 +3138,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
     __pyx_L11_try_end:;
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":69
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":69
  *     return res
  * 
  * cpdef bint isClockwise(object ring):             # <<<<<<<<<<<<<<
@@ -3153,7 +3153,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.isClockwise", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.isClockwise", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ring);
@@ -3162,26 +3162,26 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClockwise(PyObject *__pyx_v_ring, C
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_3isClockwise(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_2isClockwise[] = "A ring is clockwise if its leftmost vertical edge is directed up.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_3isClockwise(PyObject *__pyx_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_3isClockwise(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_2isClockwise[] = "A ring is clockwise if its leftmost vertical edge is directed up.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_3isClockwise(PyObject *__pyx_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("isClockwise (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_2isClockwise(__pyx_self, ((PyObject *)__pyx_v_ring));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_2isClockwise(__pyx_self, ((PyObject *)__pyx_v_ring));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("isClockwise", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5QSWAT_14polygonizeInC2_isClockwise(__pyx_v_ring, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClockwise(__pyx_v_ring, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3190,7 +3190,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyO
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.isClockwise", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.isClockwise", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3198,7 +3198,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":97
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":97
  *         return y1 > y2
  * 
  * cpdef bint isClosed(object ring):             # <<<<<<<<<<<<<<
@@ -3206,10 +3206,10 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_2isClockwise(CYTHON_UNUSED PyO
  *     cdef Vertex firstv, lastv
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5isClosed(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5isClosed(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3217,10 +3217,10 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
   int __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_6;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_6;
   __Pyx_RefNannySetupContext("isClosed", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":101
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":101
  *     cdef Vertex firstv, lastv
  * 
  *     if ring is None or len(ring) < 4:             # <<<<<<<<<<<<<<
@@ -3240,7 +3240,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "QSWAT/polygonizeInC2.pyx":102
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":102
  * 
  *     if ring is None or len(ring) < 4:
  *         return False             # <<<<<<<<<<<<<<
@@ -3250,7 +3250,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":101
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":101
  *     cdef Vertex firstv, lastv
  * 
  *     if ring is None or len(ring) < 4:             # <<<<<<<<<<<<<<
@@ -3259,7 +3259,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":103
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":103
  *     if ring is None or len(ring) < 4:
  *         return False
  *     firstv = ring[0]             # <<<<<<<<<<<<<<
@@ -3268,11 +3268,11 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
  */
   __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_ring, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_firstv = __pyx_t_6;
 
-  /* "QSWAT/polygonizeInC2.pyx":104
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":104
  *         return False
  *     firstv = ring[0]
  *     lastv = ring[-1]             # <<<<<<<<<<<<<<
@@ -3281,11 +3281,11 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
  */
   __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_ring, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_lastv = __pyx_t_6;
 
-  /* "QSWAT/polygonizeInC2.pyx":105
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":105
  *     firstv = ring[0]
  *     lastv = ring[-1]
  *     return firstv.x == lastv.x and firstv.y == lastv.y             # <<<<<<<<<<<<<<
@@ -3304,7 +3304,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":97
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":97
  *         return y1 > y2
  * 
  * cpdef bint isClosed(object ring):             # <<<<<<<<<<<<<<
@@ -3315,7 +3315,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.isClosed", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.isClosed", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -3323,26 +3323,26 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_isClosed(PyObject *__pyx_v_ring, CYTH
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5isClosed(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_4isClosed[] = "Check last vertex == first.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5isClosed(PyObject *__pyx_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5isClosed(PyObject *__pyx_self, PyObject *__pyx_v_ring); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_4isClosed[] = "Check last vertex == first.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5isClosed(PyObject *__pyx_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("isClosed (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_4isClosed(__pyx_self, ((PyObject *)__pyx_v_ring));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_4isClosed(__pyx_self, ((PyObject *)__pyx_v_ring));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("isClosed", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5QSWAT_14polygonizeInC2_isClosed(__pyx_v_ring, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClosed(__pyx_v_ring, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3351,7 +3351,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObje
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.isClosed", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.isClosed", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3359,7 +3359,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":112
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":112
  *     int y
  * 
  * cdef str vertexToString(Vertex v):             # <<<<<<<<<<<<<<
@@ -3367,7 +3367,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_4isClosed(CYTHON_UNUSED PyObje
  *     return '(' + str(v.x) + ',' + str(v.y) + ')'
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3375,7 +3375,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("vertexToString", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":114
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":114
  * cdef str vertexToString(Vertex v):
  *     """Represent vertex as string."""
  *     return '(' + str(v.x) + ',' + str(v.y) + ')'             # <<<<<<<<<<<<<<
@@ -3410,7 +3410,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":112
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":112
  *     int y
  * 
  * cdef str vertexToString(Vertex v):             # <<<<<<<<<<<<<<
@@ -3423,7 +3423,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.vertexToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.vertexToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3431,7 +3431,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":128
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":128
  * 
  *     """Class to hold possibly partially formed polygons."""
  *     def __init__(self, connected4, fw):             # <<<<<<<<<<<<<<
@@ -3440,12 +3440,12 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_vertexToString(struct __pyx_t_5
  */
 
 /* Python wrapper */
-static int __pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon___init__[] = "Initialise.";
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__[] = "Initialise.";
 #if CYTHON_COMPILING_IN_CPYTHON
-struct wrapperbase __pyx_wrapperbase_5QSWAT_14polygonizeInC2_7Polygon___init__;
+struct wrapperbase __pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__;
 #endif
-static int __pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_connected4 = 0;
   PyObject *__pyx_v_fw = 0;
   int __pyx_r;
@@ -3493,25 +3493,25 @@ static int __pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_1__init__(PyObject *__pyx_v
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), __pyx_v_connected4, __pyx_v_fw);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), __pyx_v_connected4, __pyx_v_fw);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_connected4, PyObject *__pyx_v_fw) {
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_connected4, PyObject *__pyx_v_fw) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":130
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":130
  *     def __init__(self, connected4, fw):
  *         """Initialise."""
  *         self.rings = []             # <<<<<<<<<<<<<<
@@ -3526,7 +3526,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5
   __pyx_v_self->rings = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":131
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":131
  *         """Initialise."""
  *         self.rings = []
  *         self.connected4 = connected4             # <<<<<<<<<<<<<<
@@ -3536,7 +3536,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5
   __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_connected4); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
   __pyx_v_self->connected4 = __pyx_t_2;
 
-  /* "QSWAT/polygonizeInC2.pyx":132
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":132
  *         self.rings = []
  *         self.connected4 = connected4
  *         self.fw = fw             # <<<<<<<<<<<<<<
@@ -3549,7 +3549,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5
   __Pyx_DECREF(__pyx_v_self->fw);
   __pyx_v_self->fw = __pyx_v_fw;
 
-  /* "QSWAT/polygonizeInC2.pyx":128
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":128
  * 
  *     """Class to hold possibly partially formed polygons."""
  *     def __init__(self, connected4, fw):             # <<<<<<<<<<<<<<
@@ -3562,14 +3562,14 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":134
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":134
  *         self.fw = fw
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -3578,19 +3578,19 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon___init__(struct __pyx_obj_5
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_3__str__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_3__str__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_3__str__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_3__str__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_2__str__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
   PyObject *__pyx_v_res = 0;
   PyObject *__pyx_v_ring = 0;
   PyObject *__pyx_r = NULL;
@@ -3603,7 +3603,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":140
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":140
  *             object ring
  * 
  *         res = ''             # <<<<<<<<<<<<<<
@@ -3613,7 +3613,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
   __Pyx_INCREF(__pyx_kp_u__5);
   __pyx_v_res = __pyx_kp_u__5;
 
-  /* "QSWAT/polygonizeInC2.pyx":141
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":141
  * 
  *         res = ''
  *         for ring in self.rings:             # <<<<<<<<<<<<<<
@@ -3636,7 +3636,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
     __Pyx_XDECREF_SET(__pyx_v_ring, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":142
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":142
  *         res = ''
  *         for ring in self.rings:
  *             if ring is not None:             # <<<<<<<<<<<<<<
@@ -3647,14 +3647,14 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
     __pyx_t_5 = (__pyx_t_4 != 0);
     if (__pyx_t_5) {
 
-      /* "QSWAT/polygonizeInC2.pyx":143
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":143
  *         for ring in self.rings:
  *             if ring is not None:
  *                 res += ringToString(ring)             # <<<<<<<<<<<<<<
  *             else:
  *                 res += 'empty'
  */
-      __pyx_t_3 = __pyx_f_5QSWAT_14polygonizeInC2_ringToString(__pyx_v_ring, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
+      __pyx_t_3 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(__pyx_v_ring, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_6 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_res, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
@@ -3662,7 +3662,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
       __Pyx_DECREF_SET(__pyx_v_res, ((PyObject*)__pyx_t_6));
       __pyx_t_6 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":142
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":142
  *         res = ''
  *         for ring in self.rings:
  *             if ring is not None:             # <<<<<<<<<<<<<<
@@ -3672,7 +3672,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
       goto __pyx_L5;
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":145
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":145
  *                 res += ringToString(ring)
  *             else:
  *                 res += 'empty'             # <<<<<<<<<<<<<<
@@ -3687,7 +3687,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
     }
     __pyx_L5:;
 
-    /* "QSWAT/polygonizeInC2.pyx":146
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":146
  *             else:
  *                 res += 'empty'
  *             res += '  '             # <<<<<<<<<<<<<<
@@ -3699,7 +3699,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
     __Pyx_DECREF_SET(__pyx_v_res, ((PyObject*)__pyx_t_6));
     __pyx_t_6 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":141
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":141
  * 
  *         res = ''
  *         for ring in self.rings:             # <<<<<<<<<<<<<<
@@ -3709,7 +3709,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":147
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":147
  *                 res += 'empty'
  *             res += '  '
  *         return res             # <<<<<<<<<<<<<<
@@ -3721,7 +3721,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":134
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":134
  *         self.fw = fw
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -3734,7 +3734,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_res);
@@ -3744,7 +3744,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":149
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":149
  *         return res
  * 
  *     cpdef void coalesce(self):             # <<<<<<<<<<<<<<
@@ -3752,16 +3752,16 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_2__str__(struct __pyx
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_iBase;
   int __pyx_v_i;
   int __pyx_v_todoCount;
   PyObject *__pyx_v_base = 0;
   PyObject *__pyx_v_ring = 0;
   int __pyx_v_mergeHappened;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
   PyObject *__pyx_7genexpr__pyx_v_ring = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3776,7 +3776,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
   int __pyx_t_12;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_13;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_13;
   PyObject *__pyx_t_14 = NULL;
   int __pyx_t_15;
   __Pyx_RefNannySetupContext("coalesce", 0);
@@ -3791,7 +3791,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_coalesce); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5coalesce)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5coalesce)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3825,7 +3825,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":157
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":157
  *             Vertex lastv, firstv
  * 
  *         for iBase in range(len(self.rings)):             # <<<<<<<<<<<<<<
@@ -3844,7 +3844,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_iBase = __pyx_t_7;
 
-    /* "QSWAT/polygonizeInC2.pyx":158
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":158
  * 
  *         for iBase in range(len(self.rings)):
  *             base = self.rings[iBase]             # <<<<<<<<<<<<<<
@@ -3860,7 +3860,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __Pyx_XDECREF_SET(__pyx_v_base, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":159
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":159
  *         for iBase in range(len(self.rings)):
  *             base = self.rings[iBase]
  *             if base is not None:             # <<<<<<<<<<<<<<
@@ -3871,7 +3871,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __pyx_t_9 = (__pyx_t_8 != 0);
     if (__pyx_t_9) {
 
-      /* "QSWAT/polygonizeInC2.pyx":160
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":160
  *             base = self.rings[iBase]
  *             if base is not None:
  *                 mergeHappened = True             # <<<<<<<<<<<<<<
@@ -3880,7 +3880,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
       __pyx_v_mergeHappened = 1;
 
-      /* "QSWAT/polygonizeInC2.pyx":162
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":162
  *                 mergeHappened = True
  *                 # try to merge into base until no mergers have happened
  *                 while mergeHappened:             # <<<<<<<<<<<<<<
@@ -3891,7 +3891,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
         __pyx_t_9 = (__pyx_v_mergeHappened != 0);
         if (!__pyx_t_9) break;
 
-        /* "QSWAT/polygonizeInC2.pyx":163
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":163
  *                 # try to merge into base until no mergers have happened
  *                 while mergeHappened:
  *                     mergeHappened = False             # <<<<<<<<<<<<<<
@@ -3900,7 +3900,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
         __pyx_v_mergeHappened = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":164
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":164
  *                 while mergeHappened:
  *                     mergeHappened = False
  *                     for i in range(iBase+1, len(self.rings)):             # <<<<<<<<<<<<<<
@@ -3919,7 +3919,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
         for (__pyx_t_12 = (__pyx_v_iBase + 1); __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
           __pyx_v_i = __pyx_t_12;
 
-          /* "QSWAT/polygonizeInC2.pyx":165
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":165
  *                     mergeHappened = False
  *                     for i in range(iBase+1, len(self.rings)):
  *                         ring = self.rings[i]             # <<<<<<<<<<<<<<
@@ -3935,7 +3935,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
           __Pyx_XDECREF_SET(__pyx_v_ring, __pyx_t_1);
           __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":166
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":166
  *                     for i in range(iBase+1, len(self.rings)):
  *                         ring = self.rings[i]
  *                         if ring is not None:             # <<<<<<<<<<<<<<
@@ -3946,7 +3946,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
           __pyx_t_8 = (__pyx_t_9 != 0);
           if (__pyx_t_8) {
 
-            /* "QSWAT/polygonizeInC2.pyx":167
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":167
  *                         ring = self.rings[i]
  *                         if ring is not None:
  *                             lastv = base[-1]             # <<<<<<<<<<<<<<
@@ -3955,11 +3955,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
             __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_base, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
-            __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
+            __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             __pyx_v_lastv = __pyx_t_13;
 
-            /* "QSWAT/polygonizeInC2.pyx":168
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":168
  *                         if ring is not None:
  *                             lastv = base[-1]
  *                             firstv = ring[0]             # <<<<<<<<<<<<<<
@@ -3968,11 +3968,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
             __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 168, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
-            __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
+            __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             __pyx_v_firstv = __pyx_t_13;
 
-            /* "QSWAT/polygonizeInC2.pyx":169
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":169
  *                             lastv = base[-1]
  *                             firstv = ring[0]
  *                             if lastv.x == firstv.x and lastv.y == firstv.y:             # <<<<<<<<<<<<<<
@@ -3990,16 +3990,16 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
             __pyx_L12_bool_binop_done:;
             if (__pyx_t_8) {
 
-              /* "QSWAT/polygonizeInC2.pyx":171
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":171
  *                             if lastv.x == firstv.x and lastv.y == firstv.y:
  *                                 #self.fw.writeFlush('Append')
  *                                 self.join(base, ring, iBase, True)             # <<<<<<<<<<<<<<
  *                                 # use None rather than delete to avoid for loop crashing
  *                                 self.rings[i] = None
  */
-              ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_base, __pyx_v_ring, __pyx_v_iBase, 1);
+              ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_base, __pyx_v_ring, __pyx_v_iBase, 1);
 
-              /* "QSWAT/polygonizeInC2.pyx":173
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":173
  *                                 self.join(base, ring, iBase, True)
  *                                 # use None rather than delete to avoid for loop crashing
  *                                 self.rings[i] = None             # <<<<<<<<<<<<<<
@@ -4012,7 +4012,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
               }
               if (unlikely(__Pyx_SetItemInt(__pyx_v_self->rings, __pyx_v_i, Py_None, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 173, __pyx_L1_error)
 
-              /* "QSWAT/polygonizeInC2.pyx":174
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":174
  *                                 # use None rather than delete to avoid for loop crashing
  *                                 self.rings[i] = None
  *                                 mergeHappened = True             # <<<<<<<<<<<<<<
@@ -4021,7 +4021,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
               __pyx_v_mergeHappened = 1;
 
-              /* "QSWAT/polygonizeInC2.pyx":169
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":169
  *                             lastv = base[-1]
  *                             firstv = ring[0]
  *                             if lastv.x == firstv.x and lastv.y == firstv.y:             # <<<<<<<<<<<<<<
@@ -4031,7 +4031,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
               goto __pyx_L11;
             }
 
-            /* "QSWAT/polygonizeInC2.pyx":177
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":177
  *                                 #self.fw.writeFlush(str(self))
  *                             else:
  *                                 lastv = ring[-1]             # <<<<<<<<<<<<<<
@@ -4041,11 +4041,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
             /*else*/ {
               __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
-              __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
+              __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
               __pyx_v_lastv = __pyx_t_13;
 
-              /* "QSWAT/polygonizeInC2.pyx":178
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":178
  *                             else:
  *                                 lastv = ring[-1]
  *                                 firstv = base[0]             # <<<<<<<<<<<<<<
@@ -4054,11 +4054,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
               __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_base, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 178, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
-              __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
+              __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
               __pyx_v_firstv = __pyx_t_13;
 
-              /* "QSWAT/polygonizeInC2.pyx":179
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":179
  *                                 lastv = ring[-1]
  *                                 firstv = base[0]
  *                                 if lastv.x == firstv.x and lastv.y == firstv.y:             # <<<<<<<<<<<<<<
@@ -4076,16 +4076,16 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
               __pyx_L15_bool_binop_done:;
               if (__pyx_t_8) {
 
-                /* "QSWAT/polygonizeInC2.pyx":181
+                /* "QSWAT3/QSWAT/polygonizeInC2.pyx":181
  *                                 if lastv.x == firstv.x and lastv.y == firstv.y:
  *                                     #self.fw.writeFlush('Prepend')
  *                                     self.join(ring, base, iBase, False)             # <<<<<<<<<<<<<<
  *                                     # base needs redefining to new value
  *                                     base = self.rings[iBase]
  */
-                ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_ring, __pyx_v_base, __pyx_v_iBase, 0);
+                ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_ring, __pyx_v_base, __pyx_v_iBase, 0);
 
-                /* "QSWAT/polygonizeInC2.pyx":183
+                /* "QSWAT3/QSWAT/polygonizeInC2.pyx":183
  *                                     self.join(ring, base, iBase, False)
  *                                     # base needs redefining to new value
  *                                     base = self.rings[iBase]             # <<<<<<<<<<<<<<
@@ -4101,7 +4101,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
                 __Pyx_DECREF_SET(__pyx_v_base, __pyx_t_1);
                 __pyx_t_1 = 0;
 
-                /* "QSWAT/polygonizeInC2.pyx":184
+                /* "QSWAT3/QSWAT/polygonizeInC2.pyx":184
  *                                     # base needs redefining to new value
  *                                     base = self.rings[iBase]
  *                                     self.rings[i] = None             # <<<<<<<<<<<<<<
@@ -4114,7 +4114,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
                 }
                 if (unlikely(__Pyx_SetItemInt(__pyx_v_self->rings, __pyx_v_i, Py_None, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 184, __pyx_L1_error)
 
-                /* "QSWAT/polygonizeInC2.pyx":185
+                /* "QSWAT3/QSWAT/polygonizeInC2.pyx":185
  *                                     base = self.rings[iBase]
  *                                     self.rings[i] = None
  *                                     mergeHappened = True             # <<<<<<<<<<<<<<
@@ -4123,7 +4123,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
                 __pyx_v_mergeHappened = 1;
 
-                /* "QSWAT/polygonizeInC2.pyx":179
+                /* "QSWAT3/QSWAT/polygonizeInC2.pyx":179
  *                                 lastv = ring[-1]
  *                                 firstv = base[0]
  *                                 if lastv.x == firstv.x and lastv.y == firstv.y:             # <<<<<<<<<<<<<<
@@ -4134,7 +4134,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
             }
             __pyx_L11:;
 
-            /* "QSWAT/polygonizeInC2.pyx":166
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":166
  *                     for i in range(iBase+1, len(self.rings)):
  *                         ring = self.rings[i]
  *                         if ring is not None:             # <<<<<<<<<<<<<<
@@ -4145,7 +4145,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
         }
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":159
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":159
  *         for iBase in range(len(self.rings)):
  *             base = self.rings[iBase]
  *             if base is not None:             # <<<<<<<<<<<<<<
@@ -4155,7 +4155,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     }
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":189
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":189
  * 
  *         # remove places in list of rings for merged rings
  *         self.rings = [ring for ring in self.rings if ring is not None]             # <<<<<<<<<<<<<<
@@ -4200,7 +4200,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   __pyx_v_self->rings = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":191
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":191
  *         self.rings = [ring for ring in self.rings if ring is not None]
  *         # rings should now be closed
  *         for ring in self.rings:             # <<<<<<<<<<<<<<
@@ -4223,7 +4223,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __Pyx_XDECREF_SET(__pyx_v_ring, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":192
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":192
  *         # rings should now be closed
  *         for ring in self.rings:
  *             assert isClosed(ring), 'Failed to close ring {0}'.format(ringToString(ring))             # <<<<<<<<<<<<<<
@@ -4232,10 +4232,10 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      if (unlikely(!(__pyx_f_5QSWAT_14polygonizeInC2_isClosed(__pyx_v_ring, 0) != 0))) {
+      if (unlikely(!(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClosed(__pyx_v_ring, 0) != 0))) {
         __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_Failed_to_close_ring_0, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __pyx_f_5QSWAT_14polygonizeInC2_ringToString(__pyx_v_ring, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_4 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_ringToString(__pyx_v_ring, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __pyx_t_14 = NULL;
         if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -4263,7 +4263,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     }
     #endif
 
-    /* "QSWAT/polygonizeInC2.pyx":191
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":191
  *         self.rings = [ring for ring in self.rings if ring is not None]
  *         # rings should now be closed
  *         for ring in self.rings:             # <<<<<<<<<<<<<<
@@ -4273,7 +4273,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":196
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":196
  *         # make sure first ring is clockwise
  *         # todoCount guards against looping if no ring is clockwise
  *         todoCount = len(self.rings)             # <<<<<<<<<<<<<<
@@ -4290,7 +4290,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_todoCount = __pyx_t_5;
 
-  /* "QSWAT/polygonizeInC2.pyx":197
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":197
  *         # todoCount guards against looping if no ring is clockwise
  *         todoCount = len(self.rings)
  *         while todoCount >= 0:             # <<<<<<<<<<<<<<
@@ -4301,7 +4301,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __pyx_t_9 = ((__pyx_v_todoCount >= 0) != 0);
     if (!__pyx_t_9) break;
 
-    /* "QSWAT/polygonizeInC2.pyx":198
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":198
  *         todoCount = len(self.rings)
  *         while todoCount >= 0:
  *             ring = self.rings[0]             # <<<<<<<<<<<<<<
@@ -4317,17 +4317,17 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __Pyx_XDECREF_SET(__pyx_v_ring, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":199
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":199
  *         while todoCount >= 0:
  *             ring = self.rings[0]
  *             if isClockwise(ring):             # <<<<<<<<<<<<<<
  *                 break
  *             self.rings.pop(0)
  */
-    __pyx_t_9 = (__pyx_f_5QSWAT_14polygonizeInC2_isClockwise(__pyx_v_ring, 0) != 0);
+    __pyx_t_9 = (__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClockwise(__pyx_v_ring, 0) != 0);
     if (__pyx_t_9) {
 
-      /* "QSWAT/polygonizeInC2.pyx":200
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":200
  *             ring = self.rings[0]
  *             if isClockwise(ring):
  *                 break             # <<<<<<<<<<<<<<
@@ -4336,7 +4336,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
       goto __pyx_L27_break;
 
-      /* "QSWAT/polygonizeInC2.pyx":199
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":199
  *         while todoCount >= 0:
  *             ring = self.rings[0]
  *             if isClockwise(ring):             # <<<<<<<<<<<<<<
@@ -4345,7 +4345,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":201
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":201
  *             if isClockwise(ring):
  *                 break
  *             self.rings.pop(0)             # <<<<<<<<<<<<<<
@@ -4360,7 +4360,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":202
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":202
  *                 break
  *             self.rings.pop(0)
  *             self.rings.append(ring)             # <<<<<<<<<<<<<<
@@ -4373,7 +4373,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     }
     __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_self->rings, __pyx_v_ring); if (unlikely(__pyx_t_15 == ((int)-1))) __PYX_ERR(0, 202, __pyx_L1_error)
 
-    /* "QSWAT/polygonizeInC2.pyx":203
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":203
  *             self.rings.pop(0)
  *             self.rings.append(ring)
  *             todoCount -= 1             # <<<<<<<<<<<<<<
@@ -4384,7 +4384,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   }
   __pyx_L27_break:;
 
-  /* "QSWAT/polygonizeInC2.pyx":204
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":204
  *             self.rings.append(ring)
  *             todoCount -= 1
  *         if todoCount == 0:             # <<<<<<<<<<<<<<
@@ -4394,7 +4394,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   __pyx_t_9 = ((__pyx_v_todoCount == 0) != 0);
   if (unlikely(__pyx_t_9)) {
 
-    /* "QSWAT/polygonizeInC2.pyx":205
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":205
  *             todoCount -= 1
  *         if todoCount == 0:
  *             raise ValueError('No clockwise ring in polygon {0}'.format(str(self)))             # <<<<<<<<<<<<<<
@@ -4428,7 +4428,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(0, 205, __pyx_L1_error)
 
-    /* "QSWAT/polygonizeInC2.pyx":204
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":204
  *             self.rings.append(ring)
  *             todoCount -= 1
  *         if todoCount == 0:             # <<<<<<<<<<<<<<
@@ -4437,7 +4437,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":149
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":149
  *         return res
  * 
  *     cpdef void coalesce(self):             # <<<<<<<<<<<<<<
@@ -4453,7 +4453,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Polygon.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Polygon.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_base);
   __Pyx_XDECREF(__pyx_v_ring);
@@ -4462,26 +4462,26 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(struct __pyx_obj_5
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon_4coalesce[] = "Try to merge segments.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_4coalesce[] = "Try to merge segments.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("coalesce (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("coalesce", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_coalesce(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4490,7 +4490,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __py
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4498,7 +4498,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __py
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":207
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":207
  *             raise ValueError('No clockwise ring in polygon {0}'.format(str(self)))
  * 
  *     cdef void join(self, object firstl, object secondl, int i, bint inPlace):             # <<<<<<<<<<<<<<
@@ -4506,7 +4506,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_4coalesce(struct __py
  * 
  */
 
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_firstl, PyObject *__pyx_v_secondl, int __pyx_v_i, int __pyx_v_inPlace) {
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v_firstl, PyObject *__pyx_v_secondl, int __pyx_v_i, int __pyx_v_inPlace) {
   CYTHON_UNUSED PyObject *__pyx_v__ = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4515,7 +4515,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("join", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":211
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":211
  * 
  *         # remove and discard last vertex of first, then extend with second
  *         _ = firstl.pop()             # <<<<<<<<<<<<<<
@@ -4527,7 +4527,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
   __pyx_v__ = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":215
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":215
  * #         self.fw.writeFlush(str(firstl))
  * #         self.fw.writeFlush((str(self)))
  *         firstl.extend(secondl)             # <<<<<<<<<<<<<<
@@ -4553,7 +4553,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":219
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":219
  * #         self.fw.writeFlush(str(firstl))
  * #         self.fw.writeFlush((str(self)))
  *         if not inPlace:             # <<<<<<<<<<<<<<
@@ -4563,7 +4563,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
   __pyx_t_4 = ((!(__pyx_v_inPlace != 0)) != 0);
   if (__pyx_t_4) {
 
-    /* "QSWAT/polygonizeInC2.pyx":220
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":220
  * #         self.fw.writeFlush((str(self)))
  *         if not inPlace:
  *             self.rings[i] = firstl             # <<<<<<<<<<<<<<
@@ -4576,7 +4576,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
     }
     if (unlikely(__Pyx_SetItemInt(__pyx_v_self->rings, __pyx_v_i, __pyx_v_firstl, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 220, __pyx_L1_error)
 
-    /* "QSWAT/polygonizeInC2.pyx":219
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":219
  * #         self.fw.writeFlush(str(firstl))
  * #         self.fw.writeFlush((str(self)))
  *         if not inPlace:             # <<<<<<<<<<<<<<
@@ -4585,7 +4585,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":207
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":207
  *             raise ValueError('No clockwise ring in polygon {0}'.format(str(self)))
  * 
  *     cdef void join(self, object firstl, object secondl, int i, bint inPlace):             # <<<<<<<<<<<<<<
@@ -4599,13 +4599,13 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Polygon.join", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Polygon.join", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v__);
   __Pyx_RefNannyFinishContext();
 }
 
-/* "QSWAT/polygonizeInC2.pyx":224
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":224
  * #         self.fw.writeFlush((str(self)))
  * 
  *     cpdef void addLink(self, Vertex p1, Vertex p2):             # <<<<<<<<<<<<<<
@@ -4613,14 +4613,14 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join(struct __pyx_obj_5QSWA
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2, int __pyx_skip_dispatch) {
   PyObject *__pyx_v_ring = 0;
   int __pyx_v_i;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_penult;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_second;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_penult;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_second;
   Py_ssize_t __pyx_v_i2;
   PyObject *__pyx_v_ring2 = NULL;
   CYTHON_UNUSED PyObject *__pyx_v__ = NULL;
@@ -4637,7 +4637,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
   Py_ssize_t __pyx_t_10;
   int __pyx_t_11;
   int __pyx_t_12;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_13;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_13;
   int __pyx_t_14;
   Py_ssize_t __pyx_t_15;
   Py_ssize_t __pyx_t_16;
@@ -4654,10 +4654,10 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_addLink); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_7addLink)) {
-        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_7addLink)) {
+        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
+        __pyx_t_4 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -4726,7 +4726,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":231
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":231
  *             Vertex firstv, lastv, penult, second
  * 
  *         for i in range(len(self.rings)):             # <<<<<<<<<<<<<<
@@ -4745,7 +4745,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_10; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "QSWAT/polygonizeInC2.pyx":232
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":232
  * 
  *         for i in range(len(self.rings)):
  *             ring = self.rings[i]             # <<<<<<<<<<<<<<
@@ -4761,7 +4761,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
     __Pyx_XDECREF_SET(__pyx_v_ring, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":233
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":233
  *         for i in range(len(self.rings)):
  *             ring = self.rings[i]
  *             if self.connected4 and isClosed(ring):             # <<<<<<<<<<<<<<
@@ -4774,12 +4774,12 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
       __pyx_t_11 = __pyx_t_12;
       goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_12 = (__pyx_f_5QSWAT_14polygonizeInC2_isClosed(__pyx_v_ring, 0) != 0);
+    __pyx_t_12 = (__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_isClosed(__pyx_v_ring, 0) != 0);
     __pyx_t_11 = __pyx_t_12;
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_11) {
 
-      /* "QSWAT/polygonizeInC2.pyx":235
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":235
  *             if self.connected4 and isClosed(ring):
  *                 # with connected4 a closed ring cannot be added to
  *                 continue             # <<<<<<<<<<<<<<
@@ -4788,7 +4788,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
       goto __pyx_L3_continue;
 
-      /* "QSWAT/polygonizeInC2.pyx":233
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":233
  *         for i in range(len(self.rings)):
  *             ring = self.rings[i]
  *             if self.connected4 and isClosed(ring):             # <<<<<<<<<<<<<<
@@ -4797,7 +4797,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":237
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":237
  *                 continue
  *             # if a ring currently runs to p1, append p2
  *             lastv = ring[-1]             # <<<<<<<<<<<<<<
@@ -4806,11 +4806,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
     __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 237, __pyx_L1_error)
+    __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 237, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_lastv = __pyx_t_13;
 
-    /* "QSWAT/polygonizeInC2.pyx":238
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":238
  *             # if a ring currently runs to p1, append p2
  *             lastv = ring[-1]
  *             if lastv.x == p1.x and lastv.y == p1.y:             # <<<<<<<<<<<<<<
@@ -4828,7 +4828,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
     __pyx_L9_bool_binop_done:;
     if (__pyx_t_11) {
 
-      /* "QSWAT/polygonizeInC2.pyx":241
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":241
  *                 # add p2, or replace last with p2 if previous link in same direction
  *                 # note this direction test assumes links are either horizontal or vertical
  *                 penult = ring[-2]             # <<<<<<<<<<<<<<
@@ -4837,11 +4837,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
       __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 241, __pyx_L1_error)
+      __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 241, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_penult = __pyx_t_13;
 
-      /* "QSWAT/polygonizeInC2.pyx":242
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":242
  *                 # note this direction test assumes links are either horizontal or vertical
  *                 penult = ring[-2]
  *                 if penult.x == lastv.x and lastv.x == p2.x or \             # <<<<<<<<<<<<<<
@@ -4861,7 +4861,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
       }
       __pyx_L13_next_or:;
 
-      /* "QSWAT/polygonizeInC2.pyx":243
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":243
  *                 penult = ring[-2]
  *                 if penult.x == lastv.x and lastv.x == p2.x or \
  *                     penult.y == lastv.y and lastv.y == p2.y:             # <<<<<<<<<<<<<<
@@ -4878,7 +4878,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
       __pyx_t_11 = __pyx_t_12;
       __pyx_L12_bool_binop_done:;
 
-      /* "QSWAT/polygonizeInC2.pyx":242
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":242
  *                 # note this direction test assumes links are either horizontal or vertical
  *                 penult = ring[-2]
  *                 if penult.x == lastv.x and lastv.x == p2.x or \             # <<<<<<<<<<<<<<
@@ -4887,19 +4887,19 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
       if (__pyx_t_11) {
 
-        /* "QSWAT/polygonizeInC2.pyx":244
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":244
  *                 if penult.x == lastv.x and lastv.x == p2.x or \
  *                     penult.y == lastv.y and lastv.y == p2.y:
  *                     ring[-1] = p2             # <<<<<<<<<<<<<<
  *                 else:
  *                     ring.append(p2)
  */
-        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
+        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if (unlikely(__Pyx_SetItemInt(__pyx_v_ring, -1L, __pyx_t_1, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 244, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":242
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":242
  *                 # note this direction test assumes links are either horizontal or vertical
  *                 penult = ring[-2]
  *                 if penult.x == lastv.x and lastv.x == p2.x or \             # <<<<<<<<<<<<<<
@@ -4909,7 +4909,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         goto __pyx_L11;
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":246
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":246
  *                     ring[-1] = p2
  *                 else:
  *                     ring.append(p2)             # <<<<<<<<<<<<<<
@@ -4917,14 +4917,14 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  *                     # with connected 8 a right link can join two down links in the previous row
  */
       /*else*/ {
-        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_14 = __Pyx_PyObject_Append(__pyx_v_ring, __pyx_t_1); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 246, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
       __pyx_L11:;
 
-      /* "QSWAT/polygonizeInC2.pyx":247
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":247
  *                 else:
  *                     ring.append(p2)
  *                 if not self.connected4 and p1.x < p2.x and p1.y == p2.y:             # <<<<<<<<<<<<<<
@@ -4948,7 +4948,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
       __pyx_L17_bool_binop_done:;
       if (__pyx_t_11) {
 
-        /* "QSWAT/polygonizeInC2.pyx":250
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":250
  *                     # with connected 8 a right link can join two down links in the previous row
  *                     # look for a ring starting at p2 and if found append to the current ring
  *                     for i2 in range(len(self.rings)):             # <<<<<<<<<<<<<<
@@ -4967,7 +4967,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
           __pyx_v_i2 = __pyx_t_17;
 
-          /* "QSWAT/polygonizeInC2.pyx":251
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":251
  *                     # look for a ring starting at p2 and if found append to the current ring
  *                     for i2 in range(len(self.rings)):
  *                         if i2 != i: # probably can't happen but to be safe from self destruction             # <<<<<<<<<<<<<<
@@ -4977,7 +4977,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
           __pyx_t_11 = ((__pyx_v_i2 != __pyx_v_i) != 0);
           if (__pyx_t_11) {
 
-            /* "QSWAT/polygonizeInC2.pyx":252
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":252
  *                     for i2 in range(len(self.rings)):
  *                         if i2 != i: # probably can't happen but to be safe from self destruction
  *                             ring2 = self.rings[i2]             # <<<<<<<<<<<<<<
@@ -4993,7 +4993,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
             __Pyx_XDECREF_SET(__pyx_v_ring2, __pyx_t_1);
             __pyx_t_1 = 0;
 
-            /* "QSWAT/polygonizeInC2.pyx":253
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":253
  *                         if i2 != i: # probably can't happen but to be safe from self destruction
  *                             ring2 = self.rings[i2]
  *                             firstv = ring2[0]             # <<<<<<<<<<<<<<
@@ -5002,11 +5002,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
             __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 253, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
-            __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
+            __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             __pyx_v_firstv = __pyx_t_13;
 
-            /* "QSWAT/polygonizeInC2.pyx":254
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":254
  *                             ring2 = self.rings[i2]
  *                             firstv = ring2[0]
  *                             if firstv.x == p2.x and firstv.y == p2.y:             # <<<<<<<<<<<<<<
@@ -5024,7 +5024,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
             __pyx_L24_bool_binop_done:;
             if (__pyx_t_11) {
 
-              /* "QSWAT/polygonizeInC2.pyx":255
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":255
  *                             firstv = ring2[0]
  *                             if firstv.x == p2.x and firstv.y == p2.y:
  *                                 _ = ring.pop()             # <<<<<<<<<<<<<<
@@ -5036,7 +5036,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
               __pyx_v__ = __pyx_t_1;
               __pyx_t_1 = 0;
 
-              /* "QSWAT/polygonizeInC2.pyx":256
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":256
  *                             if firstv.x == p2.x and firstv.y == p2.y:
  *                                 _ = ring.pop()
  *                                 ring.extend(ring2)             # <<<<<<<<<<<<<<
@@ -5062,7 +5062,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
               __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-              /* "QSWAT/polygonizeInC2.pyx":257
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":257
  *                                 _ = ring.pop()
  *                                 ring.extend(ring2)
  *                                 del self.rings[i2]             # <<<<<<<<<<<<<<
@@ -5075,7 +5075,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
               }
               if (unlikely(__Pyx_DelItemInt(__pyx_v_self->rings, __pyx_v_i2, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 257, __pyx_L1_error)
 
-              /* "QSWAT/polygonizeInC2.pyx":258
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":258
  *                                 ring.extend(ring2)
  *                                 del self.rings[i2]
  *                                 break             # <<<<<<<<<<<<<<
@@ -5084,7 +5084,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
               goto __pyx_L21_break;
 
-              /* "QSWAT/polygonizeInC2.pyx":254
+              /* "QSWAT3/QSWAT/polygonizeInC2.pyx":254
  *                             ring2 = self.rings[i2]
  *                             firstv = ring2[0]
  *                             if firstv.x == p2.x and firstv.y == p2.y:             # <<<<<<<<<<<<<<
@@ -5093,7 +5093,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
             }
 
-            /* "QSWAT/polygonizeInC2.pyx":251
+            /* "QSWAT3/QSWAT/polygonizeInC2.pyx":251
  *                     # look for a ring starting at p2 and if found append to the current ring
  *                     for i2 in range(len(self.rings)):
  *                         if i2 != i: # probably can't happen but to be safe from self destruction             # <<<<<<<<<<<<<<
@@ -5104,7 +5104,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         }
         __pyx_L21_break:;
 
-        /* "QSWAT/polygonizeInC2.pyx":247
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":247
  *                 else:
  *                     ring.append(p2)
  *                 if not self.connected4 and p1.x < p2.x and p1.y == p2.y:             # <<<<<<<<<<<<<<
@@ -5113,7 +5113,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":262
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":262
  *                                 # as we just deleted an item, so don't remove the return two lines below
  *                 #self.fw.writeFlush((str(self)))
  *                 return             # <<<<<<<<<<<<<<
@@ -5122,7 +5122,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
       goto __pyx_L0;
 
-      /* "QSWAT/polygonizeInC2.pyx":238
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":238
  *             # if a ring currently runs to p1, append p2
  *             lastv = ring[-1]
  *             if lastv.x == p1.x and lastv.y == p1.y:             # <<<<<<<<<<<<<<
@@ -5131,7 +5131,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":265
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":265
  *             else:
  *                 # if a ring starts from p2, prepend with p1
  *                 firstv = ring[0]             # <<<<<<<<<<<<<<
@@ -5141,11 +5141,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
     /*else*/ {
       __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 265, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L1_error)
+      __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_firstv = __pyx_t_13;
 
-      /* "QSWAT/polygonizeInC2.pyx":266
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":266
  *                 # if a ring starts from p2, prepend with p1
  *                 firstv = ring[0]
  *                 if firstv.x == p2.x and firstv.y == p2.y:             # <<<<<<<<<<<<<<
@@ -5163,7 +5163,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
       __pyx_L27_bool_binop_done:;
       if (__pyx_t_11) {
 
-        /* "QSWAT/polygonizeInC2.pyx":269
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":269
  *                     # prepend p1, or replace first with p1 if ring link in same direction
  *                     # note this direction test assumes links are either horizontal or vertical
  *                     second = ring[1]             # <<<<<<<<<<<<<<
@@ -5172,11 +5172,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
         __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 269, __pyx_L1_error)
+        __pyx_t_13 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 269, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_second = __pyx_t_13;
 
-        /* "QSWAT/polygonizeInC2.pyx":270
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":270
  *                     # note this direction test assumes links are either horizontal or vertical
  *                     second = ring[1]
  *                     if second.x == firstv.x and firstv.x == p1.x or \             # <<<<<<<<<<<<<<
@@ -5196,7 +5196,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         }
         __pyx_L31_next_or:;
 
-        /* "QSWAT/polygonizeInC2.pyx":271
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":271
  *                     second = ring[1]
  *                     if second.x == firstv.x and firstv.x == p1.x or \
  *                         second.y == firstv.y and firstv.y == p1.y:             # <<<<<<<<<<<<<<
@@ -5213,7 +5213,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         __pyx_t_11 = __pyx_t_12;
         __pyx_L30_bool_binop_done:;
 
-        /* "QSWAT/polygonizeInC2.pyx":270
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":270
  *                     # note this direction test assumes links are either horizontal or vertical
  *                     second = ring[1]
  *                     if second.x == firstv.x and firstv.x == p1.x or \             # <<<<<<<<<<<<<<
@@ -5222,19 +5222,19 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
         if (__pyx_t_11) {
 
-          /* "QSWAT/polygonizeInC2.pyx":272
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":272
  *                     if second.x == firstv.x and firstv.x == p1.x or \
  *                         second.y == firstv.y and firstv.y == p1.y:
  *                         ring[0] = p1             # <<<<<<<<<<<<<<
  *                     else:
  *                         ring.appendleft(p1)
  */
-          __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
+          __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           if (unlikely(__Pyx_SetItemInt(__pyx_v_ring, 0, __pyx_t_1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 272, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":270
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":270
  *                     # note this direction test assumes links are either horizontal or vertical
  *                     second = ring[1]
  *                     if second.x == firstv.x and firstv.x == p1.x or \             # <<<<<<<<<<<<<<
@@ -5244,7 +5244,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
           goto __pyx_L29;
         }
 
-        /* "QSWAT/polygonizeInC2.pyx":274
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":274
  *                         ring[0] = p1
  *                     else:
  *                         ring.appendleft(p1)             # <<<<<<<<<<<<<<
@@ -5254,7 +5254,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         /*else*/ {
           __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ring, __pyx_n_s_appendleft); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 274, __pyx_L1_error)
+          __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 274, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __pyx_t_8 = NULL;
           if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -5276,7 +5276,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
         }
         __pyx_L29:;
 
-        /* "QSWAT/polygonizeInC2.pyx":276
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":276
  *                         ring.appendleft(p1)
  *                     #self.fw.writeFlush((str(self)))
  *                     return             # <<<<<<<<<<<<<<
@@ -5285,7 +5285,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
  */
         goto __pyx_L0;
 
-        /* "QSWAT/polygonizeInC2.pyx":266
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":266
  *                 # if a ring starts from p2, prepend with p1
  *                 firstv = ring[0]
  *                 if firstv.x == p2.x and firstv.y == p2.y:             # <<<<<<<<<<<<<<
@@ -5297,7 +5297,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
     __pyx_L3_continue:;
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":278
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":278
  *                     return
  *         # no existing segment found - make a new one
  *         self.rings.append(deque([p1, p2]))             # <<<<<<<<<<<<<<
@@ -5310,9 +5310,9 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
   }
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_deque); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_8 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_8 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_p2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_4 = PyList_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -5341,7 +5341,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
   __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_self->rings, __pyx_t_1); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":224
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":224
  * #         self.fw.writeFlush((str(self)))
  * 
  *     cpdef void addLink(self, Vertex p1, Vertex p2):             # <<<<<<<<<<<<<<
@@ -5359,7 +5359,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Polygon.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Polygon.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ring);
   __Pyx_XDECREF(__pyx_v_ring2);
@@ -5368,11 +5368,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(struct __pyx_obj_5Q
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon_6addLink[] = "Add a link running from p1 to p2.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_6addLink[] = "Add a link running from p1 to p2.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("addLink (wrapper)", 0);
@@ -5411,31 +5411,31 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_7addLink(PyObject *__
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_p1 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L3_error)
-    __pyx_v_p2 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L3_error)
+    __pyx_v_p1 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L3_error)
+    __pyx_v_p2 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("addLink", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 224, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_6addLink(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), __pyx_v_p1, __pyx_v_p2);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_6addLink(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), __pyx_v_p1, __pyx_v_p2);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_p2) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("addLink", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink(__pyx_v_self, __pyx_v_p1, __pyx_v_p2, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addLink(__pyx_v_self, __pyx_v_p1, __pyx_v_p2, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5444,7 +5444,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5452,7 +5452,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":281
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":281
  *         #self.fw.writeFlush((str(self)))
  * 
  *     cpdef void addPoly(self, Polygon poly):             # <<<<<<<<<<<<<<
@@ -5460,14 +5460,14 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_6addLink(struct __pyx
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__pyx_v_self, PyObject *__pyx_v_poly); /*proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__pyx_v_self, PyObject *__pyx_v_poly); /*proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly, int __pyx_skip_dispatch) {
   PyObject *__pyx_v_polyRing = 0;
   PyObject *__pyx_v_ring = 0;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_polyFirst;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_polyLast;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_polyFirst;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_polyLast;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_firstv;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_lastv;
   int __pyx_v_iPoly;
   int __pyx_v_i;
   PyObject *__pyx_8genexpr1__pyx_v_ring = NULL;
@@ -5479,7 +5479,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
   Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   int __pyx_t_7;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_8;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
   Py_ssize_t __pyx_t_11;
@@ -5498,7 +5498,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_addPoly); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_9addPoly)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_9addPoly)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -5532,7 +5532,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":288
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":288
  *             int iPoly, i
  * 
  *         for iPoly in range(len(poly.rings)):             # <<<<<<<<<<<<<<
@@ -5551,7 +5551,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_iPoly = __pyx_t_7;
 
-    /* "QSWAT/polygonizeInC2.pyx":289
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":289
  * 
  *         for iPoly in range(len(poly.rings)):
  *             polyRing = poly.rings[iPoly]             # <<<<<<<<<<<<<<
@@ -5567,7 +5567,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
     __Pyx_XDECREF_SET(__pyx_v_polyRing, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":290
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":290
  *         for iPoly in range(len(poly.rings)):
  *             polyRing = poly.rings[iPoly]
  *             polyFirst = polyRing[0]             # <<<<<<<<<<<<<<
@@ -5576,11 +5576,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
     __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_polyRing, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L1_error)
+    __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_polyFirst = __pyx_t_8;
 
-    /* "QSWAT/polygonizeInC2.pyx":291
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":291
  *             polyRing = poly.rings[iPoly]
  *             polyFirst = polyRing[0]
  *             polyLast = polyRing[-1]             # <<<<<<<<<<<<<<
@@ -5589,11 +5589,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
     __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_polyRing, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L1_error)
+    __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_polyLast = __pyx_t_8;
 
-    /* "QSWAT/polygonizeInC2.pyx":292
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":292
  *             polyFirst = polyRing[0]
  *             polyLast = polyRing[-1]
  *             if self.connected4 and polyFirst.x == polyLast.x and polyFirst.y == polyLast.y:             # <<<<<<<<<<<<<<
@@ -5617,7 +5617,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_9) {
 
-      /* "QSWAT/polygonizeInC2.pyx":294
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":294
  *             if self.connected4 and polyFirst.x == polyLast.x and polyFirst.y == polyLast.y:
  *                 # closed ring when using 4connectdness cannot be joined to another
  *                 continue             # <<<<<<<<<<<<<<
@@ -5626,7 +5626,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
       goto __pyx_L3_continue;
 
-      /* "QSWAT/polygonizeInC2.pyx":292
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":292
  *             polyFirst = polyRing[0]
  *             polyLast = polyRing[-1]
  *             if self.connected4 and polyFirst.x == polyLast.x and polyFirst.y == polyLast.y:             # <<<<<<<<<<<<<<
@@ -5635,7 +5635,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":295
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":295
  *                 # closed ring when using 4connectdness cannot be joined to another
  *                 continue
  *             for i in range(len(self.rings)):             # <<<<<<<<<<<<<<
@@ -5654,7 +5654,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
     for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
       __pyx_v_i = __pyx_t_13;
 
-      /* "QSWAT/polygonizeInC2.pyx":296
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":296
  *                 continue
  *             for i in range(len(self.rings)):
  *                 ring = self.rings[i]             # <<<<<<<<<<<<<<
@@ -5670,7 +5670,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
       __Pyx_XDECREF_SET(__pyx_v_ring, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":297
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":297
  *             for i in range(len(self.rings)):
  *                 ring = self.rings[i]
  *                 firstv = ring[0]             # <<<<<<<<<<<<<<
@@ -5679,11 +5679,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
       __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L1_error)
+      __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_firstv = __pyx_t_8;
 
-      /* "QSWAT/polygonizeInC2.pyx":298
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":298
  *                 ring = self.rings[i]
  *                 firstv = ring[0]
  *                 lastv = ring[-1]             # <<<<<<<<<<<<<<
@@ -5692,11 +5692,11 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
       __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ring, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 298, __pyx_L1_error)
+      __pyx_t_8 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 298, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_lastv = __pyx_t_8;
 
-      /* "QSWAT/polygonizeInC2.pyx":299
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":299
  *                 firstv = ring[0]
  *                 lastv = ring[-1]
  *                 if self.connected4 and firstv.x == lastv.x and firstv.y == lastv.y:             # <<<<<<<<<<<<<<
@@ -5720,7 +5720,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
       __pyx_L12_bool_binop_done:;
       if (__pyx_t_9) {
 
-        /* "QSWAT/polygonizeInC2.pyx":300
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":300
  *                 lastv = ring[-1]
  *                 if self.connected4 and firstv.x == lastv.x and firstv.y == lastv.y:
  *                     continue             # <<<<<<<<<<<<<<
@@ -5729,7 +5729,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
         goto __pyx_L9_continue;
 
-        /* "QSWAT/polygonizeInC2.pyx":299
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":299
  *                 firstv = ring[0]
  *                 lastv = ring[-1]
  *                 if self.connected4 and firstv.x == lastv.x and firstv.y == lastv.y:             # <<<<<<<<<<<<<<
@@ -5738,7 +5738,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":301
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":301
  *                 if self.connected4 and firstv.x == lastv.x and firstv.y == lastv.y:
  *                     continue
  *                 if lastv.x == polyFirst.x and lastv.y == polyFirst.y:             # <<<<<<<<<<<<<<
@@ -5756,16 +5756,16 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
       __pyx_L16_bool_binop_done:;
       if (__pyx_t_9) {
 
-        /* "QSWAT/polygonizeInC2.pyx":302
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":302
  *                     continue
  *                 if lastv.x == polyFirst.x and lastv.y == polyFirst.y:
  *                     self.join(ring, polyRing, i, True)             # <<<<<<<<<<<<<<
  *                     poly.rings[iPoly] = None
  *                     break
  */
-        ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_ring, __pyx_v_polyRing, __pyx_v_i, 1);
+        ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_ring, __pyx_v_polyRing, __pyx_v_i, 1);
 
-        /* "QSWAT/polygonizeInC2.pyx":303
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":303
  *                 if lastv.x == polyFirst.x and lastv.y == polyFirst.y:
  *                     self.join(ring, polyRing, i, True)
  *                     poly.rings[iPoly] = None             # <<<<<<<<<<<<<<
@@ -5778,7 +5778,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
         }
         if (unlikely(__Pyx_SetItemInt(__pyx_v_poly->rings, __pyx_v_iPoly, Py_None, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 303, __pyx_L1_error)
 
-        /* "QSWAT/polygonizeInC2.pyx":304
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":304
  *                     self.join(ring, polyRing, i, True)
  *                     poly.rings[iPoly] = None
  *                     break             # <<<<<<<<<<<<<<
@@ -5787,7 +5787,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
         goto __pyx_L10_break;
 
-        /* "QSWAT/polygonizeInC2.pyx":301
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":301
  *                 if self.connected4 and firstv.x == lastv.x and firstv.y == lastv.y:
  *                     continue
  *                 if lastv.x == polyFirst.x and lastv.y == polyFirst.y:             # <<<<<<<<<<<<<<
@@ -5796,7 +5796,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":305
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":305
  *                     poly.rings[iPoly] = None
  *                     break
  *                 if firstv.x == polyLast.x and firstv.y == polyLast.y:             # <<<<<<<<<<<<<<
@@ -5814,16 +5814,16 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
       __pyx_L19_bool_binop_done:;
       if (__pyx_t_9) {
 
-        /* "QSWAT/polygonizeInC2.pyx":306
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":306
  *                     break
  *                 if firstv.x == polyLast.x and firstv.y == polyLast.y:
  *                     self.join(polyRing, ring, i, False)             # <<<<<<<<<<<<<<
  *                     poly.rings[iPoly] = None
  *                     break
  */
-        ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_polyRing, __pyx_v_ring, __pyx_v_i, 0);
+        ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self->__pyx_vtab)->join(__pyx_v_self, __pyx_v_polyRing, __pyx_v_ring, __pyx_v_i, 0);
 
-        /* "QSWAT/polygonizeInC2.pyx":307
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":307
  *                 if firstv.x == polyLast.x and firstv.y == polyLast.y:
  *                     self.join(polyRing, ring, i, False)
  *                     poly.rings[iPoly] = None             # <<<<<<<<<<<<<<
@@ -5836,7 +5836,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
         }
         if (unlikely(__Pyx_SetItemInt(__pyx_v_poly->rings, __pyx_v_iPoly, Py_None, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 307, __pyx_L1_error)
 
-        /* "QSWAT/polygonizeInC2.pyx":308
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":308
  *                     self.join(polyRing, ring, i, False)
  *                     poly.rings[iPoly] = None
  *                     break             # <<<<<<<<<<<<<<
@@ -5845,7 +5845,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
  */
         goto __pyx_L10_break;
 
-        /* "QSWAT/polygonizeInC2.pyx":305
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":305
  *                     poly.rings[iPoly] = None
  *                     break
  *                 if firstv.x == polyLast.x and firstv.y == polyLast.y:             # <<<<<<<<<<<<<<
@@ -5859,7 +5859,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
     __pyx_L3_continue:;
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":310
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":310
  *                     break
  *         # add what is left as new rings
  *         self.rings.extend([ring for ring in poly.rings if ring is not None])             # <<<<<<<<<<<<<<
@@ -5905,7 +5905,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
   __pyx_t_14 = __Pyx_PyList_Extend(__pyx_v_self->rings, __pyx_t_1); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 310, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":312
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":312
  *         self.rings.extend([ring for ring in poly.rings if ring is not None])
  *         # clean up
  *         poly.rings = None             # <<<<<<<<<<<<<<
@@ -5918,7 +5918,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
   __Pyx_DECREF(__pyx_v_poly->rings);
   __pyx_v_poly->rings = ((PyObject*)Py_None);
 
-  /* "QSWAT/polygonizeInC2.pyx":281
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":281
  *         #self.fw.writeFlush((str(self)))
  * 
  *     cpdef void addPoly(self, Polygon poly):             # <<<<<<<<<<<<<<
@@ -5933,7 +5933,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Polygon.addPoly", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Polygon.addPoly", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_polyRing);
   __Pyx_XDECREF(__pyx_v_ring);
@@ -5942,14 +5942,14 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(struct __pyx_obj_5Q
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__pyx_v_self, PyObject *__pyx_v_poly); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon_8addPoly[] = "Add poly's rings, joining with this one's where possible.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__pyx_v_self, PyObject *__pyx_v_poly) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__pyx_v_self, PyObject *__pyx_v_poly); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_8addPoly[] = "Add poly's rings, joining with this one's where possible.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__pyx_v_self, PyObject *__pyx_v_poly) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("addPoly (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_poly), __pyx_ptype_5QSWAT_14polygonizeInC2_Polygon, 1, "poly", 0))) __PYX_ERR(0, 281, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_poly));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_poly), __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, 1, "poly", 0))) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_poly));
 
   /* function exit code */
   goto __pyx_L0;
@@ -5960,13 +5960,13 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_9addPoly(PyObject *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("addPoly", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly(__pyx_v_self, __pyx_v_poly, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addPoly(__pyx_v_self, __pyx_v_poly, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5975,7 +5975,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.addPoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.addPoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5983,7 +5983,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":123
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":123
  * 
  *     cdef:
  *         readonly list rings             # <<<<<<<<<<<<<<
@@ -5992,19 +5992,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_8addPoly(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5rings_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5rings_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5rings_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5rings_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
@@ -6027,19 +6027,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_5rings___get__(struct
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -6260,7 +6260,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(s
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -6278,19 +6278,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_10__reduce_cython__(s
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6302,7 +6302,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__
  *     __pyx_unpickle_Polygon__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -6318,7 +6318,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygon.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygon.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6326,7 +6326,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":325
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":325
  *         public int cellCount
  * 
  *     def __init__(self, bint connected4, object fw):             # <<<<<<<<<<<<<<
@@ -6335,8 +6335,8 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_7Polygon_12__setstate_cython__
  */
 
 /* Python wrapper */
-static int __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_connected4;
   PyObject *__pyx_v_fw = 0;
   int __pyx_r;
@@ -6384,24 +6384,24 @@ static int __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_1__init__(PyObject *__pyx_v_s
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 325, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), __pyx_v_connected4, __pyx_v_fw);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape___init__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), __pyx_v_connected4, __pyx_v_fw);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_connected4, PyObject *__pyx_v_fw) {
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_connected4, PyObject *__pyx_v_fw) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":327
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":327
  *     def __init__(self, bint connected4, object fw):
  *         ## next identifier for a polygon
  *         self.nextPolyId = 0             # <<<<<<<<<<<<<<
@@ -6410,7 +6410,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
  */
   __pyx_v_self->nextPolyId = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":329
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":329
  *         self.nextPolyId = 0
  *         ## map polyId -> Polygon
  *         self.polygons = dict()             # <<<<<<<<<<<<<<
@@ -6425,7 +6425,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
   __pyx_v_self->polygons = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":335
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":335
  *         # 2: that one lookup is always enough for the final result. i.e.
  *         # for every range value x, x -> x is in the map
  *         self.polyIdMap = dict()             # <<<<<<<<<<<<<<
@@ -6440,7 +6440,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
   __pyx_v_self->polyIdMap = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":337
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":337
  *         self.polyIdMap = dict()
  *         ## using 4 connectedness
  *         self.connected4 = connected4             # <<<<<<<<<<<<<<
@@ -6449,7 +6449,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
  */
   __pyx_v_self->connected4 = __pyx_v_connected4;
 
-  /* "QSWAT/polygonizeInC2.pyx":339
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":339
  *         self.connected4 = connected4
  *         ## cell count
  *         self.cellCount = 0             # <<<<<<<<<<<<<<
@@ -6458,7 +6458,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
  */
   __pyx_v_self->cellCount = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":340
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":340
  *         ## cell count
  *         self.cellCount = 0
  *         self.fw = fw             # <<<<<<<<<<<<<<
@@ -6471,7 +6471,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
   __Pyx_DECREF(__pyx_v_self->fw);
   __pyx_v_self->fw = __pyx_v_fw;
 
-  /* "QSWAT/polygonizeInC2.pyx":325
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":325
  *         public int cellCount
  * 
  *     def __init__(self, bint connected4, object fw):             # <<<<<<<<<<<<<<
@@ -6484,14 +6484,14 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":342
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":342
  *         self.fw = fw
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -6500,21 +6500,21 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape___init__(struct __pyx_obj_5QS
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_3__str__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_3__str__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_3__str__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_3__str__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_2__str__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
   PyObject *__pyx_v_res = 0;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly = 0;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6526,7 +6526,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":348
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":348
  *             Polygon poly
  * 
  *         res = ''             # <<<<<<<<<<<<<<
@@ -6536,7 +6536,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
   __Pyx_INCREF(__pyx_kp_u__5);
   __pyx_v_res = __pyx_kp_u__5;
 
-  /* "QSWAT/polygonizeInC2.pyx":349
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":349
  * 
  *         res = ''
  *         for poly in self.polygons.values():             # <<<<<<<<<<<<<<
@@ -6558,11 +6558,11 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
     if (unlikely(__pyx_t_6 == 0)) break;
     if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 349, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5QSWAT_14polygonizeInC2_Polygon))))) __PYX_ERR(0, 349, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_poly, ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_t_5));
+    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon))))) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_poly, ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_t_5));
     __pyx_t_5 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":350
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":350
  *         res = ''
  *         for poly in self.polygons.values():
  *             res += str(poly)             # <<<<<<<<<<<<<<
@@ -6577,7 +6577,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
     __Pyx_DECREF_SET(__pyx_v_res, ((PyObject*)__pyx_t_7));
     __pyx_t_7 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":351
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":351
  *         for poly in self.polygons.values():
  *             res += str(poly)
  *             res += os.linesep             # <<<<<<<<<<<<<<
@@ -6598,7 +6598,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":352
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":352
  *             res += str(poly)
  *             res += os.linesep
  *         return res             # <<<<<<<<<<<<<<
@@ -6610,7 +6610,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":342
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":342
  *         self.fw = fw
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -6623,7 +6623,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_res);
@@ -6633,7 +6633,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":354
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":354
  *         return res
  * 
  *     cpdef int newPoly(self):             # <<<<<<<<<<<<<<
@@ -6641,8 +6641,8 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_2__str__(struct __pyx_o
  *         cdef int polyId = self.nextPolyId
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_5newPoly(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_5newPoly(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_polyId;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -6663,7 +6663,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_newPoly); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_5newPoly)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_5newPoly)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -6699,7 +6699,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":356
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":356
  *     cpdef int newPoly(self):
  *         """Add a new empty polygon and return its id."""
  *         cdef int polyId = self.nextPolyId             # <<<<<<<<<<<<<<
@@ -6709,7 +6709,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
   __pyx_t_5 = __pyx_v_self->nextPolyId;
   __pyx_v_polyId = __pyx_t_5;
 
-  /* "QSWAT/polygonizeInC2.pyx":358
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":358
  *         cdef int polyId = self.nextPolyId
  * 
  *         self.polygons[polyId] = Polygon(self.connected4, self.fw)             # <<<<<<<<<<<<<<
@@ -6726,7 +6726,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
   __Pyx_GIVEREF(__pyx_v_self->fw);
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_self->fw);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Polygon), __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon), __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (unlikely(__pyx_v_self->polygons == Py_None)) {
@@ -6739,7 +6739,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":359
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":359
  * 
  *         self.polygons[polyId] = Polygon(self.connected4, self.fw)
  *         self.polyIdMap[polyId] = polyId             # <<<<<<<<<<<<<<
@@ -6758,7 +6758,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":360
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":360
  *         self.polygons[polyId] = Polygon(self.connected4, self.fw)
  *         self.polyIdMap[polyId] = polyId
  *         self.nextPolyId += 1             # <<<<<<<<<<<<<<
@@ -6767,7 +6767,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
  */
   __pyx_v_self->nextPolyId = (__pyx_v_self->nextPolyId + 1);
 
-  /* "QSWAT/polygonizeInC2.pyx":361
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":361
  *         self.polyIdMap[polyId] = polyId
  *         self.nextPolyId += 1
  *         return polyId             # <<<<<<<<<<<<<<
@@ -6777,7 +6777,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
   __pyx_r = __pyx_v_polyId;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":354
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":354
  *         return res
  * 
  *     cpdef int newPoly(self):             # <<<<<<<<<<<<<<
@@ -6791,7 +6791,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Shape.newPoly", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Shape.newPoly", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -6799,26 +6799,26 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(struct __pyx_obj_5QSWA
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_5newPoly(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_4newPoly[] = "Add a new empty polygon and return its id.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_5newPoly(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_5newPoly(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_4newPoly[] = "Add a new empty polygon and return its id.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_5newPoly(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("newPoly (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_4newPoly(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_4newPoly(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("newPoly", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_newPoly(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6827,7 +6827,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_o
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.newPoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.newPoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6835,7 +6835,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_o
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":363
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":363
  *         return polyId
  * 
  *     cpdef void checkMerge(self, int dest, int src):             # <<<<<<<<<<<<<<
@@ -6843,8 +6843,8 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_4newPoly(struct __pyx_o
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src, int __pyx_skip_dispatch) {
   int __pyx_v_finalDest;
   PyObject *__pyx_v_finalSrc = NULL;
   PyObject *__pyx_v_nextSrc = NULL;
@@ -6874,7 +6874,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_checkMerge); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_7checkMerge)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_7checkMerge)) {
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_dest); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 363, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_src); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 363, __pyx_L1_error)
@@ -6946,7 +6946,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":370
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":370
  *         # short cut for common situation
  *         #self.fw.writeFlush('Checking dest {0} and src {1}'.format(dest, src))
  *         if dest == src:             # <<<<<<<<<<<<<<
@@ -6956,7 +6956,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   __pyx_t_9 = ((__pyx_v_dest == __pyx_v_src) != 0);
   if (__pyx_t_9) {
 
-    /* "QSWAT/polygonizeInC2.pyx":371
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":371
  *         #self.fw.writeFlush('Checking dest {0} and src {1}'.format(dest, src))
  *         if dest == src:
  *             return             # <<<<<<<<<<<<<<
@@ -6965,7 +6965,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
  */
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":370
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":370
  *         # short cut for common situation
  *         #self.fw.writeFlush('Checking dest {0} and src {1}'.format(dest, src))
  *         if dest == src:             # <<<<<<<<<<<<<<
@@ -6974,7 +6974,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":372
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":372
  *         if dest == src:
  *             return
  *         finalDest = self.polyIdMap[dest]             # <<<<<<<<<<<<<<
@@ -6994,7 +6994,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_finalDest = __pyx_t_7;
 
-  /* "QSWAT/polygonizeInC2.pyx":373
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":373
  *             return
  *         finalDest = self.polyIdMap[dest]
  *         finalSrc = self.polyIdMap[src]             # <<<<<<<<<<<<<<
@@ -7013,7 +7013,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   __pyx_v_finalSrc = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":375
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":375
  *         finalSrc = self.polyIdMap[src]
  *         #self.fw.writeFlush('finalDest is {0} and finalSrc is {1}'.format(finalDest, finalSrc))
  *         if finalDest == finalSrc:             # <<<<<<<<<<<<<<
@@ -7028,7 +7028,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_9) {
 
-    /* "QSWAT/polygonizeInC2.pyx":376
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":376
  *         #self.fw.writeFlush('finalDest is {0} and finalSrc is {1}'.format(finalDest, finalSrc))
  *         if finalDest == finalSrc:
  *             return             # <<<<<<<<<<<<<<
@@ -7037,7 +7037,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
  */
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":375
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":375
  *         finalSrc = self.polyIdMap[src]
  *         #self.fw.writeFlush('finalDest is {0} and finalSrc is {1}'.format(finalDest, finalSrc))
  *         if finalDest == finalSrc:             # <<<<<<<<<<<<<<
@@ -7046,7 +7046,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":379
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":379
  *         # we need to map finalSrc to finalDest
  *         # and all targets of finalSrc must be changed to finalDest
  *         for nextSrc, nextTarg in self.polyIdMap.items():             # <<<<<<<<<<<<<<
@@ -7074,7 +7074,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
     __Pyx_XDECREF_SET(__pyx_v_nextTarg, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":380
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":380
  *         # and all targets of finalSrc must be changed to finalDest
  *         for nextSrc, nextTarg in self.polyIdMap.items():
  *             if nextTarg == finalSrc:             # <<<<<<<<<<<<<<
@@ -7086,7 +7086,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_9) {
 
-      /* "QSWAT/polygonizeInC2.pyx":381
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":381
  *         for nextSrc, nextTarg in self.polyIdMap.items():
  *             if nextTarg == finalSrc:
  *                 self.polyIdMap[nextSrc] = finalDest             # <<<<<<<<<<<<<<
@@ -7102,7 +7102,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
       if (unlikely(PyDict_SetItem(__pyx_v_self->polyIdMap, __pyx_v_nextSrc, __pyx_t_5) < 0)) __PYX_ERR(0, 381, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":380
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":380
  *         # and all targets of finalSrc must be changed to finalDest
  *         for nextSrc, nextTarg in self.polyIdMap.items():
  *             if nextTarg == finalSrc:             # <<<<<<<<<<<<<<
@@ -7113,7 +7113,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":384
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":384
  *         #self.fw.writeFlush('PolyIdMap is {0}'.format(str(self.polyIdMap)))
  *         #self.fw.writeFlush('Polygons has keys {0}'.format(str(self.polygons.keys())))
  *         self.polygons[finalDest].addPoly(self.polygons[finalSrc])             # <<<<<<<<<<<<<<
@@ -7156,7 +7156,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":385
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":385
  *         #self.fw.writeFlush('Polygons has keys {0}'.format(str(self.polygons.keys())))
  *         self.polygons[finalDest].addPoly(self.polygons[finalSrc])
  *         del self.polygons[finalSrc]             # <<<<<<<<<<<<<<
@@ -7169,7 +7169,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   }
   if (unlikely(PyDict_DelItem(__pyx_v_self->polygons, __pyx_v_finalSrc) < 0)) __PYX_ERR(0, 385, __pyx_L1_error)
 
-  /* "QSWAT/polygonizeInC2.pyx":363
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":363
  *         return polyId
  * 
  *     cpdef void checkMerge(self, int dest, int src):             # <<<<<<<<<<<<<<
@@ -7187,7 +7187,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Shape.checkMerge", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Shape.checkMerge", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_finalSrc);
   __Pyx_XDECREF(__pyx_v_nextSrc);
@@ -7196,9 +7196,9 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(struct __pyx_obj_5
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_6checkMerge[] = "If dest and src refer to different polygons, add the src polygon to the dest polygon and map src to dest.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_6checkMerge[] = "If dest and src refer to different polygons, add the src polygon to the dest polygon and map src to dest.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_dest;
   int __pyx_v_src;
   PyObject *__pyx_r = 0;
@@ -7246,24 +7246,24 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_7checkMerge(PyObject *_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("checkMerge", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 363, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.checkMerge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.checkMerge", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), __pyx_v_dest, __pyx_v_src);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), __pyx_v_dest, __pyx_v_src);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_dest, int __pyx_v_src) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("checkMerge", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge(__pyx_v_self, __pyx_v_dest, __pyx_v_src, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_checkMerge(__pyx_v_self, __pyx_v_dest, __pyx_v_src, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7272,7 +7272,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __py
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.checkMerge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.checkMerge", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7280,7 +7280,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __py
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":387
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":387
  *         del self.polygons[finalSrc]
  * 
  *     cpdef void addLink(self, int polyId, Vertex v1, Vertex v2):             # <<<<<<<<<<<<<<
@@ -7288,8 +7288,8 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_6checkMerge(struct __py
  * 
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2, int __pyx_skip_dispatch) {
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -7312,12 +7312,12 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSW
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_addLink); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 387, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9addLink)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9addLink)) {
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_polyId); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 387, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 387, __pyx_L1_error)
+        __pyx_t_4 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 387, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 387, __pyx_L1_error)
+        __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 387, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -7391,7 +7391,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSW
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":390
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":390
  *         """Add a link to the polygon identifed by polyId."""
  * 
  *         self.polygons[self.polyIdMap[polyId]].addLink(v1, v2)             # <<<<<<<<<<<<<<
@@ -7417,9 +7417,9 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSW
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_addLink); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_9 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_9 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_5 = NULL;
   __pyx_t_8 = 0;
@@ -7472,7 +7472,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSW
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":387
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":387
  *         del self.polygons[finalSrc]
  * 
  *     cpdef void addLink(self, int polyId, Vertex v1, Vertex v2):             # <<<<<<<<<<<<<<
@@ -7491,18 +7491,18 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(struct __pyx_obj_5QSW
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Shape.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Shape.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_8addLink[] = "Add a link to the polygon identifed by polyId.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8addLink[] = "Add a link to the polygon identifed by polyId.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_polyId;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("addLink (wrapper)", 0);
@@ -7551,31 +7551,31 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9addLink(PyObject *__py
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_polyId = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_polyId == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 387, __pyx_L3_error)
-    __pyx_v_v1 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 387, __pyx_L3_error)
-    __pyx_v_v2 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 387, __pyx_L3_error)
+    __pyx_v_v1 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 387, __pyx_L3_error)
+    __pyx_v_v2 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 387, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("addLink", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 387, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8addLink(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), __pyx_v_polyId, __pyx_v_v1, __pyx_v_v2);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8addLink(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), __pyx_v_polyId, __pyx_v_v1, __pyx_v_v2);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_v_polyId, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("addLink", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink(__pyx_v_self, __pyx_v_polyId, __pyx_v_v1, __pyx_v_v2, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 387, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_addLink(__pyx_v_self, __pyx_v_polyId, __pyx_v_v1, __pyx_v_v2, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7584,7 +7584,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_o
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.addLink", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7592,7 +7592,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_o
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":392
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":392
  *         self.polygons[self.polyIdMap[polyId]].addLink(v1, v2)
  * 
  *     cpdef void  coalesce(self):             # <<<<<<<<<<<<<<
@@ -7600,9 +7600,9 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8addLink(struct __pyx_o
  *         cdef Polygon poly
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_11coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly = 0;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_11coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static void __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, int __pyx_skip_dispatch) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v_poly = 0;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -7624,7 +7624,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_5QS
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_coalesce); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_11coalesce)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_11coalesce)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -7658,7 +7658,7 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_5QS
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":396
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":396
  *         cdef Polygon poly
  * 
  *         for poly in self.polygons.values():             # <<<<<<<<<<<<<<
@@ -7680,22 +7680,22 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_5QS
     if (unlikely(__pyx_t_8 == 0)) break;
     if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 396, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5QSWAT_14polygonizeInC2_Polygon))))) __PYX_ERR(0, 396, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_poly, ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_t_2));
+    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon))))) __PYX_ERR(0, 396, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_poly, ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":398
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":398
  *         for poly in self.polygons.values():
  *             #self.fw.writeFlush('Before coalesce: {0}'.format(str(poly)))
  *             poly.coalesce()             # <<<<<<<<<<<<<<
  *             #self.fw.writeFlush('After coalesce: {0}'.format(str(poly)))
  * 
  */
-    ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_poly->__pyx_vtab)->coalesce(__pyx_v_poly, 0);
+    ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v_poly->__pyx_vtab)->coalesce(__pyx_v_poly, 0);
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":392
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":392
  *         self.polygons[self.polyIdMap[polyId]].addLink(v1, v2)
  * 
  *     cpdef void  coalesce(self):             # <<<<<<<<<<<<<<
@@ -7710,33 +7710,33 @@ static void __pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(struct __pyx_obj_5QS
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Shape.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Shape.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_poly);
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_11coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_10coalesce[] = "Coalesce all polygons.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_11coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_11coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_10coalesce[] = "Coalesce all polygons.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_11coalesce(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("coalesce (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_10coalesce(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_10coalesce(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("coalesce", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_coalesce(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7745,7 +7745,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.coalesce", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7753,7 +7753,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":319
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":319
  *     cdef:
  *         int nextPolyId
  *         readonly dict polygons             # <<<<<<<<<<<<<<
@@ -7762,19 +7762,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_10coalesce(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_8polygons_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_8polygons_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8polygons_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8polygons_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
@@ -7790,7 +7790,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(struc
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":323
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":323
  *         bint connected4
  *         object fw
  *         public int cellCount             # <<<<<<<<<<<<<<
@@ -7799,19 +7799,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_8polygons___get__(struc
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9cellCount_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9cellCount_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7826,7 +7826,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(stru
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.cellCount.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.cellCount.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7835,19 +7835,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount___get__(stru
 }
 
 /* Python wrapper */
-static int __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9cellCount_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9cellCount_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v_value) {
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v_value) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -7859,7 +7859,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(struct __
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.cellCount.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.cellCount.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -7873,19 +7873,19 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_9cellCount_2__set__(struct __
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -8128,7 +8128,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(str
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -8146,19 +8146,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_12__reduce_cython__(str
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8170,7 +8170,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(s
  *     __pyx_unpickle_Shape__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -8186,7 +8186,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(s
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Shape.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Shape.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8194,7 +8194,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(s
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":412
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":412
  *         double unitArea
  * 
  *     def __init__(self, object p, double dx, double dy):             # <<<<<<<<<<<<<<
@@ -8203,12 +8203,12 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_5Shape_14__setstate_cython__(s
  */
 
 /* Python wrapper */
-static int __pyx_pw_5QSWAT_14polygonizeInC2_6Offset_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_6Offset___init__[] = "Constructor.";
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__[] = "Constructor.";
 #if CYTHON_COMPILING_IN_CPYTHON
-struct wrapperbase __pyx_wrapperbase_5QSWAT_14polygonizeInC2_6Offset___init__;
+struct wrapperbase __pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__;
 #endif
-static int __pyx_pw_5QSWAT_14polygonizeInC2_6Offset_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_p = 0;
   double __pyx_v_dx;
   double __pyx_v_dy;
@@ -8267,23 +8267,23 @@ static int __pyx_pw_5QSWAT_14polygonizeInC2_6Offset_1__init__(PyObject *__pyx_v_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 412, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), __pyx_v_p, __pyx_v_dx, __pyx_v_dy);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), __pyx_v_p, __pyx_v_dx, __pyx_v_dy);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_p, double __pyx_v_dx, double __pyx_v_dy) {
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_p, double __pyx_v_dx, double __pyx_v_dy) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":415
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":415
  *         """Constructor."""
  *         ## origin
  *         self.origin = p             # <<<<<<<<<<<<<<
@@ -8296,7 +8296,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5Q
   __Pyx_DECREF(__pyx_v_self->origin);
   __pyx_v_self->origin = __pyx_v_p;
 
-  /* "QSWAT/polygonizeInC2.pyx":417
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":417
  *         self.origin = p
  *         ## x dimension of grid
  *         self.dx = dx             # <<<<<<<<<<<<<<
@@ -8305,7 +8305,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5Q
  */
   __pyx_v_self->dx = __pyx_v_dx;
 
-  /* "QSWAT/polygonizeInC2.pyx":419
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":419
  *         self.dx = dx
  *         ## y dimension of grid
  *         self.dy = dy             # <<<<<<<<<<<<<<
@@ -8314,7 +8314,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5Q
  */
   __pyx_v_self->dy = __pyx_v_dy;
 
-  /* "QSWAT/polygonizeInC2.pyx":421
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":421
  *         self.dy = dy
  *         ## area of grid cell (dx * dy)
  *         self.unitArea = dx * dy             # <<<<<<<<<<<<<<
@@ -8323,7 +8323,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5Q
  */
   __pyx_v_self->unitArea = (__pyx_v_dx * __pyx_v_dy);
 
-  /* "QSWAT/polygonizeInC2.pyx":412
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":412
  *         double unitArea
  * 
  *     def __init__(self, object p, double dx, double dy):             # <<<<<<<<<<<<<<
@@ -8337,7 +8337,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5Q
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":423
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":423
  *         self.unitArea = dx * dy
  * 
  *     cdef vertexToPoint(self, Vertex v):             # <<<<<<<<<<<<<<
@@ -8345,7 +8345,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_6Offset___init__(struct __pyx_obj_5Q
  *         return QgsPointXY(self.origin.x() + self.dx * v.x, self.origin.y() - self.dy * v.y)
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8357,7 +8357,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __
   int __pyx_t_7;
   __Pyx_RefNannySetupContext("vertexToPoint", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":425
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":425
  *     cdef vertexToPoint(self, Vertex v):
  *         """Generate a point from a Vertex."""
  *         return QgsPointXY(self.origin.x() + self.dx * v.x, self.origin.y() - self.dy * v.y)             # <<<<<<<<<<<<<<
@@ -8466,7 +8466,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":423
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":423
  *         self.unitArea = dx * dy
  * 
  *     cdef vertexToPoint(self, Vertex v):             # <<<<<<<<<<<<<<
@@ -8482,7 +8482,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.vertexToPoint", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.vertexToPoint", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8490,7 +8490,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":427
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":427
  *         return QgsPointXY(self.origin.x() + self.dx * v.x, self.origin.y() - self.dy * v.y)
  * 
  *     cpdef double area(self, Shape shape):             # <<<<<<<<<<<<<<
@@ -8498,8 +8498,8 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint(struct __
  *         return shape.cellCount * self.unitArea
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
-static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
+static double __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8519,7 +8519,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSW
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_area); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 427, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_3area)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_3area)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -8555,7 +8555,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSW
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":429
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":429
  *     cpdef double area(self, Shape shape):
  *         """Convert the cell count to an area in square metres."""
  *         return shape.cellCount * self.unitArea             # <<<<<<<<<<<<<<
@@ -8565,7 +8565,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSW
   __pyx_r = (__pyx_v_shape->cellCount * __pyx_v_self->unitArea);
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":427
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":427
  *         return QgsPointXY(self.origin.x() + self.dx * v.x, self.origin.y() - self.dy * v.y)
  * 
  *     cpdef double area(self, Shape shape):             # <<<<<<<<<<<<<<
@@ -8579,7 +8579,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSW
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Offset.area", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Offset.area", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -8587,14 +8587,14 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(struct __pyx_obj_5QSW
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_6Offset_2area[] = "Convert the cell count to an area in square metres.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_v_self, PyObject *__pyx_v_shape) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_2area[] = "Convert the cell count to an area in square metres.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_v_self, PyObject *__pyx_v_shape) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("area (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_shape), __pyx_ptype_5QSWAT_14polygonizeInC2_Shape, 1, "shape", 0))) __PYX_ERR(0, 427, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_6Offset_2area(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_shape));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_shape), __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, 1, "shape", 0))) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_2area(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_shape));
 
   /* function exit code */
   goto __pyx_L0;
@@ -8605,13 +8605,13 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_3area(PyObject *__pyx_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("area", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_5QSWAT_14polygonizeInC2_6Offset_area(__pyx_v_self, __pyx_v_shape, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_area(__pyx_v_self, __pyx_v_shape, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 427, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8620,7 +8620,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.area", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.area", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8628,7 +8628,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":431
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":431
  *         return shape.cellCount * self.unitArea
  * 
  *     cdef object ringToPointsRing(self, object ring):             # <<<<<<<<<<<<<<
@@ -8636,7 +8636,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_2area(struct __pyx_obj
  *         return [self.vertexToPoint(v) for v in ring]
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_ring) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_ring) {
   PyObject *__pyx_8genexpr2__pyx_v_v = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -8645,10 +8645,10 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct
   Py_ssize_t __pyx_t_3;
   PyObject *(*__pyx_t_4)(PyObject *);
   PyObject *__pyx_t_5 = NULL;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_6;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_6;
   __Pyx_RefNannySetupContext("ringToPointsRing", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":433
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":433
  *     cdef object ringToPointsRing(self, object ring):
  *         """Convert a ring to a ring of points."""
  *         return [self.vertexToPoint(v) for v in ring]             # <<<<<<<<<<<<<<
@@ -8700,8 +8700,8 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct
       }
       __Pyx_XDECREF_SET(__pyx_8genexpr2__pyx_v_v, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_8genexpr2__pyx_v_v); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 433, __pyx_L5_error)
-      __pyx_t_5 = ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->vertexToPoint(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 433, __pyx_L5_error)
+      __pyx_t_6 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_8genexpr2__pyx_v_v); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 433, __pyx_L5_error)
+      __pyx_t_5 = ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->vertexToPoint(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 433, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_5);
       if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 433, __pyx_L5_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8718,7 +8718,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":431
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":431
  *         return shape.cellCount * self.unitArea
  * 
  *     cdef object ringToPointsRing(self, object ring):             # <<<<<<<<<<<<<<
@@ -8731,7 +8731,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.ringToPointsRing", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.ringToPointsRing", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_8genexpr2__pyx_v_v);
@@ -8740,7 +8740,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":435
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":435
  *         return [self.vertexToPoint(v) for v in ring]
  * 
  *     cdef object ringsToPointsRings(self, list inrings):             # <<<<<<<<<<<<<<
@@ -8748,7 +8748,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing(struct
  *         return [self.ringToPointsRing(inring) for inring in inrings]
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inrings) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inrings) {
   PyObject *__pyx_8genexpr3__pyx_v_inring = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -8758,7 +8758,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(stru
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("ringsToPointsRings", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":437
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":437
  *     cdef object ringsToPointsRings(self, list inrings):
  *         """Convert a list of rings to a list of points rings."""
  *         return [self.ringToPointsRing(inring) for inring in inrings]             # <<<<<<<<<<<<<<
@@ -8784,7 +8784,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(stru
       #endif
       __Pyx_XDECREF_SET(__pyx_8genexpr3__pyx_v_inring, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_4 = ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->ringToPointsRing(__pyx_v_self, __pyx_8genexpr3__pyx_v_inring); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 437, __pyx_L5_error)
+      __pyx_t_4 = ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->ringToPointsRing(__pyx_v_self, __pyx_8genexpr3__pyx_v_inring); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 437, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_4);
       if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 437, __pyx_L5_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -8801,7 +8801,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(stru
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":435
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":435
  *         return [self.vertexToPoint(v) for v in ring]
  * 
  *     cdef object ringsToPointsRings(self, list inrings):             # <<<<<<<<<<<<<<
@@ -8814,7 +8814,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(stru
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.ringsToPointsRings", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.ringsToPointsRings", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_8genexpr3__pyx_v_inring);
@@ -8823,7 +8823,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(stru
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":439
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":439
  *         return [self.ringToPointsRing(inring) for inring in inrings]
  * 
  *     cdef object polygonsToPointsPolygons(self, object inpolys):             # <<<<<<<<<<<<<<
@@ -8831,7 +8831,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings(stru
  *         return [self.ringsToPointsRings(inpoly.rings) for inpoly in inpolys]
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygons(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inpolys) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygons(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v_inpolys) {
   PyObject *__pyx_8genexpr4__pyx_v_inpoly = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -8843,7 +8843,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygon
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("polygonsToPointsPolygons", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":441
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":441
  *     cdef object polygonsToPointsPolygons(self, object inpolys):
  *         """convert a list of polygons to a list of points polygons."""
  *         return [self.ringsToPointsRings(inpoly.rings) for inpoly in inpolys]             # <<<<<<<<<<<<<<
@@ -8898,7 +8898,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygon
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_8genexpr4__pyx_v_inpoly, __pyx_n_s_rings); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 441, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_5);
       if (!(likely(PyList_CheckExact(__pyx_t_5))||((__pyx_t_5) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_5)->tp_name), 0))) __PYX_ERR(0, 441, __pyx_L5_error)
-      __pyx_t_6 = ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->ringsToPointsRings(__pyx_v_self, ((PyObject*)__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 441, __pyx_L5_error)
+      __pyx_t_6 = ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->ringsToPointsRings(__pyx_v_self, ((PyObject*)__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 441, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 441, __pyx_L5_error)
@@ -8916,7 +8916,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygon
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":439
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":439
  *         return [self.ringToPointsRing(inring) for inring in inrings]
  * 
  *     cdef object polygonsToPointsPolygons(self, object inpolys):             # <<<<<<<<<<<<<<
@@ -8930,7 +8930,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygon
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.polygonsToPointsPolygons", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.polygonsToPointsPolygons", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_8genexpr4__pyx_v_inpoly);
@@ -8939,7 +8939,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygon
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":443
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":443
  *         return [self.ringsToPointsRings(inpoly.rings) for inpoly in inpolys]
  * 
  *     cpdef object makeGeometry(self, Shape shape):             # <<<<<<<<<<<<<<
@@ -8947,8 +8947,8 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygon
  *         return QgsGeometry.fromMultiPolygonXY(self.polygonsToPointsPolygons(shape.polygons.values()))
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8967,7 +8967,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __p
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_makeGeometry); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry)) {
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -9003,7 +9003,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __p
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":445
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":445
  *     cpdef object makeGeometry(self, Shape shape):
  *         """Create a multi-polygon geometry from a list of polygons."""
  *         return QgsGeometry.fromMultiPolygonXY(self.polygonsToPointsPolygons(shape.polygons.values()))             # <<<<<<<<<<<<<<
@@ -9022,7 +9022,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __p
   }
   __pyx_t_2 = __Pyx_PyDict_Values(__pyx_v_shape->polygons); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 445, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->polygonsToPointsPolygons(__pyx_v_self, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 445, __pyx_L1_error)
+  __pyx_t_4 = ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->__pyx_vtab)->polygonsToPointsPolygons(__pyx_v_self, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 445, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -9045,7 +9045,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __p
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":443
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":443
  *         return [self.ringsToPointsRings(inpoly.rings) for inpoly in inpolys]
  * 
  *     cpdef object makeGeometry(self, Shape shape):             # <<<<<<<<<<<<<<
@@ -9059,7 +9059,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __p
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.makeGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.makeGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9068,14 +9068,14 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(struct __p
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry[] = "Create a multi-polygon geometry from a list of polygons.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject *__pyx_v_self, PyObject *__pyx_v_shape) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject *__pyx_v_self, PyObject *__pyx_v_shape); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry[] = "Create a multi-polygon geometry from a list of polygons.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject *__pyx_v_self, PyObject *__pyx_v_shape) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("makeGeometry (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_shape), __pyx_ptype_5QSWAT_14polygonizeInC2_Shape, 1, "shape", 0))) __PYX_ERR(0, 443, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_shape));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_shape), __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, 1, "shape", 0))) __PYX_ERR(0, 443, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_shape));
 
   /* function exit code */
   goto __pyx_L0;
@@ -9086,13 +9086,13 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry(PyObject
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("makeGeometry", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(__pyx_v_self, __pyx_v_shape, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_makeGeometry(__pyx_v_self, __pyx_v_shape, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9101,7 +9101,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(struct _
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.makeGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.makeGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9116,19 +9116,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry(struct _
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -9347,7 +9347,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(str
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -9365,19 +9365,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_6__reduce_cython__(str
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -9389,7 +9389,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(s
  *     __pyx_unpickle_Offset__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -9405,7 +9405,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(s
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Offset.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Offset.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9413,7 +9413,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(s
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":462
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":462
  *         object fw
  * 
  *     def __init__(self, bint connected4, int numCols, int noData, object p, double dX, double dY, object fw=None):             # <<<<<<<<<<<<<<
@@ -9422,8 +9422,8 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6Offset_8__setstate_cython__(s
  */
 
 /* Python wrapper */
-static int __pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_connected4;
   int __pyx_v_numCols;
   int __pyx_v_noData;
@@ -9530,18 +9530,18 @@ static int __pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_1__init__(PyObject *__p
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 462, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), __pyx_v_connected4, __pyx_v_numCols, __pyx_v_noData, __pyx_v_p, __pyx_v_dX, __pyx_v_dY, __pyx_v_fw);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize___init__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), __pyx_v_connected4, __pyx_v_numCols, __pyx_v_noData, __pyx_v_p, __pyx_v_dX, __pyx_v_dY, __pyx_v_fw);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_connected4, int __pyx_v_numCols, int __pyx_v_noData, PyObject *__pyx_v_p, double __pyx_v_dX, double __pyx_v_dY, PyObject *__pyx_v_fw) {
+static int __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_connected4, int __pyx_v_numCols, int __pyx_v_noData, PyObject *__pyx_v_p, double __pyx_v_dX, double __pyx_v_dY, PyObject *__pyx_v_fw) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -9550,7 +9550,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "QSWAT/polygonizeInC2.pyx":465
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":465
  *         ## length of arrays is number of values in one row plus 2: we have noData at each end
  *         ## (not strictly necessary for id rows, but easier to use same indices)
  *         self.length = numCols + 2             # <<<<<<<<<<<<<<
@@ -9559,7 +9559,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
  */
   __pyx_v_self->length = (__pyx_v_numCols + 2);
 
-  /* "QSWAT/polygonizeInC2.pyx":467
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":467
  *         self.length = numCols + 2
  *         ## values data from last row read
  *         self.lastVals = np.empty([self.length], dtype=int)             # <<<<<<<<<<<<<<
@@ -9598,7 +9598,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __pyx_v_self->lastVals = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":469
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":469
  *         self.lastVals = np.empty([self.length], dtype=int)
  *         ## values data from current row read
  *         self.thisVals = np.full([self.length], noData, dtype=int)             # <<<<<<<<<<<<<<
@@ -9642,7 +9642,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __pyx_v_self->thisVals = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":471
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":471
  *         self.thisVals = np.full([self.length], noData, dtype=int)
  *         ## polygon ids in last row
  *         self.lastIds = np.empty([self.length], dtype=int)             # <<<<<<<<<<<<<<
@@ -9681,7 +9681,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __pyx_v_self->lastIds = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":473
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":473
  *         self.lastIds = np.empty([self.length], dtype=int)
  *         ## polygon ids in this row
  *         self.thisIds = np.full([self.length], -1, dtype=int)             # <<<<<<<<<<<<<<
@@ -9723,7 +9723,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __pyx_v_self->thisIds = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":475
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":475
  *         self.thisIds = np.full([self.length], -1, dtype=int)
  *         ## current row number
  *         self.rowNum = 0             # <<<<<<<<<<<<<<
@@ -9732,7 +9732,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
  */
   __pyx_v_self->rowNum = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":477
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":477
  *         self.rowNum = 0
  *         ## mapping from value to shape
  *         self.shapes = dict()             # <<<<<<<<<<<<<<
@@ -9747,7 +9747,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __pyx_v_self->shapes = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":479
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":479
  *         self.shapes = dict()
  *         ## flag to show if using 4connectedness (or, if false, 8)
  *         self.connected4 = connected4             # <<<<<<<<<<<<<<
@@ -9756,7 +9756,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
  */
   __pyx_v_self->connected4 = __pyx_v_connected4;
 
-  /* "QSWAT/polygonizeInC2.pyx":481
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":481
  *         self.connected4 = connected4
  *         ## noData value
  *         self.noData = noData             # <<<<<<<<<<<<<<
@@ -9765,7 +9765,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
  */
   __pyx_v_self->noData = __pyx_v_noData;
 
-  /* "QSWAT/polygonizeInC2.pyx":483
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":483
  *         self.noData = noData
  *         ## offset object for drawing shapes
  *         self.offset = Offset(p, dX, dY)             # <<<<<<<<<<<<<<
@@ -9787,16 +9787,16 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   PyTuple_SET_ITEM(__pyx_t_3, 2, __pyx_t_1);
   __pyx_t_4 = 0;
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Offset), __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 483, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Offset), __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 483, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->offset);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->offset));
-  __pyx_v_self->offset = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_t_1);
+  __pyx_v_self->offset = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":484
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":484
  *         ## offset object for drawing shapes
  *         self.offset = Offset(p, dX, dY)
  *         self.fw = fw             # <<<<<<<<<<<<<<
@@ -9809,7 +9809,7 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __Pyx_DECREF(__pyx_v_self->fw);
   __pyx_v_self->fw = __pyx_v_fw;
 
-  /* "QSWAT/polygonizeInC2.pyx":462
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":462
  *         object fw
  * 
  *     def __init__(self, bint connected4, int numCols, int noData, object p, double dX, double dY, object fw=None):             # <<<<<<<<<<<<<<
@@ -9825,14 +9825,14 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":486
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":486
  *         self.fw = fw
  * 
  *     cpdef addRow(self, np.ndarray[np.int_t] row, int rowNum):             # <<<<<<<<<<<<<<
@@ -9840,12 +9840,12 @@ static int __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize___init__(struct __pyx_o
  * 
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum, int __pyx_skip_dispatch) {
   int __pyx_v_i;
   int __pyx_v_thisIdDone;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
   PyObject *__pyx_v_leftLinks = 0;
   PyObject *__pyx_v_colNum = NULL;
   PyObject *__pyx_v_thisVal = NULL;
@@ -9871,12 +9871,12 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   long __pyx_t_11;
   int __pyx_t_12;
   int __pyx_t_13;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_14;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_14;
   PyObject *__pyx_t_15 = NULL;
   int __pyx_t_16;
   Py_ssize_t __pyx_t_17;
   PyObject *(*__pyx_t_18)(PyObject *);
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_19;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_19;
   __Pyx_RefNannySetupContext("addRow", 0);
   __pyx_pybuffer_row.pybuffer.buf = NULL;
   __pyx_pybuffer_row.refcount = 0;
@@ -9898,7 +9898,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_addRow); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_3addRow)) {
         __Pyx_XDECREF(__pyx_r);
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_rowNum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 486, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
@@ -9968,7 +9968,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":495
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":495
  *             list leftLinks
  * 
  *         self.lastVals = np.copy(self.thisVals)             # <<<<<<<<<<<<<<
@@ -10002,7 +10002,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   __pyx_v_self->lastVals = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":496
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":496
  * 
  *         self.lastVals = np.copy(self.thisVals)
  *         self.lastIds = np.copy(self.thisIds)             # <<<<<<<<<<<<<<
@@ -10036,7 +10036,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   __pyx_v_self->lastIds = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":497
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":497
  *         self.lastVals = np.copy(self.thisVals)
  *         self.lastIds = np.copy(self.thisIds)
  *         self.rowNum = rowNum             # <<<<<<<<<<<<<<
@@ -10045,7 +10045,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
   __pyx_v_self->rowNum = __pyx_v_rowNum;
 
-  /* "QSWAT/polygonizeInC2.pyx":499
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":499
  *         self.rowNum = rowNum
  *         # preserve nodata values at each end of row
  *         self.thisVals[1:self.length-1] = row             # <<<<<<<<<<<<<<
@@ -10054,7 +10054,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
   if (__Pyx_PyObject_SetSlice(((PyObject *)__pyx_v_self->thisVals), ((PyObject *)__pyx_v_row), 1, (__pyx_v_self->length - 1), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 499, __pyx_L1_error)
 
-  /* "QSWAT/polygonizeInC2.pyx":503
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":503
  *         #self.fw.writeFlush('thisVals: {0}'.format(str(self.thisVals)))
  *         # first pass along row: assign polygon ids
  *         for i in range(1, self.length-1):             # <<<<<<<<<<<<<<
@@ -10066,7 +10066,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   for (__pyx_t_6 = 1; __pyx_t_6 < __pyx_t_9; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "QSWAT/polygonizeInC2.pyx":506
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":506
  *             # val and id arrays have an initial noData/-1 value
  *             # so index into input row is one less than arrays index
  *             colNum = i - 1             # <<<<<<<<<<<<<<
@@ -10078,7 +10078,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_XDECREF_SET(__pyx_v_colNum, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":507
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":507
  *             # so index into input row is one less than arrays index
  *             colNum = i - 1
  *             thisIdDone = False             # <<<<<<<<<<<<<<
@@ -10087,7 +10087,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
     __pyx_v_thisIdDone = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":508
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":508
  *             colNum = i - 1
  *             thisIdDone = False
  *             thisVal = self.thisVals[i]             # <<<<<<<<<<<<<<
@@ -10099,7 +10099,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_XDECREF_SET(__pyx_v_thisVal, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":509
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":509
  *             thisIdDone = False
  *             thisVal = self.thisVals[i]
  *             if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10114,7 +10114,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_10) {
 
-      /* "QSWAT/polygonizeInC2.pyx":510
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":510
  *             thisVal = self.thisVals[i]
  *             if thisVal != self.noData:
  *                 shape = self.shapes.get(thisVal, Shape(self.connected4, self.fw))             # <<<<<<<<<<<<<<
@@ -10135,7 +10135,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_GIVEREF(__pyx_v_self->fw);
       PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_self->fw);
       __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Shape), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 510, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_self->shapes, __pyx_v_thisVal, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 510, __pyx_L1_error)
@@ -10144,7 +10144,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_XDECREF_SET(__pyx_v_shape, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":511
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":511
  *             if thisVal != self.noData:
  *                 shape = self.shapes.get(thisVal, Shape(self.connected4, self.fw))
  *                 if thisVal == self.thisVals[i-1]:             # <<<<<<<<<<<<<<
@@ -10160,7 +10160,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":512
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":512
  *                 shape = self.shapes.get(thisVal, Shape(self.connected4, self.fw))
  *                 if thisVal == self.thisVals[i-1]:
  *                     self.thisIds[i] = self.thisIds[i-1]             # <<<<<<<<<<<<<<
@@ -10173,7 +10173,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 512, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":514
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":514
  *                     self.thisIds[i] = self.thisIds[i-1]
  *                     #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from left'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                     thisIdDone = True             # <<<<<<<<<<<<<<
@@ -10182,7 +10182,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
         __pyx_v_thisIdDone = 1;
 
-        /* "QSWAT/polygonizeInC2.pyx":511
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":511
  *             if thisVal != self.noData:
  *                 shape = self.shapes.get(thisVal, Shape(self.connected4, self.fw))
  *                 if thisVal == self.thisVals[i-1]:             # <<<<<<<<<<<<<<
@@ -10191,7 +10191,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":515
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":515
  *                     #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from left'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                     thisIdDone = True
  *                 if thisVal == self.lastVals[i]:             # <<<<<<<<<<<<<<
@@ -10206,7 +10206,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":516
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":516
  *                     thisIdDone = True
  *                 if thisVal == self.lastVals[i]:
  *                     if thisIdDone:             # <<<<<<<<<<<<<<
@@ -10216,7 +10216,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __pyx_t_10 = (__pyx_v_thisIdDone != 0);
         if (__pyx_t_10) {
 
-          /* "QSWAT/polygonizeInC2.pyx":517
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":517
  *                 if thisVal == self.lastVals[i]:
  *                     if thisIdDone:
  *                         shape.checkMerge(self.thisIds[i], self.lastIds[i])             # <<<<<<<<<<<<<<
@@ -10280,7 +10280,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":516
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":516
  *                     thisIdDone = True
  *                 if thisVal == self.lastVals[i]:
  *                     if thisIdDone:             # <<<<<<<<<<<<<<
@@ -10290,7 +10290,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           goto __pyx_L8;
         }
 
-        /* "QSWAT/polygonizeInC2.pyx":519
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":519
  *                         shape.checkMerge(self.thisIds[i], self.lastIds[i])
  *                     else:
  *                         self.thisIds[i] = self.lastIds[i]             # <<<<<<<<<<<<<<
@@ -10303,7 +10303,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 519, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":521
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":521
  *                         self.thisIds[i] = self.lastIds[i]
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True             # <<<<<<<<<<<<<<
@@ -10314,7 +10314,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         }
         __pyx_L8:;
 
-        /* "QSWAT/polygonizeInC2.pyx":515
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":515
  *                     #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from left'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                     thisIdDone = True
  *                 if thisVal == self.lastVals[i]:             # <<<<<<<<<<<<<<
@@ -10323,7 +10323,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":522
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":522
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i-1]:             # <<<<<<<<<<<<<<
@@ -10347,7 +10347,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_L10_bool_binop_done:;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":523
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":523
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i-1]:
  *                     if thisIdDone:             # <<<<<<<<<<<<<<
@@ -10357,7 +10357,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __pyx_t_10 = (__pyx_v_thisIdDone != 0);
         if (__pyx_t_10) {
 
-          /* "QSWAT/polygonizeInC2.pyx":524
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":524
  *                 if not self.connected4 and thisVal == self.lastVals[i-1]:
  *                     if thisIdDone:
  *                         shape.checkMerge(self.thisIds[i], self.lastIds[i-1])             # <<<<<<<<<<<<<<
@@ -10422,7 +10422,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":523
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":523
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i-1]:
  *                     if thisIdDone:             # <<<<<<<<<<<<<<
@@ -10432,7 +10432,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           goto __pyx_L12;
         }
 
-        /* "QSWAT/polygonizeInC2.pyx":526
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":526
  *                         shape.checkMerge(self.thisIds[i], self.lastIds[i-1])
  *                     else:
  *                         self.thisIds[i] = self.lastIds[i-1]             # <<<<<<<<<<<<<<
@@ -10446,7 +10446,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 526, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":528
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":528
  *                         self.thisIds[i] = self.lastIds[i-1]
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last left'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True             # <<<<<<<<<<<<<<
@@ -10457,7 +10457,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         }
         __pyx_L12:;
 
-        /* "QSWAT/polygonizeInC2.pyx":522
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":522
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i-1]:             # <<<<<<<<<<<<<<
@@ -10466,7 +10466,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":529
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":529
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last left'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i+1]:             # <<<<<<<<<<<<<<
@@ -10490,7 +10490,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_L14_bool_binop_done:;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":530
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":530
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i+1]:
  *                     if thisIdDone:             # <<<<<<<<<<<<<<
@@ -10500,7 +10500,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __pyx_t_10 = (__pyx_v_thisIdDone != 0);
         if (__pyx_t_10) {
 
-          /* "QSWAT/polygonizeInC2.pyx":531
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":531
  *                 if not self.connected4 and thisVal == self.lastVals[i+1]:
  *                     if thisIdDone:
  *                         shape.checkMerge(self.thisIds[i], self.lastIds[i+1])             # <<<<<<<<<<<<<<
@@ -10565,7 +10565,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":530
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":530
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i+1]:
  *                     if thisIdDone:             # <<<<<<<<<<<<<<
@@ -10575,7 +10575,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           goto __pyx_L16;
         }
 
-        /* "QSWAT/polygonizeInC2.pyx":533
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":533
  *                         shape.checkMerge(self.thisIds[i], self.lastIds[i+1])
  *                     else:
  *                         self.thisIds[i] = self.lastIds[i+1]             # <<<<<<<<<<<<<<
@@ -10589,7 +10589,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 533, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":535
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":535
  *                         self.thisIds[i] = self.lastIds[i+1]
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last right'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True             # <<<<<<<<<<<<<<
@@ -10600,7 +10600,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         }
         __pyx_L16:;
 
-        /* "QSWAT/polygonizeInC2.pyx":529
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":529
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last left'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True
  *                 if not self.connected4 and thisVal == self.lastVals[i+1]:             # <<<<<<<<<<<<<<
@@ -10609,7 +10609,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":536
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":536
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last right'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True
  *                 if not thisIdDone:             # <<<<<<<<<<<<<<
@@ -10619,7 +10619,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_t_10 = ((!(__pyx_v_thisIdDone != 0)) != 0);
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":537
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":537
  *                         thisIdDone = True
  *                 if not thisIdDone:
  *                     self.thisIds[i] = shape.newPoly()             # <<<<<<<<<<<<<<
@@ -10646,7 +10646,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 537, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":536
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":536
  *                         #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to {2} from last right'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                         thisIdDone = True
  *                 if not thisIdDone:             # <<<<<<<<<<<<<<
@@ -10655,7 +10655,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":539
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":539
  *                     self.thisIds[i] = shape.newPoly()
  *                     #self.fw.writeFlush('Id for value {3} at ({0}, {1}) set to new {2}'.format(colNum, rowNum, self.thisIds[i], thisVal))
  *                 self.shapes[thisVal] = shape             # <<<<<<<<<<<<<<
@@ -10668,7 +10668,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       }
       if (unlikely(PyDict_SetItem(__pyx_v_self->shapes, __pyx_v_thisVal, __pyx_v_shape) < 0)) __PYX_ERR(0, 539, __pyx_L1_error)
 
-      /* "QSWAT/polygonizeInC2.pyx":509
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":509
  *             thisIdDone = False
  *             thisVal = self.thisVals[i]
  *             if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10678,7 +10678,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     }
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":543
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":543
  *         # with 8 connectedness need to delay inserting left links to avoid failure to attach
  *         # upper left to lower right polygons. so we record them and attach after rest of row
  *         leftLinks = []             # <<<<<<<<<<<<<<
@@ -10690,7 +10690,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   __pyx_v_leftLinks = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":545
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":545
  *         leftLinks = []
  *         # add edges to polygons and count cells
  *         for i in range(0, self.length-1):             # <<<<<<<<<<<<<<
@@ -10702,7 +10702,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_9; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "QSWAT/polygonizeInC2.pyx":546
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":546
  *         # add edges to polygons and count cells
  *         for i in range(0, self.length-1):
  *             thisVal = self.thisVals[i]             # <<<<<<<<<<<<<<
@@ -10714,7 +10714,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_XDECREF_SET(__pyx_v_thisVal, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":547
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":547
  *         for i in range(0, self.length-1):
  *             thisVal = self.thisVals[i]
  *             lastVal = self.lastVals[i]             # <<<<<<<<<<<<<<
@@ -10726,7 +10726,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_XDECREF_SET(__pyx_v_lastVal, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":548
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":548
  *             thisVal = self.thisVals[i]
  *             lastVal = self.lastVals[i]
  *             nextVal = self.thisVals[i+1]             # <<<<<<<<<<<<<<
@@ -10739,7 +10739,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_XDECREF_SET(__pyx_v_nextVal, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":551
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":551
  *             # val and id arrays have an initial noData/-1 value
  *             # so index into input row is one less than arrays index
  *             colNum = i - 1             # <<<<<<<<<<<<<<
@@ -10751,7 +10751,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_XDECREF_SET(__pyx_v_colNum, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":552
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":552
  *             # so index into input row is one less than arrays index
  *             colNum = i - 1
  *             if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10766,7 +10766,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_10) {
 
-      /* "QSWAT/polygonizeInC2.pyx":553
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":553
  *             colNum = i - 1
  *             if thisVal != self.noData:
  *                 shape = self.shapes[thisVal]             # <<<<<<<<<<<<<<
@@ -10782,7 +10782,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_XDECREF_SET(__pyx_v_shape, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":554
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":554
  *             if thisVal != self.noData:
  *                 shape = self.shapes[thisVal]
  *                 shape.cellCount += 1             # <<<<<<<<<<<<<<
@@ -10797,7 +10797,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       if (__Pyx_PyObject_SetAttrStr(__pyx_v_shape, __pyx_n_s_cellCount, __pyx_t_1) < 0) __PYX_ERR(0, 554, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":552
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":552
  *             # so index into input row is one less than arrays index
  *             colNum = i - 1
  *             if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10806,7 +10806,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":555
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":555
  *                 shape = self.shapes[thisVal]
  *                 shape.cellCount += 1
  *             if thisVal != lastVal:             # <<<<<<<<<<<<<<
@@ -10818,7 +10818,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_10) {
 
-      /* "QSWAT/polygonizeInC2.pyx":556
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":556
  *                 shape.cellCount += 1
  *             if thisVal != lastVal:
  *                 v1 = Vertex(colNum, rowNum)             # <<<<<<<<<<<<<<
@@ -10830,7 +10830,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_t_14.y = __pyx_v_rowNum;
       __pyx_v_v1 = __pyx_t_14;
 
-      /* "QSWAT/polygonizeInC2.pyx":557
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":557
  *             if thisVal != lastVal:
  *                 v1 = Vertex(colNum, rowNum)
  *                 v2 = Vertex(colNum+1, rowNum)             # <<<<<<<<<<<<<<
@@ -10845,7 +10845,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_t_14.y = __pyx_v_rowNum;
       __pyx_v_v2 = __pyx_t_14;
 
-      /* "QSWAT/polygonizeInC2.pyx":558
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":558
  *                 v1 = Vertex(colNum, rowNum)
  *                 v2 = Vertex(colNum+1, rowNum)
  *                 if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10860,7 +10860,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":559
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":559
  *                 v2 = Vertex(colNum+1, rowNum)
  *                 if thisVal != self.noData:
  *                     shape.addLink(self.thisIds[i], v1, v2) # r             # <<<<<<<<<<<<<<
@@ -10872,9 +10872,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 559, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_7 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 559, __pyx_L1_error)
+        __pyx_t_7 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 559, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 559, __pyx_L1_error)
+        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 559, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_5 = NULL;
         __pyx_t_12 = 0;
@@ -10932,7 +10932,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":558
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":558
  *                 v1 = Vertex(colNum, rowNum)
  *                 v2 = Vertex(colNum+1, rowNum)
  *                 if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10941,7 +10941,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":560
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":560
  *                 if thisVal != self.noData:
  *                     shape.addLink(self.thisIds[i], v1, v2) # r
  *                 if lastVal != self.noData:             # <<<<<<<<<<<<<<
@@ -10956,7 +10956,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":561
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":561
  *                     shape.addLink(self.thisIds[i], v1, v2) # r
  *                 if lastVal != self.noData:
  *                     if self.connected4:             # <<<<<<<<<<<<<<
@@ -10966,7 +10966,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __pyx_t_10 = (__pyx_v_self->connected4 != 0);
         if (__pyx_t_10) {
 
-          /* "QSWAT/polygonizeInC2.pyx":562
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":562
  *                 if lastVal != self.noData:
  *                     if self.connected4:
  *                         self.shapes[lastVal].addLink(self.lastIds[i], v2, v1) # l             # <<<<<<<<<<<<<<
@@ -10984,9 +10984,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->lastIds), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 562, __pyx_L1_error)
+          __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 562, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_7 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 562, __pyx_L1_error)
+          __pyx_t_7 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 562, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __pyx_t_4 = NULL;
           __pyx_t_12 = 0;
@@ -11044,7 +11044,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "QSWAT/polygonizeInC2.pyx":561
+          /* "QSWAT3/QSWAT/polygonizeInC2.pyx":561
  *                     shape.addLink(self.thisIds[i], v1, v2) # r
  *                 if lastVal != self.noData:
  *                     if self.connected4:             # <<<<<<<<<<<<<<
@@ -11054,7 +11054,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
           goto __pyx_L24;
         }
 
-        /* "QSWAT/polygonizeInC2.pyx":565
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":565
  *                     else:
  *                         # defer adding left link
  *                         leftLinks.append((lastVal, self.lastIds[i], v2, v1))             # <<<<<<<<<<<<<<
@@ -11064,9 +11064,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         /*else*/ {
           __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->lastIds), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 565, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_15 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 565, __pyx_L1_error)
+          __pyx_t_15 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 565, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 565, __pyx_L1_error)
+          __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 565, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __pyx_t_7 = PyTuple_New(4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 565, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
@@ -11087,7 +11087,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         }
         __pyx_L24:;
 
-        /* "QSWAT/polygonizeInC2.pyx":560
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":560
  *                 if thisVal != self.noData:
  *                     shape.addLink(self.thisIds[i], v1, v2) # r
  *                 if lastVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11096,7 +11096,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":555
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":555
  *                 shape = self.shapes[thisVal]
  *                 shape.cellCount += 1
  *             if thisVal != lastVal:             # <<<<<<<<<<<<<<
@@ -11105,7 +11105,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
     }
 
-    /* "QSWAT/polygonizeInC2.pyx":566
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":566
  *                         # defer adding left link
  *                         leftLinks.append((lastVal, self.lastIds[i], v2, v1))
  *             if thisVal != nextVal:             # <<<<<<<<<<<<<<
@@ -11117,7 +11117,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_10) {
 
-      /* "QSWAT/polygonizeInC2.pyx":567
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":567
  *                         leftLinks.append((lastVal, self.lastIds[i], v2, v1))
  *             if thisVal != nextVal:
  *                 v1 = Vertex(colNum+1, rowNum)             # <<<<<<<<<<<<<<
@@ -11132,7 +11132,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_t_14.y = __pyx_v_rowNum;
       __pyx_v_v1 = __pyx_t_14;
 
-      /* "QSWAT/polygonizeInC2.pyx":568
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":568
  *             if thisVal != nextVal:
  *                 v1 = Vertex(colNum+1, rowNum)
  *                 v2 = Vertex(colNum+1, rowNum+1)             # <<<<<<<<<<<<<<
@@ -11147,7 +11147,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __pyx_t_14.y = (__pyx_v_rowNum + 1);
       __pyx_v_v2 = __pyx_t_14;
 
-      /* "QSWAT/polygonizeInC2.pyx":569
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":569
  *                 v1 = Vertex(colNum+1, rowNum)
  *                 v2 = Vertex(colNum+1, rowNum+1)
  *                 if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11162,7 +11162,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":570
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":570
  *                 v2 = Vertex(colNum+1, rowNum+1)
  *                 if thisVal != self.noData:
  *                     shape.addLink(self.thisIds[i], v1, v2) # d             # <<<<<<<<<<<<<<
@@ -11174,9 +11174,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __Pyx_GOTREF(__pyx_t_7);
         __pyx_t_15 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 570, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
-        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 570, __pyx_L1_error)
+        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 570, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 570, __pyx_L1_error)
+        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 570, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_2 = NULL;
         __pyx_t_12 = 0;
@@ -11234,7 +11234,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":569
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":569
  *                 v1 = Vertex(colNum+1, rowNum)
  *                 v2 = Vertex(colNum+1, rowNum+1)
  *                 if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11243,7 +11243,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":571
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":571
  *                 if thisVal != self.noData:
  *                     shape.addLink(self.thisIds[i], v1, v2) # d
  *                 if nextVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11258,7 +11258,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       if (__pyx_t_10) {
 
-        /* "QSWAT/polygonizeInC2.pyx":572
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":572
  *                     shape.addLink(self.thisIds[i], v1, v2) # d
  *                 if nextVal != self.noData:
  *                     self.shapes[nextVal].addLink(self.thisIds[i+1], v2, v1) # u             # <<<<<<<<<<<<<<
@@ -11277,9 +11277,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __pyx_t_11 = (__pyx_v_i + 1);
         __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_t_11, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 572, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 572, __pyx_L1_error)
+        __pyx_t_3 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 572, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 572, __pyx_L1_error)
+        __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 572, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_15 = NULL;
         __pyx_t_12 = 0;
@@ -11337,7 +11337,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-        /* "QSWAT/polygonizeInC2.pyx":571
+        /* "QSWAT3/QSWAT/polygonizeInC2.pyx":571
  *                 if thisVal != self.noData:
  *                     shape.addLink(self.thisIds[i], v1, v2) # d
  *                 if nextVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11346,7 +11346,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
  */
       }
 
-      /* "QSWAT/polygonizeInC2.pyx":566
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":566
  *                         # defer adding left link
  *                         leftLinks.append((lastVal, self.lastIds[i], v2, v1))
  *             if thisVal != nextVal:             # <<<<<<<<<<<<<<
@@ -11356,7 +11356,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     }
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":573
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":573
  *                 if nextVal != self.noData:
  *                     self.shapes[nextVal].addLink(self.thisIds[i+1], v2, v1) # u
  *         for (val, id, v2, v1) in leftLinks:             # <<<<<<<<<<<<<<
@@ -11431,9 +11431,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
       __PYX_ERR(0, 573, __pyx_L1_error)
       __pyx_L31_unpacking_done:;
     }
-    __pyx_t_14 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 573, __pyx_L1_error)
+    __pyx_t_14 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 573, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_19 = __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 573, __pyx_L1_error)
+    __pyx_t_19 = __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 573, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_2);
     __pyx_t_2 = 0;
@@ -11442,7 +11442,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __pyx_v_v2 = __pyx_t_14;
     __pyx_v_v1 = __pyx_t_19;
 
-    /* "QSWAT/polygonizeInC2.pyx":574
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":574
  *                     self.shapes[nextVal].addLink(self.thisIds[i+1], v2, v1) # u
  *         for (val, id, v2, v1) in leftLinks:
  *             self.shapes[val].addLink(id, v2, v1)             # <<<<<<<<<<<<<<
@@ -11458,9 +11458,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_addLink); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 574, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 574, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 574, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 574, __pyx_L1_error)
+    __pyx_t_1 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 574, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_2 = NULL;
     __pyx_t_6 = 0;
@@ -11516,7 +11516,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":573
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":573
  *                 if nextVal != self.noData:
  *                     self.shapes[nextVal].addLink(self.thisIds[i+1], v2, v1) # u
  *         for (val, id, v2, v1) in leftLinks:             # <<<<<<<<<<<<<<
@@ -11526,7 +11526,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":575
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":575
  *         for (val, id, v2, v1) in leftLinks:
  *             self.shapes[val].addLink(id, v2, v1)
  *         leftLinks = []             # <<<<<<<<<<<<<<
@@ -11538,7 +11538,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
   __Pyx_DECREF_SET(__pyx_v_leftLinks, ((PyObject*)__pyx_t_7));
   __pyx_t_7 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":486
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":486
  *         self.fw = fw
  * 
  *     cpdef addRow(self, np.ndarray[np.int_t] row, int rowNum):             # <<<<<<<<<<<<<<
@@ -11563,7 +11563,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_row.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.addRow", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.addRow", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -11583,9 +11583,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(struct __py
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_2addRow[] = "Add a row.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_2addRow[] = "Add a row.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_row = 0;
   int __pyx_v_rowNum;
   PyObject *__pyx_r = 0;
@@ -11633,12 +11633,12 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject 
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("addRow", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 486, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.addRow", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.addRow", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_row), __pyx_ptype_5numpy_ndarray, 1, "row", 0))) __PYX_ERR(0, 486, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), __pyx_v_row, __pyx_v_rowNum);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), __pyx_v_row, __pyx_v_rowNum);
 
   /* function exit code */
   goto __pyx_L0;
@@ -11649,7 +11649,7 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow(PyObject 
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyArrayObject *__pyx_v_row, int __pyx_v_rowNum) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_row;
   __Pyx_Buffer __pyx_pybuffer_row;
   PyObject *__pyx_r = NULL;
@@ -11666,7 +11666,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __
   }
   __pyx_pybuffernd_row.diminfo[0].strides = __pyx_pybuffernd_row.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_row.diminfo[0].shape = __pyx_pybuffernd_row.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow(__pyx_v_self, __pyx_v_row, __pyx_v_rowNum, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_addRow(__pyx_v_self, __pyx_v_row, __pyx_v_rowNum, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11681,7 +11681,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_row.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.addRow", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.addRow", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -11692,7 +11692,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":580
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":580
  * #             self.fw.writeFlush(str(poly))
  * 
  *     cpdef finish(self):             # <<<<<<<<<<<<<<
@@ -11700,12 +11700,12 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_2addRow(struct __
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_5finish(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_5finish(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
   int __pyx_v_i;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v1;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_v2;
   PyObject *__pyx_v_thisVal = NULL;
   PyObject *__pyx_v_colNum = NULL;
   PyObject *__pyx_r = NULL;
@@ -11718,7 +11718,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
   long __pyx_t_6;
   int __pyx_t_7;
   int __pyx_t_8;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_t_9;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_t_9;
   int __pyx_t_10;
   PyObject *__pyx_t_11 = NULL;
   PyObject *__pyx_t_12 = NULL;
@@ -11737,7 +11737,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_finish); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 580, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_5finish)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_5finish)) {
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -11773,7 +11773,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":589
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":589
  * 
  *         # add links for final row
  *         for i in range(1, self.length-1):             # <<<<<<<<<<<<<<
@@ -11785,7 +11785,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
   for (__pyx_t_7 = 1; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "QSWAT/polygonizeInC2.pyx":590
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":590
  *         # add links for final row
  *         for i in range(1, self.length-1):
  *             thisVal = self.thisVals[i]             # <<<<<<<<<<<<<<
@@ -11797,7 +11797,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
     __Pyx_XDECREF_SET(__pyx_v_thisVal, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":591
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":591
  *         for i in range(1, self.length-1):
  *             thisVal = self.thisVals[i]
  *             if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11812,7 +11812,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_8) {
 
-      /* "QSWAT/polygonizeInC2.pyx":592
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":592
  *             thisVal = self.thisVals[i]
  *             if thisVal != self.noData:
  *                 colNum = i - 1             # <<<<<<<<<<<<<<
@@ -11824,7 +11824,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
       __Pyx_XDECREF_SET(__pyx_v_colNum, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":593
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":593
  *             if thisVal != self.noData:
  *                 colNum = i - 1
  *                 v1 = Vertex(colNum+1, self.rowNum+1)             # <<<<<<<<<<<<<<
@@ -11839,7 +11839,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
       __pyx_t_9.y = (__pyx_v_self->rowNum + 1);
       __pyx_v_v1 = __pyx_t_9;
 
-      /* "QSWAT/polygonizeInC2.pyx":594
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":594
  *                 colNum = i - 1
  *                 v1 = Vertex(colNum+1, self.rowNum+1)
  *                 v2 = Vertex(colNum, self.rowNum+1)             # <<<<<<<<<<<<<<
@@ -11851,7 +11851,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
       __pyx_t_9.y = (__pyx_v_self->rowNum + 1);
       __pyx_v_v2 = __pyx_t_9;
 
-      /* "QSWAT/polygonizeInC2.pyx":595
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":595
  *                 v1 = Vertex(colNum+1, self.rowNum+1)
  *                 v2 = Vertex(colNum, self.rowNum+1)
  *                 self.shapes[thisVal].addLink(self.thisIds[i], v1, v2)             # <<<<<<<<<<<<<<
@@ -11869,9 +11869,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->thisIds), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 595, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 595, __pyx_L1_error)
+      __pyx_t_4 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 595, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_11 = __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 595, __pyx_L1_error)
+      __pyx_t_11 = __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(__pyx_v_v2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 595, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __pyx_t_12 = NULL;
       __pyx_t_10 = 0;
@@ -11929,7 +11929,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "QSWAT/polygonizeInC2.pyx":591
+      /* "QSWAT3/QSWAT/polygonizeInC2.pyx":591
  *         for i in range(1, self.length-1):
  *             thisVal = self.thisVals[i]
  *             if thisVal != self.noData:             # <<<<<<<<<<<<<<
@@ -11939,7 +11939,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
     }
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":597
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":597
  *                 self.shapes[thisVal].addLink(self.thisIds[i], v1, v2)
  * 
  *         for shape in self.shapes.values():             # <<<<<<<<<<<<<<
@@ -11961,22 +11961,22 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
     if (unlikely(__pyx_t_10 == 0)) break;
     if (unlikely(__pyx_t_10 == -1)) __PYX_ERR(0, 597, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 597, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_shape, ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_3));
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 597, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_shape, ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":598
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":598
  * 
  *         for shape in self.shapes.values():
  *             shape.coalesce()             # <<<<<<<<<<<<<<
  * 
  *         #self.fw.writeFlush(self.shapesToString())
  */
-    ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_shape->__pyx_vtab)->coalesce(__pyx_v_shape, 0);
+    ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v_shape->__pyx_vtab)->coalesce(__pyx_v_shape, 0);
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":580
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":580
  * #             self.fw.writeFlush(str(poly))
  * 
  *     cpdef finish(self):             # <<<<<<<<<<<<<<
@@ -11995,7 +11995,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.finish", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.finish", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_shape);
@@ -12007,26 +12007,26 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(struct __py
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_5finish(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_4finish[] = "Coalesce all polygons.  Collect polygons for each value into a shape.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_5finish(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_5finish(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_4finish[] = "Coalesce all polygons.  Collect polygons for each value into a shape.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_5finish(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("finish (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_4finish(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_4finish(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("finish", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 580, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_finish(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 580, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12035,7 +12035,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.finish", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.finish", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -12043,7 +12043,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":602
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":602
  *         #self.fw.writeFlush(self.shapesToString())
  * 
  *     cpdef object getGeometry(self, int val):             # <<<<<<<<<<<<<<
@@ -12051,9 +12051,9 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_4finish(struct __
  *         cdef Shape shape
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -12075,7 +12075,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getGeometry); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 602, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry)) {
         __Pyx_XDECREF(__pyx_r);
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 602, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
@@ -12114,7 +12114,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":606
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":606
  *         cdef Shape shape
  * 
  *         shape = self.shapes.get(val, None)             # <<<<<<<<<<<<<<
@@ -12130,11 +12130,11 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
   __pyx_t_2 = __Pyx_PyDict_GetItemDefault(__pyx_v_self->shapes, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 606, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 606, __pyx_L1_error)
-  __pyx_v_shape = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_2);
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 606, __pyx_L1_error)
+  __pyx_v_shape = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":607
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":607
  * 
  *         shape = self.shapes.get(val, None)
  *         if shape is None:             # <<<<<<<<<<<<<<
@@ -12145,7 +12145,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
   __pyx_t_7 = (__pyx_t_6 != 0);
   if (__pyx_t_7) {
 
-    /* "QSWAT/polygonizeInC2.pyx":608
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":608
  *         shape = self.shapes.get(val, None)
  *         if shape is None:
  *             return None             # <<<<<<<<<<<<<<
@@ -12156,7 +12156,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":607
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":607
  * 
  *         shape = self.shapes.get(val, None)
  *         if shape is None:             # <<<<<<<<<<<<<<
@@ -12165,7 +12165,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":609
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":609
  *         if shape is None:
  *             return None
  *         return self.offset.makeGeometry(shape)             # <<<<<<<<<<<<<<
@@ -12173,13 +12173,13 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
  *     cpdef str shapesToString(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->offset->__pyx_vtab)->makeGeometry(__pyx_v_self->offset, __pyx_v_shape, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->offset->__pyx_vtab)->makeGeometry(__pyx_v_self->offset, __pyx_v_shape, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":602
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":602
  *         #self.fw.writeFlush(self.shapesToString())
  * 
  *     cpdef object getGeometry(self, int val):             # <<<<<<<<<<<<<<
@@ -12194,7 +12194,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.getGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.getGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_shape);
@@ -12204,9 +12204,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(struct
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry[] = "Return geometry for shape for val.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyObject *__pyx_v_self, PyObject *__pyx_arg_val) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry[] = "Return geometry for shape for val.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyObject *__pyx_v_self, PyObject *__pyx_arg_val) {
   int __pyx_v_val;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -12216,24 +12216,24 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry(PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.getGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.getGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((int)__pyx_v_val));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((int)__pyx_v_val));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getGeometry", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 602, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry(__pyx_v_self, __pyx_v_val, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 602, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12242,7 +12242,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(stru
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.getGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.getGeometry", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -12250,7 +12250,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(stru
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":611
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":611
  *         return self.offset.makeGeometry(shape)
  * 
  *     cpdef str shapesToString(self):             # <<<<<<<<<<<<<<
@@ -12258,10 +12258,10 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry(stru
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_val;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
   PyObject *__pyx_v_res = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -12286,7 +12286,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_shapesToString); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 611, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString)) {
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -12323,7 +12323,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":616
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":616
  *             int val
  *             Shape shape
  *             str res = ''             # <<<<<<<<<<<<<<
@@ -12333,7 +12333,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
   __Pyx_INCREF(__pyx_kp_u__5);
   __pyx_v_res = __pyx_kp_u__5;
 
-  /* "QSWAT/polygonizeInC2.pyx":618
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":618
  *             str res = ''
  * 
  *         for val, shape in self.shapes.items():             # <<<<<<<<<<<<<<
@@ -12358,12 +12358,12 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 618, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 618, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 618, __pyx_L1_error)
     __pyx_v_val = __pyx_t_8;
-    __Pyx_XDECREF_SET(__pyx_v_shape, ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_3));
+    __Pyx_XDECREF_SET(__pyx_v_shape, ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":619
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":619
  * 
  *         for val, shape in self.shapes.items():
  *             res += 'Shape for value {0}:'.format(val)             # <<<<<<<<<<<<<<
@@ -12397,7 +12397,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
     __Pyx_DECREF_SET(__pyx_v_res, ((PyObject*)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "QSWAT/polygonizeInC2.pyx":620
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":620
  *         for val, shape in self.shapes.items():
  *             res += 'Shape for value {0}:'.format(val)
  *             res += str(shape)             # <<<<<<<<<<<<<<
@@ -12414,7 +12414,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":621
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":621
  *             res += 'Shape for value {0}:'.format(val)
  *             res += str(shape)
  *         return res             # <<<<<<<<<<<<<<
@@ -12426,7 +12426,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":611
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":611
  *         return self.offset.makeGeometry(shape)
  * 
  *     cpdef str shapesToString(self):             # <<<<<<<<<<<<<<
@@ -12441,7 +12441,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.shapesToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.shapesToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_shape);
@@ -12452,26 +12452,26 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(str
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString[] = "Return string for all shapes.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString[] = "Return string for all shapes.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("shapesToString (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("shapesToString", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 611, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 611, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12480,7 +12480,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(s
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.shapesToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.shapesToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -12488,7 +12488,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(s
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":623
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":623
  *         return res
  * 
  *     cpdef int cellCount(self, int val):             # <<<<<<<<<<<<<<
@@ -12496,9 +12496,9 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString(s
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
-static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
+static int __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -12521,7 +12521,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cellCount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 623, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount)) {
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 623, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
@@ -12560,7 +12560,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":628
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":628
  *             Shape shape
  * 
  *         shape = self.shapes.get(val, None)             # <<<<<<<<<<<<<<
@@ -12576,11 +12576,11 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
   __pyx_t_2 = __Pyx_PyDict_GetItemDefault(__pyx_v_self->shapes, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 628, __pyx_L1_error)
-  __pyx_v_shape = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_2);
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 628, __pyx_L1_error)
+  __pyx_v_shape = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":629
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":629
  * 
  *         shape = self.shapes.get(val, None)
  *         if shape is None:             # <<<<<<<<<<<<<<
@@ -12591,7 +12591,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
   __pyx_t_8 = (__pyx_t_7 != 0);
   if (__pyx_t_8) {
 
-    /* "QSWAT/polygonizeInC2.pyx":630
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":630
  *         shape = self.shapes.get(val, None)
  *         if shape is None:
  *             return 0             # <<<<<<<<<<<<<<
@@ -12601,7 +12601,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":629
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":629
  * 
  *         shape = self.shapes.get(val, None)
  *         if shape is None:             # <<<<<<<<<<<<<<
@@ -12610,7 +12610,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":631
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":631
  *         if shape is None:
  *             return 0
  *         return shape.cellCount             # <<<<<<<<<<<<<<
@@ -12620,7 +12620,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
   __pyx_r = __pyx_v_shape->cellCount;
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":623
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":623
  *         return res
  * 
  *     cpdef int cellCount(self, int val):             # <<<<<<<<<<<<<<
@@ -12635,7 +12635,7 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Polygonize.cellCount", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Polygonize.cellCount", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_shape);
@@ -12644,9 +12644,9 @@ static int __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(struct __pyx_o
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount[] = "Return total cell count for val.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObject *__pyx_v_self, PyObject *__pyx_arg_val) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount[] = "Return total cell count for val.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObject *__pyx_v_self, PyObject *__pyx_arg_val) {
   int __pyx_v_val;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -12656,24 +12656,24 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount(PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.cellCount", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.cellCount", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((int)__pyx_v_val));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((int)__pyx_v_val));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("cellCount", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(__pyx_v_self, __pyx_v_val, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 623, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_cellCount(__pyx_v_self, __pyx_v_val, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 623, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12682,7 +12682,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struc
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.cellCount", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.cellCount", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -12690,7 +12690,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struc
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":633
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":633
  *         return shape.cellCount
  * 
  *     cpdef double area(self, int val):             # <<<<<<<<<<<<<<
@@ -12698,9 +12698,9 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount(struc
  *         cdef:
  */
 
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
-static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
+static double __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val, int __pyx_skip_dispatch) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v_shape = 0;
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -12723,7 +12723,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_area); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 633, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_13area)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_13area)) {
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 633, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
@@ -12762,7 +12762,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
     #endif
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":638
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":638
  *             Shape shape
  * 
  *         shape = self.shapes.get(val, None)             # <<<<<<<<<<<<<<
@@ -12778,11 +12778,11 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
   __pyx_t_2 = __Pyx_PyDict_GetItemDefault(__pyx_v_self->shapes, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 638, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 638, __pyx_L1_error)
-  __pyx_v_shape = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_2);
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape))))) __PYX_ERR(0, 638, __pyx_L1_error)
+  __pyx_v_shape = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":639
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":639
  * 
  *         shape = self.shapes.get(val, None)
  *         if shape is None:             # <<<<<<<<<<<<<<
@@ -12793,7 +12793,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
   __pyx_t_8 = (__pyx_t_7 != 0);
   if (__pyx_t_8) {
 
-    /* "QSWAT/polygonizeInC2.pyx":640
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":640
  *         shape = self.shapes.get(val, None)
  *         if shape is None:
  *             return 0             # <<<<<<<<<<<<<<
@@ -12803,7 +12803,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
     __pyx_r = 0.0;
     goto __pyx_L0;
 
-    /* "QSWAT/polygonizeInC2.pyx":639
+    /* "QSWAT3/QSWAT/polygonizeInC2.pyx":639
  * 
  *         shape = self.shapes.get(val, None)
  *         if shape is None:             # <<<<<<<<<<<<<<
@@ -12812,17 +12812,17 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
  */
   }
 
-  /* "QSWAT/polygonizeInC2.pyx":641
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":641
  *         if shape is None:
  *             return 0
  *         return self.offset.area(shape)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = ((struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->offset->__pyx_vtab)->area(__pyx_v_self->offset, __pyx_v_shape, 0);
+  __pyx_r = ((struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v_self->offset->__pyx_vtab)->area(__pyx_v_self->offset, __pyx_v_shape, 0);
   goto __pyx_L0;
 
-  /* "QSWAT/polygonizeInC2.pyx":633
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":633
  *         return shape.cellCount
  * 
  *     cpdef double area(self, int val):             # <<<<<<<<<<<<<<
@@ -12837,7 +12837,7 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_WriteUnraisable("QSWAT.polygonizeInC2.Polygonize.area", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("QSWAT3.QSWAT.polygonizeInC2.Polygonize.area", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_shape);
@@ -12846,9 +12846,9 @@ static double __pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(struct __pyx_obj
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
-static char __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_12area[] = "Return area for val in square metres.";
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *__pyx_v_self, PyObject *__pyx_arg_val) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *__pyx_v_self, PyObject *__pyx_arg_val); /*proto*/
+static char __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_12area[] = "Return area for val in square metres.";
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *__pyx_v_self, PyObject *__pyx_arg_val) {
   int __pyx_v_val;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -12858,24 +12858,24 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_13area(PyObject *
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.area", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.area", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_12area(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((int)__pyx_v_val));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_12area(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((int)__pyx_v_val));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, int __pyx_v_val) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("area", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area(__pyx_v_self, __pyx_v_val, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 633, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_area(__pyx_v_self, __pyx_v_val, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 633, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12884,7 +12884,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __p
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.area", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.area", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -12892,7 +12892,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __p
   return __pyx_r;
 }
 
-/* "QSWAT/polygonizeInC2.pyx":456
+/* "QSWAT3/QSWAT/polygonizeInC2.pyx":456
  *         int rowNum
  *         int length
  *         readonly dict shapes             # <<<<<<<<<<<<<<
@@ -12901,19 +12901,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_12area(struct __p
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_6shapes_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_6shapes_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6shapes_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6shapes_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
@@ -12936,19 +12936,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_6shapes___get__(s
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -13238,7 +13238,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -13256,19 +13256,19 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_14__reduce_cython
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cython__(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cython__(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cython__(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cython__(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -13280,7 +13280,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cyth
  *     __pyx_unpickle_Polygonize__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -13296,7 +13296,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cyth
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.Polygonize.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.Polygonize.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -13311,9 +13311,9 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10Polygonize_16__setstate_cyth
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon = {"__pyx_unpickle_Polygon", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon = {"__pyx_unpickle_Polygon", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -13372,18 +13372,18 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Polygon", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Polygon", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Polygon", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -13477,7 +13477,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Polygon__set_state(<Polygon> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Polygon), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -13516,7 +13516,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON
  * cdef __pyx_unpickle_Polygon__set_state(Polygon __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -13553,7 +13553,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Polygon", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Polygon", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -13571,7 +13571,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_6__pyx_unpickle_Polygon(CYTHON
  *     if len(__pyx_state) > 3 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -13705,7 +13705,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_sta
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Polygon__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Polygon__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -13720,9 +13720,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygon__set_sta
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape = {"__pyx_unpickle_Shape", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape = {"__pyx_unpickle_Shape", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -13781,18 +13781,18 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape(PyObject
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Shape", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Shape", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Shape", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -13886,7 +13886,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_U
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Shape__set_state(<Shape> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Shape), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -13925,7 +13925,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_U
  * cdef __pyx_unpickle_Shape__set_state(Shape __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -13962,7 +13962,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_U
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Shape", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Shape", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -13980,7 +13980,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_8__pyx_unpickle_Shape(CYTHON_U
  *     if len(__pyx_state) > 6 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -14145,7 +14145,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Shape__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Shape__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -14160,9 +14160,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Shape__set_state
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset = {"__pyx_unpickle_Offset", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset = {"__pyx_unpickle_Offset", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -14221,18 +14221,18 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Offset", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Offset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Offset", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -14326,7 +14326,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Offset__set_state(<Offset> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Offset), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Offset), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -14365,7 +14365,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON
  * cdef __pyx_unpickle_Offset__set_state(Offset __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -14402,7 +14402,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Offset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Offset", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -14420,7 +14420,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_10__pyx_unpickle_Offset(CYTHON
  *     if len(__pyx_state) > 4 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -14561,7 +14561,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_stat
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Offset__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Offset__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -14576,9 +14576,9 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Offset__set_stat
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize = {"__pyx_unpickle_Polygonize", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize = {"__pyx_unpickle_Polygonize", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -14637,18 +14637,18 @@ static PyObject *__pyx_pw_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize(Py
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Polygonize", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Polygonize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Polygonize", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6QSWAT3_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -14742,7 +14742,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CY
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Polygonize__set_state(<Polygonize> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5QSWAT_14polygonizeInC2_Polygonize), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -14781,7 +14781,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CY
  * cdef __pyx_unpickle_Polygonize__set_state(Polygonize __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -14818,7 +14818,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CY
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Polygonize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Polygonize", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -14836,7 +14836,7 @@ static PyObject *__pyx_pf_5QSWAT_14polygonizeInC2_12__pyx_unpickle_Polygonize(CY
  *     if len(__pyx_state) > 11 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_state(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -14925,11 +14925,11 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 6, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5QSWAT_14polygonizeInC2_Offset))))) __PYX_ERR(1, 12, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Offset))))) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v___pyx_result->offset);
   __Pyx_DECREF(((PyObject *)__pyx_v___pyx_result->offset));
-  __pyx_v___pyx_result->offset = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)__pyx_t_1);
+  __pyx_v___pyx_result->offset = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)__pyx_t_1);
   __pyx_t_1 = 0;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -15058,7 +15058,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("QSWAT.polygonizeInC2.__pyx_unpickle_Polygonize__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QSWAT3.QSWAT.polygonizeInC2.__pyx_unpickle_Polygonize__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -15066,7 +15066,7 @@ static PyObject *__pyx_f_5QSWAT_14polygonizeInC2___pyx_unpickle_Polygonize__set_
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":258
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":258
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -15115,7 +15115,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_info->obj = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(__pyx_v_info->obj);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":265
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":265
  * 
  *             cdef int i, ndim
  *             cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -15124,7 +15124,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":266
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":266
  *             cdef int i, ndim
  *             cdef int endian_detector = 1
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -15133,7 +15133,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":268
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":268
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)
  * 
  *             ndim = PyArray_NDIM(self)             # <<<<<<<<<<<<<<
@@ -15142,7 +15142,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_ndim = PyArray_NDIM(__pyx_v_self);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":270
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *             ndim = PyArray_NDIM(self)
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -15156,7 +15156,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":271
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":271
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -15167,7 +15167,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = __pyx_t_2;
   __pyx_L4_bool_binop_done:;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":270
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *             ndim = PyArray_NDIM(self)
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -15176,7 +15176,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   if (unlikely(__pyx_t_1)) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":272
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":272
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -15189,7 +15189,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(2, 272, __pyx_L1_error)
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":270
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *             ndim = PyArray_NDIM(self)
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -15198,7 +15198,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":274
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -15212,7 +15212,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L7_bool_binop_done;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":275
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":275
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_F_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -15223,7 +15223,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = __pyx_t_2;
   __pyx_L7_bool_binop_done:;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":274
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -15232,7 +15232,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   if (unlikely(__pyx_t_1)) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":276
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -15245,7 +15245,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(2, 276, __pyx_L1_error)
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":274
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -15254,7 +15254,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":278
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":278
  *                 raise ValueError(u"ndarray is not Fortran contiguous")
  * 
  *             info.buf = PyArray_DATA(self)             # <<<<<<<<<<<<<<
@@ -15263,7 +15263,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->buf = PyArray_DATA(__pyx_v_self);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":279
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":279
  * 
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim             # <<<<<<<<<<<<<<
@@ -15272,7 +15272,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->ndim = __pyx_v_ndim;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":280
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":280
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -15282,7 +15282,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":283
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":283
  *                 # Allocate new buffer for strides and shape info.
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>PyObject_Malloc(sizeof(Py_ssize_t) * 2 * <size_t>ndim)             # <<<<<<<<<<<<<<
@@ -15291,7 +15291,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)PyObject_Malloc((((sizeof(Py_ssize_t)) * 2) * ((size_t)__pyx_v_ndim))));
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":284
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":284
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>PyObject_Malloc(sizeof(Py_ssize_t) * 2 * <size_t>ndim)
  *                 info.shape = info.strides + ndim             # <<<<<<<<<<<<<<
@@ -15300,7 +15300,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->shape = (__pyx_v_info->strides + __pyx_v_ndim);
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":285
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":285
  *                 info.strides = <Py_ssize_t*>PyObject_Malloc(sizeof(Py_ssize_t) * 2 * <size_t>ndim)
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):             # <<<<<<<<<<<<<<
@@ -15312,7 +15312,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_i = __pyx_t_6;
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":286
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":286
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]             # <<<<<<<<<<<<<<
@@ -15321,7 +15321,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
       (__pyx_v_info->strides[__pyx_v_i]) = (PyArray_STRIDES(__pyx_v_self)[__pyx_v_i]);
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":287
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":287
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]
  *                     info.shape[i] = PyArray_DIMS(self)[i]             # <<<<<<<<<<<<<<
@@ -15331,7 +15331,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       (__pyx_v_info->shape[__pyx_v_i]) = (PyArray_DIMS(__pyx_v_self)[__pyx_v_i]);
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":280
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":280
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -15341,7 +15341,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L9;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":289
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":289
  *                     info.shape[i] = PyArray_DIMS(self)[i]
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)             # <<<<<<<<<<<<<<
@@ -15351,7 +15351,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   /*else*/ {
     __pyx_v_info->strides = ((Py_ssize_t *)PyArray_STRIDES(__pyx_v_self));
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":290
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":290
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)             # <<<<<<<<<<<<<<
@@ -15362,7 +15362,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L9:;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":291
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":291
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -15371,7 +15371,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->suboffsets = NULL;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":292
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":292
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)             # <<<<<<<<<<<<<<
@@ -15380,7 +15380,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->itemsize = PyArray_ITEMSIZE(__pyx_v_self);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":293
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":293
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)
  *             info.readonly = not PyArray_ISWRITEABLE(self)             # <<<<<<<<<<<<<<
@@ -15389,7 +15389,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->readonly = (!(PyArray_ISWRITEABLE(__pyx_v_self) != 0));
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":296
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":296
  * 
  *             cdef int t
  *             cdef char* f = NULL             # <<<<<<<<<<<<<<
@@ -15398,7 +15398,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_f = NULL;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":297
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":297
  *             cdef int t
  *             cdef char* f = NULL
  *             cdef dtype descr = <dtype>PyArray_DESCR(self)             # <<<<<<<<<<<<<<
@@ -15411,7 +15411,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_descr = ((PyArray_Descr *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":300
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":300
  *             cdef int offset
  * 
  *             info.obj = self             # <<<<<<<<<<<<<<
@@ -15424,7 +15424,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __Pyx_DECREF(__pyx_v_info->obj);
   __pyx_v_info->obj = ((PyObject *)__pyx_v_self);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":302
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":302
  *             info.obj = self
  * 
  *             if not PyDataType_HASFIELDS(descr):             # <<<<<<<<<<<<<<
@@ -15434,7 +15434,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = ((!(PyDataType_HASFIELDS(__pyx_v_descr) != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":303
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":303
  * 
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num             # <<<<<<<<<<<<<<
@@ -15444,7 +15444,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_4 = __pyx_v_descr->type_num;
     __pyx_v_t = __pyx_t_4;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":304
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":304
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -15464,7 +15464,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     }
     __pyx_L15_next_or:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":305
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":305
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -15481,7 +15481,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_1 = __pyx_t_2;
     __pyx_L14_bool_binop_done:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":304
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":304
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -15490,7 +15490,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     if (unlikely(__pyx_t_1)) {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":306
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":306
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -15503,7 +15503,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __PYX_ERR(2, 306, __pyx_L1_error)
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":304
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":304
  *             if not PyDataType_HASFIELDS(descr):
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -15512,7 +15512,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":307
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":307
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"             # <<<<<<<<<<<<<<
@@ -15525,7 +15525,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_UBYTE:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":308
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":308
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"             # <<<<<<<<<<<<<<
@@ -15536,7 +15536,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_SHORT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":309
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":309
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"             # <<<<<<<<<<<<<<
@@ -15547,7 +15547,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_USHORT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":310
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":310
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"             # <<<<<<<<<<<<<<
@@ -15558,7 +15558,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_INT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":311
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":311
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"             # <<<<<<<<<<<<<<
@@ -15569,7 +15569,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_UINT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":312
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":312
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"             # <<<<<<<<<<<<<<
@@ -15580,7 +15580,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_LONG:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":313
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":313
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"             # <<<<<<<<<<<<<<
@@ -15591,7 +15591,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_ULONG:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":314
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":314
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"             # <<<<<<<<<<<<<<
@@ -15602,7 +15602,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_LONGLONG:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":315
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":315
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"             # <<<<<<<<<<<<<<
@@ -15613,7 +15613,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_ULONGLONG:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":316
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":316
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"             # <<<<<<<<<<<<<<
@@ -15624,7 +15624,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_FLOAT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":317
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":317
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"             # <<<<<<<<<<<<<<
@@ -15635,7 +15635,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_DOUBLE:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":318
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":318
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"             # <<<<<<<<<<<<<<
@@ -15646,7 +15646,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_LONGDOUBLE:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":319
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":319
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"             # <<<<<<<<<<<<<<
@@ -15657,7 +15657,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_CFLOAT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":320
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":320
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"             # <<<<<<<<<<<<<<
@@ -15668,7 +15668,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_CDOUBLE:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":321
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":321
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"             # <<<<<<<<<<<<<<
@@ -15679,7 +15679,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_CLONGDOUBLE:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":322
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":322
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"             # <<<<<<<<<<<<<<
@@ -15690,7 +15690,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       case NPY_OBJECT:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":323
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":323
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -15701,7 +15701,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       default:
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":325
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":325
  *                 elif t == NPY_OBJECT:      f = "O"
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -15722,7 +15722,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":326
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":326
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f             # <<<<<<<<<<<<<<
@@ -15731,7 +15731,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = __pyx_v_f;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":327
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":327
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f
  *                 return             # <<<<<<<<<<<<<<
@@ -15741,7 +15741,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":302
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":302
  *             info.obj = self
  * 
  *             if not PyDataType_HASFIELDS(descr):             # <<<<<<<<<<<<<<
@@ -15750,7 +15750,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":329
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":329
  *                 return
  *             else:
  *                 info.format = <char*>PyObject_Malloc(_buffer_format_string_len)             # <<<<<<<<<<<<<<
@@ -15760,7 +15760,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   /*else*/ {
     __pyx_v_info->format = ((char *)PyObject_Malloc(0xFF));
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":330
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":330
  *             else:
  *                 info.format = <char*>PyObject_Malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment             # <<<<<<<<<<<<<<
@@ -15769,7 +15769,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     (__pyx_v_info->format[0]) = '^';
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":331
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":331
  *                 info.format = <char*>PyObject_Malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0             # <<<<<<<<<<<<<<
@@ -15778,7 +15778,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_offset = 0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":332
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":332
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0
  *                 f = _util_dtypestring(descr, info.format + 1,             # <<<<<<<<<<<<<<
@@ -15788,7 +15788,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_9 = __pyx_f_5numpy__util_dtypestring(__pyx_v_descr, (__pyx_v_info->format + 1), (__pyx_v_info->format + 0xFF), (&__pyx_v_offset)); if (unlikely(__pyx_t_9 == ((char *)NULL))) __PYX_ERR(2, 332, __pyx_L1_error)
     __pyx_v_f = __pyx_t_9;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":335
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":335
  *                                       info.format + _buffer_format_string_len,
  *                                       &offset)
  *                 f[0] = c'\0' # Terminate format string             # <<<<<<<<<<<<<<
@@ -15798,7 +15798,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     (__pyx_v_f[0]) = '\x00';
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":258
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":258
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -15830,7 +15830,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":337
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":337
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -15854,7 +15854,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":338
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":338
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -15864,7 +15864,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (PyArray_HASFIELDS(__pyx_v_self) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":339
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":339
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):
  *                 PyObject_Free(info.format)             # <<<<<<<<<<<<<<
@@ -15873,7 +15873,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
     PyObject_Free(__pyx_v_info->format);
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":338
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":338
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -15882,7 +15882,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":340
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":340
  *             if PyArray_HASFIELDS(self):
  *                 PyObject_Free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -15892,7 +15892,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":341
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":341
  *                 PyObject_Free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 PyObject_Free(info.strides)             # <<<<<<<<<<<<<<
@@ -15901,7 +15901,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
     PyObject_Free(__pyx_v_info->strides);
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":340
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":340
  *             if PyArray_HASFIELDS(self):
  *                 PyObject_Free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -15910,7 +15910,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":337
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":337
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -15922,7 +15922,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":821
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":821
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -15936,7 +15936,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":822
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":822
  * 
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -15950,7 +15950,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":821
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":821
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -15969,7 +15969,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":824
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":824
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -15983,7 +15983,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":825
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":825
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -15997,7 +15997,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":824
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":824
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -16016,7 +16016,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":827
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -16030,7 +16030,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":828
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":828
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -16044,7 +16044,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":827
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -16063,7 +16063,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":830
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":830
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -16077,7 +16077,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":831
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":831
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -16091,7 +16091,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":830
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":830
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -16110,7 +16110,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":833
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":833
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -16124,7 +16124,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":834
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":834
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -16138,7 +16138,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":833
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":833
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -16157,7 +16157,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":836
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":836
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -16171,7 +16171,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("PyDataType_SHAPE", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":837
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":837
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -16181,7 +16181,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   __pyx_t_1 = (PyDataType_HASSUBARRAY(__pyx_v_d) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":838
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":838
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):
  *         return <tuple>d.subarray.shape             # <<<<<<<<<<<<<<
@@ -16193,7 +16193,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     __pyx_r = ((PyObject*)__pyx_v_d->subarray->shape);
     goto __pyx_L0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":837
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":837
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -16202,7 +16202,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":840
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":840
  *         return <tuple>d.subarray.shape
  *     else:
  *         return ()             # <<<<<<<<<<<<<<
@@ -16216,7 +16216,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     goto __pyx_L0;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":836
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":836
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -16231,7 +16231,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":842
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":842
  *         return ()
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -16260,7 +16260,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   char *__pyx_t_9;
   __Pyx_RefNannySetupContext("_util_dtypestring", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":847
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":847
  * 
  *     cdef dtype child
  *     cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -16269,7 +16269,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":848
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":848
  *     cdef dtype child
  *     cdef int endian_detector = 1
  *     cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -16278,7 +16278,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":851
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":851
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -16301,7 +16301,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_childname, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":852
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":852
  * 
  *     for childname in descr.names:
  *         fields = descr.fields[childname]             # <<<<<<<<<<<<<<
@@ -16318,7 +16318,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_fields, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":853
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":853
  *     for childname in descr.names:
  *         fields = descr.fields[childname]
  *         child, new_offset = fields             # <<<<<<<<<<<<<<
@@ -16353,7 +16353,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_new_offset, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":855
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":855
  *         child, new_offset = fields
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -16370,7 +16370,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((((__pyx_v_end - __pyx_v_f) - ((int)__pyx_t_5)) < 15) != 0);
     if (unlikely(__pyx_t_6)) {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":856
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":856
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -16383,7 +16383,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __PYX_ERR(2, 856, __pyx_L1_error)
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":855
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":855
  *         child, new_offset = fields
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -16392,7 +16392,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":858
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":858
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -16412,7 +16412,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L8_next_or:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":859
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":859
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -16429,7 +16429,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = __pyx_t_7;
     __pyx_L7_bool_binop_done:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":858
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":858
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -16438,7 +16438,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     if (unlikely(__pyx_t_6)) {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":860
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":860
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -16451,7 +16451,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __PYX_ERR(2, 860, __pyx_L1_error)
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":858
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":858
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -16460,7 +16460,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":870
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":870
  * 
  *         # Output padding bytes
  *         while offset[0] < new_offset:             # <<<<<<<<<<<<<<
@@ -16476,7 +16476,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (!__pyx_t_6) break;
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":871
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":871
  *         # Output padding bytes
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte             # <<<<<<<<<<<<<<
@@ -16485,7 +16485,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       (__pyx_v_f[0]) = 0x78;
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":872
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":872
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte
  *             f += 1             # <<<<<<<<<<<<<<
@@ -16494,7 +16494,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":873
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":873
  *             f[0] = 120 # "x"; pad byte
  *             f += 1
  *             offset[0] += 1             # <<<<<<<<<<<<<<
@@ -16505,7 +16505,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + 1);
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":875
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":875
  *             offset[0] += 1
  * 
  *         offset[0] += child.itemsize             # <<<<<<<<<<<<<<
@@ -16515,7 +16515,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_8 = 0;
     (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + __pyx_v_child->elsize);
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":877
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":877
  *         offset[0] += child.itemsize
  * 
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -16525,7 +16525,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((!(PyDataType_HASFIELDS(__pyx_v_child) != 0)) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":878
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":878
  * 
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num             # <<<<<<<<<<<<<<
@@ -16537,7 +16537,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_XDECREF_SET(__pyx_v_t, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":879
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":879
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -16547,7 +16547,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __pyx_t_6 = (((__pyx_v_end - __pyx_v_f) < 5) != 0);
       if (unlikely(__pyx_t_6)) {
 
-        /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":880
+        /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":880
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -16560,7 +16560,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __PYX_ERR(2, 880, __pyx_L1_error)
 
-        /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":879
+        /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":879
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -16569,7 +16569,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":883
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":883
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"             # <<<<<<<<<<<<<<
@@ -16587,7 +16587,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":884
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":884
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"             # <<<<<<<<<<<<<<
@@ -16605,7 +16605,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":885
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":885
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"             # <<<<<<<<<<<<<<
@@ -16623,7 +16623,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":886
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":886
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"             # <<<<<<<<<<<<<<
@@ -16641,7 +16641,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":887
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":887
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"             # <<<<<<<<<<<<<<
@@ -16659,7 +16659,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":888
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":888
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"             # <<<<<<<<<<<<<<
@@ -16677,7 +16677,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":889
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":889
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"             # <<<<<<<<<<<<<<
@@ -16695,7 +16695,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":890
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":890
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"             # <<<<<<<<<<<<<<
@@ -16713,7 +16713,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":891
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":891
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"             # <<<<<<<<<<<<<<
@@ -16731,7 +16731,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":892
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":892
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"             # <<<<<<<<<<<<<<
@@ -16749,7 +16749,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":893
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":893
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"             # <<<<<<<<<<<<<<
@@ -16767,7 +16767,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":894
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":894
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"             # <<<<<<<<<<<<<<
@@ -16785,7 +16785,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":895
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":895
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"             # <<<<<<<<<<<<<<
@@ -16803,7 +16803,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":896
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":896
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf             # <<<<<<<<<<<<<<
@@ -16823,7 +16823,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":897
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":897
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd             # <<<<<<<<<<<<<<
@@ -16843,7 +16843,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":898
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":898
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg             # <<<<<<<<<<<<<<
@@ -16863,7 +16863,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":899
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":899
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"             # <<<<<<<<<<<<<<
@@ -16881,7 +16881,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":901
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":901
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -16900,7 +16900,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       __pyx_L15:;
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":902
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":902
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *             f += 1             # <<<<<<<<<<<<<<
@@ -16909,7 +16909,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":877
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":877
  *         offset[0] += child.itemsize
  * 
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -16919,7 +16919,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       goto __pyx_L13;
     }
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":906
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":906
  *             # Cython ignores struct boundary information ("T{...}"),
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)             # <<<<<<<<<<<<<<
@@ -16932,7 +16932,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L13:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":851
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":851
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -16942,7 +16942,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":907
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":907
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)
  *     return f             # <<<<<<<<<<<<<<
@@ -16952,7 +16952,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   __pyx_r = __pyx_v_f;
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":842
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":842
  *         return ()
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -16977,7 +16977,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1022
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1022
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -16989,7 +16989,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("set_array_base", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1023
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1023
  * 
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!             # <<<<<<<<<<<<<<
@@ -16998,7 +16998,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_INCREF(__pyx_v_base);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1024
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1024
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!
  *     PyArray_SetBaseObject(arr, base)             # <<<<<<<<<<<<<<
@@ -17007,7 +17007,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   (void)(PyArray_SetBaseObject(__pyx_v_arr, __pyx_v_base));
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1022
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1022
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -17019,7 +17019,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1026
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1026
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -17034,7 +17034,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_array_base", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1027
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1027
  * 
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)             # <<<<<<<<<<<<<<
@@ -17043,7 +17043,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   __pyx_v_base = PyArray_BASE(__pyx_v_arr);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1028
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1028
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -17053,7 +17053,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1029
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1029
  *     base = PyArray_BASE(arr)
  *     if base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -17064,7 +17064,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1028
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1028
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -17073,7 +17073,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1030
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1030
  *     if base is NULL:
  *         return None
  *     return <object>base             # <<<<<<<<<<<<<<
@@ -17085,7 +17085,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_r = ((PyObject *)__pyx_v_base);
   goto __pyx_L0;
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1026
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1026
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -17100,7 +17100,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1034
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1034
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -17121,7 +17121,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("import_array", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1035
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1035
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17137,7 +17137,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1036
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1036
  * cdef inline int import_array() except -1:
  *     try:
  *         _import_array()             # <<<<<<<<<<<<<<
@@ -17146,7 +17146,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  */
       __pyx_t_4 = _import_array(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(2, 1036, __pyx_L3_error)
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1035
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1035
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17160,7 +17160,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1037
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1037
  *     try:
  *         _import_array()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -17175,7 +17175,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1038
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1038
  *         _import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -17191,7 +17191,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1035
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1035
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17206,7 +17206,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1034
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1034
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -17229,7 +17229,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1040
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1040
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -17250,7 +17250,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("import_umath", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1041
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1041
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17266,7 +17266,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1042
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1042
  * cdef inline int import_umath() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -17275,7 +17275,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(2, 1042, __pyx_L3_error)
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1041
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1041
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17289,7 +17289,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1043
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1043
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -17304,7 +17304,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1044
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1044
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -17320,7 +17320,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1041
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1041
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17335,7 +17335,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1040
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1040
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -17358,7 +17358,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   return __pyx_r;
 }
 
-/* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1046
+/* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1046
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -17379,7 +17379,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("import_ufunc", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1047
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1047
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17395,7 +17395,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1048
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1048
  * cdef inline int import_ufunc() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -17404,7 +17404,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(2, 1048, __pyx_L3_error)
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1047
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1047
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17418,7 +17418,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1049
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1049
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -17432,7 +17432,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1050
+      /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1050
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -17446,7 +17446,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1047
+    /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1047
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -17461,7 +17461,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1046
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1046
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -17486,16 +17486,16 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
 
 /* "FromPyStructUtility":11
  * 
- * @cname("__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex")
- * cdef struct_type __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(obj) except *:             # <<<<<<<<<<<<<<
+ * @cname("__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex")
+ * cdef struct_type __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(obj) except *:             # <<<<<<<<<<<<<<
  *     cdef struct_type result
  *     if not PyMapping_Check(obj):
  */
 
-static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(PyObject *__pyx_v_obj) {
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_v_result;
+static struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(PyObject *__pyx_v_obj) {
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_v_result;
   PyObject *__pyx_v_value = NULL;
-  struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_r;
+  struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -17506,10 +17506,10 @@ static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_stru
   PyObject *__pyx_t_7 = NULL;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
-  __Pyx_RefNannySetupContext("__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex", 0);
+  __Pyx_RefNannySetupContext("__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex", 0);
 
   /* "FromPyStructUtility":13
- * cdef struct_type __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(obj) except *:
+ * cdef struct_type __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(obj) except *:
  *     cdef struct_type result
  *     if not PyMapping_Check(obj):             # <<<<<<<<<<<<<<
  *         PyErr_Format(TypeError, b"Expected %.16s, got %.200s", b"a mapping", Py_TYPE(obj).tp_name)
@@ -17530,7 +17530,7 @@ static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_stru
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "FromPyStructUtility":13
- * cdef struct_type __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(obj) except *:
+ * cdef struct_type __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(obj) except *:
  *     cdef struct_type result
  *     if not PyMapping_Check(obj):             # <<<<<<<<<<<<<<
  *         PyErr_Format(TypeError, b"Expected %.16s, got %.200s", b"a mapping", Py_TYPE(obj).tp_name)
@@ -17590,7 +17590,7 @@ static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_stru
  */
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
     if (__pyx_t_6) {
-      __Pyx_AddTraceback("FromPyStructUtility.__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("FromPyStructUtility.__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
       if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(1, 18, __pyx_L6_except_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GOTREF(__pyx_t_7);
@@ -17692,7 +17692,7 @@ static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_stru
  */
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
     if (__pyx_t_6) {
-      __Pyx_AddTraceback("FromPyStructUtility.__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("FromPyStructUtility.__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
       if (__Pyx_GetException(&__pyx_t_8, &__pyx_t_7, &__pyx_t_2) < 0) __PYX_ERR(1, 23, __pyx_L14_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_GOTREF(__pyx_t_7);
@@ -17751,8 +17751,8 @@ static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_stru
 
   /* "FromPyStructUtility":11
  * 
- * @cname("__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex")
- * cdef struct_type __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(obj) except *:             # <<<<<<<<<<<<<<
+ * @cname("__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex")
+ * cdef struct_type __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(obj) except *:             # <<<<<<<<<<<<<<
  *     cdef struct_type result
  *     if not PyMapping_Check(obj):
  */
@@ -17763,17 +17763,17 @@ static struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex __pyx_convert__from_py_stru
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("FromPyStructUtility.__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("FromPyStructUtility.__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_value);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygon __pyx_vtable_5QSWAT_14polygonizeInC2_Polygon;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon;
 
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Polygon(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *p;
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -17781,15 +17781,15 @@ static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Polygon(PyTypeObject *t, C
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygon;
+  p = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon;
   p->rings = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->fw = Py_None; Py_INCREF(Py_None);
   return o;
 }
 
-static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Polygon(PyObject *o) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)o;
+static void __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon(PyObject *o) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -17801,9 +17801,9 @@ static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Polygon(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Polygon(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)o;
   if (p->rings) {
     e = (*v)(p->rings, a); if (e) return e;
   }
@@ -17813,9 +17813,9 @@ static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Polygon(PyObject *o, visitp
   return 0;
 }
 
-static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygon(PyObject *o) {
+static int __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *)o;
   tmp = ((PyObject*)p->rings);
   p->rings = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -17825,30 +17825,30 @@ static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygon(PyObject *o) {
   return 0;
 }
 
-static PyObject *__pyx_getprop_5QSWAT_14polygonizeInC2_7Polygon_rings(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5rings_1__get__(o);
+static PyObject *__pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_rings(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5rings_1__get__(o);
 }
 
-static PyMethodDef __pyx_methods_5QSWAT_14polygonizeInC2_Polygon[] = {
-  {"coalesce", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_5coalesce, METH_NOARGS, __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon_4coalesce},
-  {"addLink", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_7addLink, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon_6addLink},
-  {"addPoly", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_9addPoly, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon_8addPoly},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_11__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_13__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon[] = {
+  {"coalesce", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_5coalesce, METH_NOARGS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_4coalesce},
+  {"addLink", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_7addLink, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_6addLink},
+  {"addPoly", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_9addPoly, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_8addPoly},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_11__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_13__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5QSWAT_14polygonizeInC2_Polygon[] = {
-  {(char *)"rings", __pyx_getprop_5QSWAT_14polygonizeInC2_7Polygon_rings, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon[] = {
+  {(char *)"rings", __pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_rings, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Polygon = {
+static PyTypeObject __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon = {
   PyVarObject_HEAD_INIT(0, 0)
-  "QSWAT.polygonizeInC2.Polygon", /*tp_name*/
-  sizeof(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon), /*tp_basicsize*/
+  "QSWAT3.QSWAT.polygonizeInC2.Polygon", /*tp_name*/
+  sizeof(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Polygon, /*tp_dealloc*/
+  __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -17864,29 +17864,29 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Polygon = {
   0, /*tp_as_mapping*/
   0, /*tp_hash*/
   0, /*tp_call*/
-  __pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_3__str__, /*tp_str*/
+  __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_3__str__, /*tp_str*/
   0, /*tp_getattro*/
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   "A polygon is a list of deques of vertices.  During construction these may not be closed.\n    \n    The front deque is or will become the outer ring.", /*tp_doc*/
-  __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Polygon, /*tp_traverse*/
-  __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygon, /*tp_clear*/
+  __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, /*tp_traverse*/
+  __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5QSWAT_14polygonizeInC2_Polygon, /*tp_methods*/
+  __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5QSWAT_14polygonizeInC2_Polygon, /*tp_getset*/
+  __pyx_getsets_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_5QSWAT_14polygonizeInC2_7Polygon_1__init__, /*tp_init*/
+  __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5QSWAT_14polygonizeInC2_Polygon, /*tp_new*/
+  __pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -17903,10 +17903,10 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Polygon = {
   0, /*tp_vectorcall*/
   #endif
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Shape __pyx_vtable_5QSWAT_14polygonizeInC2_Shape;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Shape __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Shape;
 
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Shape(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *p;
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Shape(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -17914,16 +17914,16 @@ static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Shape(PyTypeObject *t, CYT
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5QSWAT_14polygonizeInC2_Shape;
+  p = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Shape;
   p->polygons = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->polyIdMap = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->fw = Py_None; Py_INCREF(Py_None);
   return o;
 }
 
-static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Shape(PyObject *o) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)o;
+static void __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Shape(PyObject *o) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -17936,9 +17936,9 @@ static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Shape(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Shape(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Shape(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)o;
   if (p->polygons) {
     e = (*v)(p->polygons, a); if (e) return e;
   }
@@ -17951,9 +17951,9 @@ static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Shape(PyObject *o, visitpro
   return 0;
 }
 
-static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Shape(PyObject *o) {
+static int __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Shape(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *)o;
   tmp = ((PyObject*)p->polygons);
   p->polygons = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -17966,17 +17966,17 @@ static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Shape(PyObject *o) {
   return 0;
 }
 
-static PyObject *__pyx_getprop_5QSWAT_14polygonizeInC2_5Shape_polygons(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_8polygons_1__get__(o);
+static PyObject *__pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_polygons(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8polygons_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5QSWAT_14polygonizeInC2_5Shape_cellCount(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9cellCount_1__get__(o);
+static PyObject *__pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_cellCount(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_1__get__(o);
 }
 
-static int __pyx_setprop_5QSWAT_14polygonizeInC2_5Shape_cellCount(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+static int __pyx_setprop_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_cellCount(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
   if (v) {
-    return __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9cellCount_3__set__(o, v);
+    return __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9cellCount_3__set__(o, v);
   }
   else {
     PyErr_SetString(PyExc_NotImplementedError, "__del__");
@@ -17984,28 +17984,28 @@ static int __pyx_setprop_5QSWAT_14polygonizeInC2_5Shape_cellCount(PyObject *o, P
   }
 }
 
-static PyMethodDef __pyx_methods_5QSWAT_14polygonizeInC2_Shape[] = {
-  {"newPoly", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_5newPoly, METH_NOARGS, __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_4newPoly},
-  {"checkMerge", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_7checkMerge, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_6checkMerge},
-  {"addLink", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_9addLink, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_8addLink},
-  {"coalesce", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_11coalesce, METH_NOARGS, __pyx_doc_5QSWAT_14polygonizeInC2_5Shape_10coalesce},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_13__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_5Shape_15__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Shape[] = {
+  {"newPoly", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_5newPoly, METH_NOARGS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_4newPoly},
+  {"checkMerge", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_7checkMerge, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_6checkMerge},
+  {"addLink", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_9addLink, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_8addLink},
+  {"coalesce", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_11coalesce, METH_NOARGS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_10coalesce},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_13__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_15__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5QSWAT_14polygonizeInC2_Shape[] = {
-  {(char *)"polygons", __pyx_getprop_5QSWAT_14polygonizeInC2_5Shape_polygons, 0, (char *)0, 0},
-  {(char *)"cellCount", __pyx_getprop_5QSWAT_14polygonizeInC2_5Shape_cellCount, __pyx_setprop_5QSWAT_14polygonizeInC2_5Shape_cellCount, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_6QSWAT3_5QSWAT_14polygonizeInC2_Shape[] = {
+  {(char *)"polygons", __pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_polygons, 0, (char *)0, 0},
+  {(char *)"cellCount", __pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_cellCount, __pyx_setprop_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_cellCount, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Shape = {
+static PyTypeObject __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape = {
   PyVarObject_HEAD_INIT(0, 0)
-  "QSWAT.polygonizeInC2.Shape", /*tp_name*/
-  sizeof(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape), /*tp_basicsize*/
+  "QSWAT3.QSWAT.polygonizeInC2.Shape", /*tp_name*/
+  sizeof(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Shape, /*tp_dealloc*/
+  __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -18021,29 +18021,29 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Shape = {
   0, /*tp_as_mapping*/
   0, /*tp_hash*/
   0, /*tp_call*/
-  __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_3__str__, /*tp_str*/
+  __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_3__str__, /*tp_str*/
   0, /*tp_getattro*/
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   "A shape is a collection of polygons.", /*tp_doc*/
-  __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Shape, /*tp_traverse*/
-  __pyx_tp_clear_5QSWAT_14polygonizeInC2_Shape, /*tp_clear*/
+  __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, /*tp_traverse*/
+  __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5QSWAT_14polygonizeInC2_Shape, /*tp_methods*/
+  __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5QSWAT_14polygonizeInC2_Shape, /*tp_getset*/
+  __pyx_getsets_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_5QSWAT_14polygonizeInC2_5Shape_1__init__, /*tp_init*/
+  __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5QSWAT_14polygonizeInC2_Shape, /*tp_new*/
+  __pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Shape, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -18060,10 +18060,10 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Shape = {
   0, /*tp_vectorcall*/
   #endif
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Offset __pyx_vtable_5QSWAT_14polygonizeInC2_Offset;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Offset __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset;
 
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Offset(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *p;
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Offset(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -18071,14 +18071,14 @@ static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Offset(PyTypeObject *t, CY
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5QSWAT_14polygonizeInC2_Offset;
+  p = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Offset;
   p->origin = Py_None; Py_INCREF(Py_None);
   return o;
 }
 
-static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Offset(PyObject *o) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)o;
+static void __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Offset(PyObject *o) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -18089,38 +18089,38 @@ static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Offset(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Offset(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Offset(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)o;
   if (p->origin) {
     e = (*v)(p->origin, a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Offset(PyObject *o) {
+static int __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Offset(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)o;
   tmp = ((PyObject*)p->origin);
   p->origin = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyMethodDef __pyx_methods_5QSWAT_14polygonizeInC2_Offset[] = {
-  {"area", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_3area, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_6Offset_2area},
-  {"makeGeometry", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_7__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_6Offset_9__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Offset[] = {
+  {"area", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_3area, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_2area},
+  {"makeGeometry", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_5makeGeometry, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_4makeGeometry},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_7__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_9__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Offset = {
+static PyTypeObject __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset = {
   PyVarObject_HEAD_INIT(0, 0)
-  "QSWAT.polygonizeInC2.Offset", /*tp_name*/
-  sizeof(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset), /*tp_basicsize*/
+  "QSWAT3.QSWAT.polygonizeInC2.Offset", /*tp_name*/
+  sizeof(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Offset, /*tp_dealloc*/
+  __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Offset, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -18142,13 +18142,13 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Offset = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   "Holds data about conversion of grid vertices to geographic points, \n    and provides functions to calculate shape areas and geometries", /*tp_doc*/
-  __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Offset, /*tp_traverse*/
-  __pyx_tp_clear_5QSWAT_14polygonizeInC2_Offset, /*tp_clear*/
+  __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Offset, /*tp_traverse*/
+  __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Offset, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5QSWAT_14polygonizeInC2_Offset, /*tp_methods*/
+  __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Offset, /*tp_methods*/
   0, /*tp_members*/
   0, /*tp_getset*/
   0, /*tp_base*/
@@ -18156,9 +18156,9 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Offset = {
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_5QSWAT_14polygonizeInC2_6Offset_1__init__, /*tp_init*/
+  __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5QSWAT_14polygonizeInC2_Offset, /*tp_new*/
+  __pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Offset, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -18175,10 +18175,10 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Offset = {
   0, /*tp_vectorcall*/
   #endif
 };
-static struct __pyx_vtabstruct_5QSWAT_14polygonizeInC2_Polygonize __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize;
+static struct __pyx_vtabstruct_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize;
 
-static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Polygonize(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *p;
+static PyObject *__pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -18186,20 +18186,20 @@ static PyObject *__pyx_tp_new_5QSWAT_14polygonizeInC2_Polygonize(PyTypeObject *t
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygonize;
+  p = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize;
   p->lastVals = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->thisVals = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->lastIds = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->thisIds = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->shapes = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->offset = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)Py_None); Py_INCREF(Py_None);
+  p->offset = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)Py_None); Py_INCREF(Py_None);
   p->fw = Py_None; Py_INCREF(Py_None);
   return o;
 }
 
-static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)o;
+static void __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -18216,9 +18216,9 @@ static void __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)o;
   if (p->lastVals) {
     e = (*v)(((PyObject *)p->lastVals), a); if (e) return e;
   }
@@ -18243,9 +18243,9 @@ static int __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o, vis
   return 0;
 }
 
-static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
+static int __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *p = (struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *)o;
+  struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *p = (struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *)o;
   tmp = ((PyObject*)p->lastVals);
   p->lastVals = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -18262,7 +18262,7 @@ static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
   p->shapes = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->offset);
-  p->offset = ((struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *)Py_None); Py_INCREF(Py_None);
+  p->offset = ((struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->fw);
   p->fw = Py_None; Py_INCREF(Py_None);
@@ -18270,33 +18270,33 @@ static int __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygonize(PyObject *o) {
   return 0;
 }
 
-static PyObject *__pyx_getprop_5QSWAT_14polygonizeInC2_10Polygonize_shapes(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_6shapes_1__get__(o);
+static PyObject *__pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_shapes(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6shapes_1__get__(o);
 }
 
-static PyMethodDef __pyx_methods_5QSWAT_14polygonizeInC2_Polygonize[] = {
-  {"addRow", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_3addRow, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_2addRow},
-  {"finish", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_5finish, METH_NOARGS, __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_4finish},
-  {"getGeometry", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry},
-  {"shapesToString", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString, METH_NOARGS, __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString},
-  {"cellCount", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount},
-  {"area", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_13area, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_10Polygonize_12area},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_15__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_17__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize[] = {
+  {"addRow", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_3addRow, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_2addRow},
+  {"finish", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_5finish, METH_NOARGS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_4finish},
+  {"getGeometry", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_7getGeometry, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_6getGeometry},
+  {"shapesToString", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_9shapesToString, METH_NOARGS, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_8shapesToString},
+  {"cellCount", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_11cellCount, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_10cellCount},
+  {"area", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_13area, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_12area},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_15__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_17__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5QSWAT_14polygonizeInC2_Polygonize[] = {
-  {(char *)"shapes", __pyx_getprop_5QSWAT_14polygonizeInC2_10Polygonize_shapes, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize[] = {
+  {(char *)"shapes", __pyx_getprop_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_shapes, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Polygonize = {
+static PyTypeObject __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize = {
   PyVarObject_HEAD_INIT(0, 0)
-  "QSWAT.polygonizeInC2.Polygonize", /*tp_name*/
-  sizeof(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize), /*tp_basicsize*/
+  "QSWAT3.QSWAT.polygonizeInC2.Polygonize", /*tp_name*/
+  sizeof(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5QSWAT_14polygonizeInC2_Polygonize, /*tp_dealloc*/
+  __pyx_tp_dealloc_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -18318,23 +18318,23 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Polygonize = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_5QSWAT_14polygonizeInC2_Polygonize, /*tp_traverse*/
-  __pyx_tp_clear_5QSWAT_14polygonizeInC2_Polygonize, /*tp_clear*/
+  __pyx_tp_traverse_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize, /*tp_traverse*/
+  __pyx_tp_clear_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5QSWAT_14polygonizeInC2_Polygonize, /*tp_methods*/
+  __pyx_methods_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5QSWAT_14polygonizeInC2_Polygonize, /*tp_getset*/
+  __pyx_getsets_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_5QSWAT_14polygonizeInC2_10Polygonize_1__init__, /*tp_init*/
+  __pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5QSWAT_14polygonizeInC2_Polygonize, /*tp_new*/
+  __pyx_tp_new_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -18353,9 +18353,9 @@ static PyTypeObject __pyx_type_5QSWAT_14polygonizeInC2_Polygonize = {
 };
 
 static PyMethodDef __pyx_methods[] = {
-  {"ringToString", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_1ringToString, METH_O, 0},
-  {"isClockwise", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_3isClockwise, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_2isClockwise},
-  {"isClosed", (PyCFunction)__pyx_pw_5QSWAT_14polygonizeInC2_5isClosed, METH_O, __pyx_doc_5QSWAT_14polygonizeInC2_4isClosed},
+  {"ringToString", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_1ringToString, METH_O, 0},
+  {"isClockwise", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_3isClockwise, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_2isClockwise},
+  {"isClosed", (PyCFunction)__pyx_pw_6QSWAT3_5QSWAT_14polygonizeInC2_5isClosed, METH_O, __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_4isClosed},
   {0, 0, 0, 0}
 };
 
@@ -18367,12 +18367,14 @@ static int __pyx_import_star_set(PyObject *o, PyObject* py_name, char *name) {
     "PyTypeObject",
     "Shape",
     "Vertex",
-    "__pyx_ctuple_3bb0d__int__and_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__and_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__etc",
-    "__pyx_ctuple_3bb0d__int__and_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__and_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__etc_struct",
-    "__pyx_ctuple_3d4b2__struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__and_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__etc",
-    "__pyx_ctuple_3d4b2__struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__and_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex__etc_struct",
+    "__pyx_ctuple_2eab3__a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__and_a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__etc",
+    "__pyx_ctuple_2eab3__a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__and_a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__etc_struct",
+    "__pyx_ctuple_327f6__int__and_a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__and_a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__etc",
+    "__pyx_ctuple_327f6__int__and_a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__and_a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__etc_struct",
     "__pyx_ctuple_Py_ssize_t",
     "__pyx_ctuple_Py_ssize_t_struct",
+    "__pyx_ctuple_ea7bd__a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__etc",
+    "__pyx_ctuple_ea7bd__a0554__struct__space___dunderpyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex__etc__etc_struct",
     "__pyx_ctuple_int",
     "__pyx_ctuple_int__and_int",
     "__pyx_ctuple_int__and_int_struct",
@@ -18383,8 +18385,6 @@ static int __pyx_import_star_set(PyObject *o, PyObject* py_name, char *name) {
     "__pyx_ctuple_long__and_long",
     "__pyx_ctuple_long__and_long_struct",
     "__pyx_ctuple_long_struct",
-    "__pyx_ctuple_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex",
-    "__pyx_ctuple_struct__space___dunderpyx_t_5QSWAT_14polygonizeInC2_Vertex_struct",
     "struct_type",
     0
   };
@@ -18571,7 +18571,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_Polygon, __pyx_k_Polygon, sizeof(__pyx_k_Polygon), 0, 0, 1, 1},
   {&__pyx_n_s_Polygonize, __pyx_k_Polygonize, sizeof(__pyx_k_Polygonize), 0, 0, 1, 1},
-  {&__pyx_n_s_QSWAT_polygonizeInC2, __pyx_k_QSWAT_polygonizeInC2, sizeof(__pyx_k_QSWAT_polygonizeInC2), 0, 0, 1, 1},
+  {&__pyx_n_s_QSWAT3_QSWAT_polygonizeInC2, __pyx_k_QSWAT3_QSWAT_polygonizeInC2, sizeof(__pyx_k_QSWAT3_QSWAT_polygonizeInC2), 0, 0, 1, 1},
   {&__pyx_n_s_QgsGeometry, __pyx_k_QgsGeometry, sizeof(__pyx_k_QgsGeometry), 0, 0, 1, 1},
   {&__pyx_n_s_QgsPointXY, __pyx_k_QgsPointXY, sizeof(__pyx_k_QgsPointXY), 0, 0, 1, 1},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
@@ -18695,7 +18695,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":272
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":272
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -18706,7 +18706,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":276
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_ARRAY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -18717,7 +18717,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":306
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":306
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -18728,7 +18728,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":856
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":856
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -18739,7 +18739,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":880
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":880
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -18750,7 +18750,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1038
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1038
  *         _import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -18761,7 +18761,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
-  /* "../../../../OSGeo4W32_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1044
+  /* "../../../../../OSGeo4W64_3/apps/Python37/lib/site-packages/Cython/Includes/numpy/__init__.pxd":1044
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -18875,94 +18875,94 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygon = &__pyx_vtable_5QSWAT_14polygonizeInC2_Polygon;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygon.coalesce = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_coalesce;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygon.join = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, PyObject *, PyObject *, int, int))__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_join;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygon.addLink = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addLink;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygon.addPoly = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_7Polygon_addPoly;
-  if (PyType_Ready(&__pyx_type_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon = &__pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.coalesce = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_coalesce;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.join = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, PyObject *, PyObject *, int, int))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_join;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.addLink = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addLink;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.addPoly = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon_addPoly;
+  if (PyType_Ready(&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_5QSWAT_14polygonizeInC2_Polygon.tp_print = 0;
+  __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5QSWAT_14polygonizeInC2_Polygon.tp_dictoffset && __pyx_type_5QSWAT_14polygonizeInC2_Polygon.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_5QSWAT_14polygonizeInC2_Polygon.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.tp_dictoffset && __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_5QSWAT_14polygonizeInC2_Polygon, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 116, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 116, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
-      __pyx_wrapperbase_5QSWAT_14polygonizeInC2_7Polygon___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
-      __pyx_wrapperbase_5QSWAT_14polygonizeInC2_7Polygon___init__.doc = __pyx_doc_5QSWAT_14polygonizeInC2_7Polygon___init__;
-      ((PyWrapperDescrObject *)wrapper)->d_base = &__pyx_wrapperbase_5QSWAT_14polygonizeInC2_7Polygon___init__;
+      __pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
+      __pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__.doc = __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__;
+      ((PyWrapperDescrObject *)wrapper)->d_base = &__pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_7Polygon___init__;
     }
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_type_5QSWAT_14polygonizeInC2_Polygon.tp_dict, __pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Polygon, (PyObject *)&__pyx_type_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
-  __pyx_ptype_5QSWAT_14polygonizeInC2_Polygon = &__pyx_type_5QSWAT_14polygonizeInC2_Polygon;
-  __pyx_vtabptr_5QSWAT_14polygonizeInC2_Shape = &__pyx_vtable_5QSWAT_14polygonizeInC2_Shape;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Shape.newPoly = (int (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_5Shape_newPoly;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Shape.checkMerge = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int, int, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_5Shape_checkMerge;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Shape.addLink = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_5Shape_addLink;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Shape.coalesce = (void (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_5Shape_coalesce;
-  if (PyType_Ready(&__pyx_type_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon.tp_dict, __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Polygon, (PyObject *)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon = &__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygon;
+  __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Shape = &__pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Shape;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.newPoly = (int (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_newPoly;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.checkMerge = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int, int, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_checkMerge;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.addLink = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_addLink;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.coalesce = (void (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_5Shape_coalesce;
+  if (PyType_Ready(&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_5QSWAT_14polygonizeInC2_Shape.tp_print = 0;
+  __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5QSWAT_14polygonizeInC2_Shape.tp_dictoffset && __pyx_type_5QSWAT_14polygonizeInC2_Shape.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_5QSWAT_14polygonizeInC2_Shape.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.tp_dictoffset && __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5QSWAT_14polygonizeInC2_Shape.tp_dict, __pyx_vtabptr_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Shape, (PyObject *)&__pyx_type_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
-  __pyx_ptype_5QSWAT_14polygonizeInC2_Shape = &__pyx_type_5QSWAT_14polygonizeInC2_Shape;
-  __pyx_vtabptr_5QSWAT_14polygonizeInC2_Offset = &__pyx_vtable_5QSWAT_14polygonizeInC2_Offset;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Offset.vertexToPoint = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex))__pyx_f_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Offset.area = (double (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_6Offset_area;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Offset.ringToPointsRing = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *))__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Offset.ringsToPointsRings = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *))__pyx_f_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Offset.polygonsToPointsPolygons = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, PyObject *))__pyx_f_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygons;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Offset.makeGeometry = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_6Offset_makeGeometry;
-  if (PyType_Ready(&__pyx_type_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape.tp_dict, __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Shape, (PyObject *)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Shape = &__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Shape;
+  __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Offset = &__pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.vertexToPoint = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_vertexToPoint;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.area = (double (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_area;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.ringToPointsRing = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_ringToPointsRing;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.ringsToPointsRings = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_ringsToPointsRings;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.polygonsToPointsPolygons = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, PyObject *))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_polygonsToPointsPolygons;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.makeGeometry = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Offset *, struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Shape *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset_makeGeometry;
+  if (PyType_Ready(&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_5QSWAT_14polygonizeInC2_Offset.tp_print = 0;
+  __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5QSWAT_14polygonizeInC2_Offset.tp_dictoffset && __pyx_type_5QSWAT_14polygonizeInC2_Offset.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_5QSWAT_14polygonizeInC2_Offset.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.tp_dictoffset && __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_5QSWAT_14polygonizeInC2_Offset, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 401, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 401, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
-      __pyx_wrapperbase_5QSWAT_14polygonizeInC2_6Offset___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
-      __pyx_wrapperbase_5QSWAT_14polygonizeInC2_6Offset___init__.doc = __pyx_doc_5QSWAT_14polygonizeInC2_6Offset___init__;
-      ((PyWrapperDescrObject *)wrapper)->d_base = &__pyx_wrapperbase_5QSWAT_14polygonizeInC2_6Offset___init__;
+      __pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
+      __pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__.doc = __pyx_doc_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__;
+      ((PyWrapperDescrObject *)wrapper)->d_base = &__pyx_wrapperbase_6QSWAT3_5QSWAT_14polygonizeInC2_6Offset___init__;
     }
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_type_5QSWAT_14polygonizeInC2_Offset.tp_dict, __pyx_vtabptr_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Offset, (PyObject *)&__pyx_type_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
-  __pyx_ptype_5QSWAT_14polygonizeInC2_Offset = &__pyx_type_5QSWAT_14polygonizeInC2_Offset;
-  __pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygonize = &__pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize.addRow = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, PyArrayObject *, int, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_addRow;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize.finish = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_finish;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize.getGeometry = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize.shapesToString = (PyObject *(*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize.cellCount = (int (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_cellCount;
-  __pyx_vtable_5QSWAT_14polygonizeInC2_Polygonize.area = (double (*)(struct __pyx_obj_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch))__pyx_f_5QSWAT_14polygonizeInC2_10Polygonize_area;
-  if (PyType_Ready(&__pyx_type_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset.tp_dict, __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Offset, (PyObject *)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
+  __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Offset = &__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Offset;
+  __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize = &__pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.addRow = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, PyArrayObject *, int, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_addRow;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.finish = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_finish;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.getGeometry = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_getGeometry;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.shapesToString = (PyObject *(*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_shapesToString;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.cellCount = (int (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_cellCount;
+  __pyx_vtable_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.area = (double (*)(struct __pyx_obj_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize *, int, int __pyx_skip_dispatch))__pyx_f_6QSWAT3_5QSWAT_14polygonizeInC2_10Polygonize_area;
+  if (PyType_Ready(&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_5QSWAT_14polygonizeInC2_Polygonize.tp_print = 0;
+  __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5QSWAT_14polygonizeInC2_Polygonize.tp_dictoffset && __pyx_type_5QSWAT_14polygonizeInC2_Polygonize.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_5QSWAT_14polygonizeInC2_Polygonize.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.tp_dictoffset && __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5QSWAT_14polygonizeInC2_Polygonize.tp_dict, __pyx_vtabptr_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Polygonize, (PyObject *)&__pyx_type_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
-  __pyx_ptype_5QSWAT_14polygonizeInC2_Polygonize = &__pyx_type_5QSWAT_14polygonizeInC2_Polygonize;
+  if (__Pyx_SetVtable(__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize.tp_dict, __pyx_vtabptr_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Polygonize, (PyObject *)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
+  __pyx_ptype_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize = &__pyx_type_6QSWAT3_5QSWAT_14polygonizeInC2_Polygonize;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -19193,14 +19193,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_QSWAT__polygonizeInC2) {
+  if (__pyx_module_is_main_QSWAT3__QSWAT__polygonizeInC2) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "QSWAT.polygonizeInC2")) {
-      if (unlikely(PyDict_SetItemString(modules, "QSWAT.polygonizeInC2", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "QSWAT3.QSWAT.polygonizeInC2")) {
+      if (unlikely(PyDict_SetItemString(modules, "QSWAT3.QSWAT.polygonizeInC2", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -19221,7 +19221,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "QSWAT/polygonizeInC2.pyx":45
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":45
  * #  This has also been fixed by checking if adding a right link can join two rings
  * 
  * from qgis.core import * # @UnusedWildImport             # <<<<<<<<<<<<<<
@@ -19239,7 +19239,7 @@ if (!__Pyx_RefNanny) {
   if (__pyx_import_star(__pyx_t_2) < 0) __PYX_ERR(0, 45, __pyx_L1_error);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":47
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":47
  * from qgis.core import * # @UnusedWildImport
  * 
  * from collections import deque             # <<<<<<<<<<<<<<
@@ -19260,7 +19260,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":48
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":48
  * 
  * from collections import deque
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -19272,7 +19272,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":50
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":50
  * import numpy as np
  * cimport numpy as np
  * import os             # <<<<<<<<<<<<<<
@@ -19289,7 +19289,7 @@ if (!__Pyx_RefNanny) {
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon, NULL, __pyx_n_s_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_7__pyx_unpickle_Polygon, NULL, __pyx_n_s_QSWAT3_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Polygon, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -19301,7 +19301,7 @@ if (!__Pyx_RefNanny) {
  *     __pyx_result.connected4 = __pyx_state[0]; __pyx_result.fw = __pyx_state[1]; __pyx_result.rings = __pyx_state[2]
  *     if len(__pyx_state) > 3 and hasattr(__pyx_result, '__dict__'):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape, NULL, __pyx_n_s_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_9__pyx_unpickle_Shape, NULL, __pyx_n_s_QSWAT3_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Shape, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -19311,7 +19311,7 @@ if (!__Pyx_RefNanny) {
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset, NULL, __pyx_n_s_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_11__pyx_unpickle_Offset, NULL, __pyx_n_s_QSWAT3_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Offset, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -19323,12 +19323,12 @@ if (!__Pyx_RefNanny) {
  *     __pyx_result.dx = __pyx_state[0]; __pyx_result.dy = __pyx_state[1]; __pyx_result.origin = __pyx_state[2]; __pyx_result.unitArea = __pyx_state[3]
  *     if len(__pyx_state) > 4 and hasattr(__pyx_result, '__dict__'):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize, NULL, __pyx_n_s_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6QSWAT3_5QSWAT_14polygonizeInC2_13__pyx_unpickle_Polygonize, NULL, __pyx_n_s_QSWAT3_QSWAT_polygonizeInC2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Polygonize, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "QSWAT/polygonizeInC2.pyx":1
+  /* "QSWAT3/QSWAT/polygonizeInC2.pyx":1
  * # -*- coding: utf-8 -*-             # <<<<<<<<<<<<<<
  * # cython: language_level=3
  * 
@@ -19340,8 +19340,8 @@ if (!__Pyx_RefNanny) {
 
   /* "FromPyStructUtility":11
  * 
- * @cname("__pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex")
- * cdef struct_type __pyx_convert__from_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(obj) except *:             # <<<<<<<<<<<<<<
+ * @cname("__pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex")
+ * cdef struct_type __pyx_convert__from_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(obj) except *:             # <<<<<<<<<<<<<<
  *     cdef struct_type result
  *     if not PyMapping_Check(obj):
  */
@@ -19354,11 +19354,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init QSWAT.polygonizeInC2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init QSWAT3.QSWAT.polygonizeInC2", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init QSWAT.polygonizeInC2");
+    PyErr_SetString(PyExc_ImportError, "init QSWAT3.QSWAT.polygonizeInC2");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -22649,7 +22649,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
     }
 }
 
-static PyObject* __pyx_convert__to_py_struct____pyx_t_5QSWAT_14polygonizeInC2_Vertex(struct __pyx_t_5QSWAT_14polygonizeInC2_Vertex s) {
+static PyObject* __pyx_convert__to_py_struct____pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex(struct __pyx_t_6QSWAT3_5QSWAT_14polygonizeInC2_Vertex s) {
     PyObject* res;
     PyObject* member;
     res = __Pyx_PyDict_NewPresized(2); if (unlikely(!res)) return NULL;

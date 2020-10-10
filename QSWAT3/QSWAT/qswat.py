@@ -20,10 +20,10 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QInputDialog, QMessageBox, QAction, QFileDialog  # @UnusedImport
-from qgis.core import Qgis, QgsProject, QgsVectorLayer, QgsUnitTypes
+from PyQt5.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion  # @UnresolvedImport
+from PyQt5.QtGui import QIcon  # @UnresolvedImport
+from PyQt5.QtWidgets import QAction  # @UnresolvedImport
+from qgis.core import Qgis, QgsProject, QgsVectorLayer, QgsUnitTypes  # @UnresolvedImport
 import os.path
 import subprocess
 import time
@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.1.1'
+    __version__ = '1.1.2'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""

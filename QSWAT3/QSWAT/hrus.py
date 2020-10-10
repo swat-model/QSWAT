@@ -20,10 +20,10 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import QDoubleValidator, QTextCursor
-from PyQt5.QtWidgets import *  # @UnusedWildImport
-from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsCoordinateTransformContext, QgsRasterLayer  # @UnusedImport
+from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant  # @UnresolvedImport
+from PyQt5.QtGui import QDoubleValidator, QTextCursor  # @UnresolvedImport
+from PyQt5.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar   # @UnresolvedImport
+from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer  # @UnresolvedImport
 from qgis.gui import * # @UnusedWildImport
 import os.path
 from osgeo import gdal  # type: ignore

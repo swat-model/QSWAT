@@ -24,12 +24,12 @@
 from qgis.core import *  # @UnusedWildImport
 
 import sqlite3
-import pyodbc
 import os
 import shutil
 import glob
 import csv
-from numpy import * # @UnusedWildImport
+import sys
+from numpy import zeros
 from osgeo import gdal, ogr
 
 from QSWAT.parameters import Parameters  # @UnresolvedImport
@@ -156,11 +156,13 @@ class MergeDbs:
                 inLink = row[3] 
                 if outHUC.startswith(self.selection) and inHUC.startswith(self.selection):
                     outDir = os.path.join(self.sourceDir, os.path.join('huc' + outHUC))
-                    if not os.path.isdir(outDir):
+                    outQgs = outDir + '.qgs'
+                    if not os.path.isdir(outDir) or not os.path.isfile(outQgs):
                         # probably an empty project
                         continue
                     inDir = os.path.join(self.sourceDir, os.path.join('huc' + inHUC))
-                    if not os.path.isdir(inDir):
+                    inQgs = inDir + '.qgs'
+                    if not os.path.isdir(inDir) or not os.path.isfile(inQgs):
                         continue
                     outStreamsFile = outDir + '/Watershed/Shapes/channels.shp'
                     if not os.path.isfile(outStreamsFile):
@@ -211,15 +213,21 @@ class MergeDbs:
             # print('ProjNames: {0}'.format(self.projNames))
             sql2 = 'SELECT * FROM Watershed'
             sql3 = 'INSERT INTO Watershed VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+            sql4 = "SELECT name FROM sqlite_master WHERE type='table' AND name='Watershed'"
+            nonProjects = set()
             for projName in self.projNames:
                 huc12_10 = projName[3:]
                 subs = self.subMap.setdefault(huc12_10, dict())
-                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.mdb'))
-                connStr = Parameters._ACCESSSTRING + db
-                # print(connStr)
-                with pyodbc.connect(connStr, readonly=True) as projConn:
+                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.sqlite'))
+                with sqlite3.connect(db) as projConn:  # @UndefinedVariable
                     projCursor = projConn.cursor()
-                    for row in projCursor.execute(sql2).fetchall():
+                    # check Watershed table exists
+                    result = projCursor.execute(sql4).fetchone()
+                    if result is None:
+                        print('No Watershed table in {0}: skipping this project'.format(projName))
+                        nonProjects.add(projName)
+                        continue
+                    for row in projCursor.execute(sql2):
                         gridCode = int(row[2])
                         huc14_12 = huc12_10 + '{0:0>2d}'.format(gridCode)
                         subs[gridCode] = self.nextSubNum
@@ -232,6 +240,8 @@ class MergeDbs:
                                        row[12], row[13], row[14], row[15], row[16], row[17], row[18], 
                                        hydroid, outletid))
                         self.nextSubNum += 1
+            for nonProject in nonProjects:
+                self.projNames.remove(nonProject)    
                         
     def makeDownstreamMap(self):
         """Make downstream map from source Reach tables and oiMap."""
@@ -239,12 +249,10 @@ class MergeDbs:
         sql = 'SELECT Subbasin, SubbasinR FROM Reach'
         for projName in self.projNames:
             huc12_10 = projName[3:]
-            db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.mdb'))
-            connStr = Parameters._ACCESSSTRING + db
-            # print(connStr)
-            with pyodbc.connect(connStr, readonly=True) as projConn:
+            db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.sqlite'))
+            with sqlite3.connect(db) as projConn:  # @UndefinedVariable
                 projCursor = projConn.cursor()
-                for row in projCursor.execute(sql).fetchall():
+                for row in projCursor.execute(sql):
                     subbasin = int(row[0])
                     sub = self.subMap[huc12_10][subbasin]
                     subbasinR = int(row[1])
@@ -297,11 +305,10 @@ class MergeDbs:
             sql3 = 'INSERT INTO Reach VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
             for projName in self.projNames:
                 huc12_10 = projName[3:]
-                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.mdb'))
-                connStr = Parameters._ACCESSSTRING + db
-                with pyodbc.connect(connStr, readonly=True) as projConn:
+                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.sqlite'))
+                with sqlite3.connect(db) as projConn:  # @UndefinedVariable
                     projCursor = projConn.cursor()
-                    for row in projCursor.execute(sql2).fetchall():
+                    for row in projCursor.execute(sql2):
                         subbasin = int(row[3])
                         huc14_12 = huc12_10 + '{0:0>2d}'.format(subbasin)
                         sub = self.subMap[huc12_10][subbasin]
@@ -333,11 +340,10 @@ class MergeDbs:
             for projName in self.projNames:
                 huc12_10 = projName[3:]
                 # print('HUC12: {0}'.format(huc12_10))
-                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.mdb'))
-                connStr = Parameters._ACCESSSTRING + db
-                with pyodbc.connect(connStr, readonly=True) as projConn:
+                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.sqlite'))
+                with sqlite3.connect(db) as projConn:  # @UndefinedVariable
                     projCursor = projConn.cursor()
-                    for row in projCursor.execute(sql2).fetchall():
+                    for row in projCursor.execute(sql2):
                         if row[10] in {'L', 'T'}:  # outlet
                             subbasin = int(row[11])
                             sub = self.subMap[huc12_10][subbasin]
@@ -388,18 +394,17 @@ class MergeDbs:
             nextHRUId = 1
             for projName in self.projNames:
                 huc12_10 = projName[3:]
-                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.mdb'))
-                connStr = Parameters._ACCESSSTRING + db
-                with pyodbc.connect(connStr, readonly=True) as projConn:
+                db = os.path.join(self.sourceDir, os.path.join(projName, projName + '.sqlite'))
+                with sqlite3.connect(db) as projConn:  # @UndefinedVariable
                     projCursor = projConn.cursor()
-                    for row in projCursor.execute(sql2).fetchall():
+                    for row in projCursor.execute(sql2):
                         subbasin = int(row[1])
                         sub = self.subMap[huc12_10][subbasin]
                         huc14_12 = huc12_10 + '{0:0>2d}'.format(subbasin)
                         HRU_GIS = '{0:0>5d}'.format(sub) + row[12][5:]
                         cursor.execute(sql3, (nextHRUId, sub, huc14_12, row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], 
                                         row[10], nextHRUId, HRU_GIS))
-                        uncombRow = projCursor.execute(sql2a, row[0]).fetchone()
+                        uncombRow = projCursor.execute(sql2a, (row[0],)).fetchone()
                         cursor.execute(sql3a, (nextHRUId, sub, huc14_12, uncombRow[0], row[3], row[5], row[5], uncombRow[1], row[7], 
                                        row[9], row[8], row[10]))
                         self.landuses.add(int(uncombRow[0]))
@@ -566,18 +571,21 @@ class MergeDbs:
     );
     """
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
+    # pattern for choosing region (2 to 12 digits)
+    selection = ''
+    if len(sys.argv) > 1:
+        selection = sys.argv[1]
+    if selection == '':
+        selection = '01'
+    print('Selection is {0}'.format(selection))
     isPlus = False
-    isCDL = False
+    isCDL = True
     HUCScale = '14'  # can also be '12'
-    selection = '01'
-    baseDir = 'E:/HUC{0}/SWAT/Fields_CDL/'.format(HUCScale) if isCDL else 'E:/HUC{0}/SWAT/Fields/'.format(HUCScale)
-    if len(selection) == 2:
-        mergeDir = baseDir + 'Merged' + selection
-        sourceDir = baseDir + selection
-    else:
-        mergeDir = baseDir + selection
-        sourceDir = baseDir + selection[:2]
+    modelsDir = 'E:/Models/'
+    baseDir = modelsDir + ('SWAT/Fields_CDL/HUC{0}/' if isCDL else 'SWAT/Fields/HUC{0}/').format(HUCScale)
+    mergeDir = baseDir + 'Merged' + selection
+    sourceDir = baseDir + selection
     m = MergeDbs(mergeDir, sourceDir, selection, isPlus)
     if not m.makeOIMap():
         exit()

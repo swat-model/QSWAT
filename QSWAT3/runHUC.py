@@ -29,9 +29,9 @@ import os
 import glob
 from osgeo import gdal, ogr  # type: ignore
 
-from QSWAT import qswat
-from QSWAT.delineation import Delineation
-from QSWAT.hrus import HRUs
+from QSWAT import qswat  # @UnresolvedImport
+from QSWAT.delineation import Delineation  # @UnresolvedImport
+from QSWAT.hrus import HRUs  # @UnresolvedImport
 import traceback
 
 
