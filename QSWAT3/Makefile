@@ -36,19 +36,19 @@ export PLUGINNAME
 
 ifeq ($(QSWAT_PROJECT), QSWAT3)
 	METADATA = metadata32.txt
-	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat merge14dbs.bat
+	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	METADATA = metadata64.txt
-	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat
+	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat runHUC64.bat
 else ifeq ($(QSWAT_PROJECT), QSWATGrid)
 	METADATA = metadatagrid.txt
-	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat merge14dbs.bat
+	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat
 endif
 
 SUBDIR = QSWAT
 export SUBDIR
 
-UPPER_PY_FILES = __init__.py runHUC.py merge14dbs.py test_qswat.py test_polygonize.py  test_polygonizeInC.py test_polygonizeInC2.py
+UPPER_PY_FILES = __init__.py runHUC.py test_qswat.py test_polygonize.py  test_polygonizeInC.py test_polygonizeInC2.py
 
 EXTRAS = Changelog.txt Makefile
 

@@ -50,8 +50,7 @@ useSlowPolygonize = False
 if useSlowPolygonize:
     from .polygonize import Polygonize  # type: ignore  # @UnusedImport @UnresolvedImport
 else:
-    from .polygonizeInC2 import Polygonize  # type: ignore  # @UnresolvedImport @Reimport
-    
+    from .polygonizeInC2 import Polygonize  # type: ignore  # @UnusedImport @UnresolvedImport @Reimport
 
 
 class HRUs(QObject):
@@ -1410,10 +1409,10 @@ class CreateHRUs(QObject):
         
         if self._gv.useGridModel:
             if self._gv.isBig:
-                conn = self._gv.db.connect()
-                cursor = conn.cursor()
-                (sql1, sql2, sql3) = self._gv.db.initWHUTables(cursor)
-                oid = 0
+                with self._gv.db.connect() as conn:
+                    cursor = conn.cursor()
+                    (sql1, sql2, sql3) = self._gv.db.initWHUTables(cursor)
+                    oid = 0
             fivePercent = int(len(self._gv.topo.basinToSWATBasin) / 20)
             gridCount = 0
             for link, basin in self._gv.topo.linkToBasin.items():
@@ -1871,6 +1870,7 @@ class CreateHRUs(QObject):
         if conn is None or sql1 is None or sql2 is None:
             return False
         self._gv.db.writeBasinsData(self.basins, conn, sql1, sql2)
+        conn.close()
         QSWATUtils.progress('Writing topographic report ...', progressLabel)
         self.progress_signal.emit('Writing topographic report ...')
         self.writeTopoReport()

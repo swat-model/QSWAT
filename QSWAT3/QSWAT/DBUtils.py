@@ -659,32 +659,31 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         if muid > 0:
             return muid
         sql = self.sqlSelect('statsgo_ssurgo_lkey', 'Source, MUKEY', '', 'LKEY=?')
-        conn = self.connect(readonly=True)
-        SSURGOConn = self.connectDb(self.SSURGODbFile, readonly=True)
-        lookup_row = conn.execute(sql, (sid,)).fetchone()
-        if lookup_row is None:
-            QSWATUtils.error('SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey'.format(sid), self.isBatch)
-            self._undefinedSoilIds.append(sid)
-            return sid
-        # only an information issue, not an error for now 
-        if lookup_row[0].upper().strip() == 'STATSGO':
-            QSWATUtils.information('SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch)
-            # self._undefinedSoilIds.append(sid)
-            # return sid
-        sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
-        row = SSURGOConn.execute(sql, lookup_row[1]).fetchone()
-        if row is None:
-            QSWATUtils.error('SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch)
-            self._undefinedSoilIds.append(sid)
-            return self.SSURGOUndefined
-        #if row[0].lower().strip() == 'water':
-        if re.search(self.waterPattern, row[0]) is not None:
-            self.SSURGOsoils[int(sid)] = Parameters._SSURGOWater
-            return Parameters._SSURGOWater
-        else:
-            muid = int(lookup_row[1])
-            self.SSURGOsoils[int(sid)] = muid
-            return muid
+        with self.connect(readonly=True) as conn, self.connectDb(self.SSURGODbFile, readonly=True) as SSURGOConn:
+            lookup_row = conn.execute(sql, (sid,)).fetchone()
+            if lookup_row is None:
+                QSWATUtils.error('SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey'.format(sid), self.isBatch)
+                self._undefinedSoilIds.append(sid)
+                return sid
+            # only an information issue, not an error for now 
+            if lookup_row[0].upper().strip() == 'STATSGO':
+                QSWATUtils.information('SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch)
+                # self._undefinedSoilIds.append(sid)
+                # return sid
+            sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
+            row = SSURGOConn.execute(sql, lookup_row[1]).fetchone()
+            if row is None:
+                QSWATUtils.error('SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch)
+                self._undefinedSoilIds.append(sid)
+                return self.SSURGOUndefined
+            #if row[0].lower().strip() == 'water':
+            if re.search(self.waterPattern, row[0]) is not None:
+                self.SSURGOsoils[int(sid)] = Parameters._SSURGOWater
+                return Parameters._SSURGOWater
+            else:
+                muid = int(lookup_row[1])
+                self.SSURGOsoils[int(sid)] = muid
+                return muid
     
     def populateAllLanduses(self, listBox: QListWidget) -> None:
         """Make list of all landuses in listBox."""
@@ -913,7 +912,6 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         else:
             self.hashDbTable(conn, self._BASINSDATA1)
             self.hashDbTable(conn, self._BASINSDATA2)
-        conn.close()
         
     def writeBasinsDataItem(self, basin: int, data: BasinData, curs: Any, sql1: str, sql2: str, index: int) -> int:
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 

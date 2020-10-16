@@ -50,7 +50,7 @@ from QSWAT.parameters import Parameters  # @UnresolvedImport
 from QSWAT.selectsubs import SelectSubbasins  # @UnresolvedImport
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
-QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis', True)
+QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis-ltr', True)
 
 QgsApplication.initQgis()
 

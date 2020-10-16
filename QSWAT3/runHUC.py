@@ -36,7 +36,7 @@ import traceback
 
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
-QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis', True)
+QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis-ltr', True)
 
 
 # create a new application object
