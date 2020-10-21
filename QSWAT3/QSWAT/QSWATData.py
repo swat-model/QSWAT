@@ -416,7 +416,7 @@ class HRUData:
         ## Originally used cellCount for mean slope, 
         # but cellCounts (which are integer) are inaccurate when small,
         # and may even round to zero because of split and exempt landuses.
-        self.meanSlope = totalSlope * cellArea / area
+        self.meanSlope = 0 if area == 0 else totalSlope * cellArea / area
         ## HRU number within the subbasin
         self.relHru = relHru
         

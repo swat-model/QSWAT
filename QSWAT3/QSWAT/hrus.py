@@ -1732,12 +1732,20 @@ class CreateHRUs(QObject):
                             self.basinElevMap[basin] = [0] * elevMapSize
                             link = self._gv.topo.basinToLink[basin]
                             reachData = self._gv.topo.reachesData[link]
-                            (outletCol, outletRow) = QSWATTopology.projToCell(reachData.lowerX, reachData.lowerY, elevationTransform)
-                            (sourceCol, sourceRow) = QSWATTopology.projToCell(reachData.upperX, reachData.upperY, elevationTransform)
-                            # QSWATUtils.loginfo('Outlet at ({0:.0F},{1:.0F}) for source at ({2:.0F},{3:.0F})'.format(reachData.lowerX, reachData.lowerY,reachData.upperX, reachData.upperY))
-                            outletElev = reachData.lowerZ
-                            # allow for upper < lower in case unfilled dem is used
-                            drop = 0 if reachData.upperZ < outletElev else reachData.upperZ - outletElev
+                            if reachData is None:   # could, eg, be outside DEM.  Invent some default values
+                                outletCol = elevationCol
+                                outletRow = elevationRow
+                                sourceCol = elevationCol
+                                sourceRow = elevationRow
+                                outletElev = elevation
+                                drop = 0
+                            else:
+                                (outletCol, outletRow) = QSWATTopology.projToCell(reachData.lowerX, reachData.lowerY, elevationTransform)
+                                (sourceCol, sourceRow) = QSWATTopology.projToCell(reachData.upperX, reachData.upperY, elevationTransform)
+                                # QSWATUtils.loginfo('Outlet at ({0:.0F},{1:.0F}) for source at ({2:.0F},{3:.0F})'.format(reachData.lowerX, reachData.lowerY,reachData.upperX, reachData.upperY))
+                                outletElev = reachData.lowerZ
+                                # allow for upper < lower in case unfilled dem is used
+                                drop = 0 if reachData.upperZ < outletElev else reachData.upperZ - outletElev
                             length = self._gv.topo.streamLengths[link]
                             data = BasinData(outletCol, outletRow, outletElev, sourceCol, sourceRow, length, drop, minDist, self._gv.isBatch)
                             # add drainage areas
@@ -2833,19 +2841,21 @@ class CreateHRUs(QObject):
         return bands 
                
     def analyseElevMap(self, mapp: List[int]) -> Tuple[int, int, int, float, float]:
+        if len(mapp) == 0:
+            return (0, 0, 0, 0, 0)
         """Calculate statistics from map elevation -> frequency."""
         # find index of first non-zero frequency
         minimum = 0
-        while mapp[minimum] == 0:
-            minimum += 1
+        while minimum < len(mapp) and mapp[minimum] == 0:
+            minimum += 1  # if mapp is all zeroes, minimum is finally len(mapp)
         # find index of last non-zero frequency
         maximum = len(mapp) - 1
-        while mapp[maximum] == 0:
-            maximum -= 1
+        while maximum >= 0 and mapp[maximum] == 0:
+            maximum -= 1  # if mapp is all zeroes, maximum is finally 0
         # calculate mean elevation and total of frequencies
         summ = 0.0
         totalFreq = 0
-        for i in range(minimum, maximum + 1):
+        for i in range(minimum, maximum + 1):  # if mapp is all zeroes, we get range(len(mapp), 1) which is empty since len(mapp) > 0 after initial check
             freq = mapp[i]
             summ += i * freq
             totalFreq += freq

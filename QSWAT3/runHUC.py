@@ -191,7 +191,7 @@ if __name__ == '__main__':
     #for arg in sys.argv:
     #    print('Argument: {0}'.format(arg)) 
     if len(sys.argv) < 4:
-        print('You must supply a directory, a minimum HRU size in ha, and 0 or a inlet number as argument')
+        print('You must supply a directory or project file, a minimum HRU size in ha, and 0 or a inlet number as argument')
         exit()
     direc = sys.argv[1]
     #print('direc is {0}'.format(direc))
@@ -204,6 +204,15 @@ if __name__ == '__main__':
         print('Adding inlet {0} to project {1}'.format(inletId, direc))
         huc = runHUC(direc)
         huc.addInlet(inletId)
+    elif direc.endswith('.qgs'):
+        d = direc[:-4]
+        print('Running project {0}'.format(d))
+        try:
+            huc = runHUC(d)
+            huc.runProject(minHRUha)
+            print('Completed project {0}'.format(d))
+        except Exception:
+            print('ERROR: exception: {0}'.format(traceback.format_exc()))
     else:
         pattern = direc + '/huc*'
         for d in glob.iglob(pattern):

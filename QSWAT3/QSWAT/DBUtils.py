@@ -88,6 +88,14 @@ class DBUtils:
                 shutil.copyfile(dbRefTemplate, self.dbRefFile)
             else:
                 self.updateRefDb(Parameters._SWATEDITORVERSION, dbRefTemplate)
+        ## reference database connection
+        try:
+            self.connRef = pyodbc.connect(self._connRefStr, readonly=True)
+            if self.connRef is None:
+                QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
+        except Exception:
+            QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
+            self.connRef = None
         ## Tables in project database containing 'landuse'
         self.landuseTableNames: List[str] = []
         ## Tables in project database containing 'soil'
@@ -160,7 +168,9 @@ class DBUtils:
         ## map of SSURGO map values to SSURGO MUID (only used with HUC)
         self.SSURGOsoils: Dict[int, int] = dict()
         ## SSURGO soil database (only used with HUC)
-        self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
+        # changed to use copy one up frpm projDir
+        self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
+        #self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
         ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
         self.SSURGOUndefined = -1
         ## regular expression for checking if SSURGO soils are water (only used with HUC)
@@ -444,39 +454,34 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         if isUrban:
             table = 'urban'
             sql2 = self.sqlSelect(table, 'IUNUM', '', 'URBNAME=?')
-            with self.connectRef(readonly=True) as connRef:
-                if not connRef:
-                    QSWATUtils.error('Failed to connect to reference database to read {0} tables'.format(table), self.isBatch)
-                    return False
-                if connRef:
-                    try:
-                        row = connRef.cursor().execute(sql2, landuseCode).fetchone()
-                    except Exception:
-                        QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(table, self.dbRefFile, traceback.format_exc()), self.isBatch)
-                        return False
-                    if row:
-                        urbanId = row.IUNUM
+            if self.connRef is None:
+                return False
+            try:
+                row = self.connRef.cursor().execute(sql2, landuseCode).fetchone()
+            except Exception:
+                QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(table, self.dbRefFile, traceback.format_exc()), self.isBatch)
+                return False
+            if row:
+                urbanId = row.IUNUM
         if urbanId < 0:  # not tried or not found in urban
             table = 'crop'
             sql2 = self.sqlSelect(table, 'ICNUM, IDC', '', 'CPNM=?')
-            with self.connectRef(readonly=True) as connRef:
-                if not connRef:
-                    QSWATUtils.error('Failed to connect to reference database to read {0} table'.format(table), self.isBatch)
-                    return False
-                try:
-                    row = connRef.cursor().execute(sql2, landuseCode).fetchone()
-                except Exception:
-                    QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(table, self.dbRefFile, traceback.format_exc()), self.isBatch)
-                    return False
-                if not row:
-                    if isUrban:
-                        QSWATUtils.error('No data for landuse {0} in reference database tables urban or {1}'.format(landuseCode, table), self.isBatch)
-                    else:
-                        QSWATUtils.error('No data for landuse {0} in reference database table {1}'.format(landuseCode, table), self.isBatch)
-                    OK = False
+            if self.connRef is None:
+                return False
+            try:
+                row = self.connRef.cursor().execute(sql2, landuseCode).fetchone()
+            except Exception:
+                QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(table, self.dbRefFile, traceback.format_exc()), self.isBatch)
+                return False
+            if not row:
+                if isUrban:
+                    QSWATUtils.error('No data for landuse {0} in reference database tables urban or {1}'.format(landuseCode, table), self.isBatch)
                 else:
-                    landuseId = row.ICNUM
-                    landuseIDC = row.IDC
+                    QSWATUtils.error('No data for landuse {0} in reference database table {1}'.format(landuseCode, table), self.isBatch)
+                OK = False
+            else:
+                landuseId = row.ICNUM
+                landuseIDC = row.IDC
         self.landuseCodes[landuseCat] = landuseCode
         self.landuseIds[landuseCat] = landuseId
         self._landuseIDCs[landuseCat] = landuseIDC
@@ -583,17 +588,16 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 
     def checkSoilsDefined(self) -> bool:
         """Check if all soil names in soilNames are in usersoil table in reference database."""
-        with self.connectRef(readonly=True) as conn:
-            sql = self.sqlSelect('usersoil', 'SNAM', '', 'SNAM=?')
-            for soilName in self.soilNames.values():
-                try:
-                    row = conn.cursor().execute(sql, soilName).fetchone()
-                except Exception:
-                    QSWATUtils.error('Could not read usersoil table in database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
-                    return False
-                if not row:
-                    QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}'.format(soilName, self.dbRefFile), self.isBatch)
-                    return False
+        sql = self.sqlSelect('usersoil', 'SNAM', '', 'SNAM=?')
+        for soilName in self.soilNames.values():
+            try:
+                row = self.connRef.cursor().execute(sql, soilName).fetchone()
+            except Exception:
+                QSWATUtils.error('Could not read usersoil table in database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
+                return False
+            if not row:
+                QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}'.format(soilName, self.dbRefFile), self.isBatch)
+                return False
         return True
     
     # no longer used
@@ -691,24 +695,23 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         urbanTable = 'urban'
         landuseSql = self.sqlSelect(landuseTable, 'CPNM, CROPNAME', '', '')
         urbanSql = self.sqlSelect(urbanTable, 'URBNAME, URBFLNM', '', '')
-        with self.connectRef(readonly=True) as connRef:
-            if not connRef:
-                return
-            cursor = connRef.cursor()
-            listBox.clear()
-            try:
-                for row in cursor.execute(landuseSql):
-                    listBox.addItem(row[0] + ' (' + row[1] + ')')
-            except Exception:
-                QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(landuseTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
-                return
-            try:
-                for row in cursor.execute(urbanSql):
-                    listBox.addItem(row[0] + ' (' + row[1] + ')')
-            except Exception:
-                QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(urbanTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
-                return
-            listBox.sortItems(Qt.AscendingOrder)
+        if self.connRef is None:
+            return
+        cursor = self.connRef.cursor()
+        listBox.clear()
+        try:
+            for row in cursor.execute(landuseSql):
+                listBox.addItem(row[0] + ' (' + row[1] + ')')
+        except Exception:
+            QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(landuseTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
+            return
+        try:
+            for row in cursor.execute(urbanSql):
+                listBox.addItem(row[0] + ' (' + row[1] + ')')
+        except Exception:
+            QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(urbanTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
+            return
+        listBox.sortItems(Qt.AscendingOrder)
                     
     def populateMapLanduses(self, vals: List[int], combo: QComboBox) -> None:
         """Put all landuse codes from landuse values vals in combo box."""
@@ -958,8 +961,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                     conn.row_factory = sqlite3.Row  # @UndefinedVariable
                     try:
                         for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATA1, '*', '', '')):
-                            bd = BasinData(row1['outletCol'], row1['outletrow1'], row1['outletElevation'], row1['startCol'],
-                                           row1['startrow1'], row1['startToOutletDistance'], row1['startToOutletDrop'], row1['farDistance'], self.isBatch)
+                            bd = BasinData(row1['outletCol'], row1['outletRow'], row1['outletElevation'], row1['startCol'],
+                                           row1['startRow'], row1['startToOutletDistance'], row1['startToOutletDrop'], row1['farDistance'], self.isBatch)
                             bd.cellCount = row1['cellCount']
                             bd.area = row1['area']
                             bd.drainArea = row1['drainArea']
