@@ -215,7 +215,7 @@ if __name__ == '__main__':
             print('ERROR: exception: {0}'.format(traceback.format_exc()))
     else:
         pattern = direc + '/huc*'
-        for d in glob.iglob(pattern):
+        for d in sorted(glob.glob(pattern)):
             if os.path.isdir(d):
                 # if this message is changed HUC12/14Models main function will need changing since it selects HUC from this message
                 print('Running project {0}'.format(d))

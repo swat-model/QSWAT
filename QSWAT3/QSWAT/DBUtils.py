@@ -167,10 +167,12 @@ class DBUtils:
         self.useSSURGO = False
         ## map of SSURGO map values to SSURGO MUID (only used with HUC)
         self.SSURGOsoils: Dict[int, int] = dict()
-        ## SSURGO soil database (only used with HUC)
-        # changed to use copy one up frpm projDir
-        self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
-        #self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
+        if isHUC:
+            ## SSURGO soil database (only used with HUC)
+            # changed to use copy one up frpm projDir
+            self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
+            #self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
+            self.SSURGOConn = self.connectDb(self.SSURGODbFile, readonly=True)
         ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
         self.SSURGOUndefined = -1
         ## regular expression for checking if SSURGO soils are water (only used with HUC)
@@ -663,7 +665,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         if muid > 0:
             return muid
         sql = self.sqlSelect('statsgo_ssurgo_lkey', 'Source, MUKEY', '', 'LKEY=?')
-        with self.connect(readonly=True) as conn, self.connectDb(self.SSURGODbFile, readonly=True) as SSURGOConn:
+        with self.connect(readonly=True) as conn:
             lookup_row = conn.execute(sql, (sid,)).fetchone()
             if lookup_row is None:
                 QSWATUtils.error('SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey'.format(sid), self.isBatch)
@@ -675,7 +677,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 # self._undefinedSoilIds.append(sid)
                 # return sid
             sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
-            row = SSURGOConn.execute(sql, lookup_row[1]).fetchone()
+            row = self.SSURGOConn.execute(sql, lookup_row[1]).fetchone()
             if row is None:
                 QSWATUtils.error('SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch)
                 self._undefinedSoilIds.append(sid)
