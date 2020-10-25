@@ -356,7 +356,8 @@ class QSWATTopology:
                     if existing: # probably safe to assume TauDEM won't create a circular network
                         if QSWATTopology.reachable(dsLink, [link], us):
                             QSWATUtils.error(u'Circular drainage network from link {0}'.format(dsLink), self.isBatch)
-                            return False
+                            # remove link from upstream of dsLink
+                            us[dsLink].remove(link)
             if self.isHUC:
                 self.drainAreas[link] = attrs[totDAIndex] * 1E6  # sq km to sq m
         # create drainAreas here for non-HUC models as we now have maxLink value to size the numpy array

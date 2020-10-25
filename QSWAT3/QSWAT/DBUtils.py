@@ -66,20 +66,12 @@ class DBUtils:
         ## reference database
         self.dbRefFile = QSWATUtils.join(projDir, Parameters._DBREF)
         if isHUC:
-            # search up from project directory for reference database, so allowing it to be shared
+            # look one up from project directory for reference database, so allowing it to be shared
             if not os.path.isfile(self.dbRefFile):
-                currentDir = os.path.split(os.path.abspath(self.dbRefFile))[0]
-                found = False
-                while not found:
-                    try:
-                        currentDir = os.path.split(currentDir)[0]
-                        self.dbRefFile = QSWATUtils.join(currentDir, Parameters._DBREF)
-                        found = os.path.isfile(self.dbRefFile)
-                    except Exception:
-                        break
-                if not found:
-                    QSWATUtils.error('Failed to find HUC reference database {0}'.format(Parameters._DBREF), self.isBatch)
-                    return
+                self.dbRefFile = QSWATUtils.join(projDir + '/..', Parameters._DBREF)
+            if not os.path.isfile(self.dbRefFile):
+                QSWATUtils.error('Failed to find HUC reference database {0}'.format(Parameters._DBREF), self.isBatch)
+                return
             self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
         else:
             self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
