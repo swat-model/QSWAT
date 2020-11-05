@@ -226,6 +226,9 @@ class GlobalVars:
         self.vectorFileWriterOptions.ActionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteFile
         self.vectorFileWriterOptions.driverName = "ESRI Shapefile"
         self.vectorFileWriterOptions.fileEncoding = "UTF-8"
+        ## rasters open that need to be closed if memory exception occurs
+        # only used with hrus2
+        self.openRasters: Set[Raster] = set()
         
     def createSubDirectories(self) -> None:
         """Create subdirectories under project file's directory."""
@@ -484,3 +487,18 @@ class GlobalVars:
             elif key == exeKey:
                 item.set('value', self.SWATExeDir)
         tree.write(path)
+        
+    # only used with hrus2
+    def closeOpenRasters(self) -> None:
+        """Close open rasters (to enable them to be reopened with new chunk size)."""
+        for raster in self.openRasters.copy():
+            try:
+                raster.close()
+                self.openRasters.discard(raster)
+            except Exception:
+                pass  
+
+    # only used with hrus2
+    def clearOpenRasters(self) -> None:
+        """Clear list of open rasters."""
+        self.openRasters.clear()

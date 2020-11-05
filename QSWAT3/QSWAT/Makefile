@@ -39,7 +39,7 @@ else ifeq ($(QSWAT_PROJECT), QSWATGrid)
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
 endif
 
-PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py \
+PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py hrus2.py raster.py \
 		hrusdialog.py outletsdialog.py exempt.py exemptdialog.py split.py splitdialog.py selectlu.py \
 		selectludialog.py parameters.py parametersdialog.py elevationbands.py elevationbandsdialog.py \
 		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py QSWATData.py \

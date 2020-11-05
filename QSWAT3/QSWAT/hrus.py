@@ -357,7 +357,10 @@ class HRUs(QObject):
                         ok, _ = QSWATUtils.removeLayerAndFiles(actHRUsFile, root)
                         if not ok:
                             pass  # no great harm
+            time1 = time.process_time()
             OK = self.CreateHRUs.generateBasins(self._dlg.progressBar, self._dlg.progressLabel, root)
+            time2 = time.process_time()
+            QSWATUtils.loginfo('Generating basins took {0} seconds'.format(int(time2 - time1)))
             self.progress('')
             if not OK:
                 self._dlg.progressBar.setVisible(False)
@@ -1820,7 +1823,7 @@ class CreateHRUs(QObject):
                 QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed has defined soil values.'
                                        .format(soilPercent), self._gv.isBatch)
                 under95 = True
-            elif soilPercent < 100: # always give statistic for HUC models
+            elif soilPercent < 99.95: # always give statistic for HUC models; avoid saying 100.0 when rounded to 1dp
                 QSWATUtils.information('WARNING: {:.1F} percent of the watershed has defined soil values.'.format(soilPercent), self._gv.isBatch)
         else:
             if soilPercent < 95:

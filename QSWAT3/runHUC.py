@@ -98,7 +98,7 @@ class runHUC():
         gdal.UseExceptions()
         ogr.UseExceptions()
         
-    def runProject(self, minHRUha):
+    def runProject(self, scale, minHRUha):
         """Run QSWAT project."""
         gv = self.plugin._gv
         self.delin = Delineation(gv, self.plugin._demIsProcessed)
@@ -108,7 +108,9 @@ class runHUC():
         self.delin._dlg.selectNet.setText(self.projDir + '/Watershed/Shapes/channels.shp')
         self.delin._dlg.selectExistOutlets.setText(self.projDir + '/Watershed/Shapes/points.shp')
         self.delin._dlg.recalcButton.setChecked(False)  # want to use length field in channels shapefile
-        self.delin._dlg.numProcesses.setValue(0)
+        # use MPI on HUC10 and HUC8 projects
+        numProc = 0 if scale >= 12 else 16
+        self.delin._dlg.numProcesses.setValue(numProc)
         gv.useGridModel = False
         gv.existingWshed = True
         self.delin.runExisting()
@@ -190,14 +192,16 @@ class runHUC():
 if __name__ == '__main__':
     #for arg in sys.argv:
     #    print('Argument: {0}'.format(arg)) 
-    if len(sys.argv) < 4:
-        print('You must supply a directory or project file, a minimum HRU size in ha, and 0 or a inlet number as argument')
+    if len(sys.argv) < 5:
+        print('You must supply a directory or project file, a scale (14, 12, 10 or 8), a minimum HRU size in ha, and 0 or a inlet number as argument')
         exit()
     direc = sys.argv[1]
     #print('direc is {0}'.format(direc))
-    minHRUha = int(sys.argv[2])
+    scale = int(sys.argv[2])
+    #print('Scale is {0}'.format(scale)
+    minHRUha = int(sys.argv[3])
     #print('Minimum HRU size {0} ha'.format(minHRUha))
-    inletId = int(sys.argv[3])
+    inletId = int(sys.argv[4])
     #print('inletId is {0}'.format(inletId))
     if inletId > 0:
         # add inlet point with this id to MonitoringPoint table of existing project
@@ -209,7 +213,7 @@ if __name__ == '__main__':
         print('Running project {0}'.format(d))
         try:
             huc = runHUC(d)
-            huc.runProject(minHRUha)
+            huc.runProject(scale, minHRUha)
             print('Completed project {0}'.format(d))
         except Exception:
             print('ERROR: exception: {0}'.format(traceback.format_exc()))

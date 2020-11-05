@@ -20,10 +20,10 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import * # @UnusedWildImport
-from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor
-from PyQt5.QtWidgets import * # @UnusedWildImport
-from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext
+from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant  # @UnresolvedImport
+from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor  # @UnresolvedImport
+from PyQt5.QtWidgets import QMessageBox  # @UnresolvedImport
+from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext  # @UnresolvedImport
 from qgis.gui import * # @UnusedWildImport 
 import os
 import glob
