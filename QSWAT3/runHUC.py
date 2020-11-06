@@ -225,7 +225,7 @@ if __name__ == '__main__':
                 print('Running project {0}'.format(d))
                 try:
                     huc = runHUC(d)
-                    huc.runProject(minHRUha)
+                    huc.runProject(scale, minHRUha)
                     print('Completed project {0}'.format(d))
                 except Exception:
                     print('ERROR: exception: {0}'.format(traceback.format_exc()))
