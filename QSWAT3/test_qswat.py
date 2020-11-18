@@ -102,7 +102,7 @@ if is64:
     HashTable1['Reach'] = 'aa727f2049148a27826ab0e9d2b75662'
     HashTable1['MonitoringPoint'] = '902a3418990a6298ae1247991cebfc04'
     HashTable1['BASINSDATA1'] = 'ea92a74739ee636a1ef34d2567a9e513'
-    HashTable1['BASINSDATA2'] = 'db768a34d46df1da87964c9aa2cca2f1'
+    HashTable1['BASINSDATA2'] = 'f45aff5a4242e6a2706443c730155d5a'
     HashTable1['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
     HashTable1['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable1['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
@@ -113,14 +113,14 @@ else:
     HashTable1['Reach'] = '0c4294d2325cc5e4da192d1c67f0b334'
     HashTable1['MonitoringPoint'] = '602737473d13d63fffba571d1c48184e'
     HashTable1['BASINSDATA1'] = 'ea92a74739ee636a1ef34d2567a9e513'
-    HashTable1['BASINSDATA2'] = 'db768a34d46df1da87964c9aa2cca2f1'
+    HashTable1['BASINSDATA2'] = 'f45aff5a4242e6a2706443c730155d5a'
     HashTable1['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
     HashTable1['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable1['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
-    HashTable1['hrus'] = '5544ad451a2efc005c2f9be1903a17f6'
-    HashTable1['uncomb'] = '54badd623e6ef1fdae08ba245e7c01ce'
+    HashTable1['hrus'] = '6501143e3ceb7c55c8ee90471b254e0d'
+    HashTable1['uncomb'] = '5d3585e2f3a7d2aaf2b858573b351616'
     HashTable1['Watershed'] = 'a8a5251e600fc51243c5de1c94947944'
-
+    
 #===============================================================================
 # Test2:
 #   - MPI with 12 processes
@@ -139,7 +139,7 @@ if is64:
     HashTable2['Reach'] = 'e96032bd868bad58a4f53dd0f55b5314'
     HashTable2['MonitoringPoint'] = '453124da04baffbead94dafff7d2dff7'
     HashTable2['BASINSDATA1'] = '7f9bb77cc9f750b22212ba616d7fb84f'
-    HashTable2['BASINSDATA2'] = '81decac61b0b7d233db26cc60c95ed59'
+    HashTable2['BASINSDATA2'] = '2f9216f533d695820ff57e963a3b639b'
     HashTable2['ElevationBand'] = 'df71197f4bdf33993c7cc4700e6d58aa'
     HashTable2['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable2['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
@@ -150,12 +150,12 @@ else:
     HashTable2['Reach'] = '1d7c0bde12e5a9f2494b941447cd01a8'
     HashTable2['MonitoringPoint'] = '1f7ce3c15b4b5a73b3b9ed1fc8c51036'
     HashTable2['BASINSDATA1'] = '7f9bb77cc9f750b22212ba616d7fb84f'
-    HashTable2['BASINSDATA2'] = '81decac61b0b7d233db26cc60c95ed59'
+    HashTable2['BASINSDATA2'] = '2f9216f533d695820ff57e963a3b639b'
     HashTable2['ElevationBand'] = 'df71197f4bdf33993c7cc4700e6d58aa'
     HashTable2['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable2['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
-    HashTable2['hrus'] = 'c4cdaa9c0e13be624af84c2a63c3fc88'
-    HashTable2['uncomb'] = '677d8e2f43b22bb2e2136cf9aa71f984'
+    HashTable2['hrus'] = '8c9cbd3336dfe370fcc693ea6f034ae2'
+    HashTable2['uncomb'] = '538ff5fed06a4987e42784c1770a2088'
     HashTable2['Watershed'] = '77de33cfa212fb3239b492e31c1e88e5'
 
 #===============================================================================
@@ -176,7 +176,7 @@ HashTable3 = dict()
 # HashTable3['Reach'] = 'e18f5ba56607fa5af3887f7c6e0223ed'  # unreliable
 # HashTable3['MonitoringPoint'] = 'fc2a3cb74c9d20d95f5f84cf97f52709'
 HashTable3['BASINSDATA1'] = '1109bf71654fd52e6840eca1ea43cb0d'
-HashTable3['BASINSDATA2'] = '445d0f5da4029beb05cb927efdf99866' if is64 else 'ae7b846bc0ec90c98e1afbf7faecfd87'
+HashTable3['BASINSDATA2'] = '445d0f5da4029beb05cb927efdf99866' if is64 else 'bf4a624f5209fdf3cf11c237204a8277'
 HashTable3['ElevationBand'] = '192510a66a96e36354283900097ba9b1'
 HashTable3['LUExempt'] = 'faa3ee70bebcc7d6a4ee0302e9e23ad0'
 HashTable3['SplitHRUs'] = '5c3f1888ea4e1064e3f6d1b2025ebbe7'
@@ -199,12 +199,12 @@ HashTable4 = dict()
 HashTable4['Reach'] = '321d49eb5493cb6181cd785f26086b9f'  if is64 else '28f7931add98497cd7681dc7aa36369d'
 HashTable4['MonitoringPoint'] = 'b3ce02e9cb72d16192319f7b95a0c0c4'  if is64 else 'a0da75a8df134d0c7277aa3f6e815704'
 HashTable4['BASINSDATA1'] = '0fb99ad9c1c705169b7765c0762bcf86'
-HashTable4['BASINSDATA2'] = 'fe6ceed16df5e4329be7d6af52d2608d'  if is64 else '0104a84b1af64ca35590043df315025a'
+HashTable4['BASINSDATA2'] = 'fe6ceed16df5e4329be7d6af52d2608d'  if is64 else '571538d7d676ac216de6c982b6cd57db'
 HashTable4['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
 HashTable4['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
 HashTable4['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
-HashTable4['hrus'] = '7bed2b8b57c53a2a750e29fdb645a5ef'
-HashTable4['uncomb'] = '5d601461d5ca842f98cc1630b9a7f2c9'
+HashTable4['hrus'] = '65387b8391408639886e694bd02ef331'
+HashTable4['uncomb'] = '303d227ad4ab67084dc32a17b9bad633'
 HashTable4['Watershed'] = '31e8e0bec809de21345f9fbc7446308b'  if is64 else '70bc65c1e6fe83b60b49c9d00835c6a6'
 
 #===============================================================================

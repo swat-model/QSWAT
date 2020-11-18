@@ -611,8 +611,8 @@ class QSWATTopology:
         """Generate ReachData record for reach."""
         if self.isHUC:
             wsno = reach[self.wsnoIndex]
-            pStart = self.outlets[wsno]
-            pFinish = self.nearsources[wsno]
+            pStart = self.nearsources[wsno]
+            pFinish = self.outlets[wsno]
         else:
             firstLine = QSWATTopology.reachFirstLine(reach, self.dx, self.dy)
             if firstLine is None or len(firstLine) < 1:

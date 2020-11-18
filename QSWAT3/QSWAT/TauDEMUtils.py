@@ -20,9 +20,9 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import * # @UnusedWildImport
-from PyQt5.QtGui import * # @UnusedWildImport
-from qgis.core import * # @UnusedWildImport
+from PyQt5.QtCore import QSettings, Qt  # @UnresolvedImport
+from PyQt5.QtGui import QTextCursor  # @UnresolvedImport
+from qgis.core import QgsProject  # @UnresolvedImport
 import os.path
 import subprocess
 
@@ -163,7 +163,11 @@ class TauDEMUtils:
         else:
             # batch mode
             swatEditorDir = r'C:/SWAT/SWATEditor'
-        commands.append(QSWATUtils.join(QSWATUtils.join(swatEditorDir, Parameters._TAUDEMDIR), command))
+        tauDEMDir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEMDIR)
+        if not os.path.isdir(tauDEMDir):
+            TauDEMUtils.error('Cannot find TauDEM directory {0}'.format(tauDEMDir), hasQGIS)
+            return False
+        commands.append(QSWATUtils.join(tauDEMDir, command))
         for (pid, fileName) in inFiles:
             if not os.path.exists(fileName):
                 TauDEMUtils.error('File {0} does not exist'.format(fileName), hasQGIS)

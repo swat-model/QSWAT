@@ -64,15 +64,22 @@ class DBUtils:
             else:
                 self.updateProjDb(Parameters._SWATEDITORVERSION)
         ## reference database
-        self.dbRefFile = QSWATUtils.join(projDir, Parameters._DBREF)
+        dbRefName = 'QSWATRef2012.sqlite' if isHUC else Parameters._DBREF
+        self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
         if isHUC:
             # look one up from project directory for reference database, so allowing it to be shared
             if not os.path.isfile(self.dbRefFile):
-                self.dbRefFile = QSWATUtils.join(projDir + '/..', Parameters._DBREF)
+                self.dbRefFile = QSWATUtils.join(projDir + '/..', dbRefName)
             if not os.path.isfile(self.dbRefFile):
-                QSWATUtils.error('Failed to find HUC reference database {0}'.format(Parameters._DBREF), self.isBatch)
+                QSWATUtils.error('Failed to find HUC reference database {0}'.format(dbRefName), self.isBatch)
                 return
-            self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
+            try:
+                self.connRef = sqlite3.connect(self.dbRefFile)  # @UndefinedVariable
+                if self.connRef is None:
+                    QSWATUtils.error('Failed to connect to reference database {0}.'.format(self.dbRefFile), self.isBatch)
+            except Exception:
+                QSWATUtils.error('Failed to connect to reference database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
+                self.connRef = None
         else:
             self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
             # copy template reference database to project folder if not already there
@@ -80,14 +87,14 @@ class DBUtils:
                 shutil.copyfile(dbRefTemplate, self.dbRefFile)
             else:
                 self.updateRefDb(Parameters._SWATEDITORVERSION, dbRefTemplate)
-        ## reference database connection
-        try:
-            self.connRef = pyodbc.connect(self._connRefStr, readonly=True)
-            if self.connRef is None:
-                QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
-        except Exception:
-            QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
-            self.connRef = None
+            ## reference database connection
+            try:
+                self.connRef = pyodbc.connect(self._connRefStr, readonly=True)
+                if self.connRef is None:
+                    QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
+            except Exception:
+                QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
+                self.connRef = None
         ## Tables in project database containing 'landuse'
         self.landuseTableNames: List[str] = []
         ## Tables in project database containing 'soil'
@@ -164,7 +171,7 @@ class DBUtils:
             # changed to use copy one up frpm projDir
             self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
             #self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
-            self.SSURGOConn = self.connectDb(self.SSURGODbFile, readonly=True)
+            self.SSURGOConn = sqlite3.connect(self.SSURGODbFile)  # @UndefinedVariable
         ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
         self.SSURGOUndefined = -1
         ## regular expression for checking if SSURGO soils are water (only used with HUC)
@@ -451,19 +458,19 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             if self.connRef is None:
                 return False
             try:
-                row = self.connRef.cursor().execute(sql2, landuseCode).fetchone()
+                row = self.connRef.cursor().execute(sql2, (landuseCode,)).fetchone()
             except Exception:
                 QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(table, self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return False
             if row:
-                urbanId = row.IUNUM
+                urbanId = row[0]
         if urbanId < 0:  # not tried or not found in urban
             table = 'crop'
             sql2 = self.sqlSelect(table, 'ICNUM, IDC', '', 'CPNM=?')
             if self.connRef is None:
                 return False
             try:
-                row = self.connRef.cursor().execute(sql2, landuseCode).fetchone()
+                row = self.connRef.cursor().execute(sql2, (landuseCode,)).fetchone()
             except Exception:
                 QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(table, self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return False
@@ -474,8 +481,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                     QSWATUtils.error('No data for landuse {0} in reference database table {1}'.format(landuseCode, table), self.isBatch)
                 OK = False
             else:
-                landuseId = row.ICNUM
-                landuseIDC = row.IDC
+                landuseId = row[0]
+                landuseIDC = row[1]
         self.landuseCodes[landuseCat] = landuseCode
         self.landuseIds[landuseCat] = landuseId
         self._landuseIDCs[landuseCat] = landuseIDC
@@ -525,8 +532,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             sql = self.sqlSelect(soilTable, 'SOIL_ID, SNAM', '', '')
             try:
                 for row in conn.cursor().execute(sql):
-                    nxt = int(row.SOIL_ID)
-                    soilName = row.SNAM
+                    nxt = int(row[0])
+                    soilName = row[1]
                     if self.defaultSoil < 0:
                         self.defaultSoil = nxt
                         self.defaultSoilName = soilName
@@ -585,7 +592,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         sql = self.sqlSelect('usersoil', 'SNAM', '', 'SNAM=?')
         for soilName in self.soilNames.values():
             try:
-                row = self.connRef.cursor().execute(sql, soilName).fetchone()
+                row = self.connRef.cursor().execute(sql, (soilName,)).fetchone()
             except Exception:
                 QSWATUtils.error('Could not read usersoil table in database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return False
@@ -669,7 +676,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 # self._undefinedSoilIds.append(sid)
                 # return sid
             sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
-            row = self.SSURGOConn.execute(sql, lookup_row[1]).fetchone()
+            row = self.SSURGOConn.execute(sql, (lookup_row[1],)).fetchone()
             if row is None:
                 QSWATUtils.error('SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch)
                 self._undefinedSoilIds.append(sid)
@@ -1145,7 +1152,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                         if len(line) < 2:  # protect against blank lines
                             continue
                         sql = 'INSERT INTO ' + table + ' VALUES(?, ?)'
-                        cursor.execute(sql, line[0], line[1])
+                        cursor.execute(sql, (line[0], line[1]))
                     except Exception:
                         QSWATUtils.error('Could not write to table {0} in project database {1} from file {2}: {3}'.format(table, self.dbFile, fil, traceback.format_exc()), self.isBatch)
                         return ''
@@ -1196,10 +1203,10 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         meanElevation = float(basinData.totalElevation) / basinData.cellCount
         elevMin = basinData.outletElevation
         elevMax = basinData.maxElevation
-        cursor.execute(sql1, SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
+        cursor.execute(sql1, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
                        float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
                        float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
-                       SWATBasin + 300000, SWATBasin + 100000)
+                       SWATBasin + 300000, SWATBasin + 100000))
         
         # original code for 1 HRU per grid cell
         luNum = BasinData.dominantKey(basinData.originalCropAreas)
@@ -1249,7 +1256,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             cursor = conn.cursor()
             sql = self.sqlSelect('MSysObjects', 'DateUpdate', 'NAME=?', '')
             try:
-                result = cursor.execute(sql, table).fetchone()
+                result = cursor.execute(sql, (table,)).fetchone()
                 return result.DateUpdate
             except:
                 return None

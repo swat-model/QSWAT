@@ -63,7 +63,7 @@ class Parameters:
     _STILLPNG = 'still.png'
     _TXTINOUT = 'TxtInOut'
     _SSURGODB = 'SWAT_US_SSURGO_Soils.mdb'
-    _SSURGODB_HUC = 'SWAT_US_SSURGO_Soils_20190419_withSTATSGO_20200715.mdb'
+    _SSURGODB_HUC = 'SSURGO_Soils_HUC.sqlite'
     _SSURGOWater = 377988
     _USSOILDB = 'SWAT_US_Soils.mdb'
     _CIO = 'file.cio'

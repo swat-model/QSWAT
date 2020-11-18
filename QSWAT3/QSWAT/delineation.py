@@ -23,8 +23,8 @@
 from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant  # @UnresolvedImport
 from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor  # @UnresolvedImport
 from PyQt5.QtWidgets import QMessageBox  # @UnresolvedImport
-from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext  # @UnresolvedImport
-from qgis.gui import * # @UnusedWildImport 
+from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext 
+from qgis.gui import QgsMapTool, QgsMapToolEmitPoint   
 import os
 import glob
 import shutil
