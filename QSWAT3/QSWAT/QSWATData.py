@@ -95,7 +95,8 @@ class BasinData:
         ## No longer used
         self.farthest = 0
         ## Elevation in metres of farthest (longest channel length) point from the outlet
-        self.farElevation = outletElevation
+        # defaults to source elevation
+        self.farElevation = outletElevation + drop
         ## Longest channel length in metres.  
         #
         # Make it initially min of x and y resolutions of DEM so cannot be zero.
