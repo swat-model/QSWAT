@@ -105,7 +105,7 @@ class QSWATTopology:
     _OUTLETX = 'OutletX'
     _OUTLETY = 'OutletY'
     
-    _HUCPointId = 10000  # for HUC models all point ids are this number or greater (must match value in HUC12Models.py in HUC12Watersheds 
+    _HUCPointId = 100000  # for HUC models all point ids are this number or greater (must match value in HUC12Models.py in HUC12Watersheds 
     
     def __init__(self, isBatch: bool, isHUC: bool) -> None:
         """Initialise class variables."""
