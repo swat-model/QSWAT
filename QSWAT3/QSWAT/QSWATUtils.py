@@ -1167,6 +1167,7 @@ class FileTypes:
     _GRID = 14
     _GRIDSTREAMS = 15
     _HRUS = 16
+    _OUTLETSHUC = 17
     
     @staticmethod
     def filter(ft: int) -> str:
@@ -1200,7 +1201,7 @@ class FileTypes:
             return 'Mask'
         elif ft == FileTypes._BURN:
             return 'Stream burn-in'
-        elif ft == FileTypes._OUTLETS:
+        elif ft == FileTypes._OUTLETS or ft == FileTypes._OUTLETSHUC:
             return 'Inlets/outlets'
         elif ft == FileTypes._STREAMS:
             return 'Streams'
@@ -1237,7 +1238,7 @@ class FileTypes:
             return 'outlets.qml'
         elif ft == FileTypes._STREAMS or ft == FileTypes._REACHES:
             return 'stream.qml'
-        elif ft == FileTypes._SUBBASINS or FileTypes._EXISTINGSUBBASINS:
+        elif ft == FileTypes._SUBBASINS or ft == FileTypes._EXISTINGSUBBASINS:
             return 'subbasins.qml'
         elif ft == FileTypes._WATERSHED:
             return 'wshed.qml'
@@ -1255,6 +1256,8 @@ class FileTypes:
             return None
         elif ft == FileTypes._HILLSHADE:
             return None
+        elif ft == FileTypes._OUTLETSHUC:
+            return 'outletsHUC.qml'
         return None  # for mypy
 
     @staticmethod
@@ -1266,7 +1269,7 @@ class FileTypes:
             return 'Select mask'
         elif ft == FileTypes._BURN:
             return 'Select stream reaches shapefile to burn-in'
-        elif ft == FileTypes._OUTLETS:
+        elif ft == FileTypes._OUTLETS or FileTypes._OUTLETSHUC:
             return 'Select inlets/outlets shapefile'
         elif ft == FileTypes._STREAMS:
             return 'Select stream reaches shapefile'
@@ -1284,7 +1287,9 @@ class FileTypes:
     @staticmethod
     def mapTip(ft: int) -> str:
         if ft == FileTypes._OUTLETS:
-            return '<b>Point id:</b> [% "PointId" %]'
+            return '<b>Point id:</b> [% "ID" %]'
+        elif ft == FileTypes._OUTLETSHUC:
+            return '<b> Point id:</b> [% "ID" %] [% "Name" %]'
         elif ft == FileTypes._REACHES:
             return '<b>Reach:</b> [% "Subbasin" %]'
         elif ft == FileTypes._STREAMS or ft == FileTypes._GRIDSTREAMS:

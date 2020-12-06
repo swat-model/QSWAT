@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.1.8'
+    __version__ = '1.1.10'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -261,7 +261,6 @@ class QSwat(QObject):
         if not found:
             # isHUC not previously set.  Use parameter above and record
             proj.writeEntryBool(title, 'delin/isHUC', isHUC)
-            #QSWATUtils.information('isHUC not found in proj file: set to {0}'.format(isHUC), isBatch)
         else:
             # use value in project file
             isHUCFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHUC', False)
@@ -456,8 +455,9 @@ class QSwat(QObject):
         outletFile, found = proj.readEntry(title, 'delin/outlets', '')
         if found and outletFile != '':
             outletFile = QSWATUtils.join(self._gv.projDir, outletFile)
+            ft = FileTypes._OUTLETSHUC if self._gv.isHUC else FileTypes._OUTLETS
             outletLayer, _ = \
-                QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, FileTypes._OUTLETS,
+                QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, ft,
                                               self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
             if not outletLayer:
                 QSWATUtils.loginfo('demProcessed failed: no outlet layer')

@@ -65,6 +65,7 @@ class Parameters:
     _SSURGODB = 'SWAT_US_SSURGO_Soils.mdb'
     _SSURGODB_HUC = 'SSURGO_Soils_HUC.sqlite'
     _SSURGOWater = 377988
+    _WATERBODIES = 'WaterBodies.sqlite'
     _USSOILDB = 'SWAT_US_Soils.mdb'
     _CIO = 'file.cio'
     _OUTPUTDB = 'SWATOutput.mdb'
@@ -128,8 +129,8 @@ class Parameters:
     _NEARNESSTHRESHOLD = 0.1
     
     # landuses for which we use just one SSURGO soil and where we make the slope at most _WATERMAXSLOPE 
-    _WATERLANDUSES = {'WATR', 'WETN', 'WETF'}
-    _WATERMAXSLOPE = 0.005
+    _WATERLANDUSES = {'WATR', 'WETN', 'WETF', 'RIWF', 'UPWF', 'RIWN', 'UPWN'}
+    _WATERMAXSLOPE = 0.001
     
     def __init__(self, gv):
         """Initialise class variables."""

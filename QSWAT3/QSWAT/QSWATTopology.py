@@ -400,6 +400,9 @@ class QSWATTopology:
         if dsNodeIndex >= 0:
             for point in features:
                 attrs = point.attributes()
+                # ignore HUC reservoir and pond points: only for display
+                if self.isHUC and attrs[resIndex] > 0:
+                    continue
                 dsNode = attrs[idIndex]
                 if dsNode not in dsNodeToLink:
                     if reportErrors:

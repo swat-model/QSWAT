@@ -465,7 +465,8 @@ class Delineation(QObject):
             assert self._dlg.tabWidget.currentIndex() == 0
             box = self._dlg.selectOutlets
             self.thresholdChanged = True
-        (outletFile, outletLayer) = QSWATUtils.openAndLoadFile(root, FileTypes._OUTLETS, box, self._gv.shapesDir, 
+        ft = FileTypes._OUTLETSHUC if self._gv.isHUC else FileTypes._OUTLETS
+        (outletFile, outletLayer) = QSWATUtils.openAndLoadFile(root, ft, box, self._gv.shapesDir, 
                                                                self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if outletFile and outletLayer:
             self.snapFile = ''
@@ -828,6 +829,7 @@ class Delineation(QObject):
         if not demLayer:
             QSWATUtils.error('Cannot load DEM {0}'.format(self._gv.demFile), self._gv.isBatch)
             return
+        self.addHillshade(self._gv.demFile, root, demLayer, self._gv)
         wshedLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), wshedFile, FileTypes._EXISTINGWATERSHED, 
                                                            self._gv, demLayer, QSWATUtils._WATERSHED_GROUP_NAME)
         if not wshedLayer:
@@ -839,7 +841,8 @@ class Delineation(QObject):
             QSWATUtils.error('Cannot load streams shapefile {0}'.format(streamFile), self._gv.isBatch)
             return
         if outletFile != '':
-            outletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, FileTypes._OUTLETS, 
+            ft = FileTypes._OUTLETSHUC if self._gv.isHUC else FileTypes._OUTLETS
+            outletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, ft, 
                                                            self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
             if not outletLayer:
                 QSWATUtils.error('Cannot load inlets/outlets shapefile {0}'.format(outletFile), self._gv.isBatch)

@@ -68,6 +68,10 @@ class BasinData:
         self.area = 0.0
         ## Area draining through outlet of subbasin in square metres
         self.drainArea = 0.0
+        ## pond area in square metres
+        self.pondArea = 0.0
+        ## reservoir area in square metres
+        self.reservoirArea = 0.0
         ## Total of elevation values in the subbasin (to compute mean)
         self.totalElevation = 0.0
         ## Total of slope values for the subbasin (to compute mean)
@@ -106,7 +110,7 @@ class BasinData:
         ## Map hru (relative) number -> CellData.
         self.hruMap: Dict[int, CellData] = dict()
         ## Nested map crop -> soil -> slope -> hru number.
-        # Range of cropSoilSlopeNumbers must be same as domain of cropSoilMap
+        # Range of cropSoilSlopeNumbers must be same as domain of hruMap
         self.cropSoilSlopeNumbers: Dict[int, Dict[int, Dict[int, int]]] = dict()
         ## Latest created relative HRU number for this subbasin.
         self.relHru = 0
@@ -375,7 +379,6 @@ class BasinData:
             
     def redistribute(self, factor: float) -> None:
         '''Multiply all the HRU areas by factor.'''
-        # note use of items rather than items as we change hruMap in the loop
         for (hru, cellData) in self.hruMap.items():
             cellData.multiply(factor)
             self.hruMap[hru] = cellData
@@ -392,6 +395,22 @@ class BasinData:
             del self.cropSoilSlopeNumbers[crop][soil]
             if len(self.cropSoilSlopeNumbers[crop]) == 0:
                 del self.cropSoilSlopeNumbers[crop]
+                
+    def removeWaterBodies(self):
+        """Reduce areas to allow for reservoir and landuse areas just defined."""
+        areaToRemove = self.reservoirArea + self.pondArea
+        if areaToRemove == 0:
+            return 
+        if areaToRemove >= self.area:
+            ## remove all HRUs
+            self.hruMap = dict()
+            self.cropSoilSlopeNumbers = dict()
+            self.cropSoilSlopeArea = 0
+            return
+        factor = (self.area - areaToRemove) / self.area
+        self.cropSoilSlopeArea *= factor 
+        self.redistribute(factor)
+        self.area -= areaToRemove 
                 
 class HRUData:
     

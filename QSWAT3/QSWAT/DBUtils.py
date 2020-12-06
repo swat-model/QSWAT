@@ -95,6 +95,8 @@ class DBUtils:
             except Exception:
                 QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
                 self.connRef = None
+        ## WaterBodies (HUC only)
+        self.waterBodiesFile = QSWATUtils.join(projDir + '/..', Parameters._WATERBODIES)
         ## Tables in project database containing 'landuse'
         self.landuseTableNames: List[str] = []
         ## Tables in project database containing 'soil'
@@ -522,6 +524,10 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         self.storeLanduseCode(cat, landuseCode)
         return cat
     
+    def isAgriculture(self, landuse: int) -> bool:
+        """HUC only.  Return True if landuse counts as agriculture."""
+        return landuse > 99 or 81 < landuse < 91
+    
     def populateSoilNames(self, soilTable: str, checkSoils: bool) -> bool:
         """Store names and groups for soil categories."""
         self.soilNames.clear()
@@ -760,6 +766,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     '[cellCount] INTEGER, ' + \
     '[area] DOUBLE, ' + \
     '[drainArea] DOUBLE, ' + \
+    '[pondArea] DOUBLE, ' + \
+    '[reservoirArea] DOUBLE, ' + \
     '[totalElevation] DOUBLE, ' + \
     '[totalSlope] DOUBLE, ' + \
     '[outletCol] INTEGER, ' + \
@@ -882,7 +890,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             QSWATUtils.error('Could not create table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
             conn.close()
             return (None, None, None)
-        sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         table = self._BASINSDATA2
         if table in self._allTableNames:
             dropSQL = 'DROP TABLE ' + table
@@ -923,14 +931,14 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             if self.isHUC:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
-                             float(data.totalElevation), float(data.totalSlope), \
+                             float(data.pondArea), float(data.reservoirArea), float(data.totalElevation), float(data.totalSlope), \
                              data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
                              float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
                              data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
                              float(data.cropSoilSlopeArea), data.relHru))
             else:
                 curs.execute(sql1, basin, data.cellCount, float(data.area), float(data.drainArea),  \
-                             float(data.totalElevation), float(data.totalSlope), \
+                             float(data.pondArea), float(data.reservoirArea), float(data.totalElevation), float(data.totalSlope), \
                              data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
                              float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
                              data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
@@ -967,6 +975,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             bd.cellCount = row1['cellCount']
                             bd.area = row1['area']
                             bd.drainArea = row1['drainArea']
+                            bd.pondArea = row1['pondArea']
+                            bd.reservoirArea = row1['reservoirArea']
                             bd.totalElevation = row1['totalElevation']
                             bd.totalSlope = row1['totalSlope']
                             bd.maxElevation = row1['maxElevation']

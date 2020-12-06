@@ -132,6 +132,7 @@ class runHUC():
         self.hrus.landuseTable = 'landuse_fields_CDL_{0}'.format(huc2) if isCDL else 'landuse_fields_{0}'.format(huc2)
         hrudlg.SSURGOButton.setChecked(True)
         gv.db.useSSURGO = True
+        gv.db.slopeLimits = [2,8]
         gv.elevBandsThreshold = 500
         gv.numElevBands = 5
         if not self.hrus.readFiles():

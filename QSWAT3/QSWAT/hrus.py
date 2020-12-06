@@ -31,6 +31,7 @@ from osgeo.gdalconst import *  # type: ignore # @UnusedWildImport
 import time
 import numpy
 import math
+import sqlite3
 # from processing.core.Processing import Processing  # type: ignore   # @UnresolvedImport
 from typing import Dict, List, Tuple, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
     
@@ -496,7 +497,7 @@ class HRUs(QObject):
                 not self._dlg.dominantHRUButton.isChecked() and not self._dlg.dominantLanduseButton.isChecked()
             self.CreateHRUs.useArea = self._dlg.areaButton.isChecked()
             if not self._gv.saveExemptSplit():
-                return 
+                return
             if self.CreateHRUs.isMultiple:
                 if self.CreateHRUs.isArea:
                     self.CreateHRUs.removeSmallHRUsByArea()
@@ -1718,7 +1719,11 @@ class CreateHRUs(QObject):
                             else:
                                 slopeValue = min(slopeValue, Parameters._WATERMAXSLOPE)
                         if slopeValue != slopeNoData:
-                            slope = self._gv.db.slopeIndex(slopeValue * 100)
+                            # for HUC, slope bands only used for agriculture
+                            if not self._gv.isHUC or self._gv.db.isAgriculture(crop):
+                                slope = self._gv.db.slopeIndex(slopeValue * 100)
+                            else:
+                                slope = 0
                         else:
                             slope = -1
                         elevationCol = col if elevationSameCoords else QSWATTopology.xToCol(x, elevationTransform)
@@ -1874,6 +1879,8 @@ class CreateHRUs(QObject):
         # clear memory
         if not self._gv.useGridModel:
             basinDs = None
+        if self._gv.isHUC:
+            self.addWaterBodies() 
         self.saveAreas(True, redistributeNodata=not (under95 and self._gv.isHUC))
         QSWATUtils.progress('Writing HRU data to database ...', progressLabel)
         self.progress_signal.emit('Writing HRU data to database ...')
@@ -1886,6 +1893,51 @@ class CreateHRUs(QObject):
         self.progress_signal.emit('Writing topographic report ...')
         self.writeTopoReport()
         return True
+                
+    def addWaterBodies(self):
+        """For HUC projects only.  Write res and pnd tables.  Store reservoir and pond areas in basin data."""
+        if not os.path.isfile(self._gv.db.waterBodiesFile):
+            QSWATUtils.error('Cannot find water bodies file {0}'.format(self._gv.db.waterBodiesFile), self._gv.isBatch)
+            return
+        huc12 = self._gv.projName[3:]
+        with self._gv.db.connect() as conn, sqlite3.connect(self._gv.db.waterBodiesFile) as waterConn:
+            conn.execute('DELETE FROM pnd')
+            conn.execute('DELETE FROM res')
+            sql0 = self._gv.db.sqlSelect('reservoirs', 'SUBBASIN, IYRES, RES_ESA, RES_EVOL, RES_PSA, RES_PVOL, RES_VOL, RES_DRAIN', '', 'HUC12_10_8_6 LIKE ?')
+            sql1 = 'INSERT INTO res (OID, SUBBASIN, IYRES, RES_ESA, RES_EVOL, RES_PSA, RES_PVOL, RES_VOL) VALUES(?,?,?,?,?,?,?,?);'
+            sql2 = self._gv.db.sqlSelect('ponds', 'SUBBASIN, PND_PSA, PND_PVOL, PND_ESA, PND_EVOL, PND_VOL, PND_DRAIN', '', 'HUC12_10_8_6 LIKE ?')
+            sql3 = 'INSERT INTO pnd (OID, SUBBASIN, PND_FR, PND_PSA, PND_PVOL, PND_ESA, PND_EVOL, PND_VOL) VALUES(?,?,?,?,?,?,?,?);'
+            is14 = len(huc12) == 12
+            for row in waterConn.execute(sql0, (huc12,)):
+                SWATBasin = int(row[0])
+                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                basinData = self.basins[basin]
+                basinData.reservoirArea = float(row[4]) * 1E4
+                if basinData.reservoirArea > basinData.area:
+                    QSWATUtils.error('Reservoir in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.reservoirArea / 1E4, basinData.area / 1E4), self._gv.isBatch)
+                    basinData.reservoirArea = basinData.area
+                    maxArea = basinData.area
+                else:
+                    maxArea = min(basinData.area, float(row[2]) * 1E4)
+                conn.execute(sql1, (0, SWATBasin, row[1], maxArea / 1E4, row[3], basinData.reservoirArea / 1E4, row[5], row[6]))
+            for row in waterConn.execute(sql2, (huc12,)):
+                SWATBasin = int(row[0])
+                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                basinData = self.basins[basin]
+                pnd_fr = float(row[6]) / (basinData.area / 1E4)
+                if not is14:
+                    pnd_fr = min(0.95, pnd_fr)
+                basinData.pondArea = float(row[1]) * 1E4
+                freeArea = basinData.area - basinData.reservoirArea
+                if basinData.pondArea > freeArea:
+                    QSWATUtils.error('Pond in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.pondArea / 1E4, freeArea / 1E4), self._gv.isBatch)
+                    basinData.pondArea = freeArea
+                    maxArea = freeArea
+                else:
+                    maxArea = min(freeArea, float(row[3]) * 1E4)
+                conn.execute(sql3, (0, SWATBasin, pnd_fr, basinData.pondArea / 1E4, row[2], maxArea / 1E4, row[4], row[5]))
+                basinData.removeWaterBodies()
+            conn.commit()
     
     def insertFeatures(self, layer: QgsVectorLayer, fields: QgsFields, 
                        shapes: Polygonize, 
@@ -2974,6 +3026,23 @@ class CreateHRUs(QObject):
             fw.writeLine('Slope')
             slopeAreas, originalSlopeAreas = self.totalSlopeAreas(withHRUs)
             self.printSlopeAreas(slopeAreas, originalSlopeAreas, basinHa, 0, fw)
+            if self._gv.isHUC:
+                totalReservoirsArea = self.totalReservoirsArea()
+                totalPondsArea = self.totalPondsArea()
+                if totalReservoirsArea > 0:
+                    fw.writeLine('')
+                    resHa = totalReservoirsArea / 1E4
+                    wPercent = (resHa / basinHa) * 100
+                    fw.writeLine('Reservoirs'.ljust(30) + 
+                                 '{:.2F}'.format(resHa).rjust(15) +
+                                 '{:.2F}'.format(wPercent).rjust(col2just-3))
+                if totalPondsArea > 0:
+                    fw.writeLine('')
+                    pndHa = totalPondsArea / 1E4
+                    wPercent = (pndHa / basinHa) * 100
+                    fw.writeLine('Ponds'.ljust(30) + 
+                                 '{:.2F}'.format(pndHa).rjust(15) +
+                                 '{:.2F}'.format(wPercent).rjust(col2just-3))
             fw.writeLine(horizLine)
             fw.writeLine(horizLine)
                 
@@ -3058,7 +3127,7 @@ class CreateHRUs(QObject):
             if basinData is None:
                 QSWATUtils.error('No data for SWATBasin {0} (polygon {1})'.format(SWATBasin, basin), self._gv.isBatch)
                 return
-            subHa = float(basinData.area) / 10000
+            subHa = float(basinData.area + basinData.reservoirArea + basinData.pondArea) / 10000
             percent = (subHa / basinHa) * 100
             st1 = 'Area [ha]'
             st2 = '%Watershed'
@@ -3080,15 +3149,32 @@ class CreateHRUs(QObject):
             fw.writeLine('Slope')
             self.printSlopeAreas(basinData.slopeAreas, basinData.originalSlopeAreas, basinHa, subHa, fw)
             fw.writeLine('')
-            if withHRUs:
-                if self.isMultiple:
-                    fw.writeLine('HRUs:')
-                else:
-                    fw.writeLine('HRU:')
-                oid = self.printbasinHRUs(basin, basinData, basinHa, subHa, fw, hrusCsv, conn, oid)
-                if setHRUGIS:
-                    assert fullHRUsLayer is not None
-                    self.addHRUGISNums(basin, fullHRUsLayer, subIndx, luseIndx, soilIndx, slopeIndx, hrugisIndx)
+            if basinData.reservoirArea > 0:
+                resHa = basinData.reservoirArea / 1E4
+                wPercent = (resHa / basinHa) * 100
+                bPercent = (resHa / subHa) * 100
+                fw.writeLine('Reservoir'.ljust(30) + 
+                             '{:.2F}'.format(resHa).rjust(15) +
+                             '{:.2F}'.format(wPercent).rjust(col2just-3) + 
+                             '{:.2F}'.format(bPercent).rjust(col3just))
+                fw.writeLine('')
+            if basinData.pondArea > 0:
+                pndHa = basinData.pondArea / 1E4
+                wPercent = (pndHa / basinHa) * 100
+                bPercent = (pndHa / subHa) * 100
+                fw.writeLine('Pond'.ljust(30) + 
+                             '{:.2F}'.format(pndHa).rjust(15) +
+                             '{:.2F}'.format(wPercent).rjust(col2just-3) + 
+                             '{:.2F}'.format(bPercent).rjust(col3just))
+                fw.writeLine('')
+            if self.isMultiple:
+                fw.writeLine('HRUs:')
+            else:
+                fw.writeLine('HRU:')
+            oid = self.printbasinHRUs(basin, basinData, basinHa, subHa, fw, hrusCsv, conn, oid)
+            if setHRUGIS:
+                assert fullHRUsLayer is not None
+                self.addHRUGISNums(basin, fullHRUsLayer, subIndx, luseIndx, soilIndx, slopeIndx, hrugisIndx)
             fw.writeLine(horizLine)
         if setHRUGIS:
             assert fullHRUsLayer is not None
@@ -3504,7 +3590,24 @@ class CreateHRUs(QObject):
         total = 0.0
         for bd in self.basins.values():
             total += bd.area
+            total += bd.reservoirArea
+            total += bd.pondArea
         return total
+    
+    def totalReservoirsArea(self) -> float:
+        """Return sum of areas of subbasins in square metres."""
+        total = 0.0
+        for bd in self.basins.values():
+            total += bd.reservoirArea
+        return total
+    
+    def totalPondsArea(self) -> float:
+        """Return sum of areas of subbasins in square metres."""
+        total = 0.0
+        for bd in self.basins.values():
+            total += bd.pondArea
+        return total
+    
     
     def totalCropAreas(self, withHRUs: bool) -> Tuple[Optional[Dict[int, float]], Dict[int, float]]:
         """
