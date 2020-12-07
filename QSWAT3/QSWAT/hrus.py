@@ -1921,8 +1921,8 @@ class CreateHRUs(QObject):
                     maxArea = min(basinData.area, float(row[2]) * 1E4)
                 conn.execute(sql1, (0, SWATBasin, row[1], maxArea / 1E4, row[3], basinData.reservoirArea / 1E4, row[5], row[6]))
             for row in waterConn.execute(sql2, (huc12,)):
-                SWATBasin = int(row[0])
-                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                basin = int(row[0])
+                SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                 basinData = self.basins[basin]
                 pnd_fr = float(row[6]) / (basinData.area / 1E4)
                 if not is14:

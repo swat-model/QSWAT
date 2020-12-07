@@ -526,7 +526,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     
     def isAgriculture(self, landuse: int) -> bool:
         """HUC only.  Return True if landuse counts as agriculture."""
-        return landuse > 99 or 81 < landuse < 91
+        return 81 < landuse < 91 or 99 < landuse < 567 
     
     def populateSoilNames(self, soilTable: str, checkSoils: bool) -> bool:
         """Store names and groups for soil categories."""
