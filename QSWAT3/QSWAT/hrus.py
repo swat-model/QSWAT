@@ -1909,8 +1909,8 @@ class CreateHRUs(QObject):
             sql3 = 'INSERT INTO pnd (OID, SUBBASIN, PND_FR, PND_PSA, PND_PVOL, PND_ESA, PND_EVOL, PND_VOL) VALUES(?,?,?,?,?,?,?,?);'
             is14 = len(huc12) == 12
             for row in waterConn.execute(sql0, (huc12,)):
-                SWATBasin = int(row[0])
-                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                basin = int(row[0])
+                SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                 basinData = self.basins[basin]
                 basinData.reservoirArea = float(row[4]) * 1E4
                 if basinData.reservoirArea > basinData.area:
