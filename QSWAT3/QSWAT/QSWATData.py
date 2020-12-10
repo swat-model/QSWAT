@@ -396,20 +396,53 @@ class BasinData:
             if len(self.cropSoilSlopeNumbers[crop]) == 0:
                 del self.cropSoilSlopeNumbers[crop]
                 
-    def removeWaterBodies(self):
-        """Reduce areas to allow for reservoir and landuse areas just defined."""
+    def removeWaterBodies(self, gv: Any) -> None:
+        """Reduce areas to allow for reservoir and pond areas."""
+        
+        def reduceWaterArea(waterLanduse: int, factor: float) -> None:
+            """Multiply all waterLanduse HRUs by factor."""
+            soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, dict())
+            for slopeNumbers in soilSlopeNumbers.values():
+                for hru in slopeNumbers.values():
+                    self.hruMap[hru].multiply(factor)
+            
+        def removeWater(waterLanduse: int) -> None:
+            """Remove all waterLanduse HRUs"""
+            soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, None)
+            if soilSlopeNumbers is not None:
+                for slopeNumbers in soilSlopeNumbers.values():
+                    for hru in slopeNumbers.values():
+                        del self.hruMap[hru]
+                del self.cropSoilSlopeNumbers[waterLanduse]
+            
         areaToRemove = self.reservoirArea + self.pondArea
         if areaToRemove == 0:
             return 
-        if areaToRemove >= self.area:
+        if areaToRemove >= self.cropSoilSlopeArea:
             ## remove all HRUs
             self.hruMap = dict()
             self.cropSoilSlopeNumbers = dict()
             self.cropSoilSlopeArea = 0
+            if areaToRemove > self.area:
+                self.reservoirArea *= (self.area / areaToRemove)
+                self.pondArea *= (self.area / areaToRemove)
+                self.area = 0
+            else:
+                self.area -= areaToRemove
             return
-        factor = (self.area - areaToRemove) / self.area
-        self.cropSoilSlopeArea *= factor 
-        self.redistribute(factor)
+        # allocate WATR area to ponds and reservoirs
+        waterLanduse = gv.db.getLanduseCat('WATR')
+        waterArea = self.cropArea(waterLanduse)
+        if waterArea > areaToRemove:
+            #QSWATUtils.information('Reducing water from {0} to {1}'.format(waterArea, waterArea - areaToRemove), gv.isBatch)
+            reduceWaterArea(waterLanduse, (waterArea - areaToRemove) / waterArea)
+        else:
+            #QSWATUtils.information('Removing all water', gv.isBatch)
+            removeWater(waterLanduse)
+            areaToRemove -= waterArea
+            factor = (self.area - areaToRemove) / self.area 
+            self.redistribute(factor)
+        self.cropSoilSlopeArea -= areaToRemove
         self.area -= areaToRemove 
                 
 class HRUData:
