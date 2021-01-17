@@ -3,7 +3,7 @@
 
 #define MyAppName "QSWAT3_64"
 #define MyAppVersion "1.1" 
-#define MyAppSubVersion "10"
+#define MyAppSubVersion "11"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 

@@ -1252,22 +1252,30 @@ class QSWATTopology:
                     for x in range(x0, x1+1):
                         if steep:
                             if QSWATTopology.addPointToChanged(changed, y, x):
-                                arr = band.ReadAsArray(y, x, 1, 1)
-                                # arr may be none if stream map extends outside DEM extent
-                                if arr and arr[0,0] != nodata:
-                                    arr[0,0] = arr[0,0] - demReduction
-                                    band.WriteArray(arr, y, x)
-                                    countChanges += 1
+                                # read can raise exception if coordinates outside extent
+                                try:
+                                    arr = band.ReadAsArray(y, x, 1, 1)
+                                    # arr may be none if stream map extends outside DEM extent
+                                    if arr and arr[0,0] != nodata:
+                                        arr[0,0] = arr[0,0] - demReduction
+                                        band.WriteArray(arr, y, x)
+                                        countChanges += 1
+                                except RuntimeError:
+                                    pass
                             else:
                                 countHits += 1
                         else:
                             if QSWATTopology.addPointToChanged(changed, x, y):
-                                arr = band.ReadAsArray(x, y, 1, 1)
-                                # arr may be none if stream map extends outside DEM extent
-                                if arr and arr[0,0] != nodata:
-                                    arr[0,0] = arr[0,0] - demReduction
-                                    band.WriteArray(arr, x, y)
-                                    countChanges += 1
+                                # read can raise exception if coordinates outside extent
+                                try:
+                                    arr = band.ReadAsArray(x, y, 1, 1)
+                                    # arr may be none if stream map extends outside DEM extent
+                                    if arr and arr[0,0] != nodata:
+                                        arr[0,0] = arr[0,0] - demReduction
+                                        band.WriteArray(arr, x, y)
+                                        countChanges += 1
+                                except RuntimeError:
+                                    pass
                             else:
                                 countHits += 1
                         err += deltaerr

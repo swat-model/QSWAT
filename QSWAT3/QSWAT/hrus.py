@@ -23,7 +23,7 @@
 from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant  # @UnresolvedImport
 from PyQt5.QtGui import QDoubleValidator, QTextCursor  # @UnresolvedImport
 from PyQt5.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar   # @UnresolvedImport
-from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer  # @UnresolvedImport
+from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry  # @UnresolvedImport
 from qgis.gui import * # @UnusedWildImport
 import os.path
 from osgeo import gdal  # type: ignore
@@ -1939,9 +1939,11 @@ class CreateHRUs(QObject):
                 else:
                     maxArea = min(freeArea, float(row[3]) * 1E4)
                 conn.execute(sql3, (0, SWATBasin, pnd_fr, basinData.pondArea / 1E4, row[2], maxArea / 1E4, row[4], row[5]))
+            # write water statistics before WATR areas reduced for reservoirs and ponds
+            self.writeWaterStats()
             for basin in basinsWithWaterBody:
                 basinData = self.basins[basin]
-                basinData.removeWaterBodies(self._gv)
+                basinData.removeWaterBodiesArea(self._gv)
             conn.commit()
     
     def insertFeatures(self, layer: QgsVectorLayer, fields: QgsFields, 
@@ -3132,7 +3134,7 @@ class CreateHRUs(QObject):
             if basinData is None:
                 QSWATUtils.error('No data for SWATBasin {0} (polygon {1})'.format(SWATBasin, basin), self._gv.isBatch)
                 return
-            subHa = float(basinData.area + basinData.reservoirArea + basinData.pondArea) / 10000
+            subHa = float(basinData.area) / 10000
             percent = (subHa / basinHa) * 100
             st1 = 'Area [ha]'
             st2 = '%Watershed'
@@ -3236,6 +3238,71 @@ class CreateHRUs(QObject):
                                               float(meanSlopePercent), float(hruha), uc)
                     hrusCsv.writeLine('{0},{1}'.format(hru, hruha))
         return oid
+    
+    def writeWaterStats(self):
+        """Write water statistics for HUC projects."""
+        NHDWaterFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDPlusNationalData/NHDWaterBody5072.sqlite')
+        NHDWaterConn = sqlite3.connect(NHDWaterFile)
+        NHDWaterConn.enable_load_extension(True)
+        NHDWaterConn.execute("SELECT load_extension('mod_spatialite')")
+        sql = """SELECT AsText(GEOMETRY), ftype FROM nhdwaterbody5072
+                    WHERE nhdwaterbody5072.ROWID IN (SELECT ROWID FROM SpatialIndex WHERE
+                        ((f_table_name = 'nhdwaterbody5072') AND (search_frame = GeomFromText(?))));"""
+        huc = self._gv.projName[3:]
+        wshedFile = self._gv.wshedFile
+        wshedLayer = QgsVectorLayer(wshedFile, 'watershed', 'ogr')
+        basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)
+        streamFile = self._gv.streamFile
+        streamLayer = QgsVectorLayer(streamFile, 'streams', 'ogr')
+        l = len(huc) + 2
+        region = huc[:2]
+        statsFile = QSWATUtils.join(self._gv.projDir, '../waterStats{0}_HUC{1}.csv'.format(region, l))
+        mode = 'a' if os.path.isfile(statsFile) else 'w'
+        hucField = 'HUC{0}'.format(l)
+        hucIndex = self._gv.topo.getIndex(wshedLayer, hucField)
+        with open(statsFile, mode) as stats:
+            if mode == 'w':
+                stats.write('HUC, NIDWater, NHDWater, WATR, Streams, NHDWetland, WetLanduse\n')
+            for basinShape in wshedLayer.getFeatures():
+                basin = basinShape[basinIndex]
+                basinHUC = basinShape[hucIndex]
+                basinData = self.basins[basin]
+                NIDWaterHa = (basinData.pondArea + basinData.reservoirArea) / 1E4
+                WATRHa = 0
+                wetLanduseHa = 0
+                streamAreaHa = 0
+                expr = QgsExpression("{0} = {1}".format(QSWATTopology._WSNO, basin))
+                for stream in streamLayer.getFeatures(QgsFeatureRequest(expr)):
+                    length = stream.geometry().length()
+                    streamAreaHa = length * 15 / 1E4  # assume width of 15m
+                    break  # there is one stream per subbasin
+                for crop, soilSlopeNumbers in basinData.cropSoilSlopeNumbers.items():
+                    cropCode = self._gv.db.getLanduseCode(crop)
+                    if cropCode in Parameters._WATERLANDUSES:
+                        for slopeNumbers in soilSlopeNumbers.values():
+                            for hru in slopeNumbers.values():
+                                hruData = basinData.hruMap[hru]
+                                if cropCode == 'WATR':
+                                    WATRHa += hruData.area / 1E4
+                                else:
+                                    wetLanduseHa += hruData.area / 1E4
+                NHDWaterHa = 0
+                NHDWetlandHa = 0
+                basinGeom = basinShape.geometry()
+                # basinBoundary = QgsGeometry.fromRect(basinGeom.boundingBox()).asWkt()
+                basinBoundary = basinGeom.boundingBox().asWktPolygon()
+                for row in NHDWaterConn.execute(sql, (basinBoundary,)):
+                    waterBody = QgsGeometry.fromWkt(row[0])
+                    waterGeom = basinGeom.intersection(waterBody)
+                    if not waterGeom.isEmpty():
+                        areaHa = waterGeom.area() / 1E4
+                        if row[1]  == 'SwampMarsh':
+                            NHDWetlandHa += areaHa
+                        else:
+                            # IceMass, LakePond, Playa, Reservoir and Inundation all treated as water
+                            NHDWaterHa += areaHa
+                stats.write('{0}, {1:.2F}, {2:.2F}, {3:.2F}, {4:.2F}, {5:.2F}, {6:.2F}\n'.format(basinHUC, NIDWaterHa, NHDWaterHa, WATRHa, streamAreaHa, NHDWetlandHa, wetLanduseHa)) 
+                
     
     def writeHRUsAndUncombTables(self) -> None:
         """Write hrus table."""
@@ -3596,19 +3663,17 @@ class CreateHRUs(QObject):
         total = 0.0
         for bd in self.basins.values():
             total += bd.area
-            total += bd.reservoirArea
-            total += bd.pondArea
         return total
     
     def totalReservoirsArea(self) -> float:
-        """Return sum of areas of subbasins in square metres."""
+        """Return sum of areas of reservoirs in square metres."""
         total = 0.0
         for bd in self.basins.values():
             total += bd.reservoirArea
         return total
     
     def totalPondsArea(self) -> float:
-        """Return sum of areas of subbasins in square metres."""
+        """Return sum of areas of ponds in square metres."""
         total = 0.0
         for bd in self.basins.values():
             total += bd.pondArea

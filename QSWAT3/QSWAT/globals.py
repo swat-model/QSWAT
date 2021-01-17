@@ -38,9 +38,9 @@ if TYPE_CHECKING:
     from QSWATUtils import QSWATUtils  # @UnresolvedImport @Reimport
     from delineation import Delineation  # @UnresolvedImport @UnusedImport
     from DBUtils import DBUtils # @UnresolvedImport @Reimport
-    from hrus import HRUs  # @UnusedImport
-    from visualise import Visualise  # @UnusedImport
-    from qswat import QSwat  # @UnusedImport
+    from hrus import HRUs  # @UnresolvedImport @UnusedImport
+    from visualise import Visualise  # @UnresolvedImport @UnusedImport
+    from qswat import QSwat  # @UnresolvedImport @UnusedImport
     
 class GlobalVars:
     """Data used across across the plugin, and some utilities on it."""
@@ -186,6 +186,9 @@ class GlobalVars:
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
+        ## data directory for HUC projects
+        # default for debugging
+        self.HUCDataDir = 'H:/Data'
         ## Path of project database
         self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.SWATExeDir, self.isHUC, self.isBatch)
         ## multiplier to turn elevations to metres
@@ -228,7 +231,7 @@ class GlobalVars:
         self.vectorFileWriterOptions.fileEncoding = "UTF-8"
         ## rasters open that need to be closed if memory exception occurs
         # only used with hrus2
-        self.openRasters: Set[Raster] = set()
+        self.openRasters: Set[Raster] = set()  # @UndefinedVariable
         
     def createSubDirectories(self) -> None:
         """Create subdirectories under project file's directory."""

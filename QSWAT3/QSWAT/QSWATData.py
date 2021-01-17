@@ -64,7 +64,7 @@ class BasinData:
         """Initialise class variables."""
         ## Number of cells in subbasin
         self.cellCount = 0
-        ## Area of subbasin in square metres
+        ## Area of subbasin in square metres.  Equals cropSoilSlopeArea plus reservoirArea plus pondArea
         self.area = 0.0
         ## Area draining through outlet of subbasin in square metres
         self.drainArea = 0.0
@@ -208,7 +208,7 @@ class BasinData:
             else:
                 # if we are not redistributing nodata, need to correct the basin area, cell count and totalSlope, which may be reduced 
                 # as we are removing nodata area from the model
-                self.area = self.cropSoilSlopeArea
+                self.area = self.cropSoilSlopeArea + self.pondArea + self.reservoirArea
                 self.cellCount = self.totalHRUCellCount()
                 self.totalSlope = self.totalHRUSlopes()
         self.setCropAreas(isOriginal)
@@ -220,10 +220,11 @@ class BasinData:
         # It is tempting to use self.area as the full area and self.cropSoilSlopeArea as the 
         # area with defined crop, soil and slope values, but these values are constant,
         # so if this function is called more than once the HRU areas keep growing.
-        # We need to compare self.area with the total HRU areas.
-        areaToRedistribute = self.area - self.totalHRUAreas()
-        if self.area > areaToRedistribute > 0:
-            redistributeFactor = self.area / (self.area - areaToRedistribute)
+        # We need to compare the non-waterbody part of self.area with the total HRU areas.
+        nonWaterbodyArea = self.area - (self.pondArea + self.reservoirArea)
+        areaToRedistribute = nonWaterbodyArea - self.totalHRUAreas()
+        if nonWaterbodyArea > areaToRedistribute > 0:
+            redistributeFactor = nonWaterbodyArea / (nonWaterbodyArea - areaToRedistribute)
             self.redistribute(redistributeFactor)
             
     def totalHRUCellCount(self) -> int:
@@ -301,18 +302,18 @@ class BasinData:
                         
     def cropSoilAreas(self, crop: int) -> Dict[int, float]:
         '''Map of soil -> area in square metres for this crop.'''
-        assert crop in self.cropSoilSlopeNumbers
         csmap = dict()
-        for soil in self.cropSoilSlopeNumbers[crop].keys():
+        soilSlopeNumbers = self.cropSoilSlopeNumbers.get(crop, dict())
+        for soil in soilSlopeNumbers:
             csmap[soil] = self.cropSoilArea(crop, soil)
         return csmap
     
     def cropArea(self, crop: int) -> float:
         '''Area in square metres for crop.'''
         # use when cropAreas may not be set
-        assert crop in self.cropSoilSlopeNumbers, u'Landuse {0} not in basin data'.format(crop)
         area = 0.0
-        for slopeNumbers in self.cropSoilSlopeNumbers[crop].values():
+        soilSlopeNumbers = self.cropSoilSlopeNumbers.get(crop, dict())
+        for slopeNumbers in soilSlopeNumbers.values():
             for hru in slopeNumbers.values():
                 try:
                     cellData = self.hruMap[hru]
@@ -324,9 +325,9 @@ class BasinData:
     
     def cropSoilArea(self, crop: int, soil: int) -> float:
         '''Area in square metres for crop-soil combination.'''
-        assert crop in self.cropSoilSlopeNumbers and soil in self.cropSoilSlopeNumbers[crop]
         area = 0.0
-        slopeNumbers = self.cropSoilSlopeNumbers[crop][soil]
+        soilSlopeNumbers = self.cropSoilSlopeNumbers.get(crop, dict())
+        slopeNumbers = soilSlopeNumbers.get(soil, dict())
         for hru in slopeNumbers.values():
             try:
                 cellData = self.hruMap[hru]
@@ -338,10 +339,16 @@ class BasinData:
     
     def cropSoilSlopeAreas(self, crop: int, soil: int) -> Dict[int, float]:
         '''Map of slope -> area in square metres for this crop and soil.'''
-        assert crop in self.cropSoilSlopeNumbers and soil in self.cropSoilSlopeNumbers[crop]
         cssmap = dict()
-        for (slope, hru) in self.cropSoilSlopeNumbers[crop][soil].items():
-            cssmap[slope] = self.hruMap[hru].area
+        soilSlopeNumbers = self.cropSoilSlopeNumbers.get(crop, dict())
+        slopeNumbers = soilSlopeNumbers.get(soil, dict())
+        for (slope, hru) in slopeNumbers.items():
+            try:
+                cellData = self.hruMap[hru]
+            except Exception:
+                QSWATUtils.error(u'Hru {0} not in hruMap'.format(hru), self.isBatch)
+                continue
+            cssmap[slope] = cellData.area
         return cssmap
     
     @staticmethod
@@ -396,7 +403,7 @@ class BasinData:
             if len(self.cropSoilSlopeNumbers[crop]) == 0:
                 del self.cropSoilSlopeNumbers[crop]
                 
-    def removeWaterBodies(self, gv: Any) -> None:
+    def removeWaterBodiesArea(self, gv: Any) -> None:
         """Reduce areas to allow for reservoir and pond areas."""
         
         def reduceWaterArea(waterLanduse: int, factor: float) -> None:
@@ -426,9 +433,6 @@ class BasinData:
             if areaToRemove > self.area:
                 self.reservoirArea *= (self.area / areaToRemove)
                 self.pondArea *= (self.area / areaToRemove)
-                self.area = 0
-            else:
-                self.area -= areaToRemove
             return
         # allocate WATR area to ponds and reservoirs
         waterLanduse = gv.db.getLanduseCat('WATR')
@@ -443,7 +447,6 @@ class BasinData:
             factor = (self.area - areaToRemove) / self.area 
             self.redistribute(factor)
         self.cropSoilSlopeArea -= areaToRemove
-        self.area -= areaToRemove 
                 
 class HRUData:
     
