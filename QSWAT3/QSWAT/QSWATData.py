@@ -23,7 +23,8 @@
 
 from typing import Dict, Tuple, Any
 
-from .QSWATUtils import QSWATUtils
+from .QSWATUtils import QSWATUtils  # type: ignore
+from .parameters import Parameters  # type: ignore
 
 class CellData:
     """Data collected about cells in watershed grid that make an HRU."""
@@ -64,7 +65,7 @@ class BasinData:
         """Initialise class variables."""
         ## Number of cells in subbasin
         self.cellCount = 0
-        ## Area of subbasin in square metres.  Equals cropSoilSlopeArea plus reservoirArea plus pondArea
+        ## Area of subbasin in square metres.  Equals cropSoilSlopeArea plus reservoirArea plus pondArea plus nodata area
         self.area = 0.0
         ## Area draining through outlet of subbasin in square metres
         self.drainArea = 0.0
@@ -72,6 +73,16 @@ class BasinData:
         self.pondArea = 0.0
         ## reservoir area in square metres
         self.reservoirArea = 0.0
+        ## playa area in square metres according to NHD data (only used with HUC)
+        self.playaArea = 0.0
+        ## pond area in square metres before any adjustment for total area
+        self.pondAreaOriginally = 0.0
+        ## reservoir area in square metres before any adjustment for total area
+        self.reservoirAreaOriginally = 0.0
+        ## playa area in square metres  before any adjustment for total area according to NHD data (only used with HUC)
+        self.playaAreaOriginally = 0.0
+        ## wetland area in square metres according to NHD data (only used with HUC)
+        self.wetlandArea = 0.0
         ## Total of elevation values in the subbasin (to compute mean)
         self.totalElevation = 0.0
         ## Total of slope values for the subbasin (to compute mean)
@@ -217,15 +228,14 @@ class BasinData:
         
     def redistributeNodata(self) -> None:
         """Redistribute nodata area in each HRU."""
-        # It is tempting to use self.area as the full area and self.cropSoilSlopeArea as the 
-        # area with defined crop, soil and slope values, but these values are constant,
-        # so if this function is called more than once the HRU areas keep growing.
-        # We need to compare the non-waterbody part of self.area with the total HRU areas.
         nonWaterbodyArea = self.area - (self.pondArea + self.reservoirArea)
-        areaToRedistribute = nonWaterbodyArea - self.totalHRUAreas()
+        areaToRedistribute = nonWaterbodyArea - self.cropSoilSlopeArea
         if nonWaterbodyArea > areaToRedistribute > 0:
             redistributeFactor = nonWaterbodyArea / (nonWaterbodyArea - areaToRedistribute)
             self.redistribute(redistributeFactor)
+        # adjust cropSoilSlopeArea so remains equal to sum of HRU areas
+        # also allows this function to be called again with no effect
+        self.cropSoilSlopeArea = nonWaterbodyArea
             
     def totalHRUCellCount(self) -> int:
         """Total cell count of HRUs in this subbasin."""
@@ -403,50 +413,80 @@ class BasinData:
             if len(self.cropSoilSlopeNumbers[crop]) == 0:
                 del self.cropSoilSlopeNumbers[crop]
                 
-    def removeWaterBodiesArea(self, gv: Any) -> None:
-        """Reduce areas to allow for reservoir and pond areas."""
+    def removeWaterBodiesArea(self, WATRInStream: float, gv: Any) -> None:
+        """Reduce areas to allow for reservoir, pond and playa areas.  Set WATR HRU to WATRInStream + playa"""
         
-        def reduceWaterArea(waterLanduse: int, factor: float) -> None:
-            """Multiply all waterLanduse HRUs by factor."""
+        def setWaterHRUArea(waterLanduse: int, area: float) -> float:
+            """Set the area of WATR HRU to area.  Return previous WATR area"""
             soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, dict())
-            for slopeNumbers in soilSlopeNumbers.values():
-                for hru in slopeNumbers.values():
-                    self.hruMap[hru].multiply(factor)
+            slopeNumbers = soilSlopeNumbers.get(Parameters._SSURGOWater, dict())
+            hru = slopeNumbers.get(0, -1)
+            if hru >= 0:  # have existing WATR HRU
+                hruData = self.hruMap[hru]
+                oldHRUArea = hruData.area
+                hruData.area = area
+                hruData.cellCount = int(area / gv.cellArea + 0.5)
+                return oldHRUArea
+            else:  # create a water HRU
+                cellCount = int(area / gv.cellArea + 0.5)
+                hruData = CellData(cellCount, area, Parameters._WATERMAXSLOPE * cellCount, waterLanduse)
+                self.relHru += 1
+                self.hruMap[self.relHru] = hruData
+                slopeNumbers[0] = self.relHru
+                soilSlopeNumbers[Parameters._SSURGOWater] = slopeNumbers
+                self.cropSoilSlopeNumbers[waterLanduse] = soilSlopeNumbers
+                return 0
             
-        def removeWater(waterLanduse: int) -> None:
-            """Remove all waterLanduse HRUs"""
+        def removeWater(waterLanduse: int) -> float:
+            """Remove all waterLanduse HRUs.  Return area removed"""
+            removedArea = 0.0
             soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, None)
             if soilSlopeNumbers is not None:
                 for slopeNumbers in soilSlopeNumbers.values():
                     for hru in slopeNumbers.values():
+                        removedArea += self.hruMap[hru].area
                         del self.hruMap[hru]
                 del self.cropSoilSlopeNumbers[waterLanduse]
+            return removedArea
             
         areaToRemove = self.reservoirArea + self.pondArea
-        if areaToRemove == 0:
-            return 
-        if areaToRemove >= self.cropSoilSlopeArea:
+        availableForHRUs = self.cropSoilSlopeArea - areaToRemove
+        if availableForHRUs <= 0:
             ## remove all HRUs
             self.hruMap = dict()
             self.cropSoilSlopeNumbers = dict()
             self.cropSoilSlopeArea = 0
             if areaToRemove > self.area:
-                self.reservoirArea *= (self.area / areaToRemove)
-                self.pondArea *= (self.area / areaToRemove)
+                factor = self.area / areaToRemove
+                self.reservoirArea *= factor
+                self.pondArea *= factor
             return
-        # allocate WATR area to ponds and reservoirs
         waterLanduse = gv.db.getLanduseCat('WATR')
-        waterArea = self.cropArea(waterLanduse)
-        if waterArea > areaToRemove:
-            #QSWATUtils.information('Reducing water from {0} to {1}'.format(waterArea, waterArea - areaToRemove), gv.isBatch)
-            reduceWaterArea(waterLanduse, (waterArea - areaToRemove) / waterArea)
+        availableForWATR = min(availableForHRUs, WATRInStream + self.playaArea)
+        if availableForWATR > 0:
+            self.playaArea = min(availableForWATR, self.playaArea)
+            oldWATRArea = setWaterHRUArea(waterLanduse, availableForWATR)
         else:
-            #QSWATUtils.information('Removing all water', gv.isBatch)
-            removeWater(waterLanduse)
-            areaToRemove -= waterArea
-            factor = (self.area - areaToRemove) / self.area 
-            self.redistribute(factor)
-        self.cropSoilSlopeArea -= areaToRemove
+            oldWATRArea = removeWater(waterLanduse)
+        availableForCropHRUs = availableForHRUs - availableForWATR
+        if availableForCropHRUs == 0:
+            # remove non WATR HRUs
+            for crop, soilSlopeNumbers in self.cropSoilSlopeNumbers.items():
+                if crop != waterLanduse:
+                    for slopeNumbers in soilSlopeNumbers.values():
+                        for hru in slopeNumbers.values():
+                            del self.hruMap[hru]
+                    del self.cropSoilSlopeNumbers[crop]
+        else:
+            oldCropArea = self.cropSoilSlopeArea - oldWATRArea
+            factor = availableForCropHRUs / oldCropArea
+            # multiply non-water HRUs by factor
+            for crop, soilSlopeNumbers in self.cropSoilSlopeNumbers.items():
+                if crop != waterLanduse:
+                    for slopeNumbers in soilSlopeNumbers.values():
+                        for hru in slopeNumbers.values():
+                            self.hruMap[hru].multiply(factor)
+        self.cropSoilSlopeArea = availableForHRUs
                 
 class HRUData:
     

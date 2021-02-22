@@ -79,7 +79,7 @@ class DBUtils:
                     QSWATUtils.error('Failed to connect to reference database {0}.'.format(self.dbRefFile), self.isBatch)
             except Exception:
                 QSWATUtils.error('Failed to connect to reference database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
-                self.connRef = None
+                self.connRef = None  # type: ignore
         else:
             self._connRefStr = Parameters._ACCESSSTRING + self.dbRefFile
             # copy template reference database to project folder if not already there
@@ -94,7 +94,7 @@ class DBUtils:
                     QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
             except Exception:
                 QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
-                self.connRef = None
+                self.connRef = None  # type: ignore
         ## WaterBodies (HUC only)
         self.waterBodiesFile = QSWATUtils.join(projDir + '/..', Parameters._WATERBODIES)
         ## Tables in project database containing 'landuse'
@@ -125,6 +125,9 @@ class DBUtils:
         ## Map of landuse category to IDC value from crop table
         # There is an invariant that the domains of landuseCodes and _landuseIDCs are identical.
         self._landuseIDCs: Dict[int, int] = dict()
+        ## map of landuse categories to Mannings n value for overland flow (only used for HUC models)
+        # same domain as landuseCodes
+        self.landuseOVN: Dict[int, float] = dict()
         ## Map of landuse category to SWAT urban ids (as found in urban.dat)
         # There is an invariant that the domain of urbanIds is a subset of 
         # the domain of landuseIds, corresponding to those whose crop id is 0
@@ -396,6 +399,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         self._landuseTranslate.clear()
         self.landuseIds.clear()
         self._landuseIDCs.clear()
+        self.landuseOVN.clear()
         self.urbanIds.clear()
 #         # Nilepatch
 #         self.defaultLanduse = 150
@@ -450,13 +454,14 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     def storeLanduseCode(self, landuseCat: int, landuseCode: str) -> bool:
         """Store landuse codes in lookup tables."""
         landuseIDC = 0
+        landuseOVN = 0
         landuseId = 0
         urbanId = -1
         OK = True
         isUrban = landuseCode.startswith('U')
         if isUrban:
             table = 'urban'
-            sql2 = self.sqlSelect(table, 'IUNUM', '', 'URBNAME=?')
+            sql2 = self.sqlSelect(table, 'IUNUM, OV_N', '', 'URBNAME=?')
             if self.connRef is None:
                 return False
             try:
@@ -466,9 +471,10 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return False
             if row:
                 urbanId = row[0]
+                landuseOVN = row[1]
         if urbanId < 0:  # not tried or not found in urban
             table = 'crop'
-            sql2 = self.sqlSelect(table, 'ICNUM, IDC', '', 'CPNM=?')
+            sql2 = self.sqlSelect(table, 'ICNUM, IDC, OV_N', '', 'CPNM=?')
             if self.connRef is None:
                 return False
             try:
@@ -485,9 +491,11 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             else:
                 landuseId = row[0]
                 landuseIDC = row[1]
+                landuseOVN = row[2]
         self.landuseCodes[landuseCat] = landuseCode
         self.landuseIds[landuseCat] = landuseId
         self._landuseIDCs[landuseCat] = landuseIDC
+        self.landuseOVN[landuseCat] = landuseOVN
         if urbanId >= 0:
             self.urbanIds[landuseCat] = urbanId
         return OK
@@ -1355,6 +1363,63 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         MEAN_SLOPE REAL,
         AREA       REAL,
         UNCOMB     TEXT
+    );
+    """
+    
+    _HRUCREATESQL= \
+    """
+    CREATE TABLE hru ( 
+        OID INTEGER,
+        SUBBASIN INTEGER,
+        HRU INTEGER,
+        LANDUSE TEXT,
+        SOIL TEXT,
+        SLOPE_CD TEXT,
+        HRU_FR REAL,
+        SLSUBBSN REAL,
+        HRU_SLP REAL,
+        OV_N REAL,
+        LAT_TTIME REAL DEFAULT(0),
+        LAT_SED REAL DEFAULT(0),
+        SLSOIL REAL DEFAULT(0),
+        CANMX REAL DEFAULT(0),
+        ESCO REAL DEFAULT(0.95),
+        EPCO REAL DEFAULT(1),
+        RSDIN REAL DEFAULT(0),
+        ERORGN REAL DEFAULT(0),
+        ERORGP REAL DEFAULT(0),
+        POT_FR REAL DEFAULT(0),
+        FLD_FR REAL DEFAULT(0),
+        RIP_FR REAL DEFAULT(0),
+        POT_TILE REAL DEFAULT(0),
+        POT_VOLX REAL DEFAULT(0),
+        POT_VOL REAL DEFAULT(0),
+        POT_NSED REAL DEFAULT(0),
+        POT_NO3L REAL DEFAULT(0),
+        DEP_IMP REAL DEFAULT(6000),
+        DIS_STREAM REAL DEFAULT(35),
+        EVPOT REAL DEFAULT(0.5),
+        CF REAL DEFAULT(1),
+        CFH REAL DEFAULT(1),
+        CFDEC REAL DEFAULT(0.055),
+        SED_CON REAL DEFAULT(0),
+        ORGN_CON REAL DEFAULT(0),
+        ORGP_CON REAL DEFAULT(0),
+        SOLN_CON REAL DEFAULT(0),
+        SOLP_CON REAL DEFAULT(0),
+        RE REAL DEFAULT(50),
+        SDRAIN REAL DEFAULT(15000),
+        DRAIN_CO REAL DEFAULT(10),
+        PC REAL DEFAULT(1),
+        LATKSATF REAL DEFAULT(1),
+        N_LNCO REAL DEFAULT(2.0),
+        R2ADJ REAL DEFAULT(1),
+        N_REDUC REAL DEFAULT(300),
+        POT_K REAL DEFAULT(0.01),
+        N_LN REAL DEFAULT(2.0),
+        N_LAG REAL DEFAULT(0.25),
+        SURLAG REAL DEFAULT(2.0),
+        POT_SOLP REAL DEFAULT(0.01)
     );
     """
     

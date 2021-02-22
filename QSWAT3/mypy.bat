@@ -1,4 +1,4 @@
-SET OSGEO4W_ROOT=C:\OSGEO4W32_3
+SET OSGEO4W_ROOT=C:\OSGEO4W64_3
 set PYTHONHOME=%OSGEO4W_ROOT%\apps\Python37
 set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python
 rem QGIS binaries
@@ -7,7 +7,7 @@ rem disable QGIS console messages
 set QGIS_DEBUG=-1
 
 rem default QGIS plugins
-set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python\plugins;%OSGEO4W_ROOT%\apps\qgis-ltr\python\plugins\processing;%OSGEO4W_ROOT%\apps\python37\lib\site-packages
+set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python\plugins;%OSGEO4W_ROOT%\apps\qgis-ltr\python\plugins\processing
 set MYPYPATH=C:\Users\Public\mypy_stubs
 rem user installed plugins
 set PYTHONPATH=%PYTHONPATH%;QSWAT3

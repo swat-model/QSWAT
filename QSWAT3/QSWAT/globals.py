@@ -41,6 +41,7 @@ if TYPE_CHECKING:
     from hrus import HRUs  # @UnresolvedImport @UnusedImport
     from visualise import Visualise  # @UnresolvedImport @UnusedImport
     from qswat import QSwat  # @UnresolvedImport @UnusedImport
+    from QSWATData import CellData, BasinData, HRUData   # @UnresolvedImport @UnusedImport
     
 class GlobalVars:
     """Data used across across the plugin, and some utilities on it."""
@@ -231,7 +232,7 @@ class GlobalVars:
         self.vectorFileWriterOptions.fileEncoding = "UTF-8"
         ## rasters open that need to be closed if memory exception occurs
         # only used with hrus2
-        self.openRasters: Set[Raster] = set()  # @UndefinedVariable
+        # self.openRasters: Set[Raster] = set()  # type: ignore @UndefinedVariable
         
     def createSubDirectories(self) -> None:
         """Create subdirectories under project file's directory."""
@@ -491,17 +492,17 @@ class GlobalVars:
                 item.set('value', self.SWATExeDir)
         tree.write(path)
         
-    # only used with hrus2
-    def closeOpenRasters(self) -> None:
-        """Close open rasters (to enable them to be reopened with new chunk size)."""
-        for raster in self.openRasters.copy():
-            try:
-                raster.close()
-                self.openRasters.discard(raster)
-            except Exception:
-                pass  
-
-    # only used with hrus2
-    def clearOpenRasters(self) -> None:
-        """Clear list of open rasters."""
-        self.openRasters.clear()
+#     # only used with hrus2
+#     def closeOpenRasters(self) -> None:
+#         """Close open rasters (to enable them to be reopened with new chunk size)."""
+#         for raster in self.openRasters.copy():
+#             try:
+#                 raster.close()
+#                 self.openRasters.discard(raster)
+#             except Exception:
+#                 pass  
+# 
+#     # only used with hrus2
+#     def clearOpenRasters(self) -> None:
+#         """Clear list of open rasters."""
+#         self.openRasters.clear()
