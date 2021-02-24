@@ -448,6 +448,12 @@ class BasinData:
                         del self.hruMap[hru]
                 del self.cropSoilSlopeNumbers[waterLanduse]
             return removedArea
+        
+        def allWATR(waterLanduse: int) -> bool:
+            for crop in self.cropSoilSlopeNumbers:
+                if crop != waterLanduse:
+                    return False
+            return True
             
         areaToRemove = self.reservoirArea + self.pondArea
         availableForHRUs = self.cropSoilSlopeArea - areaToRemove
@@ -466,6 +472,9 @@ class BasinData:
         if availableForWATR > 0:
             self.playaArea = min(availableForWATR, self.playaArea)
             oldWATRArea = setWaterHRUArea(waterLanduse, availableForWATR)
+        elif allWATR(waterLanduse):
+            # cannot remove WATR because no crop HRUs to enlarge: leave as is
+            return
         else:
             oldWATRArea = removeWater(waterLanduse)
         availableForCropHRUs = availableForHRUs - availableForWATR
