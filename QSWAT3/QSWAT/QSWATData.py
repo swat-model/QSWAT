@@ -468,13 +468,14 @@ class BasinData:
                 self.pondArea *= factor
             return
         waterLanduse = gv.db.getLanduseCat('WATR')
+        if allWATR(waterLanduse):
+            # just use all the non-reservoir and pond area as water: cannot redistribute anything as no crop HRUs to change
+            _ = setWaterHRUArea(waterLanduse, availableForHRUs)
+            return
         availableForWATR = min(availableForHRUs, WATRInStream + self.playaArea)
         if availableForWATR > 0:
             self.playaArea = min(availableForWATR, self.playaArea)
             oldWATRArea = setWaterHRUArea(waterLanduse, availableForWATR)
-        elif allWATR(waterLanduse):
-            # cannot remove WATR because no crop HRUs to enlarge: leave as is
-            return
         else:
             oldWATRArea = removeWater(waterLanduse)
         availableForCropHRUs = availableForHRUs - availableForWATR
