@@ -1209,7 +1209,6 @@ class Visualise(QObject):
             if reply != QMessageBox.Yes:
                 return False
             if nextResultsFile == self.resultsFile:
-                # remove existing layer so new one replaces it
                 ok, path = QSWATUtils.removeLayerAndFiles(self.resultsFile, root)
                 if not ok:
                     QSWATUtils.error('Failed to remove old results file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)

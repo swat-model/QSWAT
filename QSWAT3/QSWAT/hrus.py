@@ -44,8 +44,7 @@ from .parameters import Parameters  # type: ignore
 from .exempt import Exempt  # type: ignore
 from .split import Split  # type: ignore
 from .elevationbands import ElevationBands  # type: ignore
-from .DBUtils import DBUtils  # type: ignore   
-from abc import abstractstaticmethod
+from .DBUtils import DBUtils  # type: ignore 
 
 
 useSlowPolygonize = False
@@ -349,16 +348,12 @@ class HRUs(QObject):
                 if treeLayer is not None:
                     fullHRUsLayer = treeLayer.layer()
                     fullHRUsFile = QSWATUtils.layerFileInfo(fullHRUsLayer).absoluteFilePath()
-                    ok, _ = QSWATUtils.removeLayerAndFiles(fullHRUsFile, root)
-                    if not ok:
-                        pass  # no great harm
+                    QSWATUtils.removeLayer(fullHRUsFile, root)
                     treeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._ACTHRUSLEGEND, root.findLayers())
                     if treeLayer is not None:
                         actHRUsLayer = treeLayer.layer()
                         actHRUsFile = QSWATUtils.layerFileInfo(actHRUsLayer).absoluteFilePath()
-                        ok, _ = QSWATUtils.removeLayerAndFiles(actHRUsFile, root)
-                        if not ok:
-                            pass  # no great harm
+                        QSWATUtils.removeLayer(actHRUsFile, root)
             time1 = time.process_time()
             OK = self.CreateHRUs.generateBasins(self._dlg.progressBar, self._dlg.progressLabel, root)
             time2 = time.process_time()
@@ -1972,6 +1967,7 @@ class CreateHRUs(QObject):
                 basinData.playaAreaOriginally = basinData.playaArea
                 freeArea = basinData.area - (basinData.reservoirArea + basinData.pondArea)
                 if basinData.playaArea > freeArea:
+                    SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                     QSWATUtils.information('WARNING: Playa in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.playaArea / 1E4, freeArea / 1E4), self._gv.isBatch)
                     basinData.playaArea = freeArea
             # write water statistics before WATR areas reduced for reservoirs, ponds and playa
@@ -2064,10 +2060,7 @@ class CreateHRUs(QObject):
                 return False
             fields = layer.fields()
         else:
-            ok, path = QSWATUtils.removeLayerAndFiles(self._gv.fullHRUsFile, root)
-            if not ok:
-                QSWATUtils.error('Failed to remove old fullHRUs file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-                return False
+            QSWATUtils.removeLayer(self._gv.fullHRUsFile, root)
             fields = QgsFields()
             fields.append(QgsField(QSWATTopology._SUBBASIN, QVariant.Int))
             fields.append(QgsField(Parameters._LANDUSE, QVariant.String, len=20))
@@ -2077,7 +2070,8 @@ class CreateHRUs(QObject):
             fields.append(QgsField(Parameters._PERCENT, QVariant.Double))
             fields.append(QgsField(QSWATTopology._HRUGIS, QVariant.String, len=20))
             assert self._gv.topo.crsProject is not None
-            writer = QgsVectorFileWriter(self._gv.fullHRUsFile, 'CP1250', fields, QgsWkbTypes.MultiPolygon, self._gv.topo.crsProject, 'ESRI Shapefile')
+            writer = QgsVectorFileWriter.create(self._gv.fullHRUsFile, fields, QgsWkbTypes.MultiPolygon, self._gv.topo.crsProject, 
+                                                QgsProject.instance().transformContext(), self._gv.vectorFileWriterOptions)
             if writer.hasError() != QgsVectorFileWriter.NoError:
                 QSWATUtils.error('Cannot create FullHRUs shapefile {0}: {1}'.format(self._gv.fullHRUsFile, writer.errorMessage()), self._gv.isBatch)
                 return False

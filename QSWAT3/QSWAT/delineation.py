@@ -2326,10 +2326,7 @@ class Delineation(QObject):
         fields.append(QgsField(QSWATTopology._AREA, QVariant.Int))
         gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
         root = QgsProject.instance().layerTreeRoot()
-        ok, _ = QSWATUtils.removeLayerAndFiles(gridFile, root)
-        if not ok:
-            # can fail because too fast - no great harm
-            pass
+        QSWATUtils.removeLayer(gridFile, root)
         transform_context = QgsProject.instance().transformContext()
         writer = QgsVectorFileWriter.create(gridFile, fields, QgsWkbTypes.Polygon, self._gv.topo.crsProject,
                                             transform_context, self._gv.vectorFileWriterOptions)
@@ -2401,9 +2398,7 @@ class Delineation(QObject):
         fields.append(QgsField('Drainage', QVariant.Double, len=10, prec=2))
         fields.append(QgsField(QSWATTopology._PENWIDTH, QVariant.Double))
         gridStreamsFile = QSWATUtils.join(self._gv.shapesDir, 'gridstreams.shp')
-        ok, _ = QSWATUtils.removeLayerAndFiles(gridStreamsFile, root)
-        if not ok:
-            pass # can fail because too fast - no great harm
+        QSWATUtils.removeLayer(gridStreamsFile, root)
         transform_context = QgsProject.instance().transformContext()
         writer = QgsVectorFileWriter.create(gridStreamsFile, fields, QgsWkbTypes.LineString, self._gv.topo.crsProject,
                                             transform_context, self._gv.vectorFileWriterOptions)

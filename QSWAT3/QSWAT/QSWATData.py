@@ -21,7 +21,7 @@
 '''
 
 
-from typing import Dict, Tuple, Any
+from typing import Dict, Tuple, Any, List
 
 from .QSWATUtils import QSWATUtils  # type: ignore
 from .parameters import Parameters  # type: ignore
@@ -481,12 +481,15 @@ class BasinData:
         availableForCropHRUs = availableForHRUs - availableForWATR
         if availableForCropHRUs == 0:
             # remove non WATR HRUs
+            cropsToDelete: List[int] = []
             for crop, soilSlopeNumbers in self.cropSoilSlopeNumbers.items():
                 if crop != waterLanduse:
+                    cropsToDelete.append(crop)
                     for slopeNumbers in soilSlopeNumbers.values():
                         for hru in slopeNumbers.values():
                             del self.hruMap[hru]
-                    del self.cropSoilSlopeNumbers[crop]
+            for crop in cropsToDelete:
+                del self.cropSoilSlopeNumbers[crop]
         else:
             oldCropArea = self.cropSoilSlopeArea - oldWATRArea
             factor = availableForCropHRUs / oldCropArea
