@@ -506,9 +506,10 @@ class QSWATTopology:
         wshedLayer.startEditing()
         if subbasinIndex < 0:
             # need to add subbasin field
-            wshedLayer.dataProvider().addAttributes([QgsField(QSWATTopology._SUBBASIN, QVariant.Int)])
+            wshedProvider = wshedLayer.dataProvider()
+            wshedProvider.addAttributes([QgsField(QSWATTopology._SUBBASIN, QVariant.Int)])
             wshedLayer.updateFields()
-            subbasinIndex = wshedLayer.fieldNameIndex(QSWATTopology._SUBBASIN)
+            subbasinIndex = wshedProvider.fieldNameIndex(QSWATTopology._SUBBASIN)
         request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([polyIndex])
         for feature in wshedLayer.getFeatures(request):
             basin = feature.attributes()[polyIndex]

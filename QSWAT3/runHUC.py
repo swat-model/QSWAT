@@ -159,8 +159,9 @@ class runHUC():
         # to find subbasin, find zero length channel with inletId as LINKNO, and then subbasin of its downstream channel
         channelsFile = gv.projDir + '/Watershed/Shapes/demnet.shp'
         channelsLayer = QgsVectorLayer(channelsFile, 'channels', 'ogr')
-        dsLinkNoIndex = channelsLayer.fieldNameIndex('DSLINKNO')
-        wsnoIndex = channelsLayer.fieldNameIndex('WSNO')
+        channelsProvider = channelsLayer.dataProvider()
+        dsLinkNoIndex = channelsProvider.fieldNameIndex('DSLINKNO')
+        wsnoIndex = channelsProvider.fieldNameIndex('WSNO')
         exp1 = QgsExpression('"LINKNO" = {0}'.format(inletId))
         channel = next(channelsLayer.getFeatures(QgsFeatureRequest(exp1).setFlags(QgsFeatureRequest.NoGeometry)))
         dsLinkNo = channel[dsLinkNoIndex]
