@@ -203,7 +203,7 @@ if __name__ == '__main__':
     dataDir = sys.argv[2]
     #print('dataDir is {0}'.format(dataDir))
     scale = int(sys.argv[3])
-    #print('Scale is {0}'.format(scale)
+    #print('Scale is {0}'.format(scale))
     minHRUha = int(sys.argv[4])
     #print('Minimum HRU size {0} ha'.format(minHRUha))
     inletId = int(sys.argv[5])

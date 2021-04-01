@@ -2784,16 +2784,18 @@ class Visualise(QObject):
         if self.mapTitle is not None:
             scene.removeItem(self.mapTitle)
             self.mapTitle = None
-        for item in scene.items():
-            # testing by isinstance is insufficient as a MapTitle item can have a wrappertype
-            # and the test returns false
-            #if isinstance(item, MapTitle):
-            try:
-                isMapTitle = item.identifyMapTitle() == 'MapTitle'
-            except Exception:
-                isMapTitle = False
-            if isMapTitle:
-                scene.removeItem(item)
+            # scene.items() causes a crash for some users.
+            # this code seems unnecessary in any case
+        # for item in scene.items():
+            # # testing by isinstance is insufficient as a MapTitle item can have a wrappertype
+            # # and the test returns false
+            # #if isinstance(item, MapTitle):
+            # try:
+                # isMapTitle = item.identifyMapTitle() == 'MapTitle'
+            # except Exception:
+                # isMapTitle = False
+            # if isMapTitle:
+                # scene.removeItem(item)
         canvas.refresh()
 
     def setAnimateLayer(self) -> None:

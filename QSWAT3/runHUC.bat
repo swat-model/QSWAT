@@ -1,5 +1,5 @@
 @echo off
-SET OSGEO4W_ROOT=C:\Program Files (x86)\QGIS 3.10
+SET OSGEO4W_ROOT=C:\Program Files (x86)\QGIS 3.16
 call "%OSGEO4W_ROOT%\bin\o4w_env.bat"
 call "%OSGEO4W_ROOT%\bin\qt5_env.bat"
 call "%OSGEO4W_ROOT%\bin\py3_env.bat"
