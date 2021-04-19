@@ -806,6 +806,42 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     '[area] DOUBLE, ' + \
     '[totalSlope] DOUBLE)'
     
+    # version for HUC models
+    _BASINSDATAHUC1 = 'BASINSDATAHUC1'
+    _BASINSDATA1TABLEHUC = \
+    """
+    (basin INTEGER, 
+    cellCount INTEGER, 
+    area REAL, 
+    drainArea REAL, 
+    pondArea REAL, 
+    reservoirArea REAL, 
+    playaArea REAL,
+    pondAreaOriginally REAL,
+    reservoirAreaOriginally REAL,
+    playaAreaOriginally REAL,
+    wetlandArea REAL,
+    totalElevation REAL, 
+    totalSlope REAL, 
+    outletCol INTEGER, 
+    outletRow INTEGER, 
+    outletElevation REAL, 
+    startCol INTEGER, 
+    startRow INTEGER, 
+    startToOutletDistance REAL, 
+    startToOutletDrop REAL, 
+    farCol INTEGER, 
+    farRow INTEGER, 
+    farthest INTEGER, 
+    farElevation REAL, 
+    farDistance REAL, 
+    maxElevation REAL, 
+    cropSoilSlopeArea REAL, 
+    hru INTEGER,
+    streamArea REAL,
+    WATRInStreamArea REAL)
+    """
+    
     _ELEVATIONBANDTABLEINDEX = 'OID'
     _ELEVATIONBANDTABLE = \
     '([OID] INTEGER, ' + \
@@ -882,7 +918,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         conn = self.connect()
         cursor = conn.cursor()
         # remove old table completely, for backward compatibility, since structure changed
-        table = self._BASINSDATA1
+        table = self._BASINSDATAHUC1 if self.isHUC else self._BASINSDATA1
         if table in self._allTableNames:
             dropSQL = 'DROP TABLE ' + table
             try:
@@ -891,14 +927,20 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
                 conn.close()
                 return (None, None, None)
-        createSQL = 'CREATE TABLE ' + table + ' ' + self._BASINSDATA1TABLE
+        if self.isHUC:
+            createSQL = 'CREATE TABLE ' + table + ' ' + self._BASINSDATA1TABLEHUC
+        else:
+            createSQL = 'CREATE TABLE ' + table + ' ' + self._BASINSDATA1TABLE
         try:
             cursor.execute(createSQL)
         except Exception:
             QSWATUtils.error('Could not create table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
             conn.close()
             return (None, None, None)
-        sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        if self.isHUC:
+            sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        else:
+            sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         table = self._BASINSDATA2
         if table in self._allTableNames:
             dropSQL = 'DROP TABLE ' + table
@@ -939,11 +981,13 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             if self.isHUC:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
-                             float(data.pondArea), float(data.reservoirArea), float(data.totalElevation), float(data.totalSlope), \
+                             float(data.pondArea), float(data.reservoirArea), float(data.playaArea),  \
+                             float(data.pondAreaOriginally), float(data.reservoirAreaOriginally), float(data.playaAreaOriginally),  \
+                             float(data.wetlandArea), float(data.totalElevation), float(data.totalSlope), \
                              data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
                              float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
                              data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
-                             float(data.cropSoilSlopeArea), data.relHru))
+                             float(data.cropSoilSlopeArea), data.relHru, 0, 0))
             else:
                 curs.execute(sql1, basin, data.cellCount, float(data.area), float(data.drainArea),  \
                              float(data.pondArea), float(data.reservoirArea), float(data.totalElevation), float(data.totalSlope), \
@@ -977,7 +1021,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 if self.isHUC:
                     conn.row_factory = sqlite3.Row  # @UndefinedVariable
                     try:
-                        for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATA1, '*', '', '')):
+                        for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
                             bd = BasinData(row1['outletCol'], row1['outletRow'], row1['outletElevation'], row1['startCol'],
                                            row1['startRow'], row1['startToOutletDistance'], row1['startToOutletDrop'], row1['farDistance'], self.isBatch)
                             bd.cellCount = row1['cellCount']
@@ -985,6 +1029,11 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             bd.drainArea = row1['drainArea']
                             bd.pondArea = row1['pondArea']
                             bd.reservoirArea = row1['reservoirArea']
+                            bd.playaArea = row1['playaArea']
+                            bd.pondAreaOriginally = row1['pondAreaOriginally']
+                            bd.reservoirAreaOriginally = row1['reservoirAreaOriginally']
+                            bd.playaAreaOriginally = row1['playaAreaOriginally']
+                            bd.wetlandArea = row1['wetlandArea']
                             bd.totalElevation = row1['totalElevation']
                             bd.totalSlope = row1['totalSlope']
                             bd.maxElevation = row1['maxElevation']
@@ -994,6 +1043,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             bd.farElevation = row1['farElevation']
                             bd.cropSoilSlopeArea = row1['cropSoilSlopeArea']
                             bd.relHru = row1['hru']
+                            bd.streamArea = row1['streamArea']
+                            bd.WATRInStreamArea = row1['WATRInStreamArea']
                             basin = int(row1['basin'])
                             basins[basin] = bd
                             sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
@@ -1011,7 +1062,9 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                                 bd.hruMap[row2['hru']] = cellData
                     except Exception:
                         if not ignoreerrors:
-                            QSWATUtils.error('Could not read basins data from project database {0}: {1}'.format(self.dbFile, traceback.format_exc()), self.isBatch)
+                            QSWATUtils.error("""Could not read basins data from project database {0}: {1}.
+                                            Perhaps you need to run fixBasinData.
+                                            """.format(self.dbFile, traceback.format_exc()), self.isBatch)
                         return (None, False)
                 else:
                     try:

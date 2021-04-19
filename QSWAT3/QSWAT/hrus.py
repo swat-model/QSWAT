@@ -317,6 +317,11 @@ class HRUs(QObject):
             # read from database
             self.progress('Reading basin data from database ...')
             (self.CreateHRUs.basins, OK) = self._gv.db.regenerateBasins()
+            if self._gv.isHUC:
+                basinStreamWaterData: Dict[int, Tuple[Optional[QgsGeometry], float, float]] = dict()
+                for basin, basinData in self.CreateHRUs.basins.items():
+                    basinStreamWaterData[basin] = (None, basinData.streamArea, basinData.WATRInStreamArea)
+                self.CreateHRUs.addWaterBodies(basinStreamWaterData)
             self.progress('')
             self.CreateHRUs.saveAreas(True)
             if OK:
@@ -562,8 +567,11 @@ class HRUs(QObject):
         
     def setRead(self) -> None:
         """Set dialog to read from maps or from previous run."""
-        # don't do this for HUC models; or water data is not updated
-        if self._db.hasData('BASINSDATA1') and not self._gv.isHUC:
+        if self._gv.isHUC:
+            usePrevious = self._db.hasData('BASINSDATAHUC1')
+        else:
+            usePrevious = self._db.hasData('BASINSDATA1')
+        if usePrevious:
             self._dlg.readFromPrevious.setEnabled(True)
             self._dlg.readFromPrevious.setChecked(True)
         else:
@@ -3247,16 +3255,17 @@ class CreateHRUs(QObject):
                     if subArea > 0:
                         percent2 = (hruha / subArea) * 100
                         fw.write('{:.2F}'.format(percent2).rjust(23))
+                    hrusArea = subArea - (basinData.reservoirArea + basinData.pondArea) / 1E4
                     fw.writeLine('')
                     filebase = QSWATUtils.fileBase(SWATBasin, hrudata.relHru)
                     oid += 1
                     table = 'hrus'
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     if self._gv.isHUC:
-                        conn.cursor().execute(sql, (oid, float(SWATBasin), float(subArea), lu, float(arlu), soil, float(arso), slp, \
+                        conn.cursor().execute(sql, (oid, float(SWATBasin), float(hrusArea), lu, float(arlu), soil, float(arso), slp, \
                                               float(arslp), float(meanSlopePercent), uc, hru, filebase))
                     else:
-                        conn.cursor().execute(sql, oid, float(SWATBasin), float(subArea), lu, float(arlu), soil, float(arso), slp, \
+                        conn.cursor().execute(sql, oid, float(SWATBasin), float(hrusArea), lu, float(arlu), soil, float(arso), slp, \
                                               float(arslp), float(meanSlopePercent), uc, hru, filebase)
                     table = 'uncomb'
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?)'
@@ -3305,15 +3314,22 @@ class CreateHRUs(QObject):
             for basinShape in wshedLayer.getFeatures():
                 basin = basinShape[basinIndex]
                 basinHUC = basinShape[hucIndex]
-                basinData = self.basins[basin]
+                basinData = self.basins.get(basin, None)
+                if basinData is None:
+                    QSWATUtils.error('Polygon {0} in watershed file {1} has no basin data'.format(basin, wshedFile), self._gv.isBatch)
+                    continue
                 areaHa = basinData.area / 1E4
+                if areaHa == 0:
+                    continue
                 pondHa = basinData.pondArea / 1E4
                 reservoirHa = basinData.reservoirArea / 1E4
                 swampMarshHa = basinData.wetlandArea / 1E4
                 playaHa = basinData.playaArea / 1E4
                 percent = (reservoirHa + pondHa + playaHa) * 100 / areaHa 
                 bodyStats.write("'{0}', {1:.2F}, {2:.2F}, {3:.2F}, {4:.2F}, {5:.2F}\n".format(basinHUC, areaHa, reservoirHa, pondHa, playaHa, percent))
-                (_, streamArea, WATRInStreamArea) = basinStreamWaterData[basin] 
+                (_, streamArea, WATRInStreamArea) = basinStreamWaterData[basin]
+                basinData.streamArea = streamArea
+                basinData.WATRInStreamArea = WATRInStreamArea
                 # edge inaccuracies can cause WATRInStreamArea > streamArea
                 WATRInStreamHa = min(WATRInStreamArea, streamArea) / 1E4
                 streamAreaHa = streamArea / 1E4
@@ -3382,10 +3398,10 @@ class CreateHRUs(QObject):
                     arslp = hruha
                     uc = lu + '_' + soil + '_' + slp
                     SWATBasin = self._gv.topo.basinToSWATBasin[basin]
-                    subArea = float(basinData.area) / 10000
+                    hrusArea = float(basinData.area - (basinData.reservoirArea + basinData.pondArea)) / 10000
                     filebase = QSWATUtils.fileBase(SWATBasin, hrudata.relHru)
                     oid += 1
-                    curs.execute(sql1, oid, SWATBasin, float(subArea), lu, float(arlu), soil, float(arso), slp, \
+                    curs.execute(sql1, oid, SWATBasin, float(hrusArea), lu, float(arlu), soil, float(arso), slp, \
                                       float(arslp), float(meanSlopePercent), uc, hru, filebase)
                     curs.execute(sql2, oid, SWATBasin, hrudata.crop, lu, hrudata.soil, soil, hrudata.slope, slp, \
                                           meanSlopePercent, hruha, uc)

@@ -83,6 +83,10 @@ class BasinData:
         self.playaAreaOriginally = 0.0
         ## wetland area in square metres according to NHD data (only used with HUC)
         self.wetlandArea = 0.0
+        ## area of buffered stream in square metres
+        self.streamArea = 0.0
+        ## area of WATR pixels in buffered stream in square metres
+        self.WATRInStreamArea = 0.0
         ## Total of elevation values in the subbasin (to compute mean)
         self.totalElevation = 0.0
         ## Total of slope values for the subbasin (to compute mean)

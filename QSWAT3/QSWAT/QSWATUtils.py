@@ -174,6 +174,7 @@ class QSWATUtils:
     @staticmethod
     def loginfo(msg: str) -> None:
         """Log message as information."""
+        #print(msg)
         app = QgsApplication.instance()
         # allow to fail if no application
         if app is not None:
@@ -236,7 +237,9 @@ class QSWATUtils:
             return False
         if os.path.exists(outFile):
             if os.path.getmtime(outFile) >= os.path.getmtime(inFile):
+                #print('{0} is up to date compared to {1}'.format(os.path.split(outFile)[1], os.path.split(inFile)[1]))
                 return True
+        #print('{0} is not up to date compared to {1}'.format(os.path.split(outFile)[1], os.path.split(inFile)[1]))
         return False
     
     @staticmethod

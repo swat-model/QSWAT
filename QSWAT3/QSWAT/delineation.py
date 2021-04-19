@@ -851,6 +851,7 @@ class Delineation(QObject):
             outletLayer = None
         # ready to start processing
         (base, suffix) = os.path.splitext(self._gv.demFile)
+        wFile = base + 'w' + suffix
         numProcesses = self._dlg.numProcesses.value()
         QSettings().setValue('/QSWAT/NumProcesses', str(numProcesses))
         self._dlg.setCursor(Qt.WaitCursor)
@@ -861,9 +862,9 @@ class Delineation(QObject):
         angFile = base + 'ang' + suffix
         QSWATUtils.removeLayer(slpFile, root)
         QSWATUtils.removeLayer(angFile, root)
-        self.progress('DinfFlowDir ...')
         willRun = not (QSWATUtils.isUpToDate(demFile, slpFile) and QSWATUtils.isUpToDate(demFile, angFile))
         if willRun:
+            self.progress('DinfFlowDir ...')
             if self._dlg.showTaudem.isChecked():
                 self._dlg.tabWidget.setCurrentIndex(3)
             ok = TauDEMUtils.runPitFill(demFile, felFile, numProcesses, self._dlg.taudemOutput)
@@ -876,7 +877,7 @@ class Delineation(QObject):
                 QSWATUtils.error('Cannot generate slope file from pitfilled dem {0}'.format(felFile), self._gv.isBatch)
                 self.cleanUp(3)
                 return
-        self.progress('DinfFlowDir done')
+            self.progress('DinfFlowDir done')
         if self._gv.useGridModel:
             # set centroids
             basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)

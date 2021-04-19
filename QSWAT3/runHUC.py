@@ -101,6 +101,7 @@ class runHUC():
     def runProject(self, dataDir, scale, minHRUha):
         """Run QSWAT project."""
         gv = self.plugin._gv
+        #print('Dem is processed is {0}'.format(self.plugin._demIsProcessed))
         self.delin = Delineation(gv, self.plugin._demIsProcessed)
         self.delin._dlg.tabWidget.setCurrentIndex(1)
         self.delin._dlg.selectDem.setText(self.projDir + '/Source/dem.tif')
@@ -117,6 +118,7 @@ class runHUC():
         self.delin.runExisting()
         self.delin.finishDelineation()
         self.delin._dlg.close()
+        gv.writeMasterProgress(1, -1)
         self.hrus = HRUs(gv, self.dlg.reportsBox)
         self.hrus.init()
         hrudlg = self.hrus._dlg
@@ -191,23 +193,31 @@ class runHUC():
                        float(pointXY.x()), float(pointXY.y()), float(pointll.y()), float(pointll.x()), 
                        float(elev), name, typ, SWATBasin, HydroID, OutletID)
             
-        
 if __name__ == '__main__':
     #for arg in sys.argv:
-    #    print('Argument: {0}'.format(arg)) 
-    if len(sys.argv) < 5:
-        print('You must supply a directory or project file, a scale (14, 12, 10 or 8), a minimum HRU size in ha, and 0 or a inlet number as argument')
-        exit()
-    direc = sys.argv[1]
-    #print('direc is {0}'.format(direc))
-    dataDir = sys.argv[2]
-    #print('dataDir is {0}'.format(dataDir))
-    scale = int(sys.argv[3])
-    #print('Scale is {0}'.format(scale))
-    minHRUha = int(sys.argv[4])
-    #print('Minimum HRU size {0} ha'.format(minHRUha))
-    inletId = int(sys.argv[5])
-    #print('inletId is {0}'.format(inletId))
+    #    print('Argument: {0}'.format(arg))
+    # set True for debugging, normally false
+    debugging = False 
+    if debugging:
+        direc = "C:/HUCModels/SWAT/Fields_CDL/HUC14/14/huc140100010308.qgs" 
+        dataDir = "H:/Data" 
+        scale = 14 
+        minHRUHa = 1 
+        inletId = 0
+    else:
+        if len(sys.argv) < 5:
+            print('You must supply a directory or project file, a scale (14, 12, 10 or 8), a minimum HRU size in ha, and 0 or a inlet number as argument')
+            exit()
+        direc = sys.argv[1]
+        #print('direc is {0}'.format(direc))
+        dataDir = sys.argv[2]
+        #print('dataDir is {0}'.format(dataDir))
+        scale = int(sys.argv[3])
+        #print('Scale is {0}'.format(scale))
+        minHRUha = int(sys.argv[4])
+        #print('Minimum HRU size {0} ha'.format(minHRUha))
+        inletId = int(sys.argv[5])
+        #print('inletId is {0}'.format(inletId))
     if inletId > 0:
         # add inlet point with this id to MonitoringPoint table of existing project
         print('Adding inlet {0} to project {1}'.format(inletId, direc))
