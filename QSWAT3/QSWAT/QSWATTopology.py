@@ -72,11 +72,14 @@ class QSWATTopology:
     _USLINKNO1 = 'USLINKNO1'
     _USLINKNO2 = 'USLINKNO2'
     _DSNODEID = 'DSNODEID'
-    _ORDER = 'Order'
+    _ORDER = 'strmOrder'
+    _ORDER2 = 'Order'
     _LENGTH = 'Length'
     _MAGNITUDE = 'Magnitude'
-    _DS_CONT_AR = 'DS_Cont_Ar'
-    _DROP = 'Drop'
+    _DS_CONT_AR = 'DSContAr'
+    _DS_CONT_AR2 = 'DS_Cont_Ar'
+    _DROP = 'strmDrop'
+    _DROP2 = 'Drop'
     _SLOPE = 'Slope'
     _STRAIGHT_L = 'Straight_L'
     _US_CONT_AR = 'US_Cont_Ar'
@@ -261,7 +264,9 @@ class QSWATTopology:
             QSWATUtils.loginfo('No WSNO field in stream layer')
             return False
         lengthIndex = self.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=ignoreWithGridOrExisting)
-        dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP, ignoreMissing=ignoreWithGridOrExisting)
+        dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP, ignoreMissing=True)
+        if dropIndex < 0:
+            dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP2, ignoreMissing=ignoreWithGridOrExisting)
         totDAIndex = self.getIndex(streamLayer, QSWATTopology._TOTDASQKM, ignoreMissing=ignoreTotDA)
         polyIndex = self.getIndex(wshedLayer, QSWATTopology._POLYGONID, ignoreMissing=ignoreError)
         if polyIndex < 0:

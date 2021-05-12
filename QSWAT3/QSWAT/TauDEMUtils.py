@@ -87,7 +87,7 @@ class TauDEMUtils:
         inFiles = [('-fel', felFile), ('-p', pFile), ('-ad8', ad8File), ('-src', srcFile)]
         if outletFile:
             inFiles.append(('-o', outletFile))
-        return TauDEMUtils.run('StreamNet', inFiles,[], 
+        return TauDEMUtils.run('StreamNet', inFiles, [], 
                                [('-ord', ordFile), ('-tree', treeFile), ('-coord', coordFile), ('-net', streamFile), ('-w', wFile)], 
                                numProcesses, output, mustRun)
     @staticmethod
@@ -139,16 +139,12 @@ class TauDEMUtils:
         baseFile = inFiles[0][1]
         needToRun = mustRun
         if not needToRun:
-            for (pid, fileName) in outFiles:
+            for (_, fileName) in outFiles:
                 if not QSWATUtils.isUpToDate(baseFile, fileName):
                     needToRun = True
                     break
         if not needToRun:
             return True
-        # remove outFiles so any error will be reported
-        root = QgsProject.instance().layerTreeRoot()
-        for (pid, fileName) in outFiles:
-            QSWATUtils.tryRemoveLayerAndFiles(fileName, root)
         commands = []
         if hasQGIS:
             settings = QSettings()
@@ -163,10 +159,38 @@ class TauDEMUtils:
         else:
             # batch mode
             swatEditorDir = r'C:/SWAT/SWATEditor'
-        tauDEMDir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEMDIR)
-        if not os.path.isdir(tauDEMDir):
-            TauDEMUtils.error('Cannot find TauDEM directory {0}'.format(tauDEMDir), hasQGIS)
-            return False
+        tauDEM539Dir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEM539DIR)
+        if os.path.isdir(tauDEM539Dir):
+            tauDEMDir = tauDEM539Dir
+            # pass StreamNet a directory rather than shapefile so shapefile created as a directory
+            # this prevents problem that .shp cannot be deleted, but GDAL then complains that the .shp file is not a directory
+            # also have to set -netlyr parameter to stop TauDEM failing to parse filename without .shp as a layer name
+            # TauDEM version 5.1.2 does not support -netlyr parameter
+            if command == 'StreamNet':
+                # make copy so can rewrite
+                outFilesCopy = outFiles[:]
+                outFiles = []
+                for (pid, outFile) in outFilesCopy:
+                    if pid == '-net':
+                        streamBase = os.path.splitext(outFile)[0]
+                        # streamBase may have form P/X/X, in which case streamDir is P/X, else streamDir is streamBase
+                        streamDir1, baseName = os.path.split(streamBase)
+                        dirName = os.path.split(streamDir1)[1]
+                        if dirName == baseName:
+                            streamDir = streamDir1
+                        else:
+                            streamDir = streamBase
+                            if not os.path.isdir(streamDir):
+                                os.mkdir(streamDir)
+                        outFiles.append((pid, streamDir))
+                    else:
+                        outFiles.append((pid, outFile))
+                inParms.append(('-netlyr', os.path.split(streamDir)[1]))
+        else:
+            tauDEMDir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEMDIR)
+            if not os.path.isdir(tauDEMDir):
+                TauDEMUtils.error('Cannot find TauDEM directory as {0} or {1}'.format(tauDEM539Dir, tauDEMDir), hasQGIS)
+                return False
         commands.append(QSWATUtils.join(tauDEMDir, command))
         for (pid, fileName) in inFiles:
             if not os.path.exists(fileName):
@@ -179,6 +203,13 @@ class TauDEMUtils:
             # allow for parameter which is flag with no value
             if not parm == '':
                 commands.append(parm)
+        # remove outFiles so any error will be reported
+        root = QgsProject.instance().layerTreeRoot()
+        for (_, fileName) in outFiles:
+            if os.path.isdir(fileName):
+                QSWATUtils.tryRemoveShapefileLayerAndDir(fileName, root)
+            else:
+                QSWATUtils.tryRemoveLayerAndFiles(fileName, root)
         for (pid, fileName) in outFiles:
             commands.append(pid)
             commands.append(fileName)
@@ -204,7 +235,6 @@ class TauDEMUtils:
         msg = command + ' created '
         for (pid, fileName) in outFiles:
             if QSWATUtils.isUpToDate(baseFile, fileName):
-                QSWATUtils.copyPrj(baseFile, fileName)
                 msg += fileName
                 msg += ' '
             else:

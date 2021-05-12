@@ -257,6 +257,16 @@ class QSWATUtils:
             QCoreApplication.processEvents(QEventLoop.ExcludeUserInputEvents)
         QCoreApplication.processEvents()
         
+    @staticmethod 
+    def dirToShapefile(path):
+        """If path is P/X.shp and P/X is a directory, return P/X/X.shp,
+        else return path."""
+        base = os.path.splitext(path)[0]
+        if os.path.isdir(base):
+            baseName = os.path.split(base)[1]
+            return QSWATUtils.join(base, baseName + '.shp')
+        return path
+        
     @staticmethod
     def layerFileInfo(mapLayer: QgsMapLayer) -> Optional[QFileInfo]:
         """Return QFileInfo of raster or vector layer."""
@@ -304,6 +314,14 @@ class QSWATUtils:
         """
         QSWATUtils.removeLayer(fileName, root)
         QSWATUtils.tryRemoveFiles(fileName)
+        
+    @staticmethod 
+    def tryRemoveShapefileLayerAndDir(direc: str, root: QgsLayerTreeGroup) -> None:
+        """Remove directory containing shapefile and any layers."""
+        base = os.path.split(direc)[1]
+        shapefile = QSWATUtils.join(direc, base + '.shp')
+        QSWATUtils.removeLayer(shapefile, root)
+        shutil.rmtree(direc, ignore_errors=True)
           
     @staticmethod  
     def removeLayer(fileName: str, root: QgsLayerTreeGroup) -> None:
@@ -579,8 +597,8 @@ class QSWATUtils:
             
     @staticmethod        
     def getLayerByFilename(treeLayers: List[QgsLayerTreeLayer], fileName: str, ft: int, gv: Any, 
-                           subLayer: Optional[QgsLayerTreeLayer], groupName: Optional[str], clipToDEM: bool =False) \
-                            -> Tuple[Optional[QgsMapLayer], bool]:
+                           subLayer: Optional[QgsLayerTreeLayer], groupName: Optional[str], 
+                           clipToDEM: bool =False) -> Tuple[Optional[QgsMapLayer], bool]:
         """
         Return map layer for this fileName and flag to indicate if new layer, 
         loading it if necessary if groupName is not None.
@@ -748,7 +766,7 @@ class QSWATUtils:
                         subLayer: QgsLayerTreeLayer, groupName: str, clipToDEM: bool=False, runFix: bool=False) \
                             -> Tuple[Optional[str], Optional[QgsMapLayer]]:
         """
-        Use dialog to open file of FileType ft chosen by user, 
+        Use dialog to open file of FileType ft chosen by user  (or get from box if is batch, intended for testing), 
         add a layer for it if necessary, 
         clip if clipToDEM is true and substantially larger than DEM,
         run geometry fix if runFix is true,
@@ -761,7 +779,11 @@ class QSWATUtils:
         else:
             path = ''
         title: str = QSWATUtils.trans(FileTypes.title(ft))
-        inFileName, _ = QFileDialog.getOpenFileName(None, title, path, FileTypes.filter(ft))
+        if gv.isBatch:
+            # filename in box
+            inFileName = box.text()
+        else:
+            inFileName, _ = QFileDialog.getOpenFileName(None, title, path, FileTypes.filter(ft))
         #QSWATUtils.information('File is |{0}|'.format(inFileName), False)
         if inFileName is not None and inFileName != '':
             settings.setValue('/QSWATPlus/LastInputPath', os.path.dirname(str(inFileName)))
@@ -805,8 +827,7 @@ class QSWATUtils:
                     else:
                         QSWATUtils.copyFiles(inInfo, saveDir)
             else:
-                # even if runFix is true, has already been stored in project folder 
-                # and so fixing geometry should be unnecessary
+                # ignore runFix: assume already fixed as inside project
                 outFileName = inFileName
             # this function will add layer if necessary
             layer = QSWATUtils.getLayerByFilename(root.findLayers(), outFileName, ft, 
@@ -1272,7 +1293,7 @@ class FileTypes:
             return 'Select mask'
         elif ft == FileTypes._BURN:
             return 'Select stream reaches shapefile to burn-in'
-        elif ft == FileTypes._OUTLETS or FileTypes._OUTLETSHUC:
+        elif ft == FileTypes._OUTLETS or ft == FileTypes._OUTLETSHUC:
             return 'Select inlets/outlets shapefile'
         elif ft == FileTypes._STREAMS:
             return 'Select stream reaches shapefile'

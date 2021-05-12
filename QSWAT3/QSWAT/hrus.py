@@ -1872,6 +1872,7 @@ class CreateHRUs(QObject):
             self.progress_signal.emit('Creating FullHRUs shapes ...')
             if useSlowPolygonize:
                 shapes.finishShapes(progressBar)
+                #print('{0} shapes in shapesTable' .format(len(shapes.shapesTable)))
             else:
                 shapes.finish()
             #QSWATUtils.loginfo(shapes.makeString())

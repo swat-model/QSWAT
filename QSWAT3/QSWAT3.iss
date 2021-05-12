@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QSWAT3"
-#define MyAppVersion "1.2" 
+#define MyAppVersion "1.3" 
 #define MyAppSubVersion "0"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
@@ -41,7 +41,8 @@ Source: "C:\Users\Chirs George\AppData\Roaming\QGIS\QGIS3\profiles\default\pytho
 Source: "C:\SWAT\SWATEditor\runConvertFromArc.bat"; DestDir: "C:\SWAT\SWATEditor"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\SWAT\SWATEditor\runConvertToPlus.bat"; DestDir: "C:\SWAT\SWATEditor"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\SWAT\SWATEditor\TauDEM5Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM5Bin"; Check: IsWin64; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\SWAT\SWATEditor\TauDEM5x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM5Bin"; Check: not IsWin64; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\SWAT\SWATEditor\TauDEM5x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM5Bin"; Check: not IsWin64; Flags: ignoreversion recursesubdirs createallsubdirs 
+Source: "C:\SWAT\SWATEditor\TauDEM539x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM539Bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\SWAT\SWATEditor\Databases\QSWATProj2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
 Source: "C:\SWAT\SWATEditor\Databases\QSWATRef2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
 

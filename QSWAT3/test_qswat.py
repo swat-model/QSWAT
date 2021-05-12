@@ -112,15 +112,15 @@ if is64:
 else:
     HashTable1['Reach'] = '0c4294d2325cc5e4da192d1c67f0b334'
     HashTable1['MonitoringPoint'] = '602737473d13d63fffba571d1c48184e'
-    HashTable1['BASINSDATA1'] = '1b0fcede0a98567d49ee4084ddbac9ef'
-    HashTable1['BASINSDATA2'] = '173ac745281d9cb26b123ae1f2fe6051'
+    HashTable1['BASINSDATA1'] = '449f70bd2c7d122572808bd055e1b93e'
+    HashTable1['BASINSDATA2'] = '593ecb65ab4d8f49cefcb7bbb74d98cf'
     HashTable1['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
     HashTable1['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable1['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
-    HashTable1['hrus'] = '224ce23e586c9ae31b831c7f57690d65'
-    HashTable1['uncomb'] = '8c56768cb3004a3d0a128e470a204961'
-    HashTable1['Watershed'] = '187d5edf2092a97ed557da3618487aed'
-    
+    HashTable1['hrus'] = '947a2f86346fb1ed4d163ed3e41cd15c'
+    HashTable1['uncomb'] = '34b08d63db85a21f670adeb31d976827'
+    HashTable1['Watershed'] = '05dc7a18e5ce85e0885130417c53f805'
+
 #===============================================================================
 # Test2:
 #   - MPI with 12 processes
@@ -149,14 +149,14 @@ if is64:
 else:
     HashTable2['Reach'] = '1d7c0bde12e5a9f2494b941447cd01a8'
     HashTable2['MonitoringPoint'] = '1f7ce3c15b4b5a73b3b9ed1fc8c51036'
-    HashTable2['BASINSDATA1'] = '854586f232f9cf96717d488caa2408f6'
-    HashTable2['BASINSDATA2'] = 'd106ef70bea053045e9ff4320ea43c5b'
+    HashTable2['BASINSDATA1'] = '0735497fef27f345d53f4695deb147c6'
+    HashTable2['BASINSDATA2'] = '471057b700f5cadca604fb81b8ef3cf3'
     HashTable2['ElevationBand'] = 'df71197f4bdf33993c7cc4700e6d58aa'
     HashTable2['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable2['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
-    HashTable2['hrus'] = 'c6329de18cf48a07e1748fcf356d0fd3'
-    HashTable2['uncomb'] = '56de80b746a1e2962b17bd5fb508c032'
-    HashTable2['Watershed'] = '77de33cfa212fb3239b492e31c1e88e5'
+    HashTable2['hrus'] = '534f86bfc6fede76bbde04c649c33208'
+    HashTable2['uncomb'] = 'd4fd3ca14cefc3c0ecdae6f7d03c3505'
+    HashTable2['Watershed'] = 'bddf216fbfa4d3ae1dd96a6fc83d23dd'
 
 #===============================================================================
 # Test3:
@@ -175,8 +175,8 @@ else:
 HashTable3 = dict()
 # HashTable3['Reach'] = 'e18f5ba56607fa5af3887f7c6e0223ed'  # unreliable
 # HashTable3['MonitoringPoint'] = 'fc2a3cb74c9d20d95f5f84cf97f52709'
-HashTable3['BASINSDATA1'] = 'dbb44f8f3a3185e46ed505005ee690f0'
-HashTable3['BASINSDATA2'] = '445d0f5da4029beb05cb927efdf99866' if is64 else '60763c9a5cd2fed5de546f2295373c8e'
+HashTable3['BASINSDATA1'] = '2f2b2128a084a20b6f206696a5296971'
+HashTable3['BASINSDATA2'] = '445d0f5da4029beb05cb927efdf99866' if is64 else 'bdb14e3e1fb52d82c1301306d316441a'
 HashTable3['ElevationBand'] = '192510a66a96e36354283900097ba9b1'
 HashTable3['LUExempt'] = 'faa3ee70bebcc7d6a4ee0302e9e23ad0'
 HashTable3['SplitHRUs'] = '5c3f1888ea4e1064e3f6d1b2025ebbe7'
@@ -198,14 +198,14 @@ HashTable3['SplitHRUs'] = '5c3f1888ea4e1064e3f6d1b2025ebbe7'
 HashTable4 = dict()
 HashTable4['Reach'] = '321d49eb5493cb6181cd785f26086b9f'  if is64 else '28f7931add98497cd7681dc7aa36369d'
 HashTable4['MonitoringPoint'] = 'b3ce02e9cb72d16192319f7b95a0c0c4'  if is64 else 'a0da75a8df134d0c7277aa3f6e815704'
-HashTable4['BASINSDATA1'] = '468a0233a0a5d29049c34a77fd7ad361'
-HashTable4['BASINSDATA2'] = 'fe6ceed16df5e4329be7d6af52d2608d'  if is64 else '29822f6f52654e4d3992198bb1fb5e66'
+HashTable4['BASINSDATA1'] = '64c29c087d6681d7dacb320651061403'
+HashTable4['BASINSDATA2'] = 'fe6ceed16df5e4329be7d6af52d2608d'  if is64 else '9d6ebc9775cb40c2a1ba092c9f4a748a'
 HashTable4['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
 HashTable4['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
 HashTable4['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
-HashTable4['hrus'] = 'd1e278aecab69ea87cf7a264ae3f92c7'
-HashTable4['uncomb'] = '564c1431416d68490a177f5d3e7b9131'
-HashTable4['Watershed'] = '31e8e0bec809de21345f9fbc7446308b'  if is64 else '76ad8a2d881d0b1f971ee2ac567a8025'
+HashTable4['hrus'] = 'fd8a0a5c3934a301585af55eacbe3188'
+HashTable4['uncomb'] = 'ff2decfc7c329f1b0e7b8c09e117487c'
+HashTable4['Watershed'] = '31e8e0bec809de21345f9fbc7446308b'  if is64 else '6cecd53e5c8916c1531b83fbf506feee'
 
 #===============================================================================
 # Test5:
@@ -220,7 +220,7 @@ HashTable4['Watershed'] = '31e8e0bec809de21345f9fbc7446308b'  if is64 else '76ad
 HashTable5 = dict()
 #HashTable5['Reach'] = 'af3dd93f9bb309c6d5d2f026997b9e80'
 #HashTable5['MonitoringPoint'] = '244a02cdd0ab328030361a993fe4dfc4'
-HashTable5['BASINSDATA1'] = '651ee24c6516e228c3b9ad71d925710f'
+HashTable5['BASINSDATA1'] = '001220c1fa3c9b8811e0bacb99e03e2d'
 HashTable5['BASINSDATA2'] = '53365194986b036fa6d6c229c845902b'
 HashTable5['ElevationBand'] = 'fc30a7eb95db576ea55f1438aa25a603'
 HashTable5['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
@@ -353,6 +353,8 @@ class TestQswat(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.textDir, Parameters._HRUSREPORT)))
         self.assertTrue(self.dlg.reportsBox.findText(Parameters._HRUSITEM) >= 0, \
                         'HRUs report not accessible from main form')
+        self.assertEqual(len(self.hrus.CreateHRUs.basins), 25, 'Subbasin count is {0} instead of 25'.format(len(self.hrus.CreateHRUs.basins)))
+        self.assertEqual(len(self.hrus.CreateHRUs.hrus), 135, 'HRU count is {0} instead of 135'.format(len(self.hrus.CreateHRUs.hrus)))
         self.checkHashes(HashTable1)
         self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
         
@@ -445,6 +447,8 @@ class TestQswat(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.tablesOutDir, 'hrus.shp')), 'HRUs results template file not created.')
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.tablesOutDir, 'rivs.shp')), 'Reaches results template file not created.')
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.tablesOutDir, 'subs.shp')), 'Watershed results template file not created.')
+        self.assertEqual(len(self.hrus.CreateHRUs.basins), 28, 'Subbasin count is {0} instead of 28'.format(len(self.hrus.CreateHRUs.basins)))
+        self.assertEqual(len(self.hrus.CreateHRUs.hrus), 41, 'HRU count is {0} instead of 41'.format(len(self.hrus.CreateHRUs.hrus)))
         self.checkHashes(HashTable2)
         self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
         
@@ -540,6 +544,8 @@ class TestQswat(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.textDir, Parameters._HRUSREPORT)))
         self.assertTrue(self.dlg.reportsBox.findText(Parameters._HRUSITEM) >= 0, \
                         'HRUs report not accessible from main form')
+        self.assertEqual(len(self.hrus.CreateHRUs.basins), 26, 'Subbasin count is {0} instead of 26'.format(len(self.hrus.CreateHRUs.basins)))
+        self.assertEqual(len(self.hrus.CreateHRUs.hrus), 132, 'HRU count is {0} instead of 132'.format(len(self.hrus.CreateHRUs.hrus)))
         self.checkHashes(HashTable3)
         self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
         
@@ -628,6 +634,8 @@ class TestQswat(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.tablesOutDir, 'hrus.shp')), 'HRUs results template file not created.')
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.tablesOutDir, 'rivs.shp')), 'Reaches results template file not created.')
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.tablesOutDir, 'subs.shp')), 'Watershed results template file not created.')
+        self.assertEqual(len(self.hrus.CreateHRUs.basins), 25, 'Subbasin count is {0} instead of 25'.format(len(self.hrus.CreateHRUs.basins)))
+        self.assertEqual(len(self.hrus.CreateHRUs.hrus), 78, 'HRU count is {0} instead of 78'.format(len(self.hrus.CreateHRUs.hrus)))
         self.checkHashes(HashTable4)
         self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
         
@@ -723,6 +731,8 @@ class TestQswat(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.textDir, Parameters._HRUSREPORT)))
         self.assertTrue(self.dlg.reportsBox.findText(Parameters._HRUSITEM) >= 0, \
                         'HRUs report not accessible from main form')
+        self.assertEqual(len(self.hrus.CreateHRUs.basins), 134, 'Subbasin count is {0} instead of 134'.format(len(self.hrus.CreateHRUs.basins)))
+        self.assertEqual(len(self.hrus.CreateHRUs.hrus), 170, 'HRU count is {0} instead of 170'.format(len(self.hrus.CreateHRUs.hrus)))
         self.checkHashes(HashTable5)
         self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
         

@@ -1,4 +1,4 @@
-SET OSGEO4W_ROOT=C:\Program Files (x86)\QGIS 3.10
+SET OSGEO4W_ROOT=C:\Program Files (x86)\QGIS 3.16
 set PYTHONHOME=%OSGEO4W_ROOT%\apps\Python37
 set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python
 rem QGIS binaries

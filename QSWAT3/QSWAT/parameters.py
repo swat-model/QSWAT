@@ -46,6 +46,7 @@ class Parameters:
     _MPIEXEC = 'mpiexec.exe'
     _MPIEXECDEFAULTDIR = 'C:\\Program Files\\Microsoft MPI\\Bin'
     _TAUDEMDIR = 'TauDEM5Bin'
+    _TAUDEM539DIR = 'TauDEM539Bin'
     _TAUDEMHELP = 'TauDEM_Tools.chm'
     _SWATGRAPH = 'SWATGraph'
     _DBDIR = 'Databases'

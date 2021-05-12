@@ -22,6 +22,7 @@ encoding//QSWAT3/QSWAT/jenks.pyx=utf-8
 encoding//QSWAT3/QSWAT/outletsdialog.py=utf-8
 encoding//QSWAT3/QSWAT/parameters.py=utf-8
 encoding//QSWAT3/QSWAT/parametersdialog.py=utf-8
+encoding//QSWAT3/QSWAT/polygonize.py=utf-8
 encoding//QSWAT3/QSWAT/polygonizeInC.pyx=utf-8
 encoding//QSWAT3/QSWAT/polygonizeInC2.pyx=utf-8
 encoding//QSWAT3/QSWAT/qswat.py=utf-8

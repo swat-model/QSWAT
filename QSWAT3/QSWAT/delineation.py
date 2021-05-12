@@ -411,18 +411,15 @@ class Delineation(QObject):
                 QSWATUtils.error('Failed to remove old hillshade file {0}: try repeating last click, else remove manually.'.format(path), gv.isBatch)
                 return
             command = 'gdaldem.exe hillshade -compute_edges -z 5 "{0}" "{1}"'.format(demFile, hillshadeFile)
-            proc = subprocess.Popen(command,
+            proc = subprocess.run(command,
                                     shell=True,
                                     stdout=subprocess.PIPE,
-                                    stdin=open(os.devnull),
                                     stderr=subprocess.STDOUT,
-                                    universal_newlines=True,
-                                    ).stdout
+                                    universal_newlines=True)
             QSWATUtils.loginfo('Creating hillshade ...')
             QSWATUtils.loginfo(command)
             assert proc is not None
-            for line in proc:
-                QSWATUtils.loginfo(line)
+            QSWATUtils.loginfo(proc.stdout)
             if not os.path.exists(hillshadeFile):
                 QSWATUtils.information('Failed to create hillshade file {0}'.format(hillshadeFile), gv.isBatch)
                 return
@@ -651,6 +648,8 @@ class Delineation(QObject):
             return
         ordFile = base + 'ord' + suffix
         streamFile = base + 'net.shp'
+        # if stream shapefile already exists and is a directory, set path to .shp
+        streamFile = QSWATUtils.dirToShapefile(streamFile)
         treeFile = base + 'tree.dat'
         coordFile = base + 'coord.dat'
         wFile = base + 'w' + suffix
@@ -663,7 +662,10 @@ class Delineation(QObject):
         if not ok:
             self.cleanUp(3)
             return
+        # if stream shapefile is a directory, set path to .shp, since not done earlier if streamFile did not exist then
+        streamFile = QSWATUtils.dirToShapefile(streamFile)
         # load stream network
+        QSWATUtils.copyPrj(demFile, wFile)
         QSWATUtils.copyPrj(demFile, streamFile)
         root = QgsProject.instance().layerTreeRoot()
         # make demLayer (or hillshade if exists) active so streamLayer loads above it and below outlets
@@ -739,6 +741,7 @@ class Delineation(QObject):
             if not ok:
                 self.cleanUp(3)
                 return
+            QSWATUtils.copyPrj(demFile, wFile)
             QSWATUtils.copyPrj(demFile, streamFile)
             root = QgsProject.instance().layerTreeRoot()
             # make demLayer (or hillshadelayer if exists) active so streamLayer loads above it and below outlets
@@ -851,7 +854,6 @@ class Delineation(QObject):
             outletLayer = None
         # ready to start processing
         (base, suffix) = os.path.splitext(self._gv.demFile)
-        wFile = base + 'w' + suffix
         numProcesses = self._dlg.numProcesses.value()
         QSettings().setValue('/QSWAT/NumProcesses', str(numProcesses))
         self._dlg.setCursor(Qt.WaitCursor)
