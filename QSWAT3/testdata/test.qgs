@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis saveUser="Chirs George" saveDateTime="2021-05-12T18:19:08" projectname="test" version="3.16.4-Hannover" saveUserFull="Chirs George">
+<qgis saveDateTime="2021-05-13T15:39:38" version="3.16.4-Hannover" projectname="test" saveUserFull="Chirs George" saveUser="Chirs George">
   <homePath path=""/>
   <title>test</title>
   <autotransaction active="0"/>
@@ -28,34 +28,34 @@
     </layer-tree-group>
     <layer-tree-group name="Watershed" checked="Qt::Checked" expanded="1">
       <customproperties/>
-      <layer-tree-layer providerKey="ogr" name="Reaches (riv1)" legend_exp="" id="Reaches__riv1__d96d6448_0f3f_4034_824b_3c40c1312243" checked="Qt::Checked" expanded="1" patch_size="-1,-1" source="./test/Watershed/Shapes/riv1.shp" legend_split_behavior="0">
+      <layer-tree-layer name="Reaches (riv1)" id="Reaches__riv1__64e4dd8f_c1bf_4000_8cef_02e7fa7c2e87" checked="Qt::Checked" expanded="1" legend_split_behavior="0" source="./test/Watershed/Shapes/riv1.shp" providerKey="ogr" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer providerKey="ogr" name="Inlets/outlets (duff_out)" legend_exp="" id="Inlets_outlets__duff_out__5a21e385_d7de_46bb_9e57_a23f87731423" checked="Qt::Checked" expanded="1" patch_size="-1,-1" source="./test/Watershed/Shapes/duff_out.shp" legend_split_behavior="0">
+      <layer-tree-layer name="Inlets/outlets (duff_out)" id="Inlets_outlets__duff_out__7cc90c40_63f9_49f7_86d6_f382b3390dd3" checked="Qt::Checked" expanded="1" legend_split_behavior="0" source="./test/Watershed/Shapes/duff_out.shp" providerKey="ogr" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer providerKey="ogr" name="Streams (duff_demnet)" legend_exp="" id="Streams__duff_demnet__5f42e388_0caf_43fb_b583_4cb3aeb3bb41" checked="Qt::Unchecked" expanded="1" patch_size="-1,-1" source="./test/Source/duff_demnet/duff_demnet.shp" legend_split_behavior="0">
+      <layer-tree-layer name="Streams (duff_demnet)" id="Streams__duff_demnet__15df7db5_8cab_4431_bc64_69c9f35f2ab5" checked="Qt::Unchecked" expanded="1" legend_split_behavior="0" source="./test/Source/duff_demnet/duff_demnet.shp" providerKey="ogr" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer providerKey="ogr" name="Subbasins (subs1)" legend_exp="" id="Subbasins__subs1__8d619d09_9942_4e84_8528_8ff69f041d56" checked="Qt::Checked" expanded="0" patch_size="-1,-1" source="./test/Watershed/Shapes/subs1.shp" legend_split_behavior="0">
+      <layer-tree-layer name="Subbasins (subs1)" id="Subbasins__subs1__5d56191a_41f8_47fc_9e92_f89a4d1fc0f7" checked="Qt::Checked" expanded="0" legend_split_behavior="0" source="./test/Watershed/Shapes/subs1.shp" providerKey="ogr" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer providerKey="ogr" name="Watershed (duff_demwshed)" legend_exp="" id="Watershed__duff_demwshed__0b962ea5_c399_4053_88ec_29d2431d6983" checked="Qt::Unchecked" expanded="0" patch_size="-1,-1" source="./test/Source/duff_demwshed.shp" legend_split_behavior="0">
+      <layer-tree-layer name="Watershed (duff_demwshed)" id="Watershed__duff_demwshed__ccbb20b6_418d_461b_ac21_2e82ddb6bfad" checked="Qt::Unchecked" expanded="0" legend_split_behavior="0" source="./test/Source/duff_demwshed.shp" providerKey="ogr" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer providerKey="gdal" name="DEM (duff_dem)" legend_exp="" id="DEM__duff_dem__8255ab3f_4fcf_4bf9_8f5a_5e64e0419056" checked="Qt::Checked" expanded="1" patch_size="-1,-1" source="./test/Source/duff_dem.tif" legend_split_behavior="0">
+      <layer-tree-layer name="DEM (duff_dem)" id="DEM__duff_dem__3cc11fe5_2f36_4eca_ac3c_1460bc64b23b" checked="Qt::Checked" expanded="1" legend_split_behavior="0" source="./test/Source/duff_dem.tif" providerKey="gdal" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
     </layer-tree-group>
     <layer-tree-group name="Landuse" checked="Qt::Checked" expanded="1">
       <customproperties/>
-      <layer-tree-layer providerKey="gdal" name="Landuses (duff_landuse)" legend_exp="" id="Landuses__duff_landuse__19654feb_9730_4787_9066_c679f9e3643f" checked="Qt::Checked" expanded="1" patch_size="-1,-1" source="./duff_landuse.tif" legend_split_behavior="0">
+      <layer-tree-layer name="Landuses (duff_landuse)" id="Landuses__duff_landuse__276987d5_3fb7_4ac2_bd84_56eae371e5ad" checked="Qt::Checked" expanded="1" legend_split_behavior="0" source="./duff_landuse.tif" providerKey="gdal" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
     </layer-tree-group>
     <layer-tree-group name="Soil" checked="Qt::Checked" expanded="1">
       <customproperties/>
-      <layer-tree-layer providerKey="gdal" name="Soils (duff_soil)" legend_exp="" id="Soils__duff_soil__29462d01_a8b6_4adf_9f45_3745b52fbbd5" checked="Qt::Checked" expanded="1" patch_size="-1,-1" source="./duff_soil.tif" legend_split_behavior="0">
+      <layer-tree-layer name="Soils (duff_soil)" id="Soils__duff_soil__445d791f_0f44_45c7_b3f7_0cdf52609b2e" checked="Qt::Checked" expanded="1" legend_split_behavior="0" source="./duff_soil.tif" providerKey="gdal" patch_size="-1,-1" legend_exp="">
         <customproperties/>
       </layer-tree-layer>
     </layer-tree-group>
@@ -63,27 +63,27 @@
       <customproperties/>
     </layer-tree-group>
     <custom-order enabled="0">
-      <item>DEM__duff_dem__8255ab3f_4fcf_4bf9_8f5a_5e64e0419056</item>
-      <item>Inlets_outlets__duff_out__5a21e385_d7de_46bb_9e57_a23f87731423</item>
-      <item>Streams__duff_demnet__5f42e388_0caf_43fb_b583_4cb3aeb3bb41</item>
-      <item>Watershed__duff_demwshed__0b962ea5_c399_4053_88ec_29d2431d6983</item>
-      <item>Reaches__riv1__d96d6448_0f3f_4034_824b_3c40c1312243</item>
-      <item>Landuses__duff_landuse__19654feb_9730_4787_9066_c679f9e3643f</item>
-      <item>Soils__duff_soil__29462d01_a8b6_4adf_9f45_3745b52fbbd5</item>
-      <item>Subbasins__subs1__8d619d09_9942_4e84_8528_8ff69f041d56</item>
+      <item>DEM__duff_dem__3cc11fe5_2f36_4eca_ac3c_1460bc64b23b</item>
+      <item>Inlets_outlets__duff_out__7cc90c40_63f9_49f7_86d6_f382b3390dd3</item>
+      <item>Streams__duff_demnet__15df7db5_8cab_4431_bc64_69c9f35f2ab5</item>
+      <item>Watershed__duff_demwshed__ccbb20b6_418d_461b_ac21_2e82ddb6bfad</item>
+      <item>Reaches__riv1__64e4dd8f_c1bf_4000_8cef_02e7fa7c2e87</item>
+      <item>Landuses__duff_landuse__276987d5_3fb7_4ac2_bd84_56eae371e5ad</item>
+      <item>Soils__duff_soil__445d791f_0f44_45c7_b3f7_0cdf52609b2e</item>
+      <item>Subbasins__subs1__5d56191a_41f8_47fc_9e92_f89a4d1fc0f7</item>
     </custom-order>
   </layer-tree-group>
-  <snapping-settings mode="2" self-snapping="0" minScale="0" type="1" enabled="0" tolerance="0" maxScale="0" intersection-snapping="0" unit="2" scaleDependencyMode="0">
+  <snapping-settings scaleDependencyMode="0" maxScale="0" mode="2" unit="2" tolerance="0" minScale="0" enabled="0" type="1" self-snapping="0" intersection-snapping="0">
     <individual-layer-settings>
-      <layer-setting units="1" minScale="0" id="Watershed__duff_demwshed__0b962ea5_c399_4053_88ec_29d2431d6983" type="1" enabled="1" tolerance="12" maxScale="0"/>
-      <layer-setting units="1" minScale="0" id="Reaches__riv1__d96d6448_0f3f_4034_824b_3c40c1312243" type="1" enabled="1" tolerance="12" maxScale="0"/>
-      <layer-setting units="1" minScale="0" id="Subbasins__subs1__8d619d09_9942_4e84_8528_8ff69f041d56" type="1" enabled="1" tolerance="12" maxScale="0"/>
-      <layer-setting units="1" minScale="0" id="Inlets_outlets__duff_out__5a21e385_d7de_46bb_9e57_a23f87731423" type="1" enabled="1" tolerance="12" maxScale="0"/>
-      <layer-setting units="1" minScale="0" id="Streams__duff_demnet__5f42e388_0caf_43fb_b583_4cb3aeb3bb41" type="1" enabled="1" tolerance="12" maxScale="0"/>
+      <layer-setting maxScale="0" id="Reaches__riv1__64e4dd8f_c1bf_4000_8cef_02e7fa7c2e87" tolerance="12" units="1" minScale="0" enabled="1" type="1"/>
+      <layer-setting maxScale="0" id="Subbasins__subs1__5d56191a_41f8_47fc_9e92_f89a4d1fc0f7" tolerance="12" units="1" minScale="0" enabled="1" type="1"/>
+      <layer-setting maxScale="0" id="Inlets_outlets__duff_out__7cc90c40_63f9_49f7_86d6_f382b3390dd3" tolerance="12" units="1" minScale="0" enabled="1" type="1"/>
+      <layer-setting maxScale="0" id="Watershed__duff_demwshed__ccbb20b6_418d_461b_ac21_2e82ddb6bfad" tolerance="12" units="1" minScale="0" enabled="1" type="1"/>
+      <layer-setting maxScale="0" id="Streams__duff_demnet__15df7db5_8cab_4431_bc64_69c9f35f2ab5" tolerance="12" units="1" minScale="0" enabled="1" type="1"/>
     </individual-layer-settings>
   </snapping-settings>
   <relations/>
-  <main-annotation-layer type="annotation" autoRefreshTime="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" refreshOnNotifyEnabled="0">
+  <main-annotation-layer autoRefreshTime="0" autoRefreshEnabled="0" refreshOnNotifyEnabled="0" type="annotation" refreshOnNotifyMessage="">
     <id>Annotations_e8b7e4d7_d924_471f_83e1_edfb395c3098</id>
     <datasource></datasource>
     <keywordList>
@@ -132,14 +132,14 @@
     <layerOpacity>1</layerOpacity>
   </main-annotation-layer>
   <projectlayers>
-    <maplayer minScale="1e+08" type="raster" styleCategories="AllStyleCategories" autoRefreshTime="0" hasScaleBasedVisibilityFlag="0" maxScale="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" refreshOnNotifyEnabled="0">
+    <maplayer styleCategories="AllStyleCategories" maxScale="0" autoRefreshTime="0" autoRefreshEnabled="0" refreshOnNotifyEnabled="0" minScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="">
       <extent>
         <xmin>638050</xmin>
         <ymin>4852650</ymin>
         <xmax>658950</xmax>
         <ymax>4878550</ymax>
       </extent>
-      <id>DEM__duff_dem__8255ab3f_4fcf_4bf9_8f5a_5e64e0419056</id>
+      <id>DEM__duff_dem__3cc11fe5_2f36_4eca_ac3c_1460bc64b23b</id>
       <datasource>./test/Source/duff_dem.tif</datasource>
       <keywordList>
         <value></value>
@@ -185,7 +185,7 @@
       </resourceMetadata>
       <provider>gdal</provider>
       <noData>
-        <noDataList bandNo="1" useSrcNoData="1"/>
+        <noDataList useSrcNoData="1" bandNo="1"/>
       </noData>
       <map-layer-style-manager current="default">
         <map-layer-style name="default"/>
@@ -195,7 +195,7 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" enabled="0" fetchMode="0">
+      <temporal mode="0" fetchMode="0" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
@@ -206,9 +206,9 @@
       </customproperties>
       <pipe>
         <provider>
-          <resampling zoomedOutResamplingMethod="nearestNeighbour" maxOversampling="2" enabled="false" zoomedInResamplingMethod="nearestNeighbour"/>
+          <resampling maxOversampling="2" zoomedInResamplingMethod="nearestNeighbour" zoomedOutResamplingMethod="nearestNeighbour" enabled="false"/>
         </provider>
-        <rasterrenderer classificationMin="nan" type="singlebandpseudocolor" opacity="1" band="1" classificationMax="nan" alphaBand="-1" nodataColor="">
+        <rasterrenderer classificationMin="nan" band="1" nodataColor="" classificationMax="nan" opacity="1" type="singlebandpseudocolor" alphaBand="-1">
           <minMaxOrigin>
             <limits>None</limits>
             <extent>WholeRaster</extent>
@@ -218,28 +218,28 @@
             <stdDevFactor>2</stdDevFactor>
           </minMaxOrigin>
           <rastershader>
-            <colorrampshader maximumValue="405" classificationMode="1" labelPrecision="6" minimumValue="69" clip="0" colorRampType="INTERPOLATED">
-              <item value="69" alpha="255" color="#0a640a" label="69 - 181"/>
-              <item value="237" alpha="255" color="#997d19" label="181 - 293"/>
-              <item value="405" alpha="255" color="#ffffff" label="293 - 405"/>
+            <colorrampshader classificationMode="1" clip="0" minimumValue="69" colorRampType="INTERPOLATED" maximumValue="405" labelPrecision="6">
+              <item value="69" label="69 - 181" alpha="255" color="#0a640a"/>
+              <item value="237" label="181 - 293" alpha="255" color="#997d19"/>
+              <item value="405" label="293 - 405" alpha="255" color="#ffffff"/>
             </colorrampshader>
           </rastershader>
         </rasterrenderer>
-        <brightnesscontrast gamma="1" brightness="0" contrast="0"/>
-        <huesaturation colorizeBlue="128" saturation="0" colorizeRed="255" colorizeStrength="100" grayscaleMode="0" colorizeGreen="128" colorizeOn="0"/>
+        <brightnesscontrast brightness="0" contrast="0" gamma="1"/>
+        <huesaturation colorizeOn="0" colorizeGreen="128" saturation="0" colorizeStrength="100" grayscaleMode="0" colorizeRed="255" colorizeBlue="128"/>
         <rasterresampler maxOversampling="2"/>
         <resamplingStage>resamplingFilter</resamplingStage>
       </pipe>
       <blendMode>0</blendMode>
     </maplayer>
-    <maplayer simplifyMaxScale="1" maxScale="-4.65661e-10" labelsEnabled="1" minScale="100000000" simplifyDrawingHints="0" simplifyAlgorithm="0" geometry="Point" styleCategories="AllStyleCategories" hasScaleBasedVisibilityFlag="0" wkbType="Point" refreshOnNotifyEnabled="0" autoRefreshEnabled="0" autoRefreshTime="0" type="vector" readOnly="0" simplifyLocal="1" simplifyDrawingTol="1" refreshOnNotifyMessage="">
+    <maplayer autoRefreshEnabled="0" simplifyDrawingTol="1" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="-4.65661e-10" styleCategories="AllStyleCategories" simplifyMaxScale="1" simplifyLocal="1" wkbType="Point" readOnly="0" simplifyDrawingHints="0" refreshOnNotifyEnabled="0" labelsEnabled="1" minScale="100000000" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0">
       <extent>
         <xmin>657614.72873825707938522</xmin>
         <ymin>4853709.54165857471525669</ymin>
         <xmax>657797.20709522883407772</xmax>
         <ymax>4854199.191916448995471</ymax>
       </extent>
-      <id>Inlets_outlets__duff_out__5a21e385_d7de_46bb_9e57_a23f87731423</id>
+      <id>Inlets_outlets__duff_out__7cc90c40_63f9_49f7_86d6_f382b3390dd3</id>
       <datasource>./test/Watershed/Shapes/duff_out.shp</datasource>
       <keywordList>
         <value></value>
@@ -297,132 +297,132 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" durationUnit="min" fixedDuration="0" endField="" enabled="0" endExpression="" accumulate="0" durationField="" startField="" startExpression="">
+      <temporal startField="" startExpression="" endExpression="" fixedDuration="0" mode="0" accumulate="0" endField="" durationField="" durationUnit="min" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
         </fixedRange>
       </temporal>
-      <renderer-v2 type="RuleRenderer" forceraster="0" enableorderby="0" symbollevels="0">
+      <renderer-v2 symbollevels="0" enableorderby="0" type="RuleRenderer" forceraster="0">
         <rules key="{53a471a4-aa86-43ed-9d97-be98a958b7e1}">
-          <rule filter=" &quot;INLET&quot;  = 0  AND  &quot;RES&quot; = 0" key="{57a0b081-f9fc-46d9-a9f0-302b4d29c4d2}" symbol="0" label="Outlet" description="Outlet"/>
-          <rule filter=" &quot;INLET&quot;  = 1  AND   &quot;PTSOURCE&quot;  = 0" key="{2b092b12-ae87-4524-bf91-ee93b3bfee30}" symbol="1" label="Inlet" description="Inlet"/>
-          <rule filter=" &quot;INLET&quot;  = 0  AND  &quot;RES&quot; = 1" key="{cc102ca4-a33c-498d-a2fc-8e598f588d20}" symbol="2" label="Reservoir"/>
-          <rule filter=" &quot;INLET&quot;  = 1  AND   &quot;PTSOURCE&quot;  = 1" key="{210e8415-28da-4360-9dcb-9c89a8497b13}" symbol="3" label="Point source" description="Point source"/>
+          <rule symbol="0" filter=" &quot;INLET&quot;  = 0  AND  &quot;RES&quot; = 0" label="Outlet" key="{57a0b081-f9fc-46d9-a9f0-302b4d29c4d2}" description="Outlet"/>
+          <rule symbol="1" filter=" &quot;INLET&quot;  = 1  AND   &quot;PTSOURCE&quot;  = 0" label="Inlet" key="{2b092b12-ae87-4524-bf91-ee93b3bfee30}" description="Inlet"/>
+          <rule symbol="2" filter=" &quot;INLET&quot;  = 0  AND  &quot;RES&quot; = 1" label="Reservoir" key="{cc102ca4-a33c-498d-a2fc-8e598f588d20}"/>
+          <rule symbol="3" filter=" &quot;INLET&quot;  = 1  AND   &quot;PTSOURCE&quot;  = 1" label="Point source" key="{210e8415-28da-4360-9dcb-9c89a8497b13}" description="Point source"/>
         </rules>
         <symbols>
-          <symbol name="0" type="marker" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleMarker" pass="0" enabled="1" locked="0">
-              <prop k="angle" v="0"/>
-              <prop k="color" v="0,85,255,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="name" v="filled_arrowhead"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="area"/>
-              <prop k="size" v="4"/>
-              <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
+          <symbol name="0" clip_to_extent="1" alpha="1" force_rhr="0" type="marker">
+            <layer locked="0" class="SimpleMarker" pass="0" enabled="1">
+              <prop v="0" k="angle"/>
+              <prop v="0,85,255,255" k="color"/>
+              <prop v="1" k="horizontal_anchor_point"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="filled_arrowhead" k="name"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0" k="outline_width"/>
+              <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="area" k="scale_method"/>
+              <prop v="4" k="size"/>
+              <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
+              <prop v="MM" k="size_unit"/>
+              <prop v="1" k="vertical_anchor_point"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
           </symbol>
-          <symbol name="1" type="marker" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleMarker" pass="0" enabled="1" locked="0">
-              <prop k="angle" v="180"/>
-              <prop k="color" v="255,0,0,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="name" v="filled_arrowhead"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="area"/>
-              <prop k="size" v="4"/>
-              <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
+          <symbol name="1" clip_to_extent="1" alpha="1" force_rhr="0" type="marker">
+            <layer locked="0" class="SimpleMarker" pass="0" enabled="1">
+              <prop v="180" k="angle"/>
+              <prop v="255,0,0,255" k="color"/>
+              <prop v="1" k="horizontal_anchor_point"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="filled_arrowhead" k="name"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0" k="outline_width"/>
+              <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="area" k="scale_method"/>
+              <prop v="4" k="size"/>
+              <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
+              <prop v="MM" k="size_unit"/>
+              <prop v="1" k="vertical_anchor_point"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
           </symbol>
-          <symbol name="2" type="marker" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleMarker" pass="0" enabled="1" locked="0">
-              <prop k="angle" v="0"/>
-              <prop k="color" v="0,85,255,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="name" v="circle"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="area"/>
-              <prop k="size" v="4"/>
-              <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
+          <symbol name="2" clip_to_extent="1" alpha="1" force_rhr="0" type="marker">
+            <layer locked="0" class="SimpleMarker" pass="0" enabled="1">
+              <prop v="0" k="angle"/>
+              <prop v="0,85,255,255" k="color"/>
+              <prop v="1" k="horizontal_anchor_point"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="circle" k="name"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0" k="outline_width"/>
+              <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="area" k="scale_method"/>
+              <prop v="4" k="size"/>
+              <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
+              <prop v="MM" k="size_unit"/>
+              <prop v="1" k="vertical_anchor_point"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
           </symbol>
-          <symbol name="3" type="marker" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleMarker" pass="0" enabled="1" locked="0">
-              <prop k="angle" v="0"/>
-              <prop k="color" v="255,0,0,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="name" v="circle"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="area"/>
-              <prop k="size" v="2"/>
-              <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
+          <symbol name="3" clip_to_extent="1" alpha="1" force_rhr="0" type="marker">
+            <layer locked="0" class="SimpleMarker" pass="0" enabled="1">
+              <prop v="0" k="angle"/>
+              <prop v="255,0,0,255" k="color"/>
+              <prop v="1" k="horizontal_anchor_point"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="circle" k="name"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0" k="outline_width"/>
+              <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="area" k="scale_method"/>
+              <prop v="2" k="size"/>
+              <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
+              <prop v="MM" k="size_unit"/>
+              <prop v="1" k="vertical_anchor_point"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -476,26 +476,26 @@
         <alias name="" field="ID" index="3"/>
       </aliases>
       <defaults>
-        <default expression="" applyOnUpdate="0" field="ptsource"/>
-        <default expression="" applyOnUpdate="0" field="res"/>
-        <default expression="" applyOnUpdate="0" field="INLET"/>
-        <default expression="" applyOnUpdate="0" field="ID"/>
+        <default applyOnUpdate="0" field="ptsource" expression=""/>
+        <default applyOnUpdate="0" field="res" expression=""/>
+        <default applyOnUpdate="0" field="INLET" expression=""/>
+        <default applyOnUpdate="0" field="ID" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="ptsource"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="res"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="INLET"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="ID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="ptsource"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="res"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="INLET"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="ID"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="ptsource"/>
-        <constraint exp="" desc="" field="res"/>
-        <constraint exp="" desc="" field="INLET"/>
-        <constraint exp="" desc="" field="ID"/>
+        <constraint exp="" field="ptsource" desc=""/>
+        <constraint exp="" field="res" desc=""/>
+        <constraint exp="" field="INLET" desc=""/>
+        <constraint exp="" field="ID" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
         <columns/>
       </attributetableconfig>
       <conditionalstyles>
@@ -517,14 +517,14 @@
       <previewExpression>"ID"</previewExpression>
       <mapTip>&lt;b>Point id:&lt;/b> [% "ID" %]</mapTip>
     </maplayer>
-    <maplayer minScale="1e+08" type="raster" styleCategories="AllStyleCategories" autoRefreshTime="0" hasScaleBasedVisibilityFlag="0" maxScale="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" refreshOnNotifyEnabled="0">
+    <maplayer styleCategories="AllStyleCategories" maxScale="0" autoRefreshTime="0" autoRefreshEnabled="0" refreshOnNotifyEnabled="0" minScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="">
       <extent>
         <xmin>578679.04474679962731898</xmin>
         <ymin>4761224.17255378607660532</ymin>
         <xmax>744552.83450498641468585</xmax>
         <ymax>4987349.71088934503495693</ymax>
       </extent>
-      <id>Landuses__duff_landuse__19654feb_9730_4787_9066_c679f9e3643f</id>
+      <id>Landuses__duff_landuse__276987d5_3fb7_4ac2_bd84_56eae371e5ad</id>
       <datasource>./duff_landuse.tif</datasource>
       <keywordList>
         <value></value>
@@ -570,7 +570,7 @@
       </resourceMetadata>
       <provider>gdal</provider>
       <noData>
-        <noDataList bandNo="1" useSrcNoData="1"/>
+        <noDataList useSrcNoData="1" bandNo="1"/>
       </noData>
       <map-layer-style-manager current="default">
         <map-layer-style name="default"/>
@@ -580,7 +580,7 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" enabled="0" fetchMode="0">
+      <temporal mode="0" fetchMode="0" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
@@ -591,9 +591,9 @@
       </customproperties>
       <pipe>
         <provider>
-          <resampling zoomedOutResamplingMethod="nearestNeighbour" maxOversampling="2" enabled="false" zoomedInResamplingMethod="nearestNeighbour"/>
+          <resampling maxOversampling="2" zoomedInResamplingMethod="nearestNeighbour" zoomedOutResamplingMethod="nearestNeighbour" enabled="false"/>
         </provider>
-        <rasterrenderer type="paletted" opacity="1" band="1" alphaBand="-1" nodataColor="">
+        <rasterrenderer band="1" nodataColor="" opacity="1" type="paletted" alphaBand="-1">
           <minMaxOrigin>
             <limits>None</limits>
             <extent>WholeRaster</extent>
@@ -604,21 +604,21 @@
           </minMaxOrigin>
           <colorPalette/>
         </rasterrenderer>
-        <brightnesscontrast gamma="1" brightness="0" contrast="0"/>
-        <huesaturation colorizeBlue="128" saturation="0" colorizeRed="255" colorizeStrength="100" grayscaleMode="0" colorizeGreen="128" colorizeOn="0"/>
+        <brightnesscontrast brightness="0" contrast="0" gamma="1"/>
+        <huesaturation colorizeOn="0" colorizeGreen="128" saturation="0" colorizeStrength="100" grayscaleMode="0" colorizeRed="255" colorizeBlue="128"/>
         <rasterresampler maxOversampling="2"/>
         <resamplingStage>resamplingFilter</resamplingStage>
       </pipe>
       <blendMode>0</blendMode>
     </maplayer>
-    <maplayer simplifyMaxScale="1" maxScale="0" labelsEnabled="1" minScale="100000000" simplifyDrawingHints="0" simplifyAlgorithm="0" geometry="Line" styleCategories="AllStyleCategories" hasScaleBasedVisibilityFlag="0" wkbType="MultiLineString" refreshOnNotifyEnabled="0" autoRefreshEnabled="0" autoRefreshTime="0" type="vector" readOnly="0" simplifyLocal="1" simplifyDrawingTol="1" refreshOnNotifyMessage="">
+    <maplayer autoRefreshEnabled="0" simplifyDrawingTol="1" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" simplifyLocal="1" wkbType="MultiLineString" readOnly="0" simplifyDrawingHints="0" refreshOnNotifyEnabled="0" labelsEnabled="1" minScale="100000000" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0">
       <extent>
         <xmin>640000</xmin>
         <ymin>4854200</ymin>
         <xmax>658100</xmax>
         <ymax>4877900</ymax>
       </extent>
-      <id>Reaches__riv1__d96d6448_0f3f_4034_824b_3c40c1312243</id>
+      <id>Reaches__riv1__64e4dd8f_c1bf_4000_8cef_02e7fa7c2e87</id>
       <datasource>./test/Watershed/Shapes/riv1.shp</datasource>
       <keywordList>
         <value></value>
@@ -676,42 +676,42 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" durationUnit="min" fixedDuration="0" endField="" enabled="0" endExpression="" accumulate="0" durationField="" startField="" startExpression="">
+      <temporal startField="" startExpression="" endExpression="" fixedDuration="0" mode="0" accumulate="0" endField="" durationField="" durationUnit="min" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
         </fixedRange>
       </temporal>
-      <renderer-v2 type="singleSymbol" forceraster="0" enableorderby="0" symbollevels="0">
+      <renderer-v2 symbollevels="0" enableorderby="0" type="singleSymbol" forceraster="0">
         <symbols>
-          <symbol name="0" type="line" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleLine" pass="0" enabled="1" locked="0">
-              <prop k="align_dash_pattern" v="0"/>
-              <prop k="capstyle" v="square"/>
-              <prop k="customdash" v="5;2"/>
-              <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="customdash_unit" v="MM"/>
-              <prop k="dash_pattern_offset" v="0"/>
-              <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="dash_pattern_offset_unit" v="MM"/>
-              <prop k="draw_inside_polygon" v="0"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="0,85,255,255"/>
-              <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.26"/>
-              <prop k="line_width_unit" v="MM"/>
-              <prop k="offset" v="0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="ring_filter" v="0"/>
-              <prop k="tweak_dash_pattern_on_corners" v="0"/>
-              <prop k="use_custom_dash" v="0"/>
-              <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <symbol name="0" clip_to_extent="1" alpha="1" force_rhr="0" type="line">
+            <layer locked="0" class="SimpleLine" pass="0" enabled="1">
+              <prop v="0" k="align_dash_pattern"/>
+              <prop v="square" k="capstyle"/>
+              <prop v="5;2" k="customdash"/>
+              <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
+              <prop v="MM" k="customdash_unit"/>
+              <prop v="0" k="dash_pattern_offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
+              <prop v="MM" k="dash_pattern_offset_unit"/>
+              <prop v="0" k="draw_inside_polygon"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,85,255,255" k="line_color"/>
+              <prop v="solid" k="line_style"/>
+              <prop v="0.26" k="line_width"/>
+              <prop v="MM" k="line_width_unit"/>
+              <prop v="0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0" k="ring_filter"/>
+              <prop v="0" k="tweak_dash_pattern_on_corners"/>
+              <prop v="0" k="use_custom_dash"/>
+              <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -831,50 +831,50 @@
         <alias name="" field="OutletID" index="11"/>
       </aliases>
       <defaults>
-        <default expression="" applyOnUpdate="0" field="Subbasin"/>
-        <default expression="" applyOnUpdate="0" field="SubbasinR"/>
-        <default expression="" applyOnUpdate="0" field="AreaC"/>
-        <default expression="" applyOnUpdate="0" field="Len2"/>
-        <default expression="" applyOnUpdate="0" field="Slo2"/>
-        <default expression="" applyOnUpdate="0" field="Wid2"/>
-        <default expression="" applyOnUpdate="0" field="Dep2"/>
-        <default expression="" applyOnUpdate="0" field="MinEl"/>
-        <default expression="" applyOnUpdate="0" field="MaxEl"/>
-        <default expression="" applyOnUpdate="0" field="Shape_Len"/>
-        <default expression="" applyOnUpdate="0" field="HydroID"/>
-        <default expression="" applyOnUpdate="0" field="OutletID"/>
+        <default applyOnUpdate="0" field="Subbasin" expression=""/>
+        <default applyOnUpdate="0" field="SubbasinR" expression=""/>
+        <default applyOnUpdate="0" field="AreaC" expression=""/>
+        <default applyOnUpdate="0" field="Len2" expression=""/>
+        <default applyOnUpdate="0" field="Slo2" expression=""/>
+        <default applyOnUpdate="0" field="Wid2" expression=""/>
+        <default applyOnUpdate="0" field="Dep2" expression=""/>
+        <default applyOnUpdate="0" field="MinEl" expression=""/>
+        <default applyOnUpdate="0" field="MaxEl" expression=""/>
+        <default applyOnUpdate="0" field="Shape_Len" expression=""/>
+        <default applyOnUpdate="0" field="HydroID" expression=""/>
+        <default applyOnUpdate="0" field="OutletID" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Subbasin"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="SubbasinR"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="AreaC"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Len2"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Slo2"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Wid2"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Dep2"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="MinEl"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="MaxEl"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Shape_Len"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="HydroID"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="OutletID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Subbasin"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="SubbasinR"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="AreaC"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Len2"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Slo2"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Wid2"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Dep2"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="MinEl"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="MaxEl"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Shape_Len"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="HydroID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="OutletID"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="Subbasin"/>
-        <constraint exp="" desc="" field="SubbasinR"/>
-        <constraint exp="" desc="" field="AreaC"/>
-        <constraint exp="" desc="" field="Len2"/>
-        <constraint exp="" desc="" field="Slo2"/>
-        <constraint exp="" desc="" field="Wid2"/>
-        <constraint exp="" desc="" field="Dep2"/>
-        <constraint exp="" desc="" field="MinEl"/>
-        <constraint exp="" desc="" field="MaxEl"/>
-        <constraint exp="" desc="" field="Shape_Len"/>
-        <constraint exp="" desc="" field="HydroID"/>
-        <constraint exp="" desc="" field="OutletID"/>
+        <constraint exp="" field="Subbasin" desc=""/>
+        <constraint exp="" field="SubbasinR" desc=""/>
+        <constraint exp="" field="AreaC" desc=""/>
+        <constraint exp="" field="Len2" desc=""/>
+        <constraint exp="" field="Slo2" desc=""/>
+        <constraint exp="" field="Wid2" desc=""/>
+        <constraint exp="" field="Dep2" desc=""/>
+        <constraint exp="" field="MinEl" desc=""/>
+        <constraint exp="" field="MaxEl" desc=""/>
+        <constraint exp="" field="Shape_Len" desc=""/>
+        <constraint exp="" field="HydroID" desc=""/>
+        <constraint exp="" field="OutletID" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
         <columns/>
       </attributetableconfig>
       <conditionalstyles>
@@ -896,14 +896,14 @@
       <previewExpression></previewExpression>
       <mapTip>&lt;b>Reach:&lt;/b> [% "Subbasin" %]</mapTip>
     </maplayer>
-    <maplayer minScale="1e+08" type="raster" styleCategories="AllStyleCategories" autoRefreshTime="0" hasScaleBasedVisibilityFlag="0" maxScale="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" refreshOnNotifyEnabled="0">
+    <maplayer styleCategories="AllStyleCategories" maxScale="0" autoRefreshTime="0" autoRefreshEnabled="0" refreshOnNotifyEnabled="0" minScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="">
       <extent>
         <xmin>577707.606688920292072</xmin>
         <ymin>4762501.97200185619294643</ymin>
         <xmax>747754.12056942982599139</xmax>
         <ymax>4991410.74068715795874596</ymax>
       </extent>
-      <id>Soils__duff_soil__29462d01_a8b6_4adf_9f45_3745b52fbbd5</id>
+      <id>Soils__duff_soil__445d791f_0f44_45c7_b3f7_0cdf52609b2e</id>
       <datasource>./duff_soil.tif</datasource>
       <keywordList>
         <value></value>
@@ -949,7 +949,7 @@
       </resourceMetadata>
       <provider>gdal</provider>
       <noData>
-        <noDataList bandNo="1" useSrcNoData="1"/>
+        <noDataList useSrcNoData="1" bandNo="1"/>
       </noData>
       <map-layer-style-manager current="default">
         <map-layer-style name="default"/>
@@ -959,7 +959,7 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" enabled="0" fetchMode="0">
+      <temporal mode="0" fetchMode="0" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
@@ -970,9 +970,9 @@
       </customproperties>
       <pipe>
         <provider>
-          <resampling zoomedOutResamplingMethod="nearestNeighbour" maxOversampling="2" enabled="false" zoomedInResamplingMethod="nearestNeighbour"/>
+          <resampling maxOversampling="2" zoomedInResamplingMethod="nearestNeighbour" zoomedOutResamplingMethod="nearestNeighbour" enabled="false"/>
         </provider>
-        <rasterrenderer type="paletted" opacity="1" band="1" alphaBand="-1" nodataColor="">
+        <rasterrenderer band="1" nodataColor="" opacity="1" type="paletted" alphaBand="-1">
           <minMaxOrigin>
             <limits>None</limits>
             <extent>WholeRaster</extent>
@@ -983,21 +983,21 @@
           </minMaxOrigin>
           <colorPalette/>
         </rasterrenderer>
-        <brightnesscontrast gamma="1" brightness="0" contrast="0"/>
-        <huesaturation colorizeBlue="128" saturation="0" colorizeRed="255" colorizeStrength="100" grayscaleMode="0" colorizeGreen="128" colorizeOn="0"/>
+        <brightnesscontrast brightness="0" contrast="0" gamma="1"/>
+        <huesaturation colorizeOn="0" colorizeGreen="128" saturation="0" colorizeStrength="100" grayscaleMode="0" colorizeRed="255" colorizeBlue="128"/>
         <rasterresampler maxOversampling="2"/>
         <resamplingStage>resamplingFilter</resamplingStage>
       </pipe>
       <blendMode>0</blendMode>
     </maplayer>
-    <maplayer simplifyMaxScale="1" maxScale="0" labelsEnabled="1" minScale="100000000" simplifyDrawingHints="0" simplifyAlgorithm="0" geometry="Line" styleCategories="AllStyleCategories" hasScaleBasedVisibilityFlag="0" wkbType="MultiLineString" refreshOnNotifyEnabled="0" autoRefreshEnabled="0" autoRefreshTime="0" type="vector" readOnly="0" simplifyLocal="1" simplifyDrawingTol="1" refreshOnNotifyMessage="">
+    <maplayer autoRefreshEnabled="0" simplifyDrawingTol="1" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" simplifyLocal="1" wkbType="MultiLineString" readOnly="0" simplifyDrawingHints="0" refreshOnNotifyEnabled="0" labelsEnabled="1" minScale="100000000" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0">
       <extent>
         <xmin>640000</xmin>
         <ymin>4854200</ymin>
         <xmax>658100</xmax>
         <ymax>4877900</ymax>
       </extent>
-      <id>Streams__duff_demnet__5f42e388_0caf_43fb_b583_4cb3aeb3bb41</id>
+      <id>Streams__duff_demnet__15df7db5_8cab_4431_bc64_69c9f35f2ab5</id>
       <datasource>./test/Source/duff_demnet/duff_demnet.shp</datasource>
       <keywordList>
         <value></value>
@@ -1055,42 +1055,42 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" durationUnit="min" fixedDuration="0" endField="" enabled="0" endExpression="" accumulate="0" durationField="" startField="" startExpression="">
+      <temporal startField="" startExpression="" endExpression="" fixedDuration="0" mode="0" accumulate="0" endField="" durationField="" durationUnit="min" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
         </fixedRange>
       </temporal>
-      <renderer-v2 type="singleSymbol" forceraster="0" enableorderby="0" symbollevels="0">
+      <renderer-v2 symbollevels="0" enableorderby="0" type="singleSymbol" forceraster="0">
         <symbols>
-          <symbol name="0" type="line" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleLine" pass="0" enabled="1" locked="0">
-              <prop k="align_dash_pattern" v="0"/>
-              <prop k="capstyle" v="square"/>
-              <prop k="customdash" v="5;2"/>
-              <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="customdash_unit" v="MM"/>
-              <prop k="dash_pattern_offset" v="0"/>
-              <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="dash_pattern_offset_unit" v="MM"/>
-              <prop k="draw_inside_polygon" v="0"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="0,85,255,255"/>
-              <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.26"/>
-              <prop k="line_width_unit" v="MM"/>
-              <prop k="offset" v="0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="ring_filter" v="0"/>
-              <prop k="tweak_dash_pattern_on_corners" v="0"/>
-              <prop k="use_custom_dash" v="0"/>
-              <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <symbol name="0" clip_to_extent="1" alpha="1" force_rhr="0" type="line">
+            <layer locked="0" class="SimpleLine" pass="0" enabled="1">
+              <prop v="0" k="align_dash_pattern"/>
+              <prop v="square" k="capstyle"/>
+              <prop v="5;2" k="customdash"/>
+              <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
+              <prop v="MM" k="customdash_unit"/>
+              <prop v="0" k="dash_pattern_offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
+              <prop v="MM" k="dash_pattern_offset_unit"/>
+              <prop v="0" k="draw_inside_polygon"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,85,255,255" k="line_color"/>
+              <prop v="solid" k="line_style"/>
+              <prop v="0.26" k="line_width"/>
+              <prop v="MM" k="line_width_unit"/>
+              <prop v="0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0" k="ring_filter"/>
+              <prop v="0" k="tweak_dash_pattern_on_corners"/>
+              <prop v="0" k="use_custom_dash"/>
+              <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -1250,65 +1250,65 @@
         <alias name="" field="DOUTMID" index="16"/>
       </aliases>
       <defaults>
-        <default expression="" applyOnUpdate="0" field="LINKNO"/>
-        <default expression="" applyOnUpdate="0" field="DSLINKNO"/>
-        <default expression="" applyOnUpdate="0" field="USLINKNO1"/>
-        <default expression="" applyOnUpdate="0" field="USLINKNO2"/>
-        <default expression="" applyOnUpdate="0" field="DSNODEID"/>
-        <default expression="" applyOnUpdate="0" field="strmOrder"/>
-        <default expression="" applyOnUpdate="0" field="Length"/>
-        <default expression="" applyOnUpdate="0" field="Magnitude"/>
-        <default expression="" applyOnUpdate="0" field="DSContArea"/>
-        <default expression="" applyOnUpdate="0" field="strmDrop"/>
-        <default expression="" applyOnUpdate="0" field="Slope"/>
-        <default expression="" applyOnUpdate="0" field="StraightL"/>
-        <default expression="" applyOnUpdate="0" field="USContArea"/>
-        <default expression="" applyOnUpdate="0" field="WSNO"/>
-        <default expression="" applyOnUpdate="0" field="DOUTEND"/>
-        <default expression="" applyOnUpdate="0" field="DOUTSTART"/>
-        <default expression="" applyOnUpdate="0" field="DOUTMID"/>
+        <default applyOnUpdate="0" field="LINKNO" expression=""/>
+        <default applyOnUpdate="0" field="DSLINKNO" expression=""/>
+        <default applyOnUpdate="0" field="USLINKNO1" expression=""/>
+        <default applyOnUpdate="0" field="USLINKNO2" expression=""/>
+        <default applyOnUpdate="0" field="DSNODEID" expression=""/>
+        <default applyOnUpdate="0" field="strmOrder" expression=""/>
+        <default applyOnUpdate="0" field="Length" expression=""/>
+        <default applyOnUpdate="0" field="Magnitude" expression=""/>
+        <default applyOnUpdate="0" field="DSContArea" expression=""/>
+        <default applyOnUpdate="0" field="strmDrop" expression=""/>
+        <default applyOnUpdate="0" field="Slope" expression=""/>
+        <default applyOnUpdate="0" field="StraightL" expression=""/>
+        <default applyOnUpdate="0" field="USContArea" expression=""/>
+        <default applyOnUpdate="0" field="WSNO" expression=""/>
+        <default applyOnUpdate="0" field="DOUTEND" expression=""/>
+        <default applyOnUpdate="0" field="DOUTSTART" expression=""/>
+        <default applyOnUpdate="0" field="DOUTMID" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="LINKNO"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="DSLINKNO"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="USLINKNO1"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="USLINKNO2"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="DSNODEID"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="strmOrder"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Length"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Magnitude"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="DSContArea"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="strmDrop"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Slope"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="StraightL"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="USContArea"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="WSNO"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="DOUTEND"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="DOUTSTART"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="DOUTMID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="LINKNO"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="DSLINKNO"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="USLINKNO1"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="USLINKNO2"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="DSNODEID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="strmOrder"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Length"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Magnitude"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="DSContArea"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="strmDrop"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Slope"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="StraightL"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="USContArea"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="WSNO"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="DOUTEND"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="DOUTSTART"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="DOUTMID"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="LINKNO"/>
-        <constraint exp="" desc="" field="DSLINKNO"/>
-        <constraint exp="" desc="" field="USLINKNO1"/>
-        <constraint exp="" desc="" field="USLINKNO2"/>
-        <constraint exp="" desc="" field="DSNODEID"/>
-        <constraint exp="" desc="" field="strmOrder"/>
-        <constraint exp="" desc="" field="Length"/>
-        <constraint exp="" desc="" field="Magnitude"/>
-        <constraint exp="" desc="" field="DSContArea"/>
-        <constraint exp="" desc="" field="strmDrop"/>
-        <constraint exp="" desc="" field="Slope"/>
-        <constraint exp="" desc="" field="StraightL"/>
-        <constraint exp="" desc="" field="USContArea"/>
-        <constraint exp="" desc="" field="WSNO"/>
-        <constraint exp="" desc="" field="DOUTEND"/>
-        <constraint exp="" desc="" field="DOUTSTART"/>
-        <constraint exp="" desc="" field="DOUTMID"/>
+        <constraint exp="" field="LINKNO" desc=""/>
+        <constraint exp="" field="DSLINKNO" desc=""/>
+        <constraint exp="" field="USLINKNO1" desc=""/>
+        <constraint exp="" field="USLINKNO2" desc=""/>
+        <constraint exp="" field="DSNODEID" desc=""/>
+        <constraint exp="" field="strmOrder" desc=""/>
+        <constraint exp="" field="Length" desc=""/>
+        <constraint exp="" field="Magnitude" desc=""/>
+        <constraint exp="" field="DSContArea" desc=""/>
+        <constraint exp="" field="strmDrop" desc=""/>
+        <constraint exp="" field="Slope" desc=""/>
+        <constraint exp="" field="StraightL" desc=""/>
+        <constraint exp="" field="USContArea" desc=""/>
+        <constraint exp="" field="WSNO" desc=""/>
+        <constraint exp="" field="DOUTEND" desc=""/>
+        <constraint exp="" field="DOUTSTART" desc=""/>
+        <constraint exp="" field="DOUTMID" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
         <columns/>
       </attributetableconfig>
       <conditionalstyles>
@@ -1330,14 +1330,14 @@
       <previewExpression></previewExpression>
       <mapTip>&lt;b>Stream link:&lt;/b> [% "LINKNO" %]</mapTip>
     </maplayer>
-    <maplayer simplifyMaxScale="1" maxScale="-4.65661e-10" labelsEnabled="1" minScale="100000000" simplifyDrawingHints="1" simplifyAlgorithm="0" geometry="Polygon" styleCategories="AllStyleCategories" hasScaleBasedVisibilityFlag="0" wkbType="MultiPolygon" refreshOnNotifyEnabled="0" autoRefreshEnabled="0" autoRefreshTime="0" type="vector" readOnly="0" simplifyLocal="1" simplifyDrawingTol="1" refreshOnNotifyMessage="">
+    <maplayer autoRefreshEnabled="0" simplifyDrawingTol="1" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="-4.65661e-10" styleCategories="AllStyleCategories" simplifyMaxScale="1" simplifyLocal="1" wkbType="MultiPolygon" readOnly="0" simplifyDrawingHints="1" refreshOnNotifyEnabled="0" labelsEnabled="1" minScale="100000000" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0">
       <extent>
         <xmin>639150</xmin>
         <ymin>4854150</ymin>
         <xmax>658850</xmax>
         <ymax>4878450</ymax>
       </extent>
-      <id>Subbasins__subs1__8d619d09_9942_4e84_8528_8ff69f041d56</id>
+      <id>Subbasins__subs1__5d56191a_41f8_47fc_9e92_f89a4d1fc0f7</id>
       <datasource>./test/Watershed/Shapes/subs1.shp</datasource>
       <keywordList>
         <value></value>
@@ -1395,32 +1395,32 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" durationUnit="min" fixedDuration="0" endField="" enabled="0" endExpression="" accumulate="0" durationField="" startField="" startExpression="">
+      <temporal startField="" startExpression="" endExpression="" fixedDuration="0" mode="0" accumulate="0" endField="" durationField="" durationUnit="min" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
         </fixedRange>
       </temporal>
-      <renderer-v2 type="singleSymbol" forceraster="0" enableorderby="0" symbollevels="0">
+      <renderer-v2 symbollevels="0" enableorderby="0" type="singleSymbol" forceraster="0">
         <symbols>
-          <symbol name="0" type="fill" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleFill" pass="0" enabled="1" locked="0">
-              <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="color" v="32,37,161,255"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="255,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0.26"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="style" v="no"/>
+          <symbol name="0" clip_to_extent="1" alpha="1" force_rhr="0" type="fill">
+            <layer locked="0" class="SimpleFill" pass="0" enabled="1">
+              <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
+              <prop v="32,37,161,255" k="color"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="255,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0.26" k="outline_width"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="no" k="style"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -1431,81 +1431,81 @@
       </renderer-v2>
       <labeling type="simple">
         <settings calloutType="simple">
-          <text-style fontWeight="50" namedStyle="Regular" fontLetterSpacing="0" fontItalic="0" fontUnderline="0" fontSize="8.25" fontWordSpacing="0" blendMode="0" multilineHeight="1" fontStrikeout="0" allowHtml="0" isExpression="1" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="0,0,0,255" capitalization="0" textOpacity="1" fontSizeUnit="Point" fontKerning="1" textOrientation="horizontal" useSubstitutions="0" previewBkgrdColor="255,255,255,255" fontFamily="MS Shell Dlg 2" fieldName="CASE WHEN &quot;Subbasin&quot; = 0 THEN '' ELSE &quot;Subbasin&quot; END">
-            <text-buffer bufferDraw="0" bufferSizeUnits="MM" bufferSize="1" bufferJoinStyle="64" bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferOpacity="1" bufferColor="255,255,255,255" bufferNoFill="0"/>
-            <text-mask maskSizeUnits="MM" maskSize="0" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskOpacity="1" maskedSymbolLayers="" maskJoinStyle="128" maskType="0" maskEnabled="0"/>
-            <background shapeRadiiX="0" shapeDraw="0" shapeType="0" shapeBlendMode="0" shapeOffsetX="0" shapeSizeUnit="MM" shapeRotation="0" shapeFillColor="255,255,255,255" shapeSVGFile="" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeSizeType="0" shapeBorderWidth="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeJoinStyle="64" shapeOpacity="1" shapeBorderWidthUnit="MM" shapeOffsetY="0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeSizeX="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiUnit="MM" shapeSizeY="0" shapeRotationType="0" shapeBorderColor="128,128,128,255" shapeRadiiY="0">
-              <symbol name="markerSymbol" type="marker" force_rhr="0" alpha="1" clip_to_extent="1">
-                <layer class="SimpleMarker" pass="0" enabled="1" locked="0">
-                  <prop k="angle" v="0"/>
-                  <prop k="color" v="231,113,72,255"/>
-                  <prop k="horizontal_anchor_point" v="1"/>
-                  <prop k="joinstyle" v="bevel"/>
-                  <prop k="name" v="circle"/>
-                  <prop k="offset" v="0,0"/>
-                  <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-                  <prop k="offset_unit" v="MM"/>
-                  <prop k="outline_color" v="35,35,35,255"/>
-                  <prop k="outline_style" v="solid"/>
-                  <prop k="outline_width" v="0"/>
-                  <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-                  <prop k="outline_width_unit" v="MM"/>
-                  <prop k="scale_method" v="diameter"/>
-                  <prop k="size" v="2"/>
-                  <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-                  <prop k="size_unit" v="MM"/>
-                  <prop k="vertical_anchor_point" v="1"/>
+          <text-style fontWeight="50" multilineHeight="1" isExpression="1" fieldName="CASE WHEN &quot;Subbasin&quot; = 0 THEN '' ELSE &quot;Subbasin&quot; END" useSubstitutions="0" fontLetterSpacing="0" textColor="0,0,0,255" fontSizeMapUnitScale="3x:0,0,0,0,0,0" capitalization="0" fontUnderline="0" fontStrikeout="0" blendMode="0" allowHtml="0" textOpacity="1" textOrientation="horizontal" namedStyle="Regular" fontWordSpacing="0" fontSize="8.25" fontSizeUnit="Point" fontKerning="1" previewBkgrdColor="255,255,255,255" fontItalic="0" fontFamily="MS Shell Dlg 2">
+            <text-buffer bufferSize="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="0" bufferOpacity="1" bufferBlendMode="0" bufferJoinStyle="64" bufferColor="255,255,255,255" bufferNoFill="0" bufferSizeUnits="MM"/>
+            <text-mask maskedSymbolLayers="" maskType="0" maskOpacity="1" maskSizeUnits="MM" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="0" maskSize="0" maskJoinStyle="128"/>
+            <background shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeX="0" shapeFillColor="255,255,255,255" shapeOffsetUnit="MM" shapeSizeY="0" shapeOffsetX="0" shapeBorderColor="128,128,128,255" shapeRadiiY="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeSVGFile="" shapeSizeType="0" shapeRotationType="0" shapeBorderWidth="0" shapeType="0" shapeBorderWidthUnit="MM" shapeRadiiX="0" shapeRadiiUnit="MM" shapeJoinStyle="64" shapeOpacity="1" shapeOffsetY="0" shapeDraw="0" shapeBlendMode="0" shapeRotation="0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeSizeUnit="MM">
+              <symbol name="markerSymbol" clip_to_extent="1" alpha="1" force_rhr="0" type="marker">
+                <layer locked="0" class="SimpleMarker" pass="0" enabled="1">
+                  <prop v="0" k="angle"/>
+                  <prop v="231,113,72,255" k="color"/>
+                  <prop v="1" k="horizontal_anchor_point"/>
+                  <prop v="bevel" k="joinstyle"/>
+                  <prop v="circle" k="name"/>
+                  <prop v="0,0" k="offset"/>
+                  <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+                  <prop v="MM" k="offset_unit"/>
+                  <prop v="35,35,35,255" k="outline_color"/>
+                  <prop v="solid" k="outline_style"/>
+                  <prop v="0" k="outline_width"/>
+                  <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
+                  <prop v="MM" k="outline_width_unit"/>
+                  <prop v="diameter" k="scale_method"/>
+                  <prop v="2" k="size"/>
+                  <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
+                  <prop v="MM" k="size_unit"/>
+                  <prop v="1" k="vertical_anchor_point"/>
                   <data_defined_properties>
                     <Option type="Map">
-                      <Option name="name" type="QString" value=""/>
+                      <Option value="" name="name" type="QString"/>
                       <Option name="properties"/>
-                      <Option name="type" type="QString" value="collection"/>
+                      <Option value="collection" name="type" type="QString"/>
                     </Option>
                   </data_defined_properties>
                 </layer>
               </symbol>
             </background>
-            <shadow shadowOffsetDist="1" shadowScale="100" shadowDraw="0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowUnder="0" shadowBlendMode="6" shadowOffsetAngle="135" shadowColor="0,0,0,255" shadowOffsetGlobal="1" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOpacity="0.7" shadowRadius="1.5" shadowOffsetUnit="MM" shadowRadiusUnit="MM"/>
+            <shadow shadowColor="0,0,0,255" shadowOffsetUnit="MM" shadowOffsetAngle="135" shadowUnder="0" shadowRadius="1.5" shadowRadiusUnit="MM" shadowRadiusAlphaOnly="0" shadowOpacity="0.7" shadowDraw="0" shadowBlendMode="6" shadowOffsetDist="1" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetGlobal="1" shadowScale="100" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0"/>
             <dd_properties>
               <Option type="Map">
-                <Option name="name" type="QString" value=""/>
+                <Option value="" name="name" type="QString"/>
                 <Option name="properties"/>
-                <Option name="type" type="QString" value="collection"/>
+                <Option value="collection" name="type" type="QString"/>
               </Option>
             </dd_properties>
             <substitutions/>
           </text-style>
-          <text-format reverseDirectionSymbol="0" placeDirectionSymbol="0" addDirectionSymbol="0" leftDirectionSymbol="&lt;" autoWrapLength="0" useMaxLineLengthForAutoWrap="1" wrapChar="" rightDirectionSymbol=">" plussign="0" formatNumbers="0" multilineAlign="0" decimals="3"/>
-          <placement yOffset="0" fitInPolygonOnly="0" overrunDistance="0" maxCurvedCharAngleIn="20" geometryGeneratorType="PointGeometry" layerType="PolygonGeometry" placement="1" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" dist="0" rotationAngle="0" centroidWhole="1" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" repeatDistance="0" geometryGenerator="" preserveRotation="1" placementFlags="0" lineAnchorType="0" distUnits="MM" priority="5" offsetType="0" offsetUnits="MapUnit" quadOffset="4" distMapUnitScale="3x:0,0,0,0,0,0" overrunDistanceUnit="MM" repeatDistanceUnits="MM" xOffset="0" geometryGeneratorEnabled="0" maxCurvedCharAngleOut="-20" polygonPlacementFlags="2" lineAnchorPercent="0.5" centroidInside="1"/>
-          <rendering drawLabels="1" labelPerPart="0" upsidedownLabels="0" minFeatureSize="0" obstacleFactor="1" displayAll="0" fontMinPixelSize="3" maxNumLabels="2000" scaleMax="10000000" obstacleType="0" mergeLines="0" fontLimitPixelSize="0" fontMaxPixelSize="10000" zIndex="0" obstacle="1" scaleMin="1" scaleVisibility="0" limitNumLabels="0"/>
+          <text-format formatNumbers="0" wrapChar="" rightDirectionSymbol=">" reverseDirectionSymbol="0" useMaxLineLengthForAutoWrap="1" decimals="3" autoWrapLength="0" leftDirectionSymbol="&lt;" placeDirectionSymbol="0" multilineAlign="0" addDirectionSymbol="0" plussign="0"/>
+          <placement dist="0" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" placement="1" geometryGeneratorType="PointGeometry" preserveRotation="1" xOffset="0" repeatDistanceUnits="MM" lineAnchorType="0" geometryGeneratorEnabled="0" repeatDistance="0" distMapUnitScale="3x:0,0,0,0,0,0" maxCurvedCharAngleIn="20" priority="5" geometryGenerator="" overrunDistanceUnit="MM" rotationAngle="0" offsetType="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" polygonPlacementFlags="2" offsetUnits="MapUnit" layerType="PolygonGeometry" quadOffset="4" centroidWhole="1" distUnits="MM" centroidInside="1" placementFlags="0" maxCurvedCharAngleOut="-20" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" yOffset="0" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" fitInPolygonOnly="0" lineAnchorPercent="0.5" overrunDistance="0"/>
+          <rendering scaleVisibility="0" obstacle="1" labelPerPart="0" obstacleType="0" zIndex="0" displayAll="0" maxNumLabels="2000" fontMinPixelSize="3" limitNumLabels="0" mergeLines="0" scaleMax="10000000" fontMaxPixelSize="10000" scaleMin="1" obstacleFactor="1" drawLabels="1" fontLimitPixelSize="0" minFeatureSize="0" upsidedownLabels="0"/>
           <dd_properties>
             <Option type="Map">
-              <Option name="name" type="QString" value=""/>
+              <Option value="" name="name" type="QString"/>
               <Option name="properties"/>
-              <Option name="type" type="QString" value="collection"/>
+              <Option value="collection" name="type" type="QString"/>
             </Option>
           </dd_properties>
           <callout type="simple">
             <Option type="Map">
-              <Option name="anchorPoint" type="QString" value="pole_of_inaccessibility"/>
+              <Option value="pole_of_inaccessibility" name="anchorPoint" type="QString"/>
               <Option name="ddProperties" type="Map">
-                <Option name="name" type="QString" value=""/>
+                <Option value="" name="name" type="QString"/>
                 <Option name="properties"/>
-                <Option name="type" type="QString" value="collection"/>
+                <Option value="collection" name="type" type="QString"/>
               </Option>
-              <Option name="drawToAllParts" type="bool" value="false"/>
-              <Option name="enabled" type="QString" value="0"/>
-              <Option name="labelAnchorPoint" type="QString" value="point_on_exterior"/>
-              <Option name="lineSymbol" type="QString" value="&lt;symbol name=&quot;symbol&quot; type=&quot;line&quot; force_rhr=&quot;0&quot; alpha=&quot;1&quot; clip_to_extent=&quot;1&quot;>&lt;layer class=&quot;SimpleLine&quot; pass=&quot;0&quot; enabled=&quot;1&quot; locked=&quot;0&quot;>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;square&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;bevel&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;60,60,60,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.3&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
-              <Option name="minLength" type="double" value="0"/>
-              <Option name="minLengthMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="minLengthUnit" type="QString" value="MM"/>
-              <Option name="offsetFromAnchor" type="double" value="0"/>
-              <Option name="offsetFromAnchorMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="offsetFromAnchorUnit" type="QString" value="MM"/>
-              <Option name="offsetFromLabel" type="double" value="0"/>
-              <Option name="offsetFromLabelMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="offsetFromLabelUnit" type="QString" value="MM"/>
+              <Option value="false" name="drawToAllParts" type="bool"/>
+              <Option value="0" name="enabled" type="QString"/>
+              <Option value="point_on_exterior" name="labelAnchorPoint" type="QString"/>
+              <Option value="&lt;symbol name=&quot;symbol&quot; clip_to_extent=&quot;1&quot; alpha=&quot;1&quot; force_rhr=&quot;0&quot; type=&quot;line&quot;>&lt;layer locked=&quot;0&quot; class=&quot;SimpleLine&quot; pass=&quot;0&quot; enabled=&quot;1&quot;>&lt;prop v=&quot;0&quot; k=&quot;align_dash_pattern&quot;/>&lt;prop v=&quot;square&quot; k=&quot;capstyle&quot;/>&lt;prop v=&quot;5;2&quot; k=&quot;customdash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;customdash_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;customdash_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;dash_pattern_offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;dash_pattern_offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;dash_pattern_offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;draw_inside_polygon&quot;/>&lt;prop v=&quot;bevel&quot; k=&quot;joinstyle&quot;/>&lt;prop v=&quot;60,60,60,255&quot; k=&quot;line_color&quot;/>&lt;prop v=&quot;solid&quot; k=&quot;line_style&quot;/>&lt;prop v=&quot;0.3&quot; k=&quot;line_width&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;line_width_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;ring_filter&quot;/>&lt;prop v=&quot;0&quot; k=&quot;tweak_dash_pattern_on_corners&quot;/>&lt;prop v=&quot;0&quot; k=&quot;use_custom_dash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;width_map_unit_scale&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option value=&quot;&quot; name=&quot;name&quot; type=&quot;QString&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option value=&quot;collection&quot; name=&quot;type&quot; type=&quot;QString&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>" name="lineSymbol" type="QString"/>
+              <Option value="0" name="minLength" type="double"/>
+              <Option value="3x:0,0,0,0,0,0" name="minLengthMapUnitScale" type="QString"/>
+              <Option value="MM" name="minLengthUnit" type="QString"/>
+              <Option value="0" name="offsetFromAnchor" type="double"/>
+              <Option value="3x:0,0,0,0,0,0" name="offsetFromAnchorMapUnitScale" type="QString"/>
+              <Option value="MM" name="offsetFromAnchorUnit" type="QString"/>
+              <Option value="0" name="offsetFromLabel" type="double"/>
+              <Option value="3x:0,0,0,0,0,0" name="offsetFromLabelMapUnitScale" type="QString"/>
+              <Option value="MM" name="offsetFromLabelUnit" type="QString"/>
             </Option>
           </callout>
         </settings>
@@ -1518,39 +1518,39 @@
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
       <layerOpacity>1</layerOpacity>
-      <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-        <DiagramCategory maxScaleDenominator="1e+08" diagramOrientation="Up" spacingUnitScale="3x:0,0,0,0,0,0" height="15" backgroundColor="#ffffff" labelPlacementMethod="XHeight" opacity="1" minScaleDenominator="-4.65661e-10" lineSizeType="MM" minimumSize="0" showAxis="0" scaleBasedVisibility="0" sizeType="MM" backgroundAlpha="255" direction="1" spacingUnit="MM" penWidth="0" enabled="0" scaleDependency="Area" barWidth="5" penColor="#000000" width="15" spacing="0" penAlpha="255" sizeScale="3x:0,0,0,0,0,0" rotationOffset="270" lineSizeScale="3x:0,0,0,0,0,0">
+      <SingleCategoryDiagramRenderer attributeLegend="1" diagramType="Histogram">
+        <DiagramCategory labelPlacementMethod="XHeight" spacing="0" lineSizeScale="3x:0,0,0,0,0,0" minimumSize="0" opacity="1" penAlpha="255" lineSizeType="MM" rotationOffset="270" penColor="#000000" backgroundAlpha="255" direction="1" backgroundColor="#ffffff" width="15" sizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" height="15" sizeType="MM" showAxis="0" scaleBasedVisibility="0" penWidth="0" diagramOrientation="Up" maxScaleDenominator="1e+08" enabled="0" spacingUnitScale="3x:0,0,0,0,0,0" minScaleDenominator="-4.65661e-10" barWidth="5" spacingUnit="MM">
           <fontProperties style="" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0"/>
-          <attribute color="#000000" field="" label=""/>
+          <attribute label="" field="" color="#000000"/>
           <axisSymbol>
-            <symbol name="" type="line" force_rhr="0" alpha="1" clip_to_extent="1">
-              <layer class="SimpleLine" pass="0" enabled="1" locked="0">
-                <prop k="align_dash_pattern" v="0"/>
-                <prop k="capstyle" v="square"/>
-                <prop k="customdash" v="5;2"/>
-                <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-                <prop k="customdash_unit" v="MM"/>
-                <prop k="dash_pattern_offset" v="0"/>
-                <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-                <prop k="dash_pattern_offset_unit" v="MM"/>
-                <prop k="draw_inside_polygon" v="0"/>
-                <prop k="joinstyle" v="bevel"/>
-                <prop k="line_color" v="35,35,35,255"/>
-                <prop k="line_style" v="solid"/>
-                <prop k="line_width" v="0.26"/>
-                <prop k="line_width_unit" v="MM"/>
-                <prop k="offset" v="0"/>
-                <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-                <prop k="offset_unit" v="MM"/>
-                <prop k="ring_filter" v="0"/>
-                <prop k="tweak_dash_pattern_on_corners" v="0"/>
-                <prop k="use_custom_dash" v="0"/>
-                <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <symbol name="" clip_to_extent="1" alpha="1" force_rhr="0" type="line">
+              <layer locked="0" class="SimpleLine" pass="0" enabled="1">
+                <prop v="0" k="align_dash_pattern"/>
+                <prop v="square" k="capstyle"/>
+                <prop v="5;2" k="customdash"/>
+                <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
+                <prop v="MM" k="customdash_unit"/>
+                <prop v="0" k="dash_pattern_offset"/>
+                <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
+                <prop v="MM" k="dash_pattern_offset_unit"/>
+                <prop v="0" k="draw_inside_polygon"/>
+                <prop v="bevel" k="joinstyle"/>
+                <prop v="35,35,35,255" k="line_color"/>
+                <prop v="solid" k="line_style"/>
+                <prop v="0.26" k="line_width"/>
+                <prop v="MM" k="line_width_unit"/>
+                <prop v="0" k="offset"/>
+                <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+                <prop v="MM" k="offset_unit"/>
+                <prop v="0" k="ring_filter"/>
+                <prop v="0" k="tweak_dash_pattern_on_corners"/>
+                <prop v="0" k="use_custom_dash"/>
+                <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
                 <data_defined_properties>
                   <Option type="Map">
-                    <Option name="name" type="QString" value=""/>
+                    <Option value="" name="name" type="QString"/>
                     <Option name="properties"/>
-                    <Option name="type" type="QString" value="collection"/>
+                    <Option value="collection" name="type" type="QString"/>
                   </Option>
                 </data_defined_properties>
               </layer>
@@ -1558,12 +1558,12 @@
           </axisSymbol>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
-      <DiagramLayerSettings dist="0" priority="0" showAll="1" linePlacementFlags="18" obstacle="0" zIndex="0" placement="1">
+      <DiagramLayerSettings priority="0" dist="0" showAll="1" zIndex="0" obstacle="0" placement="1" linePlacementFlags="18">
         <properties>
           <Option type="Map">
-            <Option name="name" type="QString" value=""/>
+            <Option value="" name="name" type="QString"/>
             <Option name="properties"/>
-            <Option name="type" type="QString" value="collection"/>
+            <Option value="collection" name="type" type="QString"/>
           </Option>
         </properties>
       </DiagramLayerSettings>
@@ -1571,9 +1571,9 @@
         <activeChecks/>
         <checkConfiguration type="Map">
           <Option name="QgsGeometryGapCheck" type="Map">
-            <Option name="allowedGapsBuffer" type="double" value="0"/>
-            <Option name="allowedGapsEnabled" type="bool" value="false"/>
-            <Option name="allowedGapsLayer" type="QString" value=""/>
+            <Option value="0" name="allowedGapsBuffer" type="double"/>
+            <Option value="false" name="allowedGapsEnabled" type="bool"/>
+            <Option value="" name="allowedGapsLayer" type="QString"/>
           </Option>
         </checkConfiguration>
       </geometryOptions>
@@ -1728,90 +1728,90 @@
         <alias name="" field="OutletID" index="17"/>
       </aliases>
       <defaults>
-        <default expression="" applyOnUpdate="0" field="Subbasin"/>
-        <default expression="" applyOnUpdate="0" field="Area"/>
-        <default expression="" applyOnUpdate="0" field="Slo1"/>
-        <default expression="" applyOnUpdate="0" field="Len1"/>
-        <default expression="" applyOnUpdate="0" field="Sll"/>
-        <default expression="" applyOnUpdate="0" field="Csl"/>
-        <default expression="" applyOnUpdate="0" field="Wid1"/>
-        <default expression="" applyOnUpdate="0" field="Dep1"/>
-        <default expression="" applyOnUpdate="0" field="Lat"/>
-        <default expression="" applyOnUpdate="0" field="Long_"/>
-        <default expression="" applyOnUpdate="0" field="Elev"/>
-        <default expression="" applyOnUpdate="0" field="ElevMin"/>
-        <default expression="" applyOnUpdate="0" field="ElevMax"/>
-        <default expression="" applyOnUpdate="0" field="Bname"/>
-        <default expression="" applyOnUpdate="0" field="Shape_Len"/>
-        <default expression="" applyOnUpdate="0" field="Shape_Area"/>
-        <default expression="" applyOnUpdate="0" field="HydroID"/>
-        <default expression="" applyOnUpdate="0" field="OutletID"/>
+        <default applyOnUpdate="0" field="Subbasin" expression=""/>
+        <default applyOnUpdate="0" field="Area" expression=""/>
+        <default applyOnUpdate="0" field="Slo1" expression=""/>
+        <default applyOnUpdate="0" field="Len1" expression=""/>
+        <default applyOnUpdate="0" field="Sll" expression=""/>
+        <default applyOnUpdate="0" field="Csl" expression=""/>
+        <default applyOnUpdate="0" field="Wid1" expression=""/>
+        <default applyOnUpdate="0" field="Dep1" expression=""/>
+        <default applyOnUpdate="0" field="Lat" expression=""/>
+        <default applyOnUpdate="0" field="Long_" expression=""/>
+        <default applyOnUpdate="0" field="Elev" expression=""/>
+        <default applyOnUpdate="0" field="ElevMin" expression=""/>
+        <default applyOnUpdate="0" field="ElevMax" expression=""/>
+        <default applyOnUpdate="0" field="Bname" expression=""/>
+        <default applyOnUpdate="0" field="Shape_Len" expression=""/>
+        <default applyOnUpdate="0" field="Shape_Area" expression=""/>
+        <default applyOnUpdate="0" field="HydroID" expression=""/>
+        <default applyOnUpdate="0" field="OutletID" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Subbasin"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Area"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Slo1"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Len1"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Sll"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Csl"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Wid1"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Dep1"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Lat"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Long_"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Elev"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="ElevMin"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="ElevMax"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Bname"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Shape_Len"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Shape_Area"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="HydroID"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="OutletID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Subbasin"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Area"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Slo1"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Len1"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Sll"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Csl"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Wid1"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Dep1"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Lat"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Long_"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Elev"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="ElevMin"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="ElevMax"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Bname"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Shape_Len"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Shape_Area"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="HydroID"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="OutletID"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="Subbasin"/>
-        <constraint exp="" desc="" field="Area"/>
-        <constraint exp="" desc="" field="Slo1"/>
-        <constraint exp="" desc="" field="Len1"/>
-        <constraint exp="" desc="" field="Sll"/>
-        <constraint exp="" desc="" field="Csl"/>
-        <constraint exp="" desc="" field="Wid1"/>
-        <constraint exp="" desc="" field="Dep1"/>
-        <constraint exp="" desc="" field="Lat"/>
-        <constraint exp="" desc="" field="Long_"/>
-        <constraint exp="" desc="" field="Elev"/>
-        <constraint exp="" desc="" field="ElevMin"/>
-        <constraint exp="" desc="" field="ElevMax"/>
-        <constraint exp="" desc="" field="Bname"/>
-        <constraint exp="" desc="" field="Shape_Len"/>
-        <constraint exp="" desc="" field="Shape_Area"/>
-        <constraint exp="" desc="" field="HydroID"/>
-        <constraint exp="" desc="" field="OutletID"/>
+        <constraint exp="" field="Subbasin" desc=""/>
+        <constraint exp="" field="Area" desc=""/>
+        <constraint exp="" field="Slo1" desc=""/>
+        <constraint exp="" field="Len1" desc=""/>
+        <constraint exp="" field="Sll" desc=""/>
+        <constraint exp="" field="Csl" desc=""/>
+        <constraint exp="" field="Wid1" desc=""/>
+        <constraint exp="" field="Dep1" desc=""/>
+        <constraint exp="" field="Lat" desc=""/>
+        <constraint exp="" field="Long_" desc=""/>
+        <constraint exp="" field="Elev" desc=""/>
+        <constraint exp="" field="ElevMin" desc=""/>
+        <constraint exp="" field="ElevMax" desc=""/>
+        <constraint exp="" field="Bname" desc=""/>
+        <constraint exp="" field="Shape_Len" desc=""/>
+        <constraint exp="" field="Shape_Area" desc=""/>
+        <constraint exp="" field="HydroID" desc=""/>
+        <constraint exp="" field="OutletID" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
         <columns>
-          <column name="Area" type="field" width="-1" hidden="0"/>
-          <column name="Subbasin" type="field" width="-1" hidden="0"/>
-          <column type="actions" width="-1" hidden="1"/>
-          <column name="Slo1" type="field" width="-1" hidden="0"/>
-          <column name="Len1" type="field" width="-1" hidden="0"/>
-          <column name="Sll" type="field" width="-1" hidden="0"/>
-          <column name="Csl" type="field" width="-1" hidden="0"/>
-          <column name="Wid1" type="field" width="-1" hidden="0"/>
-          <column name="Dep1" type="field" width="-1" hidden="0"/>
-          <column name="Lat" type="field" width="-1" hidden="0"/>
-          <column name="Long_" type="field" width="-1" hidden="0"/>
-          <column name="Elev" type="field" width="-1" hidden="0"/>
-          <column name="ElevMin" type="field" width="-1" hidden="0"/>
-          <column name="ElevMax" type="field" width="-1" hidden="0"/>
-          <column name="Bname" type="field" width="-1" hidden="0"/>
-          <column name="Shape_Len" type="field" width="-1" hidden="0"/>
-          <column name="Shape_Area" type="field" width="-1" hidden="0"/>
-          <column name="HydroID" type="field" width="-1" hidden="0"/>
-          <column name="OutletID" type="field" width="-1" hidden="0"/>
+          <column name="Area" width="-1" hidden="0" type="field"/>
+          <column name="Subbasin" width="-1" hidden="0" type="field"/>
+          <column width="-1" hidden="1" type="actions"/>
+          <column name="Slo1" width="-1" hidden="0" type="field"/>
+          <column name="Len1" width="-1" hidden="0" type="field"/>
+          <column name="Sll" width="-1" hidden="0" type="field"/>
+          <column name="Csl" width="-1" hidden="0" type="field"/>
+          <column name="Wid1" width="-1" hidden="0" type="field"/>
+          <column name="Dep1" width="-1" hidden="0" type="field"/>
+          <column name="Lat" width="-1" hidden="0" type="field"/>
+          <column name="Long_" width="-1" hidden="0" type="field"/>
+          <column name="Elev" width="-1" hidden="0" type="field"/>
+          <column name="ElevMin" width="-1" hidden="0" type="field"/>
+          <column name="ElevMax" width="-1" hidden="0" type="field"/>
+          <column name="Bname" width="-1" hidden="0" type="field"/>
+          <column name="Shape_Len" width="-1" hidden="0" type="field"/>
+          <column name="Shape_Area" width="-1" hidden="0" type="field"/>
+          <column name="HydroID" width="-1" hidden="0" type="field"/>
+          <column name="OutletID" width="-1" hidden="0" type="field"/>
         </columns>
       </attributetableconfig>
       <conditionalstyles>
@@ -1843,25 +1843,25 @@ def my_form_open(dialog, layer, feature):
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
       <editable>
-        <field name="Area" editable="1"/>
-        <field name="Bname" editable="1"/>
-        <field name="Csl" editable="1"/>
-        <field name="Dep1" editable="1"/>
-        <field name="Elev" editable="1"/>
-        <field name="ElevMax" editable="1"/>
-        <field name="ElevMin" editable="1"/>
-        <field name="HydroID" editable="1"/>
-        <field name="Lat" editable="1"/>
-        <field name="Len1" editable="1"/>
-        <field name="Long_" editable="1"/>
-        <field name="OutletID" editable="1"/>
-        <field name="PolygonId" editable="1"/>
-        <field name="Shape_Area" editable="1"/>
-        <field name="Shape_Len" editable="1"/>
-        <field name="Sll" editable="1"/>
-        <field name="Slo1" editable="1"/>
-        <field name="Subbasin" editable="1"/>
-        <field name="Wid1" editable="1"/>
+        <field editable="1" name="Area"/>
+        <field editable="1" name="Bname"/>
+        <field editable="1" name="Csl"/>
+        <field editable="1" name="Dep1"/>
+        <field editable="1" name="Elev"/>
+        <field editable="1" name="ElevMax"/>
+        <field editable="1" name="ElevMin"/>
+        <field editable="1" name="HydroID"/>
+        <field editable="1" name="Lat"/>
+        <field editable="1" name="Len1"/>
+        <field editable="1" name="Long_"/>
+        <field editable="1" name="OutletID"/>
+        <field editable="1" name="PolygonId"/>
+        <field editable="1" name="Shape_Area"/>
+        <field editable="1" name="Shape_Len"/>
+        <field editable="1" name="Sll"/>
+        <field editable="1" name="Slo1"/>
+        <field editable="1" name="Subbasin"/>
+        <field editable="1" name="Wid1"/>
       </editable>
       <labelOnTop>
         <field name="Area" labelOnTop="0"/>
@@ -1889,14 +1889,14 @@ def my_form_open(dialog, layer, feature):
       <previewExpression>Subbasin</previewExpression>
       <mapTip>&lt;b>Subbasin:&lt;/b> [% "Subbasin" %]</mapTip>
     </maplayer>
-    <maplayer simplifyMaxScale="1" maxScale="-4.65661e-10" labelsEnabled="1" minScale="100000000" simplifyDrawingHints="1" simplifyAlgorithm="0" geometry="Polygon" styleCategories="AllStyleCategories" hasScaleBasedVisibilityFlag="0" wkbType="MultiPolygon" refreshOnNotifyEnabled="0" autoRefreshEnabled="0" autoRefreshTime="0" type="vector" readOnly="0" simplifyLocal="1" simplifyDrawingTol="1" refreshOnNotifyMessage="">
+    <maplayer autoRefreshEnabled="0" simplifyDrawingTol="1" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="-4.65661e-10" styleCategories="AllStyleCategories" simplifyMaxScale="1" simplifyLocal="1" wkbType="MultiPolygon" readOnly="0" simplifyDrawingHints="1" refreshOnNotifyEnabled="0" labelsEnabled="1" minScale="100000000" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0">
       <extent>
         <xmin>639150</xmin>
         <ymin>4854150</ymin>
         <xmax>658850</xmax>
         <ymax>4878450</ymax>
       </extent>
-      <id>Watershed__duff_demwshed__0b962ea5_c399_4053_88ec_29d2431d6983</id>
+      <id>Watershed__duff_demwshed__ccbb20b6_418d_461b_ac21_2e82ddb6bfad</id>
       <datasource>./test/Source/duff_demwshed.shp</datasource>
       <keywordList>
         <value></value>
@@ -1954,58 +1954,58 @@ def my_form_open(dialog, layer, feature):
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <temporal mode="0" durationUnit="min" fixedDuration="0" endField="" enabled="0" endExpression="" accumulate="0" durationField="" startField="" startExpression="">
+      <temporal startField="" startExpression="" endExpression="" fixedDuration="0" mode="0" accumulate="0" endField="" durationField="" durationUnit="min" enabled="0">
         <fixedRange>
           <start></start>
           <end></end>
         </fixedRange>
       </temporal>
-      <renderer-v2 type="RuleRenderer" forceraster="0" enableorderby="0" symbollevels="0">
+      <renderer-v2 symbollevels="0" enableorderby="0" type="RuleRenderer" forceraster="0">
         <rules key="{192bdd02-ed6d-4f65-842d-a83746e86517}">
-          <rule filter="&quot;Subbasin&quot;  IS NULL OR &quot;Subbasin&quot;  > 0 " key="{4b960711-df1e-4d23-bc17-d5ffaae25809}" symbol="0" label="SWAT subbasin" description="Included in SWAT model"/>
-          <rule filter="&quot;Subbasin&quot;  =  0" key="{96ec9113-62fe-4bba-a4e0-917d85ec2586}" symbol="1" label="Upstream from inlet" description="Excluded from SWAT model"/>
+          <rule symbol="0" filter="&quot;Subbasin&quot;  IS NULL OR &quot;Subbasin&quot;  > 0 " label="SWAT subbasin" key="{4b960711-df1e-4d23-bc17-d5ffaae25809}" description="Included in SWAT model"/>
+          <rule symbol="1" filter="&quot;Subbasin&quot;  =  0" label="Upstream from inlet" key="{96ec9113-62fe-4bba-a4e0-917d85ec2586}" description="Excluded from SWAT model"/>
         </rules>
         <symbols>
-          <symbol name="0" type="fill" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleFill" pass="0" enabled="1" locked="0">
-              <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="color" v="32,37,161,255"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="255,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0.26"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="style" v="no"/>
+          <symbol name="0" clip_to_extent="1" alpha="1" force_rhr="0" type="fill">
+            <layer locked="0" class="SimpleFill" pass="0" enabled="1">
+              <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
+              <prop v="32,37,161,255" k="color"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="255,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0.26" k="outline_width"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="no" k="style"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
           </symbol>
-          <symbol name="1" type="fill" force_rhr="0" alpha="1" clip_to_extent="1">
-            <layer class="SimpleFill" pass="0" enabled="1" locked="0">
-              <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="color" v="255,255,255,255"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0.26"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="style" v="no"/>
+          <symbol name="1" clip_to_extent="1" alpha="1" force_rhr="0" type="fill">
+            <layer locked="0" class="SimpleFill" pass="0" enabled="1">
+              <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
+              <prop v="255,255,255,255" k="color"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0.26" k="outline_width"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="no" k="style"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" type="QString" value=""/>
+                  <Option value="" name="name" type="QString"/>
                   <Option name="properties"/>
-                  <Option name="type" type="QString" value="collection"/>
+                  <Option value="collection" name="type" type="QString"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -2014,51 +2014,51 @@ def my_form_open(dialog, layer, feature):
       </renderer-v2>
       <labeling type="simple">
         <settings calloutType="simple">
-          <text-style fontWeight="50" namedStyle="Normal" fontLetterSpacing="0" fontItalic="0" fontUnderline="0" fontSize="8.25" fontWordSpacing="0" blendMode="0" multilineHeight="1" fontStrikeout="0" allowHtml="0" isExpression="1" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="0,0,0,255" capitalization="0" textOpacity="1" fontSizeUnit="Point" fontKerning="1" textOrientation="horizontal" useSubstitutions="0" previewBkgrdColor="255,255,255,255" fontFamily="MS Shell Dlg 2" fieldName="CASE WHEN &quot;Subbasin&quot; = 0 THEN '' ELSE &quot;Subbasin&quot; END">
-            <text-buffer bufferDraw="0" bufferSizeUnits="MM" bufferSize="1" bufferJoinStyle="64" bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferOpacity="1" bufferColor="255,255,255,255" bufferNoFill="0"/>
-            <text-mask maskSizeUnits="MM" maskSize="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskOpacity="1" maskedSymbolLayers="" maskJoinStyle="128" maskType="0" maskEnabled="0"/>
-            <background shapeRadiiX="0" shapeDraw="0" shapeType="0" shapeBlendMode="0" shapeOffsetX="0" shapeSizeUnit="MM" shapeRotation="0" shapeFillColor="255,255,255,255" shapeSVGFile="" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeSizeType="0" shapeBorderWidth="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeJoinStyle="64" shapeOpacity="1" shapeBorderWidthUnit="MM" shapeOffsetY="0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeSizeX="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiUnit="MM" shapeSizeY="0" shapeRotationType="0" shapeBorderColor="128,128,128,255" shapeRadiiY="0"/>
-            <shadow shadowOffsetDist="1" shadowScale="100" shadowDraw="0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowUnder="0" shadowBlendMode="6" shadowOffsetAngle="135" shadowColor="0,0,0,255" shadowOffsetGlobal="1" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOpacity="0.7" shadowRadius="1.5" shadowOffsetUnit="MM" shadowRadiusUnit="MM"/>
+          <text-style fontWeight="50" multilineHeight="1" isExpression="1" fieldName="CASE WHEN &quot;Subbasin&quot; = 0 THEN '' ELSE &quot;Subbasin&quot; END" useSubstitutions="0" fontLetterSpacing="0" textColor="0,0,0,255" fontSizeMapUnitScale="3x:0,0,0,0,0,0" capitalization="0" fontUnderline="0" fontStrikeout="0" blendMode="0" allowHtml="0" textOpacity="1" textOrientation="horizontal" namedStyle="Normal" fontWordSpacing="0" fontSize="8.25" fontSizeUnit="Point" fontKerning="1" previewBkgrdColor="255,255,255,255" fontItalic="0" fontFamily="MS Shell Dlg 2">
+            <text-buffer bufferSize="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="0" bufferOpacity="1" bufferBlendMode="0" bufferJoinStyle="64" bufferColor="255,255,255,255" bufferNoFill="0" bufferSizeUnits="MM"/>
+            <text-mask maskedSymbolLayers="" maskType="0" maskOpacity="1" maskSizeUnits="MM" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="0" maskSize="1.5" maskJoinStyle="128"/>
+            <background shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeX="0" shapeFillColor="255,255,255,255" shapeOffsetUnit="MM" shapeSizeY="0" shapeOffsetX="0" shapeBorderColor="128,128,128,255" shapeRadiiY="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeSVGFile="" shapeSizeType="0" shapeRotationType="0" shapeBorderWidth="0" shapeType="0" shapeBorderWidthUnit="MM" shapeRadiiX="0" shapeRadiiUnit="MM" shapeJoinStyle="64" shapeOpacity="1" shapeOffsetY="0" shapeDraw="0" shapeBlendMode="0" shapeRotation="0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeSizeUnit="MM"/>
+            <shadow shadowColor="0,0,0,255" shadowOffsetUnit="MM" shadowOffsetAngle="135" shadowUnder="0" shadowRadius="1.5" shadowRadiusUnit="MM" shadowRadiusAlphaOnly="0" shadowOpacity="0.7" shadowDraw="0" shadowBlendMode="6" shadowOffsetDist="1" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetGlobal="1" shadowScale="100" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0"/>
             <dd_properties>
               <Option type="Map">
-                <Option name="name" type="QString" value=""/>
+                <Option value="" name="name" type="QString"/>
                 <Option name="properties"/>
-                <Option name="type" type="QString" value="collection"/>
+                <Option value="collection" name="type" type="QString"/>
               </Option>
             </dd_properties>
             <substitutions/>
           </text-style>
-          <text-format reverseDirectionSymbol="0" placeDirectionSymbol="0" addDirectionSymbol="0" leftDirectionSymbol="&lt;" autoWrapLength="0" useMaxLineLengthForAutoWrap="1" wrapChar="" rightDirectionSymbol=">" plussign="0" formatNumbers="0" multilineAlign="0" decimals="3"/>
-          <placement yOffset="0" fitInPolygonOnly="0" overrunDistance="0" maxCurvedCharAngleIn="20" geometryGeneratorType="PointGeometry" layerType="UnknownGeometry" placement="1" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" dist="0" rotationAngle="0" centroidWhole="1" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" repeatDistance="0" geometryGenerator="" preserveRotation="1" placementFlags="0" lineAnchorType="0" distUnits="MM" priority="5" offsetType="0" offsetUnits="MapUnit" quadOffset="4" distMapUnitScale="3x:0,0,0,0,0,0" overrunDistanceUnit="MM" repeatDistanceUnits="MM" xOffset="0" geometryGeneratorEnabled="0" maxCurvedCharAngleOut="-20" polygonPlacementFlags="2" lineAnchorPercent="0.5" centroidInside="1"/>
-          <rendering drawLabels="1" labelPerPart="0" upsidedownLabels="0" minFeatureSize="0" obstacleFactor="1" displayAll="0" fontMinPixelSize="3" maxNumLabels="2000" scaleMax="10000000" obstacleType="0" mergeLines="0" fontLimitPixelSize="0" fontMaxPixelSize="10000" zIndex="0" obstacle="1" scaleMin="1" scaleVisibility="0" limitNumLabels="0"/>
+          <text-format formatNumbers="0" wrapChar="" rightDirectionSymbol=">" reverseDirectionSymbol="0" useMaxLineLengthForAutoWrap="1" decimals="3" autoWrapLength="0" leftDirectionSymbol="&lt;" placeDirectionSymbol="0" multilineAlign="0" addDirectionSymbol="0" plussign="0"/>
+          <placement dist="0" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" placement="1" geometryGeneratorType="PointGeometry" preserveRotation="1" xOffset="0" repeatDistanceUnits="MM" lineAnchorType="0" geometryGeneratorEnabled="0" repeatDistance="0" distMapUnitScale="3x:0,0,0,0,0,0" maxCurvedCharAngleIn="20" priority="5" geometryGenerator="" overrunDistanceUnit="MM" rotationAngle="0" offsetType="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" polygonPlacementFlags="2" offsetUnits="MapUnit" layerType="UnknownGeometry" quadOffset="4" centroidWhole="1" distUnits="MM" centroidInside="1" placementFlags="0" maxCurvedCharAngleOut="-20" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" yOffset="0" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" fitInPolygonOnly="0" lineAnchorPercent="0.5" overrunDistance="0"/>
+          <rendering scaleVisibility="0" obstacle="1" labelPerPart="0" obstacleType="0" zIndex="0" displayAll="0" maxNumLabels="2000" fontMinPixelSize="3" limitNumLabels="0" mergeLines="0" scaleMax="10000000" fontMaxPixelSize="10000" scaleMin="1" obstacleFactor="1" drawLabels="1" fontLimitPixelSize="0" minFeatureSize="0" upsidedownLabels="0"/>
           <dd_properties>
             <Option type="Map">
-              <Option name="name" type="QString" value=""/>
+              <Option value="" name="name" type="QString"/>
               <Option name="properties"/>
-              <Option name="type" type="QString" value="collection"/>
+              <Option value="collection" name="type" type="QString"/>
             </Option>
           </dd_properties>
           <callout type="simple">
             <Option type="Map">
-              <Option name="anchorPoint" type="QString" value="pole_of_inaccessibility"/>
+              <Option value="pole_of_inaccessibility" name="anchorPoint" type="QString"/>
               <Option name="ddProperties" type="Map">
-                <Option name="name" type="QString" value=""/>
+                <Option value="" name="name" type="QString"/>
                 <Option name="properties"/>
-                <Option name="type" type="QString" value="collection"/>
+                <Option value="collection" name="type" type="QString"/>
               </Option>
-              <Option name="drawToAllParts" type="bool" value="false"/>
-              <Option name="enabled" type="QString" value="0"/>
-              <Option name="labelAnchorPoint" type="QString" value="point_on_exterior"/>
-              <Option name="lineSymbol" type="QString" value="&lt;symbol name=&quot;symbol&quot; type=&quot;line&quot; force_rhr=&quot;0&quot; alpha=&quot;1&quot; clip_to_extent=&quot;1&quot;>&lt;layer class=&quot;SimpleLine&quot; pass=&quot;0&quot; enabled=&quot;1&quot; locked=&quot;0&quot;>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;square&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;bevel&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;60,60,60,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.3&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
-              <Option name="minLength" type="double" value="0"/>
-              <Option name="minLengthMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="minLengthUnit" type="QString" value="MM"/>
-              <Option name="offsetFromAnchor" type="double" value="0"/>
-              <Option name="offsetFromAnchorMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="offsetFromAnchorUnit" type="QString" value="MM"/>
-              <Option name="offsetFromLabel" type="double" value="0"/>
-              <Option name="offsetFromLabelMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="offsetFromLabelUnit" type="QString" value="MM"/>
+              <Option value="false" name="drawToAllParts" type="bool"/>
+              <Option value="0" name="enabled" type="QString"/>
+              <Option value="point_on_exterior" name="labelAnchorPoint" type="QString"/>
+              <Option value="&lt;symbol name=&quot;symbol&quot; clip_to_extent=&quot;1&quot; alpha=&quot;1&quot; force_rhr=&quot;0&quot; type=&quot;line&quot;>&lt;layer locked=&quot;0&quot; class=&quot;SimpleLine&quot; pass=&quot;0&quot; enabled=&quot;1&quot;>&lt;prop v=&quot;0&quot; k=&quot;align_dash_pattern&quot;/>&lt;prop v=&quot;square&quot; k=&quot;capstyle&quot;/>&lt;prop v=&quot;5;2&quot; k=&quot;customdash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;customdash_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;customdash_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;dash_pattern_offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;dash_pattern_offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;dash_pattern_offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;draw_inside_polygon&quot;/>&lt;prop v=&quot;bevel&quot; k=&quot;joinstyle&quot;/>&lt;prop v=&quot;60,60,60,255&quot; k=&quot;line_color&quot;/>&lt;prop v=&quot;solid&quot; k=&quot;line_style&quot;/>&lt;prop v=&quot;0.3&quot; k=&quot;line_width&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;line_width_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;ring_filter&quot;/>&lt;prop v=&quot;0&quot; k=&quot;tweak_dash_pattern_on_corners&quot;/>&lt;prop v=&quot;0&quot; k=&quot;use_custom_dash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;width_map_unit_scale&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option value=&quot;&quot; name=&quot;name&quot; type=&quot;QString&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option value=&quot;collection&quot; name=&quot;type&quot; type=&quot;QString&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>" name="lineSymbol" type="QString"/>
+              <Option value="0" name="minLength" type="double"/>
+              <Option value="3x:0,0,0,0,0,0" name="minLengthMapUnitScale" type="QString"/>
+              <Option value="MM" name="minLengthUnit" type="QString"/>
+              <Option value="0" name="offsetFromAnchor" type="double"/>
+              <Option value="3x:0,0,0,0,0,0" name="offsetFromAnchorMapUnitScale" type="QString"/>
+              <Option value="MM" name="offsetFromAnchorUnit" type="QString"/>
+              <Option value="0" name="offsetFromLabel" type="double"/>
+              <Option value="3x:0,0,0,0,0,0" name="offsetFromLabelMapUnitScale" type="QString"/>
+              <Option value="MM" name="offsetFromLabelUnit" type="QString"/>
             </Option>
           </callout>
         </settings>
@@ -2102,23 +2102,23 @@ def my_form_open(dialog, layer, feature):
         <alias name="" field="Subbasin" index="2"/>
       </aliases>
       <defaults>
-        <default expression="" applyOnUpdate="0" field="PolygonId"/>
-        <default expression="" applyOnUpdate="0" field="Area"/>
-        <default expression="" applyOnUpdate="0" field="Subbasin"/>
+        <default applyOnUpdate="0" field="PolygonId" expression=""/>
+        <default applyOnUpdate="0" field="Area" expression=""/>
+        <default applyOnUpdate="0" field="Subbasin" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="PolygonId"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Area"/>
-        <constraint constraints="0" unique_strength="0" notnull_strength="0" exp_strength="0" field="Subbasin"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="PolygonId"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Area"/>
+        <constraint constraints="0" notnull_strength="0" unique_strength="0" exp_strength="0" field="Subbasin"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="PolygonId"/>
-        <constraint exp="" desc="" field="Area"/>
-        <constraint exp="" desc="" field="Subbasin"/>
+        <constraint exp="" field="PolygonId" desc=""/>
+        <constraint exp="" field="Area" desc=""/>
+        <constraint exp="" field="Subbasin" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
         <columns/>
       </attributetableconfig>
       <conditionalstyles>
@@ -2142,14 +2142,14 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
   </projectlayers>
   <layerorder>
-    <layer id="DEM__duff_dem__8255ab3f_4fcf_4bf9_8f5a_5e64e0419056"/>
-    <layer id="Inlets_outlets__duff_out__5a21e385_d7de_46bb_9e57_a23f87731423"/>
-    <layer id="Streams__duff_demnet__5f42e388_0caf_43fb_b583_4cb3aeb3bb41"/>
-    <layer id="Watershed__duff_demwshed__0b962ea5_c399_4053_88ec_29d2431d6983"/>
-    <layer id="Reaches__riv1__d96d6448_0f3f_4034_824b_3c40c1312243"/>
-    <layer id="Landuses__duff_landuse__19654feb_9730_4787_9066_c679f9e3643f"/>
-    <layer id="Soils__duff_soil__29462d01_a8b6_4adf_9f45_3745b52fbbd5"/>
-    <layer id="Subbasins__subs1__8d619d09_9942_4e84_8528_8ff69f041d56"/>
+    <layer id="DEM__duff_dem__3cc11fe5_2f36_4eca_ac3c_1460bc64b23b"/>
+    <layer id="Inlets_outlets__duff_out__7cc90c40_63f9_49f7_86d6_f382b3390dd3"/>
+    <layer id="Streams__duff_demnet__15df7db5_8cab_4431_bc64_69c9f35f2ab5"/>
+    <layer id="Watershed__duff_demwshed__ccbb20b6_418d_461b_ac21_2e82ddb6bfad"/>
+    <layer id="Reaches__riv1__64e4dd8f_c1bf_4000_8cef_02e7fa7c2e87"/>
+    <layer id="Landuses__duff_landuse__276987d5_3fb7_4ac2_bd84_56eae371e5ad"/>
+    <layer id="Soils__duff_soil__445d791f_0f44_45c7_b3f7_0cdf52609b2e"/>
+    <layer id="Subbasins__subs1__5d56191a_41f8_47fc_9e92_f89a4d1fc0f7"/>
   </layerorder>
   <properties>
     <Digitizing>
@@ -2242,9 +2242,9 @@ def my_form_open(dialog, layer, feature):
   </properties>
   <dataDefinedServerProperties>
     <Option type="Map">
-      <Option name="name" type="QString" value=""/>
+      <Option value="" name="name" type="QString"/>
       <Option name="properties"/>
-      <Option name="type" type="QString" value="collection"/>
+      <Option value="collection" name="type" type="QString"/>
     </Option>
   </dataDefinedServerProperties>
   <visibility-presets/>
@@ -2265,7 +2265,7 @@ def my_form_open(dialog, layer, feature):
   <Bookmarks/>
   <ProjectViewSettings UseProjectScales="0">
     <Scales/>
-    <DefaultViewExtent xmax="3.5" xmin="-3.5" ymin="-1" ymax="1">
+    <DefaultViewExtent xmin="-3.5" ymax="1" xmax="3.5" ymin="-1">
       <spatialrefsys>
         <wkt>GEOGCRS["WGS 84",DATUM["World Geodetic System 1984",ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],USAGE[SCOPE["unknown"],AREA["World"],BBOX[-90,-180,90,180]],ID["EPSG",4326]]</wkt>
         <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
@@ -2279,18 +2279,18 @@ def my_form_open(dialog, layer, feature):
       </spatialrefsys>
     </DefaultViewExtent>
   </ProjectViewSettings>
-  <ProjectTimeSettings timeStepUnit="h" timeStep="1" frameRate="1" cumulativeTemporalRange="0"/>
+  <ProjectTimeSettings timeStepUnit="h" cumulativeTemporalRange="0" frameRate="1" timeStep="1"/>
   <ProjectDisplaySettings>
     <BearingFormat id="bearing">
       <Option type="Map">
-        <Option name="decimal_separator" type="QChar" value=""/>
-        <Option name="decimals" type="int" value="6"/>
-        <Option name="direction_format" type="int" value="0"/>
-        <Option name="rounding_type" type="int" value="0"/>
-        <Option name="show_plus" type="bool" value="false"/>
-        <Option name="show_thousand_separator" type="bool" value="true"/>
-        <Option name="show_trailing_zeros" type="bool" value="false"/>
-        <Option name="thousand_separator" type="QChar" value=""/>
+        <Option value="" name="decimal_separator" type="QChar"/>
+        <Option value="6" name="decimals" type="int"/>
+        <Option value="0" name="direction_format" type="int"/>
+        <Option value="0" name="rounding_type" type="int"/>
+        <Option value="false" name="show_plus" type="bool"/>
+        <Option value="true" name="show_thousand_separator" type="bool"/>
+        <Option value="false" name="show_trailing_zeros" type="bool"/>
+        <Option value="" name="thousand_separator" type="QChar"/>
       </Option>
     </BearingFormat>
   </ProjectDisplaySettings>

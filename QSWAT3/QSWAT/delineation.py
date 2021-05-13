@@ -1598,19 +1598,35 @@ class Delineation(QObject):
         uslinkno2Field = self._gv.topo.getIndex(streamLayer, QSWATTopology._USLINKNO2, ignoreMissing=True)
         dsnodeidnField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DSNODEID, ignoreMissing=True)
         orderField = self._gv.topo.getIndex(streamLayer, QSWATTopology._ORDER, ignoreMissing=True)
+        if orderField < 0:
+            orderField = self._gv.topo.getIndex(streamLayer, QSWATTopology._ORDER2, ignoreMissing=True)
         lengthField = self._gv.topo.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=True)
         magnitudeField = self._gv.topo.getIndex(streamLayer, QSWATTopology._MAGNITUDE, ignoreMissing=True)
         ds_cont_arField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DS_CONT_AR, ignoreMissing=True)
+        if ds_cont_arField < 0:
+            ds_cont_arField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DS_CONT_AR2, ignoreMissing=True)
         dropField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DROP, ignoreMissing=True)
+        if dropField < 0:
+            dropField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DROP2, ignoreMissing=True)
         slopeField = self._gv.topo.getIndex(streamLayer, QSWATTopology._SLOPE, ignoreMissing=True)
         straight_lField = self._gv.topo.getIndex(streamLayer, QSWATTopology._STRAIGHT_L, ignoreMissing=True)
+        if straight_lField < 0:
+            straight_lField = self._gv.topo.getIndex(streamLayer, QSWATTopology._STRAIGHT_L2, ignoreMissing=True)
         us_cont_arField = self._gv.topo.getIndex(streamLayer, QSWATTopology._US_CONT_AR, ignoreMissing=True)
+        if us_cont_arField < 0:
+            us_cont_arField = self._gv.topo.getIndex(streamLayer, QSWATTopology._US_CONT_AR2, ignoreMissing=True)
         wsnoField = self._gv.topo.getIndex(streamLayer, QSWATTopology._WSNO)
         if wsnoField < 0:
             return
         dout_endField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DOUT_END, ignoreMissing=True)
+        if dout_endField < 0:
+            dout_endField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DOUT_END2, ignoreMissing=True)
         dout_startField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DOUT_START, ignoreMissing=True)
+        if dout_startField < 0:
+            dout_startField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DOUT_START2, ignoreMissing=True)
         dout_midField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DOUT_MID, ignoreMissing=True)
+        if dout_midField < 0:
+            dout_midField = self._gv.topo.getIndex(streamLayer, QSWATTopology._DOUT_MID2, ignoreMissing=True)
         if outletLayer:
             nodeidField = self._gv.topo.getIndex(outletLayer, QSWATTopology._ID, ignoreMissing=True)
             srcField = self._gv.topo.getIndex(outletLayer, QSWATTopology._PTSOURCE, ignoreMissing=True)
