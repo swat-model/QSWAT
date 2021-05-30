@@ -1,6 +1,6 @@
 from distutils.core import setup
     
-from Cython.Build import cythonize
+from Cython.Build import cythonize  # @UnresolvedImport
 import os
 import numpy
 includePath = os.environ['OSGEO4W_ROOT'] + r'/apps/Python37/include'

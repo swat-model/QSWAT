@@ -7,3 +7,7 @@
 *.pyd
 *.so
 ui_*.py
+*.exp
+*.pyd
+*.obj
+

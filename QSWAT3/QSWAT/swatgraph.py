@@ -11,9 +11,9 @@ Created on Dec 30, 2015
  *                                                                         *
  ***************************************************************************/
  '''
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import *  # @UnusedWildImport
-from PyQt5.QtWidgets import *  # @UnusedWildImport
+from qgis.PyQt.QtCore import Qt, QObject, QSettings
+#from qgis.PyQt.QtGui import *  # @UnusedWildImport
+from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QMessageBox, QTableWidgetItem
 
 import sys
 import os

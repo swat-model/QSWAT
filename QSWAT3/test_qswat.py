@@ -22,12 +22,12 @@
 
 # derived from http://snorf.net/blog/2014/01/04/writing-unit-tests-for-qgis-python-plugins/
 
-from qgis.core import QgsApplication, QgsUnitTypes, QgsProject, QgsProviderRegistry  # @UnresolvedImport
+from qgis.core import QgsApplication, QgsUnitTypes, QgsProject, QgsProviderRegistry
 from qgis.gui import * # @UnusedWildImport
 
-from PyQt5.QtCore import Qt, pyqtSlot, QFileInfo, QObject  # @UnresolvedImport
+from qgis.PyQt.QtCore import Qt, pyqtSlot, QFileInfo, QObject
 # from PyQt5.QtGui import * # @UnusedWildImport
-from PyQt5 import QtTest
+from qgis.PyQt import QtTest
 import os.path
 from osgeo import gdal
 import shutil
@@ -67,9 +67,9 @@ atexit.register(QgsApplication.exitQgis)
 
 class DummyInterface(object):
     """Dummy iface."""
-    def __getattr__(self, *args, **kwargs):
+    def __getattr__(self, *args, **kwargs):  # @UnusedVariable
         """Dummy function."""
-        def dummy(*args, **kwargs):
+        def dummy(*args, **kwargs):  # @UnusedVariable
             return self
         return dummy
     def __iter__(self):

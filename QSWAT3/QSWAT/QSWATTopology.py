@@ -20,10 +20,10 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import QPoint, QVariant  # @UnresolvedImport
-from PyQt5.QtGui import * # @UnusedWildImport
-from PyQt5.QtWidgets import * # @UnusedWildImport
-from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider  # @UnresolvedImport
+from qgis.PyQt.QtCore import QPoint, QVariant
+#from qgis.PyQt.QtGui import * # @UnusedWildImport
+#from qgis.PyQt.QtWidgets import * # @UnusedWildImport
+from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider
 from osgeo import gdal
 from numpy import * # @UnusedWildImport
 import os.path

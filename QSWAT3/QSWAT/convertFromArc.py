@@ -13,10 +13,10 @@ Created on 8 August, 2018
  '''
 from qgis.core import QgsApplication, QgsWkbTypes, QgsFeature, QgsGeometry, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsRasterLayer, QgsVectorFileWriter  # @UnresolvedImport
 # from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import *  # @UnusedWildImport
-from PyQt5.QtWidgets import *  # @UnusedWildImport
-import sys
+from qgis.PyQt.QtCore import QObject, QSettings, Qt, QVariant
+#from qgis.PyQt.QtGui import *  # @UnusedWildImport
+from qgis.PyQt.QtWidgets import QFileDialog, QInputDialog, QMessageBox
+#import sys
 import os
 import shutil
 import glob

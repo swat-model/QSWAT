@@ -20,9 +20,9 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import * # @UnusedWildImport
-from qgis.core import * # @UnusedWildImport
+from qgis.PyQt.QtCore import Qt
+#from PyQt5.QtGui import * # @UnusedWildImport
+#from qgis.core import * # @UnusedWildImport
 # Import the code for the dialog
 from .aboutdialog import aboutDialog  # @UnresolvedImport
 import webbrowser

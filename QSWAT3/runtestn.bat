@@ -1,8 +1,8 @@
-SET OSGEO4W_ROOT=C:\Program Files (x86)\QGIS 3.16
+SET OSGEO4W_ROOT=G:\Program Files (x86)\QGIS 3.16
 set PYTHONHOME=%OSGEO4W_ROOT%\apps\Python37
-set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python
+set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis-ltr\python
 rem QGIS binaries
-set PATH=%PATH%;%OSGEO4W_ROOT%\bin;%OSGEO4W_ROOT%\apps\qgis-ltr\bin;%OSGEO4W_ROOT%\apps\qgis-ltr\python;%OSGEO4W_ROOT%\apps\Python37;%OSGEO4W_ROOT%\apps\Python37\Scripts;%OSGEO4W_ROOT%\apps\qt5\bin;%OSGEO4W_ROOT%\bin 
+set PATH=%PATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\bin;%OSGEO4W_ROOT%\apps\qgis-ltr\python;%OSGEO4W_ROOT%\apps\Python37;%OSGEO4W_ROOT%\apps\Python37\Scripts;%OSGEO4W_ROOT%\apps\qt5\bin;%OSGEO4W_ROOT%\bin 
 rem disable QGIS console messages
 set QGIS_DEBUG=-1
 

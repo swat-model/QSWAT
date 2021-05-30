@@ -20,10 +20,10 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import * # @UnusedWildImport
-from PyQt5.QtXml import * # @UnusedWildImport
+from qgis.PyQt.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
+from qgis.PyQt.QtGui import QColor
+from qgis.PyQt.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
+from qgis.PyQt.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap
 from qgis.core import Qgis, \
                         QgsApplication, \
                         QgsColorRampShader, \
@@ -47,7 +47,7 @@ from qgis.core import Qgis, \
                         QgsGeometry, \
                         QgsWkbTypes, \
                         QgsFeatureRequest, \
-                        QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem  # @UnusedImport
+                        QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem
 import os.path
 import posixpath
 import ntpath
@@ -762,7 +762,7 @@ class QSWATUtils:
         
     @staticmethod    
     def openAndLoadFile(root: QgsLayerTreeGroup, ft: int,
-                        box: QTextEdit, saveDir: str, gv: Any, 
+                        box: QLineEdit, saveDir: str, gv: Any, 
                         subLayer: QgsLayerTreeLayer, groupName: str, clipToDEM: bool=False, runFix: bool=False) \
                             -> Tuple[Optional[str], Optional[QgsMapLayer]]:
         """
@@ -788,11 +788,11 @@ class QSWATUtils:
         if inFileName is not None and inFileName != '':
             settings.setValue('/QSWATPlus/LastInputPath', os.path.dirname(str(inFileName)))
             # copy to saveDir if necessary
-            inInfo: QFileInfo = QFileInfo(inFileName)
-            inDir: QDir = inInfo.absoluteDir()
-            outDir: QDir = QDir(saveDir)
+            inInfo = QFileInfo(inFileName)
+            inDir = inInfo.absoluteDir()
+            outDir = QDir(saveDir)
             if inDir != outDir:
-                inFile: str = inInfo.fileName()
+                inFile = inInfo.fileName()
                 if inFile == 'sta.adf' or inFile == 'hdr.adf':
                     # ESRI grid - whole directory will be copied to saveDir
                     inDirName: str = inInfo.dir().dirName()

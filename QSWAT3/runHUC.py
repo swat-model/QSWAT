@@ -22,7 +22,7 @@
 
 
 from qgis.core import QgsApplication, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsExpression,  QgsFeatureRequest # @UnresolvedImport
-from PyQt5.QtCore import * # @UnusedWildImport
+#from PyQt5.QtCore import * # @UnusedWildImport
 import atexit
 import sys
 import os
@@ -53,9 +53,9 @@ atexit.register(QgsApplication.exitQgis)
 
 class DummyInterface(object):
     """Dummy iface."""
-    def __getattr__(self, *args, **kwargs):
+    def __getattr__(self, *args, **kwargs):  # @UnusedVariable
         """Dummy function."""
-        def dummy(*args, **kwargs):
+        def dummy(*args, **kwargs):  # @UnusedVariable
             return self
         return dummy
     def __iter__(self):

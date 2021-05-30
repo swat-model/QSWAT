@@ -20,9 +20,9 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import *  # @UnusedWildImport
-from qgis.core import * # @UnusedWildImport
+from qgis.PyQt.QtCore import pyqtSignal, QObject, QRunnable
+#from qgis.PyQt.QtGui import *  # @UnusedWildImport
+from qgis.core import QgsGeometry, QgsPointXY
 # from multiprocessing import Pool
 import time
 from .QSWATUtils import QSWATUtils  # @UnresolvedImport

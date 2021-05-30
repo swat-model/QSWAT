@@ -20,10 +20,10 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import Qt, QPoint, QVariant  # @UnresolvedImport @UnusedImport
+from qgis.PyQt.QtCore import Qt
 #from PyQt5.QtGui import * # @UnusedWildImport
-from PyQt5.QtWidgets import QComboBox, QListWidget  # @UnresolvedImport
-from qgis.core import QgsPointXY  # @UnresolvedImport
+from qgis.PyQt.QtWidgets import QComboBox, QListWidget
+from qgis.core import QgsPointXY
 import os.path
 import pyodbc  # type: ignore
 import sqlite3
@@ -43,7 +43,7 @@ class DBUtils:
     
     """Functions for interacting with project and reference databases."""
     
-    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, SWATExeDir: str, isHUC: bool, isBatch: bool) -> None:
+    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isBatch: bool) -> None:
         """Initialise class variables."""
         ## Flag showing if batch run
         self.isBatch = isBatch
@@ -175,7 +175,6 @@ class DBUtils:
             ## SSURGO soil database (only used with HUC)
             # changed to use copy one up frpm projDir
             self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
-            #self.SSURGODbFile = QSWATUtils.join(SWATExeDir + 'Databases', Parameters._SSURGODB_HUC)
             self.SSURGOConn = sqlite3.connect(self.SSURGODbFile)  # @UndefinedVariable
         ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
         self.SSURGOUndefined = -1

@@ -22,9 +22,9 @@
 #import os
 
 #from PyQt5 import uic
-from PyQt5 import QtWidgets
+from qgis.PyQt import QtWidgets
 
-from ui_arc_convert import Ui_qswatConvertChoice
+from ui_arc_convert import Ui_qswatConvertChoice  # @UnresolvedImport
 
 
 class ConvertDialog(QtWidgets.QDialog, Ui_qswatConvertChoice):

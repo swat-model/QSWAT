@@ -19,9 +19,8 @@
  *                                                                         *
  ***************************************************************************/
  """
-from qgis.core import QgsCoordinateReferenceSystem
+from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer
 from osgeo import gdal  # type: ignore
-from qgis.core import QgsRasterLayer
 import numpy as np
 import os
 from distutils.version import LooseVersion

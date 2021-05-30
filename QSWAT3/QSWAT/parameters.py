@@ -20,10 +20,10 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import QSettings, Qt  # @UnresolvedImport
-from PyQt5.QtGui import * # @UnusedWildImport
-from PyQt5.QtWidgets import QFileDialog  # @UnresolvedImport
-from qgis.core import * # @UnusedWildImport
+from qgis.PyQt.QtCore import QSettings, Qt
+#from qgis.PyQt.QtGui import * # @UnusedWildImport
+from qgis.PyQt.QtWidgets import QFileDialog
+#from qgis.core import *
 import os.path
 
 # Import the code for the dialog

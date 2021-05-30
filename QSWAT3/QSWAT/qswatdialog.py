@@ -22,7 +22,7 @@
 
 
 
-from PyQt5 import QtWidgets
+from qgis.PyQt import QtWidgets
  
 from .ui_qswat import Ui_QSwat
  

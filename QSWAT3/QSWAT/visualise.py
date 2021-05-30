@@ -20,12 +20,12 @@
  ***************************************************************************/
 ''' 
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
-from PyQt5.QtWidgets import * # @UnusedWildImport
-from PyQt5.QtXml import * # @UnusedWildImport
-from qgis.core import QgsApplication, QgsPointXY, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol, QgsTextAnnotation  # @UnusedImport
-from qgis.gui import * # @UnusedWildImport
+from qgis.PyQt.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer, QVariant
+from qgis.PyQt.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
+from qgis.PyQt.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QListWidgetItem, QFileDialog, QMessageBox, QShortcut, QStyleOptionGraphicsItem
+from qgis.PyQt.QtXml import QDomDocument
+from qgis.core import QgsApplication, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol
+from qgis.gui import QgsMapCanvas, QgsMapCanvasItem
 import os
 # import random
 import numpy
@@ -269,10 +269,10 @@ class Visualise(QObject):
         if wshedLayer:
             # style file like wshed.qml but does not check for subbasins upstream frm inlets
             wshedLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'wshed2.qml'))
-        streamFile = os.path.join(self._gv.shapesDir, 'riv1.shp')
-        if os.path.isfile(streamFile):
-            streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
-                                                           self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+        # streamFile = os.path.join(self._gv.shapesDir, 'riv1.shp')
+        # if os.path.isfile(streamFile):
+        #     streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
+        #                                                    self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         leftShortCut = QShortcut(QKeySequence(Qt.Key_Left), self._dlg)
         rightShortCut = QShortcut(QKeySequence(Qt.Key_Right), self._dlg)
         leftShortCut.activated.connect(self.animateStepLeft)  # type: ignore
@@ -2969,7 +2969,7 @@ class MapTitle(QgsMapCanvasItem):
         else:
             self.updateLine2(line2)
     
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: Optional[QWidget] = None) -> None:  # @UnusedVariable
+    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: Optional[QWidget] = None) -> None:  # type: ignore # @UnusedVariable
         """Paint the text."""
 #         if self.line2 is None:
 #             painter.drawText(self.rect, Qt.AlignLeft, '{0}\n{1}'.format(self.line0, self.line1))

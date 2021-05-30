@@ -20,7 +20,7 @@
  ***************************************************************************/
 """
 
-from PyQt5 import QtWidgets
+from qgis.PyQt import QtWidgets
 
 from .ui_outlets import Ui_OutletsDialog
 

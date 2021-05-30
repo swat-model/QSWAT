@@ -12,9 +12,9 @@ Created on April 1, 2018
  ***************************************************************************/
  '''
  
-from PyQt5.QtCore import QObject, QSettings, Qt
+from qgis.PyQt.QtCore import QObject, QSettings, Qt
 # from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QInputDialog, QMessageBox, QFileDialog
+from qgis.PyQt.QtWidgets import QApplication, QInputDialog, QMessageBox, QFileDialog
 from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsPointXY, QgsProject, QgsRasterLayer
 import os
 import shutil

@@ -20,14 +20,14 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import QSettings, Qt  # @UnresolvedImport
-from PyQt5.QtGui import QTextCursor  # @UnresolvedImport
-from qgis.core import QgsProject  # @UnresolvedImport
+from qgis.PyQt.QtCore import QSettings, Qt
+from qgis.PyQt.QtGui import QTextCursor
+from qgis.core import QgsProject
 import os.path
 import subprocess
 
-from .QSWATUtils import QSWATUtils  # @UnresolvedImport
-from .parameters import Parameters  # @UnresolvedImport
+from .QSWATUtils import QSWATUtils
+from .parameters import Parameters
     
 
 class TauDEMUtils:

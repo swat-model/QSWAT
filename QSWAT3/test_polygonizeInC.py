@@ -22,18 +22,18 @@
 """
 
 
-from qgis.core import QgsPointXY  # @UnresolvedImport
-from qgis.gui import * # @UnusedWildImport
+from qgis.core import QgsPointXY
+#from qgis.gui import * # @UnusedWildImport
 
-from PyQt5.QtCore import * # @UnusedWildImport
-from PyQt5.QtGui import * # @UnusedWildImport
+#from PyQt5.QtCore import * # @UnusedWildImport
+#from PyQt5.QtGui import * # @UnusedWildImport
 
 import os
 import unittest
 import random
 import numpy as np
 
-from QSWAT import polygonizeInC as Polygonize
+from QSWAT import polygonizeInC as Polygonize  # @UnresolvedImport
 
 class TestPoly(unittest.TestCase):
     """Test cases for polygonize.""" 

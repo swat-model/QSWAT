@@ -21,11 +21,11 @@
 """
 
 
-from qgis.core import QgsPointXY  # @UnresolvedImport
-from qgis.gui import * # @UnusedWildImport
+from qgis.core import QgsPointXY
+#from qgis.gui import * # @UnusedWildImport
 
-from PyQt5.QtCore import * # @UnusedWildImport
-from PyQt5.QtGui import * # @UnusedWildImport
+#from PyQt5.QtCore import * # @UnusedWildImport
+#from PyQt5.QtGui import * # @UnusedWildImport
 
 import unittest
 import random

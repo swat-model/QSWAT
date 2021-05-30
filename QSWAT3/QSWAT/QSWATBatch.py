@@ -21,17 +21,17 @@
 
 # derived from http://snorf.net/blog/2014/01/04/writing-unit-tests-for-qgis-python-plugins/
 
-from qgis.core import QgsApplication, QgsProject, QgsProviderRegistry  # @UnresolvedImport
-from qgis.gui import * # @UnusedWildImport
+from qgis.core import QgsApplication, QgsProject, QgsProviderRegistry
+#from qgis.gui import * # @UnusedWildImport
 
-from PyQt5.QtCore import * # @UnusedWildImport
-from PyQt5.QtGui import * # @UnusedWildImport
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo
+#from qgis.PyQt.QtGui import * # @UnusedWildImport
 import sys
 import os.path
 import shutil
 
 import atexit
-import qswat
+import qswat  # @UnresolvedImport
 from .delineation import Delineation  # @UnresolvedImport
 from .hrus import HRUs  # @UnresolvedImport
 from .QSWATUtils import QSWATUtils  # @UnresolvedImport
@@ -56,9 +56,9 @@ atexit.register(QgsApplication.exitQgis)
 
 class DummyInterface(object):
     """Dummy iface to give access to layers."""
-    def __getattr__(self, *args, **kwargs):
+    def __getattr__(self, *args, **kwargs):  # @UnusedVariable
         """Dummy function."""
-        def dummy(*args, **kwargs):
+        def dummy(*args, **kwargs):  # @UnusedVariable
             return self
         return dummy
     def __iter__(self):

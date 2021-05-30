@@ -20,19 +20,19 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import * # @UnusedWildImport
+from qgis.PyQt.QtCore import QFileInfo, QPoint, QSettings
 #from PyQt5.QtGui import * # @UnusedWildImport
-from PyQt5.QtWidgets import * # @UnusedWildImport
+from qgis.PyQt.QtWidgets import QComboBox
 from qgis.core import QgsProject, QgsVectorFileWriter
 import os.path
 import shutil
 import xml.etree.ElementTree as ET
 from typing import Dict, List, Set, Optional, Any, TYPE_CHECKING  # @UnusedImport
 
-from .QSWATTopology import QSWATTopology  # type: ignore  # @UnresolvedImport
-from .QSWATUtils import QSWATUtils  # type: ignore  # @UnresolvedImport @UnusedImport
-from .DBUtils import DBUtils  # type: ignore  # @UnresolvedImport @UnusedImport
-from .parameters import Parameters  # type: ignore  # @UnresolvedImport
+from .QSWATTopology import QSWATTopology  # type: ignore
+from .QSWATUtils import QSWATUtils  # type: ignore # @UnusedImport
+from .DBUtils import DBUtils  # type: ignore  # @UnusedImport
+from .parameters import Parameters  # type: ignore
 
 if TYPE_CHECKING:
     from QSWATUtils import QSWATUtils  # @UnresolvedImport @Reimport
@@ -191,7 +191,7 @@ class GlobalVars:
         # default for debugging
         self.HUCDataDir = 'H:/Data'
         ## Path of project database
-        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.SWATExeDir, self.isHUC, self.isBatch)
+        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isBatch)
         ## multiplier to turn elevations to metres
         self.verticalFactor = 1.0
         ## vertical units

@@ -20,11 +20,11 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant  # @UnresolvedImport
-from PyQt5.QtGui import QDoubleValidator, QTextCursor  # @UnresolvedImport
-from PyQt5.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar   # @UnresolvedImport
-from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry  # @UnresolvedImport
-from qgis.gui import * # @UnusedWildImport
+from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
+from qgis.PyQt.QtGui import QDoubleValidator, QTextCursor
+from qgis.PyQt.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
+from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry
+#from qgis.gui import * # @UnusedWildImport
 import os.path
 from osgeo import gdal  # type: ignore
 from osgeo.gdalconst import *  # type: ignore # @UnusedWildImport
@@ -1281,7 +1281,7 @@ class CreateHRUs(QObject):
         if self._gv.isHUC:
             self._gv.db.SSURGOUndefined = soilNoData
             # collect data basin -> streamb buffer shape, buffer area, WATR area 
-            basinStreamWaterData: Dict[int, Tuple[QgsGeometry, float, float]] = dict()
+            basinStreamWaterData: Dict[int, Tuple[Optional[QgsGeometry], float, float]] = dict()
             # map basin -> stream geometry
             streamGeoms = dict()
             streamLayer = QgsVectorLayer(self._gv.streamFile, 'streams', 'ogr')
@@ -1786,7 +1786,7 @@ class CreateHRUs(QObject):
                         if self._gv.isHUC and crop == self._gv.db.getLanduseCat('WATR'):
                             pt = QgsPointXY(x, y)
                             if streamBuffer.contains(pt):
-                                streamBuffer, streamArea, WATRInStreamArea = basinStreamWaterData[basin]
+                                _, streamArea, WATRInStreamArea = basinStreamWaterData[basin]
                                 WATRInStreamArea += self._gv.cellArea
                                 basinStreamWaterData[basin] = (streamBuffer, streamArea, WATRInStreamArea)
                         if elevation != elevationNoData:
@@ -1923,7 +1923,7 @@ class CreateHRUs(QObject):
         self.writeTopoReport()
         return True
                 
-    def addWaterBodies(self, basinStreamWaterData: Dict[int, Tuple[QgsGeometry, float, float]]) -> None:
+    def addWaterBodies(self, basinStreamWaterData: Dict[int, Tuple[Optional[QgsGeometry], float, float]]) -> None:
         """For HUC projects only.  Write res and pnd tables.  Store reservoir and pond areas in basin data."""
         if not os.path.isfile(self._gv.db.waterBodiesFile):
             QSWATUtils.error('Cannot find water bodies file {0}'.format(self._gv.db.waterBodiesFile), self._gv.isBatch)
@@ -3286,7 +3286,7 @@ class CreateHRUs(QObject):
                     hrusCsv.writeLine('{0},{1}'.format(hru, hruha))
         return oid
     
-    def writeWaterStats(self, basinStreamWaterData: Dict[int, Tuple[QgsGeometry, float, float]]) -> Dict[int, float]:
+    def writeWaterStats(self, basinStreamWaterData: Dict[int, Tuple[Optional[QgsGeometry], float, float]]) -> Dict[int, float]:
         """Write water statistics for HUC projects.  Return WATRInStream in sq metres."""
 #         NHDWaterFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDPlusNationalData/NHDWaterBody5072.sqlite')
 #         NHDWaterConn = sqlite3.connect(NHDWaterFile)

@@ -20,9 +20,9 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant  # @UnresolvedImport
-from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor  # @UnresolvedImport
-from PyQt5.QtWidgets import QMessageBox  # @UnresolvedImport
+from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant
+from qgis.PyQt.QtGui import QIntValidator, QDoubleValidator, QColor
+from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext 
 from qgis.gui import QgsMapTool, QgsMapToolEmitPoint   
 import os
@@ -787,8 +787,11 @@ class Delineation(QObject):
         else:
             self._gv.slopeFile = slpFile
         self._gv.streamFile = streamFile
-        assert outletFile is not None
-        self._gv.outletFile = outletFile if self._dlg.useOutlets.isChecked() else ''
+        if self._dlg.useOutlets.isChecked():
+            assert outletFile is not None
+            self._gv.outletFile = outletFile
+        else:
+            self._gv.outletFile = ''
         wshedFile = base + 'wshed.shp'
         self.createWatershedShapefile(wFile, wshedFile, root)
         self._gv.wshedFile = wshedFile

@@ -22,17 +22,17 @@
 
 
 from qgis.core import QgsPointXY
-from qgis.gui import * # @UnusedWildImport
+#from qgis.gui import * # @UnusedWildImport
 
-from PyQt5.QtCore import * # @UnusedWildImport
-from PyQt5.QtGui import * # @UnusedWildImport
+#from PyQt5.QtCore import * # @UnusedWildImport
+#from PyQt5.QtGui import * # @UnusedWildImport
 
 import os
 import unittest
 import random
 import numpy as np
 #import cythoninit
-from QSWAT import polygonizeInC2 as Polygonize
+from QSWAT import polygonizeInC2 as Polygonize  # @UnresolvedImport
 
 
 
