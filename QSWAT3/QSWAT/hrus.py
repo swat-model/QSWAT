@@ -604,13 +604,14 @@ class HRUs(QObject):
         if self._dlg.dominantHRUButton.isChecked() or self._dlg.dominantLanduseButton.isChecked():
             self.CreateHRUs.isMultiple = False
             self.CreateHRUs.isDominantHRU = self._dlg.dominantHRUButton.isChecked()
-            self._dlg.stackedWidget.setCurrentIndex(-1)
+            self._dlg.stackedWidget.setEnabled(False)
             self._dlg.areaPercentChoiceGroup.setEnabled(False)
             self._dlg.landuseSoilSlopeGroup.setEnabled(False)
             self._dlg.areaGroup.setEnabled(False)
             self._dlg.targetGroup.setEnabled(False)
             self._dlg.createButton.setEnabled(True)
         else:
+            self._dlg.stackedWidget.setEnabled(True)
             self._dlg.areaPercentChoiceGroup.setEnabled(True)
             self.CreateHRUs.isMultiple = True
             if self._dlg.filterLanduseButton.isChecked():

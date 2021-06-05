@@ -85,7 +85,7 @@ class ConvertToPlus(QObject):
         else:
             path = ''
         title = u'Select existing QSWAT project file'
-        filtr = 'QGIS project files (*.qgs)'
+        filtr = 'QGIS project files (*.qgs *.qgz)'
         projFileOld, _ = QFileDialog.getOpenFileName(None, title, path, filtr)
         if not projFileOld:
             return
@@ -93,6 +93,18 @@ class ConvertToPlus(QObject):
         projFileOld = str(projFileOld)
         projParentOld, projFileName = os.path.split(projFileOld)
         self.projNameOld = os.path.splitext(projFileName)[0]
+        self.projDirOld = os.path.join(projParentOld, self.projNameOld)
+        # check for compressed .qgz file
+        if projFileName.endswith('.qgz'):
+            import zipfile
+            qgsFile = projFileName.replace('qgz', 'qgs')
+            with zipfile.ZipFile(projFileOld,"r") as zip_ref:
+                qgsPath = zip_ref.extract(qgsFile, projParentOld)
+            if os.path.isfile(qgsPath):
+                projFileOld = qgsPath
+            else:
+                ConvertToPlus.error('Failed to extract {0} from {1}'.format(qgsFile, projFileOld))
+                return
         # get location and name of new project
         while True:
             title = u'Select a parent directory to hold the new QSWATPlus project'
@@ -125,7 +137,7 @@ class ConvertToPlus(QObject):
                     continue
                 try:
                     shutil.rmtree(self.projDirNew, ignore_errors=True)
-                    time.sleep(2)  # givr deletion time to complete
+                    time.sleep(2)  # give deletion time to complete
                 except Exception:
                     ConvertToPlus.error(u'Problems encountered removing {0}: {1}.  Trying to continue regardless.'.format(self.projDirNew, traceback.format_exc()))
             self.projFileNew = os.path.join(self.projDirNew, self.projNameNew + '.qgs')
@@ -143,20 +155,48 @@ class ConvertToPlus(QObject):
         if result == 0:
             return
         settings.setValue('/QSWAT/LastInputPath', self.projDirNew)
-        self.projDirOld = os.path.join(projParentOld, self.projNameOld)
         if self.choice == ConvertToPlus._fullChoice:
-            # the first group of 5 patterns matches entries under <delin>
-            # the next group of 5 matches entries under <maplayer><datasource>
-            patts = [r'>Source\{0}wshed.shp'.format(demBase), r'>Source\{0}net.shp'.format(demBase), 
-                     r'>Source\crop', r'>Source\soil', '>Source', 
-                     './{0}/Source/{1}wshed.shp'.format(self.projNameOld, demBase), './{0}/Source/{1}net.shp'.format(self.projNameOld, demBase), 
-                     './{0}/Source/crop'.format(self.projNameOld), './{0}/Source/soil'.format(self.projNameOld), 
-                     './{0}/Source'.format(self.projNameOld), './{0}'.format(self.projNameOld), 'TablesOut']
-            reps = ['>./Watershed/Shapes/{0}wshed.shp'.format(demBase), '>./Watershed/Shapes/{0}net.shp'.format(demBase),
-                    '>./Watershed/Rasters/Landuse', '>./Watershed/Rasters/Soil', '>./Watershed/Rasters/DEM',
-                    './Watershed/Shapes/{0}wshed.shp'.format(demBase), './Watershed/Shapes/{0}net.shp'.format(demBase),
-                    './Watershed/Rasters/Landuse', './Watershed/Rasters/Soil', 
-                    './Watershed/Rasters/DEM', '.', 'Results']
+            # the first group of 6 patterns matches entries under <delin>, <landuse>, <crop> or <hru>
+            # the next group of 8 matches entries under <maplayer><datasource>
+            # the next 2 rename the Watershed and Streams layers as the Subbasins and Streams
+            # the next two rename delin entry wshed as delin/subbasins
+            # and the final 1 renames the TablesOut folder as Results in the relevant paths
+            patts = [r'>Source\{0}wshed.shp'.format(demBase), 
+                     r'>Source\{0}net\{0}net.shp'.format(demBase),  # form for shapefile in own folder
+                     r'>Source\{0}net.shp'.format(demBase), 
+                     r'>Source\crop', 
+                     r'>Source\soil', 
+                     '>Source', 
+                     './{0}/Source/{1}wshed.shp'.format(self.projNameOld, demBase), 
+                     './{0}/Source/{1}net/{1}net.shp'.format(self.projNameOld, demBase),   # form for shapefile in own folder 
+                     './{0}/Source/{1}net.shp'.format(self.projNameOld, demBase), 
+                     './{0}/Source/crop'.format(self.projNameOld), 
+                     './{0}/Source/soil'.format(self.projNameOld), 
+                     './{0}/Source'.format(self.projNameOld), 
+                     './{0}'.format(self.projNameOld),
+                     'Watershed ({0}wshed)'.format(demBase),
+                     'Streams ({0}net'.format(demBase), 
+                     '<wshed ',
+                     '</wshed>',
+                     'TablesOut']
+            reps = ['>./Watershed/Shapes/{0}subbasins.shp'.format(demBase), 
+                    '>./Watershed/Shapes/{0}stream/{0}stream.shp'.format(demBase), 
+                    '>./Watershed/Shapes/{0}stream.shp'.format(demBase),
+                    '>./Watershed/Rasters/Landuse', 
+                    '>./Watershed/Rasters/Soil', 
+                    '>./Watershed/Rasters/DEM',
+                    './Watershed/Shapes/{0}subbasins.shp'.format(demBase), 
+                    './Watershed/Shapes/{0}stream/{0}stream.shp'.format(demBase),
+                    './Watershed/Shapes/{0}stream.shp'.format(demBase), 
+                    './Watershed/Rasters/Landuse', 
+                    './Watershed/Rasters/Soil', 
+                    './Watershed/Rasters/DEM', 
+                    '.', 
+                    'Subbasins ({0}subbasins)'.format(demBase),
+                    'Streams ({0}stream)'.format(demBase),
+                    '<subbasins ',
+                    '</subbasins>',
+                    'Results']
             print('Creating project file ...')
             with open(projFileOld, 'r') as inFile:
                 with open(self.projFileNew, 'w', newline='') as outFile:
@@ -167,7 +207,7 @@ class ConvertToPlus(QObject):
             # copy files
             try:
                 print('Creating directories and copying files ...')
-                self.createSubDirectories(True)
+                self.createSubDirectories(True, demBase)
             except Exception:
                 ConvertToPlus.error(u'Problems creating subdirectories or copying files: {0}'.format(traceback.format_exc()))
         else:
@@ -181,7 +221,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
             # create sub directories and copy only Results files
             try:
                 print('Creating directories and copying results files ...')
-                self.createSubDirectories(False)
+                self.createSubDirectories(False, demBase)
             except Exception:
                 ConvertToPlus.error(u'Problems creating subdirectories or copying results files: {0}'.format(traceback.format_exc()))
         # set up transform from lat-long to project projection and reverse
@@ -216,8 +256,8 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
                                        format(self.projNameOld, self.projNameNew, self.projDirNew))
             response = ConvertToPlus.question('Run QGIS on the QSWAT+ project?')
             if response == QMessageBox.Yes:
-                osgeo4wroot = r'C:\Program Files\QGIS 3.10'
-                qgisname = 'qgis-ltr'
+                osgeo4wroot = r'C:\Program Files\QGIS 3.16' # not os.environ['OSGEO4W_ROOT'] as this is probably 32 bit
+                qgisname = os.environ['QGISNAME']
                 batFile = r'{0}\bin\{1}.bat'.format(osgeo4wroot, qgisname)
                 if not os.path.exists(batFile):
                     title = 'Cannot find QGIS start file {0}.  Please select it.'.format(batFile)
@@ -227,7 +267,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
                 command = '"{0}" --project "{1}"'.format(batFile, self.projFileNew)
                 subprocess.call(command, shell=True)
             
-    def createSubDirectories(self, isFull):
+    def createSubDirectories(self, isFull, demBase):
         """
         Create subdirectories under new project's directory, and populate from old project.
         """
@@ -276,9 +316,9 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         ConvertToPlus.makeDirs(shapesDir)
         if isFull:
             ConvertToPlus.copyFiles(self.projDirOld + '/Watershed/Shapes', shapesDir)
-            # wshed and net in wrong place
-            ConvertToPlus.moveShapefile('wshed', demDir, shapesDir)
-            ConvertToPlus.moveShapefile('net', demDir, shapesDir)
+            # wshed and net in wrong place, and wshed needs renaming as subbasins
+            ConvertToPlus.moveWshedShapefile(demDir, shapesDir, demBase)
+            ConvertToPlus.moveNetShapefile(demDir, shapesDir, demBase)
         csvDir = os.path.join(self.projDirNew, 'csv')
         ConvertToPlus.makeDirs(csvDir)
         projCsvDir = os.path.join(csvDir, 'Project')
@@ -288,7 +328,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         
     def copyDbs(self):
         """Set up project and reference databases; extract landuse and soil tables as .csv files."""
-        projDbTemplate = r'C:\SWAT\SWATPlus\Databases\QSWATPlusProj2018.sqlite'
+        projDbTemplate = r'C:\SWAT\SWATPlus\Databases\QSWATPlusProj.sqlite'
         refDbTemplate = r'C:\SWAT\SWATPlus\Databases\swatplus_datasets.sqlite'
         projDbNew = os.path.join(self.projDirNew, self.projNameNew + '.sqlite')
         shutil.copy(projDbTemplate, projDbNew)
@@ -1358,28 +1398,43 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
     def copyFiles(inDir, saveDir):
         """
         Copy files from inDir to saveDir, excluding directories 
-        unl;ess they are ESRI grids.
+        unless they are ESRI grids or stream shapefiles as directories.
         """
-        pattern = inDir + '/*.*'
-        for f in glob.iglob(pattern):
+        filePattern = inDir + '/*.*'
+        for f in glob.iglob(filePattern):
             shutil.copy(f, saveDir)
-        pattern = inDir + '/*'
-        for f in glob.iglob(pattern):
-            if os.path.isdir(f) and os.path.exists(f + '/hdr.adf'):
-                # ESRI grid: need to copy directory to saveDir
-                target = os.path.join(saveDir, os.path.split(f)[1])
-                shutil.copytree(f, target)
+        dirPattern = inDir + '/*'
+        for f in glob.iglob(dirPattern):
+            if os.path.isdir(f):
+                # if ESRI grid or streamnet shapefile which is a directory: need to copy directory to saveDir
+                if os.path.exists(f + '/hdr.adf') or f.endswith('net'):
+                    target = os.path.join(saveDir, os.path.split(f)[1])
+                    shutil.copytree(f, target)
                 
     
     @staticmethod
-    def moveShapefile(strng, fromDir, toDir):
-        """Move shapefile *strng.shp from fromDir to toDir"""
-        pattern = fromDir + '/*{0}.shp'.format(strng)
-        for f in glob.iglob(pattern):
-            for suffix in ['.shp', '.prj', '.dbf', '.shx']:
-                fromPath = os.path.splitext(f)[0] + suffix
-                toPath = os.path.join(toDir, os.path.split(fromPath)[1])
-                shutil.move(fromPath, toPath)
+    def moveWshedShapefile(fromDir, toDir, base):
+        """Move shapefile basewshed.shp from fromDir to toDir as basesubbasins.shp"""
+        basePath = fromDir + '/' + base + 'wshed'
+        for suffix in ['.shp', '.prj', '.dbf', '.shx']:
+            fromPath = basePath + suffix
+            toPath = os.path.join(toDir, os.path.split(fromPath)[1].replace('wshed.', 'subbasins.'))
+            shutil.move(fromPath, toPath)
+                
+    
+    @staticmethod
+    def moveNetShapefile(fromDir, toDir, base):
+        """Move shapefile basenet.shp from fromDir to toDir as basestream.shp
+        Allow for shapefile to form own directory of name basenet"""
+        basePath = fromDir + '/' + base + 'net'
+        if os.path.isdir(basePath):
+            toDir = toDir + '/' + base + 'stream'
+            ConvertToPlus.makeDirs(toDir)
+            basePath = basePath + '/' + base + 'net'
+        for suffix in ['.shp', '.prj', '.dbf', '.shx']:
+            fromPath = basePath + suffix
+            toPath = os.path.join(toDir, os.path.split(fromPath)[1].replace('net.', 'stream.'))
+            shutil.move(fromPath, toPath)
                 
     @staticmethod
     def makeDirs(direc):

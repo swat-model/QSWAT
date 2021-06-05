@@ -24,7 +24,7 @@ UsePreviousAppDir=no
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-OutputDir=C:\Users\Chirs George\QSWAT
+OutputDir=C:\Users\Chris\QSWAT
 OutputBaseFilename={#MyAppName}install{#MyAppVersion}.{#MyAppSubVersion}
 Compression=lzma
 SolidCompression=yes
@@ -37,7 +37,7 @@ UsePreviousPrivileges=no
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Users\Chirs George\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\{#MyAppName}\*"; DestDir: "{code:QGISPLuginDir}\{#MyAppName}"; Excludes: "testdata\test"; Flags: ignoreversion recursesubdirs createallsubdirs 
+Source: "C:\Users\Chris\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\{#MyAppName}\*"; DestDir: "{code:QGISPLuginDir}\{#MyAppName}"; Excludes: "testdata\test"; Flags: ignoreversion recursesubdirs createallsubdirs 
 Source: "C:\SWAT\SWATEditor\runConvertFromArc.bat"; DestDir: "C:\SWAT\SWATEditor"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\SWAT\SWATEditor\runConvertToPlus.bat"; DestDir: "C:\SWAT\SWATEditor"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\SWAT\SWATEditor\TauDEM5Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM5Bin"; Check: IsWin64; Flags: ignoreversion recursesubdirs createallsubdirs

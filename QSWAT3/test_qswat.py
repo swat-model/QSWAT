@@ -229,6 +229,15 @@ HashTable5['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
 #HashTable5['uncomb'] = 'badb9767f7e645e5981fb7ecdeabf40c'
 #HashTable5['Watershed'] = '932f6dc0923266228d4145498917581c'
 
+#===============================================================================
+# Test6:
+#   - MPI 8 process
+#   - clipped San Juan DEM: no inlets/outlets file
+#   - delineation threshold 6000 ha
+#   - no slope limits
+#   - dominant HRU
+#===============================================================================
+
 # listen to the QGIS message log
 message_log = {}
 def log(message, tag, level):
@@ -734,6 +743,75 @@ class TestQswat(unittest.TestCase):
         self.assertEqual(len(self.hrus.CreateHRUs.basins), 134, 'Subbasin count is {0} instead of 134'.format(len(self.hrus.CreateHRUs.basins)))
         self.assertEqual(len(self.hrus.CreateHRUs.hrus), 170, 'HRU count is {0} instead of 170'.format(len(self.hrus.CreateHRUs.hrus)))
         self.checkHashes(HashTable5)
+        self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
+        
+    def test06(self):
+        """MPI 8 processes; clipped San Juan DEM: no inlets/outlets file; delineation threshold 6000 ha; no slope limits; dominant HRU"""
+        self.delin._dlg.selectDem.setText(self.copyDem('sj_dem_clip.tif'))
+        self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
+        ## HRUs object
+        self.hrus = HRUs(self.plugin._gv, self.dlg.reportsBox)
+        # listener = Listener(self.delin, self.hrus, self.hrus.CreateHRUs)
+        numLayers = len(QgsProject.instance().mapLayers().values())
+        self.assertEqual(numLayers, 0, 'Unexpected start with {0} layers'.format(numLayers))
+        demLayer, loaded = QSWATUtils.getLayerByFilename(self.root.findLayers(), self.delin._dlg.selectDem.text(), FileTypes._DEM, 
+                                                         self.plugin._gv, True, QSWATUtils._WATERSHED_GROUP_NAME)
+        self.waitLayerAdded(numLayers)
+        self.assertTrue(demLayer and loaded, 'Failed to load DEM {0}'.format(self.delin._dlg.selectDem.text()))
+        self.assertTrue(demLayer.crs().mapUnits() == QgsUnitTypes.DistanceMeters, 'Map units not meters but {0}'.format(demLayer.crs().mapUnits()))
+        unitIndex = self.delin._dlg.areaUnitsBox.findText(Parameters._HECTARES)
+        self.assertTrue(unitIndex >= 0, 'Cannot find hectare area units')
+        self.delin._dlg.areaUnitsBox.setCurrentIndex(unitIndex)
+        self.delin.setDefaultNumCells(demLayer)
+        self.delin._dlg.area.setText('6000')
+        self.assertTrue(self.delin._dlg.numCells.text() == '8640', 'Unexpected number of cells for delineation {0}'.format(self.delin._dlg.numCells.text()))
+        self.delin._dlg.useOutlets.setChecked(False)
+        QtTest.QTest.mouseClick(self.delin._dlg.delinRunButton2, Qt.LeftButton)
+        self.assertTrue(self.delin.areaOfCell > 0, 'Area of cell is ' + str(self.delin.areaOfCell))
+        QtTest.QTest.mouseClick(self.delin._dlg.OKButton, Qt.LeftButton)
+        self.assertTrue(self.dlg.hrusButton.isEnabled(), 'HRUs button not enabled')
+        self.hrus.init()
+        hrudlg = self.hrus._dlg
+        self.hrus.landuseFile = os.path.join(self.dataDir, 'sj_land.tif')
+        numLayers = len(QgsProject.instance().mapLayers().values())
+        self.hrus.landuseLayer, loaded = QSWATUtils.getLayerByFilename(self.root.findLayers(), self.hrus.landuseFile, FileTypes._LANDUSES, 
+                                                                       self.plugin._gv, None, QSWATUtils._LANDUSE_GROUP_NAME)
+        self.waitLayerAdded(numLayers)
+        self.assertTrue(self.hrus.landuseLayer and loaded, 'Failed to load landuse file {0}'.format(self.hrus.landuseFile))
+        self.hrus.soilFile = os.path.join(self.dataDir, 'sj_soil.tif')
+        numLayers = len(QgsProject.instance().mapLayers().values())
+        self.hrus.soilLayer, loaded = QSWATUtils.getLayerByFilename(self.root.findLayers(), self.hrus.soilFile, FileTypes._SOILS, 
+                                                                    self.plugin._gv, None, QSWATUtils._SOIL_GROUP_NAME)
+        self.waitLayerAdded(numLayers)
+        self.assertTrue(self.hrus.soilLayer and loaded, 'Failed to load soil file {0}'.format(self.hrus.soilFile))
+        landCombo = hrudlg.selectLanduseTable
+        landIndex = landCombo.findText('global_landuses')
+        self.assertTrue(landIndex >= 0, 'Cannot find global landuses table')
+        landCombo.setCurrentIndex(landIndex)
+        soilCombo = hrudlg.selectSoilTable
+        soilIndex = soilCombo.findText('global_soils')
+        self.assertTrue(soilIndex >= 0, 'Cannot find global soils table')
+        soilCombo.setCurrentIndex(soilIndex)
+        QtTest.QTest.mouseClick(hrudlg.readButton, Qt.LeftButton)
+        self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.textDir, Parameters._TOPOREPORT)))
+        self.assertTrue(self.dlg.reportsBox.isEnabled() and self.dlg.reportsBox.findText(Parameters._TOPOITEM) >= 0, \
+                        'Elevation report not accessible from main form')
+        self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.textDir, Parameters._BASINREPORT)))
+        self.assertTrue(self.dlg.reportsBox.findText(Parameters._BASINITEM) >= 0, \
+                        'Landuse and soil report not accessible from main form')
+        self.assertTrue(hrudlg.splitButton.isEnabled(), 'Split landuses button not enabled')
+        self.assertTrue(hrudlg.exemptButton.isEnabled(), 'Exempt landuses button not enabled')
+        self.assertTrue(hrudlg.dominantHRUButton.isEnabled(), 'Dominant HRU button not enabled')
+        QtTest.QTest.mouseClick(hrudlg.dominantHRUButton, Qt.LeftButton)
+        self.assertFalse(hrudlg.stackedWidget.isEnabled(), 'Stacked widget not disabled')
+        self.assertTrue(hrudlg.createButton.isEnabled(), 'Create button not enabled')
+        QtTest.QTest.mouseClick(hrudlg.createButton, Qt.LeftButton)
+        self.assertTrue(os.path.exists(os.path.join(self.plugin._gv.textDir, Parameters._HRUSREPORT)))
+        self.assertTrue(self.dlg.reportsBox.findText(Parameters._HRUSITEM) >= 0, \
+                        'HRUs report not accessible from main form')
+        self.assertEqual(len(self.hrus.CreateHRUs.basins), 51, 'Subbasin count is {0} instead of 51'.format(len(self.hrus.CreateHRUs.basins)))
+        self.assertEqual(len(self.hrus.CreateHRUs.hrus), 51, 'HRU count is {0} instead of 51'.format(len(self.hrus.CreateHRUs.hrus)))
+        #self.checkHashes(HashTable6)
         self.assertTrue(self.dlg.editButton.isEnabled(), 'SWAT Editor button not enabled')
         
     def copyDem(self, demFile):

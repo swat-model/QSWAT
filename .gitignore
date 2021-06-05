@@ -10,4 +10,6 @@ ui_*.py
 *.exp
 *.pyd
 *.obj
+*.lib
+
 

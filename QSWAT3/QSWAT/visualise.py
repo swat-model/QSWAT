@@ -461,7 +461,7 @@ class Visualise(QObject):
         """Read cio file to get period of run and print frequency."""
         with open(cioFile, 'r') as cio:
             # skip 7 lines
-            for _ in range(7): cio.readline()
+            for _ in range(7): next(cio)
             nbyrLine = cio.readline()
             cioNumYears = int(nbyrLine[:20])
             iyrLine = cio.readline()
@@ -471,7 +471,7 @@ class Visualise(QObject):
             idalLine = cio.readline()
             self.julianFinishDay = int(idalLine[:20])
             # skip 47 lines
-            for _ in range(47): cio.readline()
+            for _ in range(47): next(cio)
             iprintLine = cio.readline()
             iprint = int(iprintLine[:20])
             self.isDaily = iprint == 1
