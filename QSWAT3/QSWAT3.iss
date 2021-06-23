@@ -3,7 +3,7 @@
 
 #define MyAppName "QSWAT3"
 #define MyAppVersion "1.3" 
-#define MyAppSubVersion "1"
+#define MyAppSubVersion "2"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 
@@ -45,9 +45,11 @@ Source: "C:\SWAT\SWATEditor\TauDEM5x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDE
 Source: "C:\SWAT\SWATEditor\TauDEM539x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM539Bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\SWAT\SWATEditor\Databases\QSWATProj2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
 Source: "C:\SWAT\SWATEditor\Databases\QSWATRef2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
-
 Source: "C:\SWAT\SWATEditor\runSWATGraph.bat"; DestDir: "C:\SWAT\SWATEditor"; Check: IsWin64; Flags: ignoreversion   
-Source: "C:\SWAT\SWATEditor\runSWATGraphx86.bat"; DestDir: "C:\SWAT\SWATEditor"; Check: not IsWin64; DestName: "runSWATGraph.bat"; Flags: ignoreversion
+Source: "C:\SWAT\SWATEditor\runSWATGraphx86.bat"; DestDir: "C:\SWAT\SWATEditor"; Check: not IsWin64; DestName: "runSWATGraph.bat"; Flags: ignoreversion    
+Source: "C:\SWAT\SWATEditor\WeatherCheck\runWeatherCheck.bat"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "runWeatherCheck.bat"; Flags: ignoreversion 
+Source: "C:\SWAT\SWATEditor\WeatherCheck\weathercheck.py"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "weathercheck.py"; Flags: ignoreversion 
+Source: "C:\SWAT\SWATEditor\WeatherCheck\SWATWeatherCheck.pdf"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "SWATWeatherCheck.pdf"; Flags: ignoreversion 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Code]
@@ -75,11 +77,11 @@ var
   QGISDirectory: String;
   MainQGISPluginDirResult: String;
 begin
-  if DirExists(ExpandConstant('{pf32}/QGIS 3.10')) then begin
-    QGISDirectory := ExpandConstant('{pf32}/QGIS 3.10');
+  if DirExists(ExpandConstant('{pf32}/QGIS 3.16')) then begin
+    QGISDirectory := ExpandConstant('{pf32}/QGIS 3.16');
   end else 
-    if DirExists(ExpandConstant('{pf32}/QGIS 3.12')) then begin
-      QGISDirectory := ExpandConstant('{pf32}/QGIS 3.12');
+    if DirExists(ExpandConstant('{pf32}/QGIS 3.18')) then begin
+      QGISDirectory := ExpandConstant('{pf32}/QGIS 3.18');
     end else 
       if DirExists(ExpandConstant('{sd}/OSGeo4W')) then begin
         QGISDirectory := ExpandConstant('{sd}/OSGeo4W');

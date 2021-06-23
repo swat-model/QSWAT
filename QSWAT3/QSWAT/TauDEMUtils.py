@@ -135,7 +135,7 @@ class TauDEMUtils:
         The Taudem executable directory and the mpiexec path are 
         read from QSettings.
         """
-        hasQGIS = not output == None
+        hasQGIS = not output is None
         baseFile = inFiles[0][1]
         needToRun = mustRun
         if not needToRun:
@@ -155,10 +155,10 @@ class TauDEMUtils:
                 commands.append(mpiexecPath)
                 commands.append('-n') 
                 commands.append(str(numProcesses))
-            swatEditorDir = settings.value('/QSWAT/SWATEditorDir')
+            swatEditorDir = settings.value('/QSWAT/SWATEditorDir', Parameters._SWATEDITORDEFAULTDIR)
         else:
             # batch mode
-            swatEditorDir = r'C:/SWAT/SWATEditor'
+            swatEditorDir = Parameters._SWATEDITORDEFAULTDIR
         tauDEM539Dir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEM539DIR)
         if os.path.isdir(tauDEM539Dir):
             tauDEMDir = tauDEM539Dir
