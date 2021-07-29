@@ -45,7 +45,7 @@ if TYPE_CHECKING:
     
 class GlobalVars:
     """Data used across across the plugin, and some utilities on it."""
-    def __init__(self, iface: Any, isBatch: bool, isHUC=False, lock=None) -> None:
+    def __init__(self, iface: Any, isBatch: bool, isHUC=False) -> None:
         """Initialise class variables."""
         ## QGIS interface
         self.iface = iface
@@ -187,13 +187,11 @@ class GlobalVars:
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
-        ## lock used by HUC projects to lock use of standard output for messages
-        self.lock = lock
         ## data directory for HUC projects
         # default for debugging
         self.HUCDataDir = 'H:/Data'
         ## Path of project database
-        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isBatch, self.lock)
+        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isBatch)
         ## multiplier to turn elevations to metres
         self.verticalFactor = 1.0
         ## vertical units

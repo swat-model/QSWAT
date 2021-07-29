@@ -28,7 +28,7 @@ import sys
 import os
 import glob
 from osgeo import gdal, ogr  # type: ignore
-from multiprocessing import Pool, Lock
+from multiprocessing import Pool
 
 from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
@@ -78,7 +78,7 @@ class runHUC():
     
     """Run HUC14/12/10 project."""
     
-    def __init__(self, projDir, lock):
+    def __init__(self, projDir):
         """Initialize"""
         ## project directory
         self.projDir = projDir
@@ -87,7 +87,7 @@ class runHUC():
         ## QGIS project
         self.proj = QgsProject.instance()
         self.proj.read(self.projDir + '.qgs')
-        self.plugin.setupProject(self.proj, True, isHUC=True, lock=lock)
+        self.plugin.setupProject(self.proj, True, isHUC=True)
         ## main dialogue
         self.dlg = self.plugin._odlg
         ## delineation object
@@ -197,29 +197,16 @@ class runHUC():
                        float(pointXY.x()), float(pointXY.y()), float(pointll.y()), float(pointll.x()), 
                        float(elev), name, typ, SWATBasin, HydroID, OutletID)
             
-def runProject(d, dataDir, scale, minHRUha, lock):
+def runProject(d, dataDir, scale, minHRUha):
     """Run a QSWAT project on directory d"""
     if os.path.isdir(d):
-        lock.acquire()
+        print('Running project {0}'.format(d))
         try:
-            # if this message is changed HUC12/14Models main function will need changing since it selects HUC from this message
-            print('Running project {0}'.format(d))
-        finally:
-            lock.release()
-        try:
-            huc = runHUC(d, lock)
+            huc = runHUC(d)
             huc.runProject(dataDir, scale, minHRUha)
-            lock.acquire()
-            try:
-                print('Completed project {0}'.format(d))
-            finally:
-                lock.release()
+            print('Completed project {0}'.format(d))
         except Exception:
-            lock.acquire()
-            try:
-                print('ERROR: exception: {0}'.format(traceback.format_exc()))
-            finally:
-                lock.release()
+            print('ERROR: exception: {0}'.format(traceback.format_exc()))
                 
 if __name__ == '__main__':
     #for arg in sys.argv:
@@ -265,9 +252,7 @@ if __name__ == '__main__':
         dirs = glob.glob(pattern)
         cpuCount = os.cpu_count()
         chunk = 1 
-        m = multiprocessing.Manager()
-        lock = m.Lock()
-        args = [(d, dataDir, scale, minHRUha, lock) for d in dirs]
+        args = [(d, dataDir, scale, minHRUha) for d in dirs]
         with Pool() as pool:
             res = pool.starmap_async(runProject, args, chunk)
             _ = res.get()

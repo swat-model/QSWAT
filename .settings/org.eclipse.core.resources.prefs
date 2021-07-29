@@ -21,6 +21,7 @@ encoding//QSWAT3/QSWAT/graphdialog1.py=utf-8
 encoding//QSWAT3/QSWAT/hrus.py=utf-8
 encoding//QSWAT3/QSWAT/hrusdialog.py=utf-8
 encoding//QSWAT3/QSWAT/imageio/__init__.py=utf-8
+encoding//QSWAT3/QSWAT/imageio/plugins/_freeimage.py=utf-8
 encoding//QSWAT3/QSWAT/jenks.pyx=utf-8
 encoding//QSWAT3/QSWAT/outletsdialog.py=utf-8
 encoding//QSWAT3/QSWAT/parameters.py=utf-8
