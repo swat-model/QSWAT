@@ -341,9 +341,8 @@ class GlobalVars:
                 for subluse, percent in subs.items():
                     oid += 1
                     cursor.execute(sql, oid, luse, subluse, percent)
-            if self.isHUC:
-                conn.commit()
-            else:
+            conn.commit()
+            if not self.isHUC:
                 self.db.hashDbTable(conn, exemptTable)
                 self.db.hashDbTable(conn, splitTable)
         return True

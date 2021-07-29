@@ -28,6 +28,7 @@ import sys
 import os
 import glob
 from osgeo import gdal, ogr  # type: ignore
+from multiprocessing import Pool
 
 from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
@@ -109,8 +110,10 @@ class runHUC():
         self.delin._dlg.selectNet.setText(self.projDir + '/Watershed/Shapes/channels.shp')
         self.delin._dlg.selectExistOutlets.setText(self.projDir + '/Watershed/Shapes/points.shp')
         self.delin._dlg.recalcButton.setChecked(False)  # want to use length field in channels shapefile
-        # use MPI on HUC10 and HUC8 projects
-        numProc = 0 if scale >= 12 else 8
+        ## use MPI on HUC10 and HUC8 projects
+        #numProc = 0 if scale >= 12 else 8
+        # don't use MPI with multiprocessing
+        numProc = 0
         self.delin._dlg.numProcesses.setValue(numProc)
         gv.HUCDataDir = dataDir
         gv.useGridModel = False
@@ -193,6 +196,18 @@ class runHUC():
                        float(pointXY.x()), float(pointXY.y()), float(pointll.y()), float(pointll.x()), 
                        float(elev), name, typ, SWATBasin, HydroID, OutletID)
             
+def runProject(d, dataDir, scale, minHRUha):
+    """Run a QSWAT project on directory d"""
+    if os.path.isdir(d):
+        # if this message is changed HUC12/14Models main function will need changing since it selects HUC from this message
+        print('Running project {0}'.format(d))
+        try:
+            huc = runHUC(d)
+            huc.runProject(dataDir, scale, minHRUha)
+            print('Completed project {0}'.format(d))
+        except Exception:
+            print('ERROR: exception: {0}'.format(traceback.format_exc()))
+            
 if __name__ == '__main__':
     #for arg in sys.argv:
     #    print('Argument: {0}'.format(arg))
@@ -234,17 +249,14 @@ if __name__ == '__main__':
             print('ERROR: exception: {0}'.format(traceback.format_exc()))
     else:
         pattern = direc + '/huc*'
-        for d in sorted(glob.glob(pattern)):
-            if os.path.isdir(d):
-                # if this message is changed HUC12/14Models main function will need changing since it selects HUC from this message
-                print('Running project {0}'.format(d))
-                try:
-                    huc = runHUC(d)
-                    huc.runProject(dataDir, scale, minHRUha)
-                    print('Completed project {0}'.format(d))
-                except Exception:
-                    print('ERROR: exception: {0}'.format(traceback.format_exc()))
-                sys.stdout.flush()
+        dirs = glob.glob(pattern)
+        cpuCount = os.cpu_count()
+        chunk = 1 # max(1, min(10, len(dirs) // cpuCount))
+        args = [(d, dataDir, scale, minHRUha) for d in dirs]
+        with Pool() as pool:
+            res = pool.starmap_async(runProject, args, chunk)
+            _ = res.get()
+        sys.stdout.flush()
     app.exitQgis()
     app.exit()
     del app    

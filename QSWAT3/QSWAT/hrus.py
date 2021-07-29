@@ -1849,16 +1849,17 @@ class CreateHRUs(QObject):
         QSWATUtils.loginfo('Soil cover percent: {:.1F}'.format(soilPercent))
         under95 = False
         if self._gv.isHUC:
+            huc12 = self._gv.projName[3:]
             if soilPercent < 1:
-                QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed has defined soil values'.format(soilPercent), self._gv.isBatch)
+                QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed in project huc{1} has defined soil values'.format(soilPercent, huc12), self._gv.isBatch)
                 return False
             elif soilPercent < 95:
                 # start of message is key word for HUC12Models
-                QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed has defined soil values.'
-                                       .format(soilPercent), self._gv.isBatch)
+                QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed in project huc{1} has defined soil values.'
+                                       .format(soilPercent, huc12), self._gv.isBatch)
                 under95 = True
             elif soilPercent < 99.95: # always give statistic for HUC models; avoid saying 100.0 when rounded to 1dp
-                QSWATUtils.information('WARNING: {:.1F} percent of the watershed has defined soil values.'.format(soilPercent), self._gv.isBatch)
+                QSWATUtils.information('WARNING: {0:.1F} percent of the watershed in project huc{1} has defined soil values.'.format(soilPercent, huc12), self._gv.isBatch)
         else:
             if soilPercent < 95:
                 QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined soil values.\n If this percentage is zero check your soil map has the same projection as your DEM.'.format(soilPercent), self._gv.isBatch)
@@ -3635,7 +3636,8 @@ class CreateHRUs(QObject):
                 areaHa = areaKm * 100
                 if self._gv.isHUC:
                     if basinData.cellCount == 0:
-                        QSWATUtils.information('WARNING: Basin {0!s} has zero cell count'.format(SWATBasin), self._gv.isBatch)
+                        huc12 = self._gv.projName[3:]
+                        QSWATUtils.information('WARNING: Basin {0!s} in project huc{1} has zero cell count'.format(SWATBasin, huc12), self._gv.isBatch)
                 else:
                     assert basinData.cellCount > 0, 'Basin {0!s} has zero cell count'.format(SWATBasin)
                 meanSlope = 0 if basinData.cellCount == 0 else float(basinData.totalSlope) / basinData.cellCount

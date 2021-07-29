@@ -680,7 +680,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         with self.connect(readonly=True) as conn:
             lookup_row = conn.execute(sql, (sid,)).fetchone()
             if lookup_row is None:
-                QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey'.format(sid), self.isBatch)
+                huc12 = self.projName[3:]
+                QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey in project huc{1}'.format(sid, huc12), self.isBatch)
                 self._undefinedSoilIds.append(sid)
                 return sid
             # only an information issue, not an error for now 
@@ -691,7 +692,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
             row = self.SSURGOConn.execute(sql, (lookup_row[1],)).fetchone()
             if row is None:
-                QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch)
+                huc12 = self.projName[3:]
+                QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined in project huc{2}'.format(sid, lookup_row[1], huc12), self.isBatch)
                 self._undefinedSoilIds.append(sid)
                 return self.SSURGOUndefined
             #if row[0].lower().strip() == 'water':

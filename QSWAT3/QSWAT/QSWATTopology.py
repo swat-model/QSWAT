@@ -1457,20 +1457,14 @@ class QSWATTopology:
                 basin = attrs[wsnoIndex]
                 first = QSWATTopology.reachFirstLine(reach, self.dx, self.dy)
                 if first is None or len(first) < 2:
-                    if self.isHUC:
-                        QSWATUtils.error(u'You probably have a loop in stream of subbasin {0} and will have to add a comid to channelsToOmit'.format(basin), self.isBatch)
-                    else:
-                        QSWATUtils.error(u'It looks like your stream shapefile does not obey the single direction rule, that all reaches are either upstream or downstream.', self.isBatch)
+                    QSWATUtils.error(u'It looks like your stream shapefile does not obey the single direction rule, that all reaches are either upstream or downstream.', self.isBatch)
                     return False
                 p1 = first[0]
                 p2 = first[1]
                 midFirst = QgsPointXY((p1.x() + p2.x()) / 2.0, (p1.y() + p2.y()) / 2.0)
                 last = QSWATTopology.reachLastLine(reach, self.dx, self.dy)
                 if last is None or len(last) < 2:
-                    if self.isHUC:
-                        QSWATUtils.error(u'You probably have a loop in stream of subbasin {0} and will have to add a comid to channelsToOmit'.format(basin), self.isBatch)
-                    else:
-                        QSWATUtils.error(u'It looks like your stream shapefile does not obey the single direction rule, that all reaches are either upstream or downstream.', self.isBatch)
+                    QSWATUtils.error(u'It looks like your stream shapefile does not obey the single direction rule, that all reaches are either upstream or downstream.', self.isBatch)
                     return False
                 p1 = last[-1]
                 p2 = last[-2]
