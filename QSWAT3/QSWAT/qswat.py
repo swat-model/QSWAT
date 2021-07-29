@@ -245,7 +245,7 @@ class QSwat(QObject):
         self._odlg.raise_()
         self.setupProject(proj, False)
     
-    def setupProject(self, proj, isBatch, isHUC=False) -> None:
+    def setupProject(self, proj, isBatch, isHUC=False, lock=None) -> None:
         """Set up the project."""
         self._odlg.mainBox.setVisible(True)
         self._odlg.mainBox.setEnabled(False)
@@ -268,7 +268,7 @@ class QSwat(QObject):
             #QSWATUtils.information('isHUC found in proj file: set to {0}'.format(isHUC), isBatch)
         # now have project so initiate global vars
         # if we do this earlier we cannot for example find the project database
-        self._gv = GlobalVars(self._iface, isBatch, isHUC)
+        self._gv = GlobalVars(self._iface, isBatch, isHUC=isHUC, lock=lock)
         assert self._gv is not None
         self._gv.plugin_dir = self.plugin_dir
         self._odlg.projPath.repaint()

@@ -33,6 +33,7 @@ import csv
 import datetime
 import traceback
 import re
+from multiprocessing import Lock
 from typing import Set, Any, List, Dict, Iterable, Optional, Tuple  # @UnusedImport @Reimport
 
 from .QSWATUtils import QSWATUtils, ListFuns  # type: ignore
@@ -43,12 +44,14 @@ class DBUtils:
     
     """Functions for interacting with project and reference databases."""
     
-    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isBatch: bool) -> None:
+    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isBatch: bool, lock: Lock) -> None:
         """Initialise class variables."""
         ## Flag showing if batch run
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
+        ## lock used by HUC projects
+        self.lock = lock
         ## project directory
         self.projDir = projDir
         ## project name
@@ -681,19 +684,19 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             lookup_row = conn.execute(sql, (sid,)).fetchone()
             if lookup_row is None:
                 huc12 = self.projName[3:]
-                QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey in project huc{1}'.format(sid, huc12), self.isBatch)
+                QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey in project huc{1}'.format(sid, huc12), self.isBatch, lock=self.lock)
                 self._undefinedSoilIds.append(sid)
                 return sid
             # only an information issue, not an error for now 
             if lookup_row[0].upper().strip() == 'STATSGO':
-                QSWATUtils.information('SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch)
+                QSWATUtils.information('SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch, lock=self.lock)
                 # self._undefinedSoilIds.append(sid)
                 # return sid
             sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
             row = self.SSURGOConn.execute(sql, (lookup_row[1],)).fetchone()
             if row is None:
                 huc12 = self.projName[3:]
-                QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined in project huc{2}'.format(sid, lookup_row[1], huc12), self.isBatch)
+                QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined in project huc{2}'.format(sid, lookup_row[1], huc12), self.isBatch, lock=self.lock)
                 self._undefinedSoilIds.append(sid)
                 return self.SSURGOUndefined
             #if row[0].lower().strip() == 'water':

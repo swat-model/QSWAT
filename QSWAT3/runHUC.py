@@ -28,12 +28,13 @@ import sys
 import os
 import glob
 from osgeo import gdal, ogr  # type: ignore
-from multiprocessing import Pool
+from multiprocessing import Pool, Lock
 
 from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
 from QSWAT.hrus import HRUs  # @UnresolvedImport
 import traceback
+from future.backports.test.support import multiprocessing
 
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
@@ -77,7 +78,7 @@ class runHUC():
     
     """Run HUC14/12/10 project."""
     
-    def __init__(self, projDir):
+    def __init__(self, projDir, lock):
         """Initialize"""
         ## project directory
         self.projDir = projDir
@@ -86,7 +87,7 @@ class runHUC():
         ## QGIS project
         self.proj = QgsProject.instance()
         self.proj.read(self.projDir + '.qgs')
-        self.plugin.setupProject(self.proj, True, isHUC=True)
+        self.plugin.setupProject(self.proj, True, isHUC=True, lock=lock)
         ## main dialogue
         self.dlg = self.plugin._odlg
         ## delineation object
@@ -196,18 +197,30 @@ class runHUC():
                        float(pointXY.x()), float(pointXY.y()), float(pointll.y()), float(pointll.x()), 
                        float(elev), name, typ, SWATBasin, HydroID, OutletID)
             
-def runProject(d, dataDir, scale, minHRUha):
+def runProject(d, dataDir, scale, minHRUha, lock):
     """Run a QSWAT project on directory d"""
     if os.path.isdir(d):
-        # if this message is changed HUC12/14Models main function will need changing since it selects HUC from this message
-        print('Running project {0}'.format(d))
+        lock.acquire()
         try:
-            huc = runHUC(d)
+            # if this message is changed HUC12/14Models main function will need changing since it selects HUC from this message
+            print('Running project {0}'.format(d))
+        finally:
+            lock.release()
+        try:
+            huc = runHUC(d, lock)
             huc.runProject(dataDir, scale, minHRUha)
-            print('Completed project {0}'.format(d))
+            lock.acquire()
+            try:
+                print('Completed project {0}'.format(d))
+            finally:
+                lock.release()
         except Exception:
-            print('ERROR: exception: {0}'.format(traceback.format_exc()))
-            
+            lock.acquire()
+            try:
+                print('ERROR: exception: {0}'.format(traceback.format_exc()))
+            finally:
+                lock.release()
+                
 if __name__ == '__main__':
     #for arg in sys.argv:
     #    print('Argument: {0}'.format(arg))
@@ -236,13 +249,13 @@ if __name__ == '__main__':
     if inletId > 0:
         # add inlet point with this id to MonitoringPoint table of existing project
         print('Adding inlet {0} to project {1}'.format(inletId, direc))
-        huc = runHUC(direc)
+        huc = runHUC(direc, None)
         huc.addInlet(inletId)
     elif direc.endswith('.qgs'):
         d = direc[:-4]
         print('Running project {0}'.format(d))
         try:
-            huc = runHUC(d)
+            huc = runHUC(d, None)
             huc.runProject(dataDir, scale, minHRUha)
             print('Completed project {0}'.format(d))
         except Exception:
@@ -251,8 +264,10 @@ if __name__ == '__main__':
         pattern = direc + '/huc*'
         dirs = glob.glob(pattern)
         cpuCount = os.cpu_count()
-        chunk = 1 # max(1, min(10, len(dirs) // cpuCount))
-        args = [(d, dataDir, scale, minHRUha) for d in dirs]
+        chunk = 1 
+        m = multiprocessing.Manager()
+        lock = m.Lock()
+        args = [(d, dataDir, scale, minHRUha, lock) for d in dirs]
         with Pool() as pool:
             res = pool.starmap_async(runProject, args, chunk)
             _ = res.get()
