@@ -3,6 +3,7 @@
 /***************************************************************************
  QSWAT
                                  A QGIS plugin
+ Create SWAT inputs
                               -------------------
         begin                : 2014-07-18
         copyright            : (C) 2014 by Chris George
@@ -1402,7 +1403,7 @@ class CreateHRUs(QObject):
             if not self._gv.existingWshed and not self._gv.useGridModel:
                 distCurrentRow = -1
                 distData = numpy.empty([distReadRows, distNumberCols], dtype=float)  # type: ignore
-        hrusRasterWanted = True  # TODO:
+        hrusRasterWanted = not self._gv.isHUC  # True  # TODO:
         if self.fullHRUsWanted or hrusRasterWanted:
             # last HRU number used
             lastHru = 0
@@ -1620,11 +1621,15 @@ class CreateHRUs(QObject):
                 data.setAreas(True)
                 if self._gv.isBig:
                     oid = self._gv.db.writeWHUTables(oid, SWATBasin, data, cursor, sql1, sql2, sql3, centroidll) 
-        else:  # not grid model          
+        else:  # not grid model  
+            # tic = time.perf_counter()            
             for row in range(basinNumberRows):
                 if progressCount == fivePercent:
                     progressBar.setValue(progressBar.value() + 5)
                     progressCount = 1
+                    # toc = time.perf_counter()
+                    # QSWATUtils.loginfo('Time to row {0}: {1:.1F} seconds'.format(row, toc-tic))
+                    # tic = toc
                 else:
                     progressCount += 1
                 if row != basinCurrentRow:
@@ -1784,12 +1789,13 @@ class CreateHRUs(QObject):
                             self.basins[basin] = data
                         data.addCell(crop, soil, slope, self._gv.cellArea, elevation, slopeValue, dist, self._gv)
                         self.basins[basin] = data
-                        if self._gv.isHUC and crop == self._gv.db.getLanduseCat('WATR'):
-                            pt = QgsPointXY(x, y)
-                            if streamBuffer.contains(pt):
-                                _, streamArea, WATRInStreamArea = basinStreamWaterData[basin]
-                                WATRInStreamArea += self._gv.cellArea
-                                basinStreamWaterData[basin] = (streamBuffer, streamArea, WATRInStreamArea)
+                        # suspended for now as too slow
+                        # if self._gv.isHUC and crop == self._gv.db.getLanduseCat('WATR'):
+                        #     pt = QgsPointXY(x, y)
+                        #     streamBuffer, streamArea, WATRInStreamArea = basinStreamWaterData[basin]
+                        #     if streamBuffer.contains(pt):
+                        #         WATRInStreamArea += self._gv.cellArea
+                        #         basinStreamWaterData[basin] = (streamBuffer, streamArea, WATRInStreamArea)
                         if elevation != elevationNoData:
                             index = int(elevation) - self.minElev
                             # can have index too large because max not calculated properly by gdal

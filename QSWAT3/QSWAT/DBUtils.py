@@ -172,7 +172,7 @@ class DBUtils:
         ## flag indicating SSURGO or STATSGO2 soil data is being used
         self.useSSURGO = False
         ## map of SSURGO map values to SSURGO MUID (only used with HUC)
-        self.SSURGOsoils: Dict[int, int] = dict()
+        self.SSURGOSoils: Dict[int, int] = dict()
         if isHUC:
             ## SSURGO soil database (only used with HUC)
             # changed to use copy one up frpm projDir
@@ -675,7 +675,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         Report undefined SSURGO soils.  Only used with HUC."""
         if sid in self._undefinedSoilIds:
             return self.SSURGOUndefined
-        muid = self.SSURGOsoils.get(sid, -1)
+        muid = self.SSURGOSoils.get(sid, -1)
         if muid > 0:
             return muid
         sql = self.sqlSelect('statsgo_ssurgo_lkey', 'Source, MUKEY', '', 'LKEY=?')
@@ -700,11 +700,11 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return self.SSURGOUndefined
             #if row[0].lower().strip() == 'water':
             if re.search(self.waterPattern, row[0]) is not None:
-                self.SSURGOsoils[int(sid)] = Parameters._SSURGOWater
+                self.SSURGOSoils[int(sid)] = Parameters._SSURGOWater
                 return Parameters._SSURGOWater
             else:
                 muid = int(lookup_row[1])
-                self.SSURGOsoils[int(sid)] = muid
+                self.SSURGOSoils[int(sid)] = muid
                 return muid
     
     def populateAllLanduses(self, listBox: QListWidget) -> None:
