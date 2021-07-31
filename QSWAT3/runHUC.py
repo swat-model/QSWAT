@@ -34,7 +34,6 @@ from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
 from QSWAT.hrus import HRUs  # @UnresolvedImport
 import traceback
-from future.backports.test.support import multiprocessing
 
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
@@ -78,7 +77,7 @@ class runHUC():
     
     """Run HUC14/12/10 project."""
     
-    def __init__(self, projDir):
+    def __init__(self, projDir, logFile):
         """Initialize"""
         ## project directory
         self.projDir = projDir
@@ -87,7 +86,7 @@ class runHUC():
         ## QGIS project
         self.proj = QgsProject.instance()
         self.proj.read(self.projDir + '.qgs')
-        self.plugin.setupProject(self.proj, True, isHUC=True)
+        self.plugin.setupProject(self.proj, True, isHUC=True, logFile=logFile)
         ## main dialogue
         self.dlg = self.plugin._odlg
         ## delineation object
@@ -144,12 +143,14 @@ class runHUC():
         gv.numElevBands = 5
         if not self.hrus.readFiles():
             hrudlg.close()
-            return
+            return False
         hrudlg.filterAreaButton.setChecked(True)
         hrudlg.areaButton.setChecked(True)
         hrudlg.areaVal.setText(str(minHRUha))
         self.hrus.calcHRUs()
+        result = self.hrus.HRUsAreCreated()
         hrudlg.close()
+        return result
         
     def addInlet(self, inletId):
         """Add watershed inlet."""
@@ -199,14 +200,27 @@ class runHUC():
             
 def runProject(d, dataDir, scale, minHRUha):
     """Run a QSWAT project on directory d"""
+    # seems clumsy to keep opening logFile, rather than opening once and passing handle
+    # but there may be many instances of this function and we want to avoid too many open files
     if os.path.isdir(d):
-        print('Running project {0}'.format(d))
+        logFile = d + '/LogFile.txt'
+        with open(logFile, 'w') as f:
+            f.write('Running project {0}\n'.format(d))
+        sys.stdout.write('Running project {0}\n'.format(d))
+        sys.stdout.flush()
         try:
-            huc = runHUC(d)
-            huc.runProject(dataDir, scale, minHRUha)
-            print('Completed project {0}'.format(d))
+            huc = runHUC(d, logFile)
+            if huc.runProject(dataDir, scale, minHRUha):
+                with open(logFile, 'a') as f:
+                    f.write('Completed project {0}\n'.format(d))
+            else:
+                with open(logFile, 'a') as f:
+                    f.write('ERROR: incomplete project {0}\n'.format(d))     
         except Exception:
-            print('ERROR: exception: {0}'.format(traceback.format_exc()))
+            with open(logFile, 'a') as f:
+                f.write('ERROR: exception: {0}\n'.format(traceback.format_exc()))
+            sys.stdout.write('ERROR: exception: {0}\n'.format(traceback.format_exc()))
+            sys.stdout.flush()
                 
 if __name__ == '__main__':
     #for arg in sys.argv:
@@ -251,9 +265,10 @@ if __name__ == '__main__':
         pattern = direc + '/huc*'
         dirs = glob.glob(pattern)
         cpuCount = os.cpu_count()
+        numProcesses = min(cpuCount, 24)
         chunk = 1 
         args = [(d, dataDir, scale, minHRUha) for d in dirs]
-        with Pool() as pool:
+        with Pool(processes=numProcesses) as pool:
             res = pool.starmap_async(runProject, args, chunk)
             _ = res.get()
         sys.stdout.flush()

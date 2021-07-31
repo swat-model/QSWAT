@@ -3,7 +3,6 @@
 /***************************************************************************
  QSWAT
                                  A QGIS plugin
- Create SWAT inputs
                               -------------------
         begin                : 2014-07-18
         copyright            : (C) 2014 by Chris George
@@ -568,7 +567,8 @@ class HRUs(QObject):
     def setRead(self) -> None:
         """Set dialog to read from maps or from previous run."""
         if self._gv.isHUC:
-            usePrevious = self._db.hasData('BASINSDATAHUC1')
+            # for safety always rerun reading files for HUC projects
+            usePrevious = False  # self._db.hasData('BASINSDATAHUC1')
         else:
             usePrevious = self._db.hasData('BASINSDATA1')
         if usePrevious:
@@ -1850,16 +1850,17 @@ class CreateHRUs(QObject):
         under95 = False
         if self._gv.isHUC:
             huc12 = self._gv.projName[3:]
+            logFile = self._gv.logFile
             if soilPercent < 1:
-                QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed in project huc{1} has defined soil values'.format(soilPercent, huc12), self._gv.isBatch)
+                QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed in project huc{1} has defined soil values'.format(soilPercent, huc12), self._gv.isBatch, logFile=logFile)
                 return False
             elif soilPercent < 95:
                 # start of message is key word for HUC12Models
                 QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed in project huc{1} has defined soil values.'
-                                       .format(soilPercent, huc12), self._gv.isBatch)
+                                       .format(soilPercent, huc12), self._gv.isBatch, logFile=logFile)
                 under95 = True
             elif soilPercent < 99.95: # always give statistic for HUC models; avoid saying 100.0 when rounded to 1dp
-                QSWATUtils.information('WARNING: {0:.1F} percent of the watershed in project huc{1} has defined soil values.'.format(soilPercent, huc12), self._gv.isBatch)
+                QSWATUtils.information('WARNING: {0:.1F} percent of the watershed in project huc{1} has defined soil values.'.format(soilPercent, huc12), self._gv.isBatch, logFile=logFile)
         else:
             if soilPercent < 95:
                 QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined soil values.\n If this percentage is zero check your soil map has the same projection as your DEM.'.format(soilPercent), self._gv.isBatch)
@@ -1931,6 +1932,7 @@ class CreateHRUs(QObject):
             QSWATUtils.error('Cannot find water bodies file {0}'.format(self._gv.db.waterBodiesFile), self._gv.isBatch)
             return
         huc12 = self._gv.projName[3:]
+        logFile = self._gv.logFile
         with self._gv.db.connect() as conn, sqlite3.connect(self._gv.db.waterBodiesFile) as waterConn:
             conn.execute('DELETE FROM pnd')
             conn.execute('DELETE FROM res')
@@ -1947,7 +1949,7 @@ class CreateHRUs(QObject):
                 basinData.reservoirArea = float(row[4]) * 1E4
                 basinData.reservoirAreaOriginally = basinData.reservoirArea
                 if basinData.reservoirArea > basinData.area:
-                    QSWATUtils.information('WARNING: Reservoir in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.reservoirArea / 1E4, basinData.area / 1E4), self._gv.isBatch)
+                    QSWATUtils.information('WARNING: Reservoir in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.reservoirArea / 1E4, basinData.area / 1E4), self._gv.isBatch, logFile=logFile)
                     basinData.reservoirArea = basinData.area
                 # res table stores actual areas 
                 conn.execute(sql1, (0, SWATBasin, row[1], row[2], row[3], row[4], row[5], row[6]))
@@ -1961,7 +1963,7 @@ class CreateHRUs(QObject):
                 basinData.pondAreaOriginally = basinData.pondArea
                 freeArea = basinData.area - basinData.reservoirArea
                 if basinData.pondArea > freeArea:
-                    QSWATUtils.information('WARNING: Pond in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.pondArea / 1E4, freeArea / 1E4), self._gv.isBatch)
+                    QSWATUtils.information('WARNING: Pond in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.pondArea / 1E4, freeArea / 1E4), self._gv.isBatch, logFile=logFile)
                     basinData.pondArea = freeArea
                 # pnd table stores actual areas 
                 conn.execute(sql5, (0, SWATBasin, pnd_fr, row[3], row[4], row[1], row[2], row[5]))
@@ -1979,7 +1981,7 @@ class CreateHRUs(QObject):
                 freeArea = basinData.area - (basinData.reservoirArea + basinData.pondArea)
                 if basinData.playaArea > freeArea:
                     SWATBasin = self._gv.topo.basinToSWATBasin[basin]
-                    QSWATUtils.information('WARNING: Playa in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.playaArea / 1E4, freeArea / 1E4), self._gv.isBatch)
+                    QSWATUtils.information('WARNING: Playa in huc{0} subbasin {1} area {2} ha reduced to {3}'.format(huc12, SWATBasin, basinData.playaArea / 1E4, freeArea / 1E4), self._gv.isBatch, logFile=logFile)
                     basinData.playaArea = freeArea
             # write water statistics before WATR areas reduced for reservoirs, ponds and playa
             WATRInStreams = self.writeWaterStats(basinStreamWaterData)
@@ -3637,7 +3639,8 @@ class CreateHRUs(QObject):
                 if self._gv.isHUC:
                     if basinData.cellCount == 0:
                         huc12 = self._gv.projName[3:]
-                        QSWATUtils.information('WARNING: Basin {0!s} in project huc{1} has zero cell count'.format(SWATBasin, huc12), self._gv.isBatch)
+                        logFile = self._gv.logFile
+                        QSWATUtils.information('WARNING: Basin {0!s} in project huc{1} has zero cell count'.format(SWATBasin, huc12), self._gv.isBatch, logFile=logFile)
                 else:
                     assert basinData.cellCount > 0, 'Basin {0!s} has zero cell count'.format(SWATBasin)
                 meanSlope = 0 if basinData.cellCount == 0 else float(basinData.totalSlope) / basinData.cellCount
