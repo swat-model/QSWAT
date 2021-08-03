@@ -1416,7 +1416,7 @@ class FileTypes:
             colours = QgsLimitedRandomColorRamp.randomColors(len(db.soilVals))
             #QSWATUtils.loginfo('Soil values: {0}'.format(db.soilVals))
             for i in db.soilVals:
-                name = db.getSoilName(i)
+                name, _ = db.getSoilName(i)
                 colour = colourMap.setdefault(name, colours[index])
                 item = QgsPalettedRasterRenderer.Class(int(i), colour, name)
                 items.append(item)

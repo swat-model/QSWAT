@@ -2061,7 +2061,7 @@ class CreateHRUs(QObject):
                             feature.setFields(fields)
                             feature.setAttribute(subIndx, SWATBasin)
                             feature.setAttribute(luseIndx, self._gv.db.getLanduseCode(crop))
-                            feature.setAttribute(soilIndx, self._gv.db.getSoilName(soil))
+                            feature.setAttribute(soilIndx, self._gv.db.getSoilName(soil)[0])
                             feature.setAttribute(slopeIndx, self._gv.db.slopeRange(slope))
                             feature.setAttribute(areaIndx, shapes.area(hru) / 1E4)
                             percent = (float(shapes.cellCount(hru)) / basinCells) * 100
@@ -3266,7 +3266,7 @@ class CreateHRUs(QObject):
                 # ignore basins not mapping to SWAT basin (empty, or edge when using grid model)
                 if basin in self._gv.topo.basinToSWATBasin:
                     lu = self._gv.db.getLanduseCode(hrudata.crop)
-                    soil = self._gv.db.getSoilName(hrudata.soil)
+                    soil, _ = self._gv.db.getSoilName(hrudata.soil)
                     slp = self._gv.db.slopeRange(hrudata.slope)
                     cropSoilSlope = lu + '/' + soil + '/' + slp
                     meanSlopePercent = float(hrudata.meanSlope) * 100
@@ -3415,7 +3415,7 @@ class CreateHRUs(QObject):
                 # ignore basins not mapping to SWAT basin (empty, or edge when using grid model)
                 if basin in self._gv.topo.basinToSWATBasin:
                     lu = self._gv.db.getLanduseCode(hrudata.crop)
-                    soil = self._gv.db.getSoilName(hrudata.soil)
+                    soil, _ = self._gv.db.getSoilName(hrudata.soil)
                     meanSlopePercent = float(hrudata.meanSlope) * 100
                     if self._gv.isHUC:
                         slp = CreateHRUs.HUCSlopeClass(meanSlopePercent)
@@ -3469,7 +3469,7 @@ class CreateHRUs(QObject):
                     found = False
                     cropCode = self._gv.db.getLanduseCode(hruData.crop)
                     origCropCode = self._gv.db.getLanduseCode(hruData.origCrop)
-                    soilName = self._gv.db.getSoilName(hruData.soil)
+                    soilName, _ = self._gv.db.getSoilName(hruData.soil)
                     slopeRange = self._gv.db.slopeRange(hruData.slope)
                     for feature in fullHRUsLayer.getFeatures():
                         attrs = feature.attributes()
@@ -3917,7 +3917,7 @@ class CreateHRUs(QObject):
             main = originalSoilAreas
             original = None
         for (soil, areaM) in main.items():
-            soilName = self._gv.db.getSoilName(soil)
+            soilName, _ = self._gv.db.getSoilName(soil)
             area = float(areaM) / 10000
             string0 = '{:.2F}'.format(area).rjust(15)
             if original:
@@ -3943,7 +3943,7 @@ class CreateHRUs(QObject):
         if original:
             for (soil, areaM) in original.items():
                 if soil not in main:
-                    soilName = self._gv.db.getSoilName(soil)
+                    soilName, _ = self._gv.db.getSoilName(soil)
                     originalArea = float(areaM) / 10000
                     fw.write(soilName.rjust(30) + '({:.2F})'.format(originalArea).rjust(30))
                     if total1 > 0:
