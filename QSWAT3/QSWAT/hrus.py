@@ -1304,7 +1304,8 @@ class CreateHRUs(QObject):
         # counts to calculate landuse and soil overlaps with basins grid or watershed grid
         landuseCount = 0
         landuseNoDataCount = 0
-        soilCount = 0
+        soilDefinedCount = 0
+        soilUndefinedCount = 0
         soilNoDataCount = 0
         
         # prepare slope bands grid
@@ -1585,14 +1586,20 @@ class CreateHRUs(QObject):
                         else:
                             soil = soilNoData
                         if soil == soilNoData:
-                            soilNoDataCount += 1
+                            soilIsNoData = True
                             # when using grid model small amounts of
                             # no data for crop, soil or slope could lose subbasin
                             soil = self._gv.db.defaultSoil
                         else:
-                            soilCount += 1
+                            soilIsNoData = False
                         # use an equivalent soil if any
-                        soil = self._gv.db.translateSoil(int(soil))
+                        soil, OK = self._gv.db.translateSoil(int(soil))
+                        if soilIsNoData:
+                            soilNoDataCount += 1
+                        elif OK:
+                            soilDefinedCount += 1
+                        else:
+                            soilUndefinedCount += 1
                         if 0 <= slopeRow - slopeTopRow < slopeActReadRows:
                             slopeCol = col if slopeSameCoords else QSWATTopology.xToCol(x, slopeTransform)
                             if 0 <= slopeCol < slopeNumberCols:
@@ -1707,14 +1714,17 @@ class CreateHRUs(QObject):
                         else:
                             soil = soilNoData
                         if soil == soilNoData:
-                            soilNoDataCount += 1
+                            soilIsNoData = True
                         else:
-                            soilCount += 1
+                            soilIsNoData = False
                             # use an equivalent soil if any
-                            soil = self._gv.db.translateSoil(int(soil))
-                            if self._gv.isHUC and soil == self._gv.db.SSURGOUndefined:
-                                soilCount -= 1
-                                soilNoDataCount += 1
+                            soil, OK = self._gv.db.translateSoil(int(soil))
+                        if soilIsNoData:
+                            soilNoDataCount += 1
+                        elif OK:
+                            soilDefinedCount += 1
+                        else:
+                            soilUndefinedCount += 1
                         # make sure crop and soil do not conflict about water
                         isWet = False
                         if crop != cropNoData:
@@ -1851,25 +1861,33 @@ class CreateHRUs(QObject):
         QSWATUtils.loginfo('Landuse cover percent: {:.1F}'.format(landusePercent))
         if landusePercent < 95:
             QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined landuse values.\n If this percentage is zero check your landuse map has the same projection as your DEM.'.format(landusePercent), self._gv.isBatch)
-        soilPercent = (float(soilCount) / (soilCount + soilNoDataCount)) * 100
-        QSWATUtils.loginfo('Soil cover percent: {:.1F}'.format(soilPercent))
+        soilMapPercent = (float(soilDefinedCount + soilUndefinedCount) / (soilDefinedCount + soilUndefinedCount + soilNoDataCount)) * 100
+        QSWATUtils.loginfo('Soil cover percent: {:.1F}'.format(soilMapPercent))
+        soilDefinedPercent = (float(soilDefinedCount) / (soilDefinedCount + soilUndefinedCount)) * 100
+        QSWATUtils.loginfo('Soil defined percent: {:.1F}'.format(soilDefinedPercent))
         under95 = False
         if self._gv.isHUC:
             huc12 = self._gv.projName[3:]
             logFile = self._gv.logFile
-            if soilPercent < 1:
-                QSWATUtils.information(u'EMPTY PROJECT: {0:.4F} percent of the watershed in project huc{1} has defined soil values'.format(soilPercent, huc12), self._gv.isBatch, logFile=logFile)
+            if soilMapPercent < 1:
+                # start of message is key phrase for HUC12Models
+                QSWATUtils.information(u'EMPTY PROJECT: only {0:.4F} percent of the watershed in project huc{1} is insde the soil map'.format(soilMapPercent, huc12), self._gv.isBatch, logFile=logFile)
                 return False
-            elif soilPercent < 95:
-                # start of message is key word for HUC12Models
-                QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed in project huc{1} has defined soil values.'
-                                       .format(soilPercent, huc12), self._gv.isBatch, logFile=logFile)
+            elif soilMapPercent < 95:
+                # start of message is key phrase for HUC12Models
+                QSWATUtils.information('UNDER95 WARNING: only {0:.1F} percent of the watershed in project huc{1} is insde the soil map.'
+                                       .format(soilMapPercent, huc12), self._gv.isBatch, logFile=logFile)
                 under95 = True
-            elif soilPercent < 99.95: # always give statistic for HUC models; avoid saying 100.0 when rounded to 1dp
-                QSWATUtils.information('WARNING: {0:.1F} percent of the watershed in project huc{1} has defined soil values.'.format(soilPercent, huc12), self._gv.isBatch, logFile=logFile)
+            elif soilMapPercent < 99.95: # always give statistic for HUC models; avoid saying 100.0 when rounded to 1dp
+                # start of message is key word for HUC12Models
+                QSWATUtils.information('WARNING: only {0:.1F} percent of the watershed in project huc{1} is insde the soil map.'.format(soilMapPercent, huc12), self._gv.isBatch, logFile=logFile)
+            if soilDefinedPercent < 80:
+                # start of message is key word for HUC12Models
+                QSWATUtils.information('WARNING: only {0:.1F} percent of the watershed in project huc{1} has defined soil.'
+                                       .format(soilDefinedPercent, huc12), self._gv.isBatch, logFile=logFile)
         else:
-            if soilPercent < 95:
-                QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined soil values.\n If this percentage is zero check your soil map has the same projection as your DEM.'.format(soilPercent), self._gv.isBatch)
+            if soilMapPercent < 95:
+                QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined soil values.\n If this percentage is zero check your soil map has the same projection as your DEM.'.format(soilMapPercent), self._gv.isBatch)
                 under95 = True
         if self.fullHRUsWanted:
             # for TestingFullHRUs add these instead of addRow few lines above

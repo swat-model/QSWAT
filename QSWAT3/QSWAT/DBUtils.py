@@ -579,28 +579,28 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     #     return re.match(pattern, name)
     #===========================================================================
                     
-    def getSoilName(self, sid: int) -> str:
-        """Return name for soil id sid."""
+    def getSoilName(self, sid: int) -> Tuple[str, bool]:
+        """Return name for soil id sid, plus flag indicating lookup success."""
         if self.useSSURGO:
             if self.isHUC:
-                return str(sid)
-            return str(sid)
+                return str(sid), True
+            return str(sid), True
 #         # Nilepatch for AFSIS soils
 #         if sid < 33000:
 #             return 'HWSD' + str(sid)
 #         elif sid > 100000:
 #             return 'AF' + str(sid)
-        sid1 = self.translateSoil(sid)
+        sid1, OK = self.translateSoil(sid)
         name = self.soilNames.get(sid1, None)
         if name:
-            return name
+            return name, OK
         if sid in self._undefinedSoilIds:
-            return self.defaultSoilName
+            return self.defaultSoilName, False
         else:
             string = str(sid)
             self._undefinedSoilIds.append(sid)
             QSWATUtils.error('Unknown soil value {0}'.format(string), self.isBatch)
-            return self.defaultSoilName
+            return self.defaultSoilName, False
                 
     def checkSoilsDefined(self) -> bool:
         """Check if all soil names in soilNames are in usersoil table in reference database."""
@@ -659,25 +659,29 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         if sid not in self.soilTranslate:
             self.soilTranslate[sid] = equiv
         
-    def translateSoil(self, sid: int) -> int:
-        """Translate a soil id to its equivalent id in soilNames."""
+    def translateSoil(self, sid: int) -> Tuple[int, bool]:
+        """Translate a soil id to its equivalent id in soilNames, plUs flag indicating lookup success."""
         ListFuns.insertIntoSortedList(sid, self.soilVals, True)
         if self.useSSURGO:
             if self.isHUC:
                 return self.translateSSURGOSoil(sid)
             else:
-                return sid
-        return self.soilTranslate.get(sid, sid)
+                return sid, True
+        sid1 = self.soilTranslate.get(sid, None)
+        if sid1 is None:
+            return sid, False 
+        else:
+            return sid1, True
     
-    def translateSSURGOSoil(self, sid: int) -> int:
-        """Use table to convert soil map values to SSURGO muids.  
+    def translateSSURGOSoil(self, sid: int) -> Tuple[int, bool]:
+        """Use table to convert soil map values to SSURGO muids, plUs flag indicating lookup success.  
         Replace any soil with sname Water with Parameters._SSURGOWater.  
         Report undefined SSURGO soils.  Only used with HUC."""
         if sid in self._undefinedSoilIds:
-            return self.SSURGOUndefined
+            return self.SSURGOUndefined, False
         muid = self.SSURGOSoils.get(sid, -1)
         if muid > 0:
-            return muid
+            return muid, True
         sql = self.sqlSelect('statsgo_ssurgo_lkey', 'Source, MUKEY', '', 'LKEY=?')
         with self.connect(readonly=True) as conn:
             lookup_row = conn.execute(sql, (sid,)).fetchone()
@@ -685,7 +689,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 huc12 = self.projName[3:]
                 QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey in project huc{1}'.format(sid, huc12), self.isBatch, logFile=self.logFile)
                 self._undefinedSoilIds.append(sid)
-                return sid
+                return sid, False
             # only an information issue, not an error for now 
             if lookup_row[0].upper().strip() == 'STATSGO':
                 QSWATUtils.information('WARNING: SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch, logFile=self.logFile)
@@ -697,15 +701,15 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 huc12 = self.projName[3:]
                 QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined in project huc{2}'.format(sid, lookup_row[1], huc12), self.isBatch, logFile=self.logFile)
                 self._undefinedSoilIds.append(sid)
-                return self.SSURGOUndefined
+                return self.SSURGOUndefined, False
             #if row[0].lower().strip() == 'water':
             if re.search(self.waterPattern, row[0]) is not None:
                 self.SSURGOSoils[int(sid)] = Parameters._SSURGOWater
-                return Parameters._SSURGOWater
+                return Parameters._SSURGOWater, True
             else:
                 muid = int(lookup_row[1])
                 self.SSURGOSoils[int(sid)] = muid
-                return muid
+                return muid, True
     
     def populateAllLanduses(self, listBox: QListWidget) -> None:
         """Make list of all landuses in listBox."""
@@ -1287,7 +1291,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         soilNum = BasinData.dominantKey(basinData.originalSoilAreas)
         slpNum = BasinData.dominantKey(basinData.originalSlopeAreas)
         lu = self.getLanduseCode(luNum)
-        soil = self.getSoilName(soilNum)
+        soil, _ = self.getSoilName(soilNum)
         slp = self.slopeRange(slpNum)
         meanSlopePercent = meanSlope * 100
         uc = lu + '_' + soil + '_' + slp
