@@ -1863,7 +1863,10 @@ class CreateHRUs(QObject):
             QSWATUtils.information('WARNING: only {:.1F} percent of the watershed has defined landuse values.\n If this percentage is zero check your landuse map has the same projection as your DEM.'.format(landusePercent), self._gv.isBatch)
         soilMapPercent = (float(soilDefinedCount + soilUndefinedCount) / (soilDefinedCount + soilUndefinedCount + soilNoDataCount)) * 100
         QSWATUtils.loginfo('Soil cover percent: {:.1F}'.format(soilMapPercent))
-        soilDefinedPercent = (float(soilDefinedCount) / (soilDefinedCount + soilUndefinedCount)) * 100
+        if soilDefinedCount + soilUndefinedCount > 0:
+            soilDefinedPercent = (float(soilDefinedCount) / (soilDefinedCount + soilUndefinedCount)) * 100
+        else:
+            soilDefinedPercent = 0
         QSWATUtils.loginfo('Soil defined percent: {:.1F}'.format(soilDefinedPercent))
         under95 = False
         if self._gv.isHUC:
