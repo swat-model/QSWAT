@@ -65,7 +65,7 @@ class BasinData:
         """Initialise class variables."""
         ## Number of cells in subbasin
         self.cellCount = 0
-        ## Area of subbasin in square metres.  Equals cropSoilSlopeArea plus reservoirArea plus pondArea plus nodata area
+        ## Area of subbasin in square metres.  Equals cropSoilSlopeArea plus reservoirArea plus pondArea plus lakeArea plus nodata area
         self.area = 0.0
         ## Area draining through outlet of subbasin in square metres
         self.drainArea = 0.0
@@ -73,14 +73,12 @@ class BasinData:
         self.pondArea = 0.0
         ## reservoir area in square metres
         self.reservoirArea = 0.0
+        ## objectids of reservoirs in basin (list of integer ids in a string)
+        self.reservoirObjectids = ''
         ## playa area in square metres according to NHD data (only used with HUC)
         self.playaArea = 0.0
-        ## pond area in square metres before any adjustment for total area
-        self.pondAreaOriginally = 0.0
-        ## reservoir area in square metres before any adjustment for total area
-        self.reservoirAreaOriginally = 0.0
-        ## playa area in square metres  before any adjustment for total area according to NHD data (only used with HUC)
-        self.playaAreaOriginally = 0.0
+        ## lake area in square metres  before any adjustment for total area according to NHD data (only used with HUC)
+        self.lakeArea = 0.0
         ## wetland area in square metres according to NHD data (only used with HUC)
         self.wetlandArea = 0.0
         ## area of buffered stream in square metres
@@ -223,7 +221,7 @@ class BasinData:
             else:
                 # if we are not redistributing nodata, need to correct the basin area, cell count and totalSlope, which may be reduced 
                 # as we are removing nodata area from the model
-                self.area = self.cropSoilSlopeArea + self.pondArea + self.reservoirArea
+                self.area = self.cropSoilSlopeArea + self.pondArea + self.reservoirArea + self.lakeArea
                 self.cellCount = self.totalHRUCellCount()
                 self.totalSlope = self.totalHRUSlopes()
         self.setCropAreas(isOriginal)
@@ -232,7 +230,7 @@ class BasinData:
         
     def redistributeNodata(self) -> None:
         """Redistribute nodata area in each HRU."""
-        nonWaterbodyArea = self.area - (self.pondArea + self.reservoirArea)
+        nonWaterbodyArea = self.area - (self.pondArea + self.reservoirArea + self.lakeArea)
         areaToRedistribute = nonWaterbodyArea - self.cropSoilSlopeArea
         if nonWaterbodyArea > areaToRedistribute > 0:
             redistributeFactor = nonWaterbodyArea / (nonWaterbodyArea - areaToRedistribute)
@@ -417,20 +415,29 @@ class BasinData:
             if len(self.cropSoilSlopeNumbers[crop]) == 0:
                 del self.cropSoilSlopeNumbers[crop]
                 
-    def removeWaterBodiesArea(self, WATRInStream: float, gv: Any) -> None:
-        """Reduce areas to allow for reservoir, pond and playa areas.  Set WATR HRU to WATRInStream + playa"""
+    def removeWaterBodiesArea(self, WATRInStream: float, gv: Any) -> float:
+        """Reduce areas to allow for reservoir, pond, lake and playa areas.  Set WATR HRU to WATRInStream + playa.
+        Return reduction in WATR area in square metres"""
         
-        def setWaterHRUArea(waterLanduse: int, area: float) -> float:
-            """Set the area of WATR HRU to area.  Return previous WATR area"""
+        def getWaterHRUArea(waterLanduse: int) -> float:
+            """Area determined as water from reading landuse and soil rasters."""
+            soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, dict())
+            slopeNumbers = soilSlopeNumbers.get(Parameters._SSURGOWater, dict())
+            hru = slopeNumbers.get(0, -1)
+            if hru >= 0:  # have existing WATR HRU
+                return self.hruMap[hru].area
+            else:
+                return 0
+        
+        def setWaterHRUArea(waterLanduse: int, area: float) -> None:
+            """Set the area of WATR HRU to area."""
             soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, dict())
             slopeNumbers = soilSlopeNumbers.get(Parameters._SSURGOWater, dict())
             hru = slopeNumbers.get(0, -1)
             if hru >= 0:  # have existing WATR HRU
                 hruData = self.hruMap[hru]
-                oldHRUArea = hruData.area
                 hruData.area = area
                 hruData.cellCount = int(area / gv.cellArea + 0.5)
-                return oldHRUArea
             else:  # create a water HRU
                 cellCount = int(area / gv.cellArea + 0.5)
                 hruData = CellData(cellCount, area, Parameters._WATERMAXSLOPE * cellCount, waterLanduse)
@@ -439,10 +446,9 @@ class BasinData:
                 slopeNumbers[0] = self.relHru
                 soilSlopeNumbers[Parameters._SSURGOWater] = slopeNumbers
                 self.cropSoilSlopeNumbers[waterLanduse] = soilSlopeNumbers
-                return 0
             
-        def removeWater(waterLanduse: int) -> float:
-            """Remove all waterLanduse HRUs.  Return area removed"""
+        def removeWater(waterLanduse: int) -> None:
+            """Remove all waterLanduse HRUs."""
             removedArea = 0.0
             soilSlopeNumbers = self.cropSoilSlopeNumbers.get(waterLanduse, None)
             if soilSlopeNumbers is not None:
@@ -451,7 +457,6 @@ class BasinData:
                         removedArea += self.hruMap[hru].area
                         del self.hruMap[hru]
                 del self.cropSoilSlopeNumbers[waterLanduse]
-            return removedArea
         
         def allWATR(waterLanduse: int) -> bool:
             for crop in self.cropSoilSlopeNumbers:
@@ -459,7 +464,7 @@ class BasinData:
                     return False
             return True
             
-        areaToRemove = self.reservoirArea + self.pondArea
+        areaToRemove = self.reservoirArea + self.pondArea + self.lakeArea
         availableForHRUs = self.cropSoilSlopeArea - areaToRemove
         if availableForHRUs <= 0:
             ## remove all HRUs
@@ -470,19 +475,28 @@ class BasinData:
                 factor = self.area / areaToRemove
                 self.reservoirArea *= factor
                 self.pondArea *= factor
-            return
+                self.lakeArea *= factor
+            return 0
         waterLanduse = gv.db.getLanduseCat('WATR')
         if allWATR(waterLanduse):
-            # just use all the non-reservoir and pond area as water: cannot redistribute anything as no crop HRUs to change
-            _ = setWaterHRUArea(waterLanduse, availableForHRUs)
-            return
-        availableForWATR = min(availableForHRUs, WATRInStream + self.playaArea)
-        if availableForWATR > 0:
-            self.playaArea = min(availableForWATR, self.playaArea)
-            oldWATRArea = setWaterHRUArea(waterLanduse, availableForWATR)
+            # just use all the non-reservoir, pond and lake area as water: cannot redistribute anything as no crop HRUs to change
+            setWaterHRUArea(waterLanduse, availableForHRUs)
+            return 0
+        oldWaterArea = getWaterHRUArea(waterLanduse)
+        waterOutsideResOrPond = oldWaterArea - areaToRemove
+        # only need to have streams and playas as water HRU
+        # note difference between what we have as water and the minimum we need
+        # large difference suggests we missed a pond, lake or reservoir
+        waterReduction = waterOutsideResOrPond - (WATRInStream + self.playaArea)
+        useForWater = min(waterOutsideResOrPond, WATRInStream + self.playaArea)
+        if useForWater > 0:
+            QSWATUtils.loginfo('Water area changed from {0} to {1}: {2:.1F}%'.format(waterOutsideResOrPond, useForWater, useForWater * 100 / waterOutsideResOrPond))
+            self.playaArea = min(useForWater, self.playaArea)
+            setWaterHRUArea(waterLanduse, useForWater)
         else:
-            oldWATRArea = removeWater(waterLanduse)
-        availableForCropHRUs = availableForHRUs - availableForWATR
+            removeWater(waterLanduse)
+            useForWater = 0
+        availableForCropHRUs = availableForHRUs - useForWater
         if availableForCropHRUs == 0:
             # remove non WATR HRUs
             cropsToDelete: List[int] = []
@@ -495,7 +509,7 @@ class BasinData:
             for crop in cropsToDelete:
                 del self.cropSoilSlopeNumbers[crop]
         else:
-            oldCropArea = self.cropSoilSlopeArea - oldWATRArea
+            oldCropArea = self.cropSoilSlopeArea - oldWaterArea
             factor = availableForCropHRUs / oldCropArea
             # multiply non-water HRUs by factor
             for crop, soilSlopeNumbers in self.cropSoilSlopeNumbers.items():
@@ -504,6 +518,7 @@ class BasinData:
                         for hru in slopeNumbers.values():
                             self.hruMap[hru].multiply(factor)
         self.cropSoilSlopeArea = availableForHRUs
+        return waterReduction
                 
 class HRUData:
     

@@ -110,7 +110,7 @@ if is64:
     HashTable1['uncomb'] = '54badd623e6ef1fdae08ba245e7c01ce'
     HashTable1['Watershed'] = '0dc7b1b785302c89e3d5608ce7c449fa'
 else:
-    HashTable1['Reach'] = '0c4294d2325cc5e4da192d1c67f0b334'
+    HashTable1['Reach'] = 'cc31e557caeafd9e64b30937b9969511'
     HashTable1['MonitoringPoint'] = '602737473d13d63fffba571d1c48184e'
     HashTable1['BASINSDATA1'] = '449f70bd2c7d122572808bd055e1b93e'
     HashTable1['BASINSDATA2'] = '593ecb65ab4d8f49cefcb7bbb74d98cf'
@@ -147,7 +147,7 @@ if is64:
     HashTable2['uncomb'] = '677d8e2f43b22bb2e2136cf9aa71f984'
     HashTable2['Watershed'] = '28962355da261ed3b56660bdb1afc493'
 else:
-    HashTable2['Reach'] = '1d7c0bde12e5a9f2494b941447cd01a8'
+    HashTable2['Reach'] = 'd61559c99ba10bcd9ac6d3e4b7270d77'
     HashTable2['MonitoringPoint'] = '1f7ce3c15b4b5a73b3b9ed1fc8c51036'
     HashTable2['BASINSDATA1'] = '0735497fef27f345d53f4695deb147c6'
     HashTable2['BASINSDATA2'] = '471057b700f5cadca604fb81b8ef3cf3'
@@ -196,7 +196,7 @@ HashTable3['SplitHRUs'] = '5c3f1888ea4e1064e3f6d1b2025ebbe7'
 #===============================================================================
 
 HashTable4 = dict()
-HashTable4['Reach'] = '321d49eb5493cb6181cd785f26086b9f'  if is64 else '28f7931add98497cd7681dc7aa36369d'
+HashTable4['Reach'] = '321d49eb5493cb6181cd785f26086b9f'  if is64 else 'c8ce13a5b31229a1a4225c6f20306423'
 HashTable4['MonitoringPoint'] = 'b3ce02e9cb72d16192319f7b95a0c0c4'  if is64 else 'a0da75a8df134d0c7277aa3f6e815704'
 HashTable4['BASINSDATA1'] = '64c29c087d6681d7dacb320651061403'
 HashTable4['BASINSDATA2'] = 'fe6ceed16df5e4329be7d6af52d2608d'  if is64 else '9d6ebc9775cb40c2a1ba092c9f4a748a'
@@ -289,6 +289,7 @@ class TestQswat(unittest.TestCase):
         
     def test01(self):
         """No MPI; single outlet only; no merging/adding in delineation; slope limit 10; percent filters 20/10/5."""
+        print('\nTest 1')
         self.delin._dlg.selectDem.setText(self.copyDem('sj_dem.tif'))
         self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
         ## HRUs object
@@ -369,6 +370,7 @@ class TestQswat(unittest.TestCase):
         
     def test02(self):
         """MPI with 12 processes; delineation threshold 100 sq km; 8 inlets/outlets; snap threshold 600; FullHRUs;  6 elev bands;  area filter 5000 ha."""
+        print('\nTest 2')
         self.delin._dlg.selectDem.setText(self.copyDem('sj_dem.tif'))
         self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
         self.hrus = HRUs(self.plugin._gv, self.dlg.reportsBox)
@@ -463,6 +465,7 @@ class TestQswat(unittest.TestCase):
         
     def test03(self):
         """No MPI; delineation threshold 14400 cells; single outlet; merge subbasins; add reservoirs; add point sources; split and exempts; target by area 100."""
+        print('\nTest 3')
         self.delin._dlg.selectDem.setText(self.copyDem('sj_dem.tif'))
         self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
         self.hrus = HRUs(self.plugin._gv, self.dlg.reportsBox)
@@ -560,6 +563,7 @@ class TestQswat(unittest.TestCase):
         
     def test04(self):
         """No MPI; use existing; no outlet; no merging/adding in delineation; FullHRUs; no slope limits; filter by percent area 10%."""
+        print('\nTest 4')
         self.delin._dlg.selectDem.setText(self.copyDem('sj_dem.tif'))
         self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
         self.hrus = HRUs(self.plugin._gv, self.dlg.reportsBox)
@@ -650,6 +654,7 @@ class TestQswat(unittest.TestCase):
         
     def test05(self):
         """No MPI; Duffins example (with triple stream reach join); delineation threshold 100 ha; merges small subbasins with default 5% threshold;  no slope limits; target 170 HRUs by percentage."""
+        print('\nTest 5')
         demFileName = self.copyDem('duff_dem.tif')
         self.delin._dlg.selectDem.setText(demFileName)
         self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
@@ -747,6 +752,7 @@ class TestQswat(unittest.TestCase):
         
     def test06(self):
         """MPI 8 processes; clipped San Juan DEM: no inlets/outlets file; delineation threshold 6000 ha; no slope limits; dominant HRU"""
+        print('\nTest 6')
         self.delin._dlg.selectDem.setText(self.copyDem('sj_dem_clip.tif'))
         self.assertTrue(os.path.exists(self.delin._dlg.selectDem.text()), 'Failed to copy DEM to source directory')
         ## HRUs object

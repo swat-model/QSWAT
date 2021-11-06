@@ -107,7 +107,7 @@ class QSWATUtils:
             return 'qgis'
     
     @staticmethod
-    def error(msg: str, isBatch: bool, reportErrors: bool=True, logFile: str=None) -> None: 
+    def error(msg: str, isBatch: bool, reportErrors: bool=True, logFile: Optional[str]=None) -> None: 
         """Report msg as an error.  If not reportErrors merely log the message."""
         QSWATUtils.logerror(msg)
         if not reportErrors:
@@ -130,7 +130,7 @@ class QSWATUtils:
         return
     
     @staticmethod
-    def question(msg: str, isBatch: bool, affirm: bool, logFile: str=None) -> QMessageBox.StandardButton:
+    def question(msg: str, isBatch: bool, affirm: bool, logFile: Optional[str]=None) -> QMessageBox.StandardButton:
         """Ask msg as a question, returning Yes or No."""
         # only ask question if interactive
         if not isBatch:
@@ -159,7 +159,7 @@ class QSWATUtils:
         return result
     
     @staticmethod
-    def information(msg: str, isBatch: bool, reportErrors: bool=True, logFile: str=None) -> None:
+    def information(msg: str, isBatch: bool, reportErrors: bool=True, logFile: Optional[str]=None) -> None:
         """Report msg as information."""
         QSWATUtils.loginfo(msg)
         if not reportErrors:

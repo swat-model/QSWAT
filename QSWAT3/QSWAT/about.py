@@ -46,13 +46,12 @@ class AboutQSWAT:
         text = """
 QSWAT3 version: {0}
 
-Minimum QGIS version: 3.0
+Minimum QGIS version: 3.16
 
 Python version: 3.7
 
 Current restrictions:
 - runs only in Windows
-- 32-bit QGIS must be used
         """.format(version)
         self._dlg.textBrowser.setText(text)
         self._dlg.exec_()

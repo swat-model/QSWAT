@@ -160,7 +160,7 @@ class runHUC():
         pointsFile = gv.projDir + '/Watershed/Shapes/points.shp'
         pointsLayer = QgsVectorLayer(pointsFile, 'points', 'ogr')
         exp = QgsExpression('"ID" = {0}'.format(inletId))
-        point = next(pointsLayer.getFeatures(QgsFeatureRequest(exp)))
+        point = next(point for point in pointsLayer.getFeatures(QgsFeatureRequest(exp)))
         pointXY = point.geometry().asPoint()
         pointll = gv.topo.pointToLatLong(pointXY)
         # to find subbasin, find zero length channel with inletId as LINKNO, and then subbasin of its downstream channel
@@ -170,10 +170,10 @@ class runHUC():
         dsLinkNoIndex = channelsProvider.fieldNameIndex('DSLINKNO')
         wsnoIndex = channelsProvider.fieldNameIndex('WSNO')
         exp1 = QgsExpression('"LINKNO" = {0}'.format(inletId))
-        channel = next(channelsLayer.getFeatures(QgsFeatureRequest(exp1).setFlags(QgsFeatureRequest.NoGeometry)))
+        channel = next(channel for channel in channelsLayer.getFeatures(QgsFeatureRequest(exp1).setFlags(QgsFeatureRequest.NoGeometry)))
         dsLinkNo = channel[dsLinkNoIndex]
         exp2 = QgsExpression('"LINKNO" = {0}'.format(dsLinkNo))
-        channel = next(channelsLayer.getFeatures(QgsFeatureRequest(exp2).setFlags(QgsFeatureRequest.NoGeometry)))
+        channel = next(channel for channel in channelsLayer.getFeatures(QgsFeatureRequest(exp2).setFlags(QgsFeatureRequest.NoGeometry)))
         wsno = channel[wsnoIndex]
         with db.connect() as conn:
             cursor = conn.cursor()
@@ -204,6 +204,14 @@ def runProject(d, dataDir, scale, minHRUha):
     # but there may be many instances of this function and we want to avoid too many open files
     if os.path.isdir(d):
         logFile = d + '/LogFile.txt'
+        projFile = d + '.qgs'
+        # projects removed as empty leave some project directory but not a project file
+        if not os.path.isfile(projFile):
+            with open(logFile, 'w') as f:
+                f.write('Apparently empty project {0}: no project file\n'.format(d))
+            sys.stdout.write('Apparently empty project {0}: no project file\n'.format(d))
+            sys.stdout.flush()
+            return    
         with open(logFile, 'w') as f:
             f.write('Running project {0}\n'.format(d))
         sys.stdout.write('Running project {0}\n'.format(d))
@@ -219,7 +227,7 @@ def runProject(d, dataDir, scale, minHRUha):
         except Exception:
             with open(logFile, 'a') as f:
                 f.write('ERROR: exception: {0}\n'.format(traceback.format_exc()))
-            sys.stdout.write('ERROR: exception: {0}\n'.format(traceback.format_exc()))
+            sys.stdout.write('ERROR: exception in {0}: {1}\n'.format(d, traceback.format_exc()))
             sys.stdout.flush()
                 
 if __name__ == '__main__':

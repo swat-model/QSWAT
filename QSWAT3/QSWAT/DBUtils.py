@@ -824,9 +824,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     pondArea REAL, 
     reservoirArea REAL, 
     playaArea REAL,
-    pondAreaOriginally REAL,
-    reservoirAreaOriginally REAL,
-    playaAreaOriginally REAL,
+    lakeArea REAL,
     wetlandArea REAL,
     totalElevation REAL, 
     totalSlope REAL, 
@@ -945,7 +943,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             conn.close()
             return (None, None, None)
         if self.isHUC:
-            sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+            sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         else:
             sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         table = self._BASINSDATA2
@@ -988,8 +986,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             if self.isHUC:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
-                             float(data.pondArea), float(data.reservoirArea), float(data.playaArea),  \
-                             float(data.pondAreaOriginally), float(data.reservoirAreaOriginally), float(data.playaAreaOriginally),  \
+                             float(data.pondArea), float(data.reservoirArea), float(data.playaArea), float(data.lakeArea), \
                              float(data.wetlandArea), float(data.totalElevation), float(data.totalSlope), \
                              data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
                              float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
@@ -1037,9 +1034,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             bd.pondArea = row1['pondArea']
                             bd.reservoirArea = row1['reservoirArea']
                             bd.playaArea = row1['playaArea']
-                            bd.pondAreaOriginally = row1['pondAreaOriginally']
-                            bd.reservoirAreaOriginally = row1['reservoirAreaOriginally']
-                            bd.playaAreaOriginally = row1['playaAreaOriginally']
+                            bd.lakeArea = row1['lakeArea']
                             bd.wetlandArea = row1['wetlandArea']
                             bd.totalElevation = row1['totalElevation']
                             bd.totalSlope = row1['totalSlope']

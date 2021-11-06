@@ -191,7 +191,7 @@ class GlobalVars:
         self.logFile = logFile
         ## data directory for HUC projects
         # default for debugging
-        self.HUCDataDir = 'H:/Data'
+        self.HUCDataDir = 'I:/Data'
         ## Path of project database
         self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.logFile, self.isBatch)
         ## multiplier to turn elevations to metres

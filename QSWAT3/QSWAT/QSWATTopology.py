@@ -335,13 +335,18 @@ class QSWATTopology:
                 drop = 0
                 slope = 0
             else:
-                if data and (dropIndex < 0 or recalculate):
+                # don't use TauDEM for drop - affected by burn-in and pit filling
+                # if data and (dropIndex < 0 or recalculate):
+                #     drop = data.upperZ - data.lowerZ
+                # elif dropIndex >= 0:
+                #     drop = attrs[dropIndex]
+                # else:
+                #     drop = 0
+                if data:
                     drop = data.upperZ - data.lowerZ
-                elif dropIndex >= 0:
-                    drop = attrs[dropIndex]
                 else:
                     drop = 0
-                slope = float(drop) / length
+                slope = 0 if drop < 0 else float(drop) / length
             dsNode = attrs[dsNodeIndex] if dsNodeIndex >= 0 else -1
             self.linkToBasin[link] = wsno
             self.basinToLink[wsno] = link
@@ -642,9 +647,14 @@ class QSWATTopology:
         finishVal = QSWATTopology.valueAtPoint(pFinish, demLayer)
         if startVal is None or startVal == self.demNodata:
             if finishVal is None or finishVal == self.demNodata:
-                QSWATUtils.loginfo('({0!s},{1!s}) elevation {4} to ({2!s},{3!s}) elevation {5}'
-                                   .format(pStart.x(), pStart.y(), pFinish.x(), pFinish.y(), str(startVal), str(finishVal)))
-                return None
+                if self.isHUC:
+                    # allow for streams outside DEM
+                    startVal = 0
+                    finishVal = 0
+                else:
+                    QSWATUtils.error('Stream link {4} ({0!s},{1!s}) to ({2!s},{3!s}) seems to be outside DEM'
+                                       .format(pStart.x(), pStart.y(), pFinish.x(), pFinish.y(), reach[self.linkIndex]), self.isbatch)
+                    return None
             else:
                 startVal = finishVal
         elif finishVal is None or finishVal == self.demNodata:
@@ -1024,6 +1034,8 @@ class QSWATTopology:
             oid = 0
             time1 = time.process_time()
             wid2Data = dict()
+            subsToDelete = set()
+            fidsToDelete = []
             for link, basin in self.linkToBasin.items():
                 SWATBasin = self.basinToSWATBasin.get(basin, 0)
                 if SWATBasin == 0:
@@ -1050,6 +1062,7 @@ class QSWATTopology:
                 channelDepth = float(0.13 * drainAreaKm ** 0.4)
                 reachData = self.reachesData[link]
                 if not reachData:
+                    subsToDelete.add(SWATBasin)
                     continue
                 minEl = float(reachData.lowerZ)
                 maxEl = float(reachData.upperZ)
@@ -1086,6 +1099,12 @@ class QSWATTopology:
                     curs.execute(sql, oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
                                  drainAreaHa, length, slopePercent, channelWidth, channelDepth, minEl, maxEl, \
                                  length, SWATBasin + 200000, SWATBasin + 100000)
+            for SWATBasin in subsToDelete:
+                request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([subIdx])
+                for feature in riv1Layer.getFeatures(request):
+                    if feature.attributes()[subIdx]  == SWATBasin:
+                        fidsToDelete.append(feature.id())
+                        break
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing Reach table took {0} seconds'.format(int(time2 - time1)))
             if self.isHUC:
@@ -1097,6 +1116,11 @@ class QSWATTopology:
             if not OK:
                 QSWATUtils.error('Cannot edit values in stream reaches shapefile {0}'.format(riv1File), self.isBatch)
                 return None
+            if len(fidsToDelete) > 0:
+                OK = provider1.deleteFeatures(fidsToDelete)
+                if not OK:
+                    QSWATUtils.error('Cannot delete features in stream reaches shapefile {0}'.format(riv1File), self.isBatch)
+                    return None
         if gv.useGridModel:
             return streamLayer
         else:
