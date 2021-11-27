@@ -1335,7 +1335,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return None
             
     def tableIsUpToDate(self, fileName: str, table: str) -> bool:
-        """Return true if last update time of table no earlkier than last update of file."""
+        """Return true if last update time of table no earlier than last update of file."""
         try:
             fileTimeStamp = os.path.getmtime(fileName)
             tableTime = self.lastUpdateTime(table)
@@ -1510,5 +1510,20 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         DoneModelRun       INTEGER
     );
     """
+    
+    _LAKETABLESQL= \
+    """
+    (OID INTEGER,
+    SUBBASIN INTEGER,
+    LAKE_AREA REAL)
+    """
+    
+    _PLAYATABLESQL= \
+    """
+    (OID INTEGER,
+    SUBBASIN INTEGER,
+    PLAYA_AREA REAL)
+    """
+    
 
     

@@ -464,7 +464,7 @@ class BasinData:
                     return False
             return True
             
-        areaToRemove = self.reservoirArea + self.pondArea + self.lakeArea
+        areaToRemove = self.reservoirArea + self.pondArea + self.lakeArea + self.playaArea
         availableForHRUs = self.cropSoilSlopeArea - areaToRemove
         if availableForHRUs <= 0:
             ## remove all HRUs
@@ -476,21 +476,22 @@ class BasinData:
                 self.reservoirArea *= factor
                 self.pondArea *= factor
                 self.lakeArea *= factor
+                self.playaArea *= factor
             return 0
         waterLanduse = gv.db.getLanduseCat('WATR')
         if allWATR(waterLanduse):
-            # just use all the non-reservoir, pond and lake area as water: cannot redistribute anything as no crop HRUs to change
+            # just use all the non-reservoir, pond, lake and playa area as water: cannot redistribute anything as no crop HRUs to change
             setWaterHRUArea(waterLanduse, availableForHRUs)
             return 0
         oldWaterArea = getWaterHRUArea(waterLanduse)
-        waterOutsideResOrPond = oldWaterArea - areaToRemove
+        waterOutsideWaterbody = oldWaterArea - areaToRemove
         # only need to have streams and playas as water HRU
         # note difference between what we have as water and the minimum we need
         # large difference suggests we missed a pond, lake or reservoir
-        waterReduction = waterOutsideResOrPond - (WATRInStream + self.playaArea)
-        useForWater = min(waterOutsideResOrPond, WATRInStream + self.playaArea)
+        waterReduction = waterOutsideWaterbody - WATRInStream
+        useForWater = min(waterOutsideWaterbody, WATRInStream)
         if useForWater > 0:
-            QSWATUtils.loginfo('Water area changed from {0} to {1}: {2:.1F}%'.format(waterOutsideResOrPond, useForWater, useForWater * 100 / waterOutsideResOrPond))
+            QSWATUtils.loginfo('Water area changed from {0} to {1}: {2:.1F}%'.format(waterOutsideWaterbody, useForWater, useForWater * 100 / waterOutsideWaterbody))
             self.playaArea = min(useForWater, self.playaArea)
             setWaterHRUArea(waterLanduse, useForWater)
         else:

@@ -143,7 +143,7 @@ class runHUC():
         gv.numElevBands = 5
         if not self.hrus.readFiles():
             hrudlg.close()
-            return False
+            return self.hrus.CreateHRUs.emptyHUCProject  # gives True if project is empty
         hrudlg.filterAreaButton.setChecked(True)
         hrudlg.areaButton.setChecked(True)
         hrudlg.areaVal.setText(str(minHRUha))
