@@ -131,7 +131,7 @@ class Parameters:
     
     # landuses for which we use just one SSURGO soil and where we make the slope at most _WATERMAXSLOPE 
     _WATERLANDUSES = {'WATR', 'WETN', 'WETF', 'RIWF', 'UPWF', 'RIWN', 'UPWN'}
-    _WATERMAXSLOPE = 0.001
+    _WATERMAXSLOPE = 0.00001
     
     def __init__(self, gv):
         """Initialise class variables."""

@@ -2358,6 +2358,26 @@ class CreateHRUs(QObject):
         """Create area maps for each subbasin."""
         for data in self.basins.values():
             data.setAreas(isOriginal, redistributeNodata=redistributeNodata)
+        if self._gv.isHUC:
+            # remove empty basins, which can occur for subbasins outside soil and/or landuse maps
+            basinsToDelete = [basin for basin, data in self.basins.items() if data.area == 0]
+            if len(basinsToDelete) > 0:
+                for basin in basinsToDelete:
+                    del self.basins[basin]
+                # rewrite basinToSWATBasin and SWATBasinToBasin maps
+                newBasinToSWATBasin = dict()
+                newSWATBasinToBasin = dict()
+                newSWATBasin = 0
+                for nextNum in sorted(self._gv.topo.SWATBasinToBasin.keys()):
+                    basin = self._gv.topo.SWATBasinToBasin[nextNum]
+                    if basin in basinsToDelete:
+                        continue
+                    else:
+                        newSWATBasin += 1
+                        newSWATBasinToBasin[newSWATBasin] = basin
+                        newBasinToSWATBasin[basin] = newSWATBasin
+                self._gv.topo.SWATBasinToBasin = newSWATBasinToBasin
+                self._gv.topo.basinToSWATBasin = newBasinToSWATBasin
         if not redistributeNodata:
             # need to correct the drain areas of the basins, using the defined area of each
             self.defineDrainAreas()
@@ -3516,6 +3536,9 @@ class CreateHRUs(QObject):
                         percent2 = (hruha / subArea) * 100
                         fw.write('{:.2F}'.format(percent2).rjust(23))
                     hrusArea = subArea - (basinData.reservoirArea + basinData.pondArea + basinData.lakeArea) / 1E4
+                    if self._gv.isHUC:
+                        # allow for extra 1 ha WATR hru inserted if all water body
+                        hrusArea = max(1, hrusArea)
                     fw.writeLine('')
                     filebase = QSWATUtils.fileBase(SWATBasin, hrudata.relHru)
                     oid += 1
@@ -3948,16 +3971,17 @@ class CreateHRUs(QObject):
                     mmap[fid][elevMaxIdx] = elevMax 
                     mmap[fid][bNameIdx] = '' 
                     mmap[fid][shapeLenIdx] = 0 
-                    mmap[fid][shapeAreaIdx] = basinData.area 
+                    mmap[fid][shapeAreaIdx] = basinData.polyArea 
                     mmap[fid][hydroIdIdx] = SWATBasin + 300000 
                     mmap[fid][OutletIdIdx] = SWATBasin + 100000 
-                sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 if self._gv.isHUC:
+                    sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     curs.execute(sql, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
                                  float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
-                                 float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
-                                 SWATBasin + 300000, SWATBasin + 100000))
+                                 float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.polyArea), \
+                                 float(basinData.definedArea), SWATBasin + 300000, SWATBasin + 100000))
                 else:
+                    sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     curs.execute(sql, SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
                                  float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
                                  float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \

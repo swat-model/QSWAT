@@ -110,8 +110,8 @@ class runHUC():
         self.delin._dlg.selectNet.setText(self.projDir + '/Watershed/Shapes/channels.shp')
         self.delin._dlg.selectExistOutlets.setText(self.projDir + '/Watershed/Shapes/points.shp')
         self.delin._dlg.recalcButton.setChecked(False)  # want to use length field in channels shapefile
-        ## use MPI on HUC10 and HUC8 projects
-        #numProc = 0 if scale >= 12 else 8
+        ## use MPI on HUC12, HUC10 and HUC8 projects
+        #numProc = 14 - scale
         # don't use MPI with multiprocessing
         numProc = 0
         self.delin._dlg.numProcesses.setValue(numProc)
@@ -223,7 +223,7 @@ def runProject(d, dataDir, scale, minHRUha):
                     f.write('Completed project {0}\n'.format(d))
             else:
                 with open(logFile, 'a') as f:
-                    f.write('ERROR: incomplete project {0}\n'.format(d))     
+                    f.write('ERROR: incomplete project {0}\n'.format(d))
         except Exception:
             with open(logFile, 'a') as f:
                 f.write('ERROR: exception: {0}\n'.format(traceback.format_exc()))
