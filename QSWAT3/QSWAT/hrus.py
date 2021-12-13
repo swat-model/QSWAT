@@ -2083,7 +2083,7 @@ class CreateHRUs(QObject):
                 area = basinData.cropSoilSlopeArea
                 waterData = waterStats.get(basin, None)
                 if waterData is not None:
-                    waterReduction = basinData.removeWaterBodiesArea(waterData[6] * 1E4, self._gv)  # WATRInStream was in ha, reduction is in sq m
+                    waterReduction = basinData.removeWaterBodiesArea(waterData[6] * 1E4, basin, conn, self._gv)  # WATRInStream was in ha, reduction is in sq m
                 totalWaterReduction += waterReduction
                 totalArea += area
                 reductions[basin] = (0, 0) if area == 0 else (waterReduction / 1E4, waterReduction * 100 / area)  # all stats areas in ha
@@ -2356,9 +2356,31 @@ class CreateHRUs(QObject):
     
     def saveAreas(self, isOriginal: bool, redistributeNodata=True) -> None:
         """Create area maps for each subbasin."""
+        
+        def deleteSubbasinsFromReachTable(basinsToDelete: List[int], newBasinToSWATBasin: Dict[int, int]):
+            """Remove records in basinsToDelete; renumber subbasins according to newBasinToSWATBasin."""
+            SWATBasinsToDelete = [self._gv.topo.basinToSWATBasin[basin] for basin in self._gv.topo.basinToSWATBasin if basin in basinsToDelete]
+            sql = 'DELETE FROM Reach WHERE Subbasin=?'
+            sql1 = 'UPDATE Reach SET SubbasinR=0 WHERE SubbasinR=?'
+            sql2 = 'UPDATE Reach SET Subbasin=? WHERE Subbasin=?'
+            sql3 = 'UPDATE Reach SET SubbasinR=? WHERE SubbasinR=?'
+            with self._gv.db.connect() as conn:
+                for SWATBasin in SWATBasinsToDelete:
+                    conn.execute(sql, (SWATBasin,))
+                # renumber other subbasins
+                for basin, oldSub in self._gv.topo.basinToSWATBasin.items():
+                    if basin in basinsToDelete:
+                        conn.execute(sql1, (oldSub,))
+                        continue
+                    newSub = newBasinToSWATBasin[basin]
+                    if oldSub != newSub:
+                        conn.execute(sql2, (newSub, oldSub))
+                        conn.execute(sql3, (newSub, oldSub))
+                conn.commit()
+            
         for data in self.basins.values():
             data.setAreas(isOriginal, redistributeNodata=redistributeNodata)
-        if self._gv.isHUC:
+        if self._gv.isHUC and isOriginal:
             # remove empty basins, which can occur for subbasins outside soil and/or landuse maps
             basinsToDelete = [basin for basin, data in self.basins.items() if data.area == 0]
             if len(basinsToDelete) > 0:
@@ -2376,6 +2398,7 @@ class CreateHRUs(QObject):
                         newSWATBasin += 1
                         newSWATBasinToBasin[newSWATBasin] = basin
                         newBasinToSWATBasin[basin] = newSWATBasin
+                deleteSubbasinsFromReachTable(basinsToDelete, newBasinToSWATBasin)
                 self._gv.topo.SWATBasinToBasin = newSWATBasinToBasin
                 self._gv.topo.basinToSWATBasin = newBasinToSWATBasin
         if not redistributeNodata:
@@ -3975,11 +3998,11 @@ class CreateHRUs(QObject):
                     mmap[fid][hydroIdIdx] = SWATBasin + 300000 
                     mmap[fid][OutletIdIdx] = SWATBasin + 100000 
                 if self._gv.isHUC:
-                    sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                    sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     curs.execute(sql, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
                                  float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
                                  float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.polyArea), \
-                                 float(basinData.definedArea), SWATBasin + 300000, SWATBasin + 100000))
+                                 float(basinData.definedArea), float(basinData.totalHRUAreas()), SWATBasin + 300000, SWATBasin + 100000))
                 else:
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     curs.execute(sql, SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \

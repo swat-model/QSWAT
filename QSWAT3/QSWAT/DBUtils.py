@@ -1381,6 +1381,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         Shape_Length  REAL,
         Shape_Area    REAL,
         Defined_Area  REAL,
+        HRU_Area REAL,
         HydroID  INTEGER,
         OutletID INTEGER
     );

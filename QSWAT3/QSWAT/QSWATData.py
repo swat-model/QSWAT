@@ -421,9 +421,20 @@ class BasinData:
             if len(self.cropSoilSlopeNumbers[crop]) == 0:
                 del self.cropSoilSlopeNumbers[crop]
                 
-    def removeWaterBodiesArea(self, WATRInStream: float, gv: Any) -> float:
+    def removeWaterBodiesArea(self, WATRInStream: float, basin: int, conn: Any, gv: Any) -> float:
         """Reduce areas to allow for reservoir, pond, lake and playa areas.  Set WATR HRU to WATRInStream.
         Return reduction in WATR area in square metres"""
+        
+        def setMinimalReach():
+            """Replace record in Reach table with minimal 100m stream."""
+            SWATBasin = gv.topo.basinToSWATBasin[basin]
+            sql1 = 'SELECT MinEl FROM Reach WHERE Subbasin=?'
+            sql2 = 'UPDATE Reach SET Len2=100, MaxEl=?, Shape_Length=100 WHERE Subbasin=?'
+            row = conn.execute(sql1, (SWATBasin,)).fetchone()
+            minEl = row[0]
+            maxEl = minEl +  Parameters._WATERMAXSLOPE * 100
+            conn.execute(sql2, (maxEl, SWATBasin))
+                
         
         def getWaterHRUArea(waterLanduse: int) -> float:
             """Area determined as water from reading landuse and soil rasters."""
@@ -490,6 +501,8 @@ class BasinData:
             # add a dummy 1 ha WATR HRU to avoid no HRUs in a subbasin
             area = min(1E4, self.area)
             setWaterHRUArea(waterLanduse, area)
+            # create a dummy 100m stream to replace existing one in Reach table
+            setMinimalReach()
             return 0
         if allWATR(waterLanduse):
             # just use all the non-reservoir, pond, lake and playa area as water: cannot redistribute anything as no crop HRUs to change
