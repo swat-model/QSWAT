@@ -2357,26 +2357,37 @@ class CreateHRUs(QObject):
     def saveAreas(self, isOriginal: bool, redistributeNodata=True) -> None:
         """Create area maps for each subbasin."""
         
-        def deleteSubbasinsFromReachTable(basinsToDelete: List[int], newBasinToSWATBasin: Dict[int, int]):
-            """Remove records in basinsToDelete; renumber subbasins according to newBasinToSWATBasin."""
+        def deleteSubbasinsFromTables(basinsToDelete: List[int], newBasinToSWATBasin: Dict[int, int], conn: Any):
+            """Remove records in basinsToDelete; renumber subbasins according to newBasinToSWATBasin,
+            in Reach, MonitoringPoint, lake, res, pnd, playa and res tables."""
             SWATBasinsToDelete = [self._gv.topo.basinToSWATBasin[basin] for basin in self._gv.topo.basinToSWATBasin if basin in basinsToDelete]
-            sql = 'DELETE FROM Reach WHERE Subbasin=?'
+            sql0 = 'DELETE FROM {0} WHERE Subbasin=?'
             sql1 = 'UPDATE Reach SET SubbasinR=0 WHERE SubbasinR=?'
-            sql2 = 'UPDATE Reach SET Subbasin=? WHERE Subbasin=?'
+            sql2 = 'UPDATE {0} SET Subbasin=? WHERE Subbasin=?'
             sql3 = 'UPDATE Reach SET SubbasinR=? WHERE SubbasinR=?'
-            with self._gv.db.connect() as conn:
-                for SWATBasin in SWATBasinsToDelete:
-                    conn.execute(sql, (SWATBasin,))
-                # renumber other subbasins
-                for basin, oldSub in self._gv.topo.basinToSWATBasin.items():
-                    if basin in basinsToDelete:
-                        conn.execute(sql1, (oldSub,))
-                        continue
-                    newSub = newBasinToSWATBasin[basin]
-                    if oldSub != newSub:
-                        conn.execute(sql2, (newSub, oldSub))
-                        conn.execute(sql3, (newSub, oldSub))
-                conn.commit()
+            sql4 = 'INSERT INTO SubbasinChanges VALUES(?,?)'
+            tables = ['Reach', 'MonitoringPoint', 'lake', 'playa', 'pnd', 'res']
+            for SWATBasin in SWATBasinsToDelete:
+                for table in tables:
+                    conn.execute(sql0.format(table), (SWATBasin,))
+            # renumber other subbasins
+            renumber = dict()
+            for basin, oldSub in self._gv.topo.basinToSWATBasin.items():
+                if basin in basinsToDelete:
+                    conn.execute(sql1, (oldSub,))
+                    conn.execute(sql4, (oldSub, -1))
+                    continue
+                newSub = newBasinToSWATBasin[basin]
+                renumber[oldSub] = newSub
+            # need to use renumber in ascending order to avoid renumbering twice
+            # e.g if we have 7 -> 6 and we renumber 7 to 6 and then 6 to 5 we end up with 5 -> 5
+            for oldSub in sorted(renumber.keys()):
+                newSub = renumber[oldSub]
+                if oldSub != newSub:
+                    for table in tables:
+                        conn.execute(sql2.format(table), (newSub, oldSub))
+                    conn.execute(sql3, (newSub, oldSub))
+                    conn.execute(sql4, (oldSub, newSub))
             
         for data in self.basins.values():
             data.setAreas(isOriginal, redistributeNodata=redistributeNodata)
@@ -2384,21 +2395,27 @@ class CreateHRUs(QObject):
             # remove empty basins, which can occur for subbasins outside soil and/or landuse maps
             basinsToDelete = [basin for basin, data in self.basins.items() if data.area == 0]
             if len(basinsToDelete) > 0:
-                for basin in basinsToDelete:
-                    del self.basins[basin]
-                # rewrite basinToSWATBasin and SWATBasinToBasin maps
-                newBasinToSWATBasin = dict()
-                newSWATBasinToBasin = dict()
-                newSWATBasin = 0
-                for nextNum in sorted(self._gv.topo.SWATBasinToBasin.keys()):
-                    basin = self._gv.topo.SWATBasinToBasin[nextNum]
-                    if basin in basinsToDelete:
-                        continue
-                    else:
-                        newSWATBasin += 1
-                        newSWATBasinToBasin[newSWATBasin] = basin
-                        newBasinToSWATBasin[basin] = newSWATBasin
-                deleteSubbasinsFromReachTable(basinsToDelete, newBasinToSWATBasin)
+                with self._gv.db.connect() as conn:
+                    sql0 = 'DROP TABLE IF EXISTS SubbasinChanges'
+                    conn.execute(sql0)
+                    sql1 = 'CREATE TABLE SubbasinChanges (OldSub INTEGER, NewSub INTEGER)'
+                    conn.execute(sql1)
+                    for basin in basinsToDelete:
+                        del self.basins[basin]
+                    # rewrite basinToSWATBasin and SWATBasinToBasin maps
+                    newBasinToSWATBasin = dict()
+                    newSWATBasinToBasin = dict()
+                    newSWATBasin = 0
+                    for nextNum in sorted(self._gv.topo.SWATBasinToBasin.keys()):
+                        basin = self._gv.topo.SWATBasinToBasin[nextNum]
+                        if basin in basinsToDelete:
+                            continue
+                        else:
+                            newSWATBasin += 1
+                            newSWATBasinToBasin[newSWATBasin] = basin
+                            newBasinToSWATBasin[basin] = newSWATBasin
+                    deleteSubbasinsFromTables(basinsToDelete, newBasinToSWATBasin, conn)
+                    conn.commit()
                 self._gv.topo.SWATBasinToBasin = newSWATBasinToBasin
                 self._gv.topo.basinToSWATBasin = newBasinToSWATBasin
         if not redistributeNodata:
