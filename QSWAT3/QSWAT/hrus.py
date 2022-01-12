@@ -1805,7 +1805,7 @@ class CreateHRUs(QObject):
                                 drainAreaKm = data.drainArea / 1E6
                                 semiChannelWidth = float(0.645 * drainAreaKm ** 0.6)  # note 0.645 = 1.29 / 2
                                 streamGeom = streamGeoms[basin]
-                                streamBuffer: Optional[QgsGeometry] = streamGeom.buffer(semiChannelWidth, 1)  # 1 for second paramter minimises end effect /\ instead of a curve
+                                streamBuffer: Optional[QgsGeometry] = streamGeom.buffer(semiChannelWidth, 1)  # 1 for second parameter minimises end effect /\ instead of a curve
                                 assert streamBuffer is not None
                                 streamArea = streamBuffer.area()
                                 basinStreamWaterData[basin] = (streamBuffer, streamArea, 0.0)

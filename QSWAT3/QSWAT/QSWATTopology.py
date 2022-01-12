@@ -115,7 +115,7 @@ class QSWATTopology:
     
     _HUCPointId = 100000  # for HUC models all point ids are this number or greater (must match value in HUC12Models.py in HUC12Watersheds 
     
-    def __init__(self, isBatch: bool, isHUC: bool) -> None:
+    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool) -> None:
         """Initialise class variables."""
         ## Link to project database
         self.db = None
@@ -127,7 +127,7 @@ class QSWATTopology:
         self.dsLinkIndex = -1
         ## index to WSNO in stream shapefile (value commonly called basin)
         self.wsnoIndex = -1
-        ## LINKNO to WSNO in stream shapefile (should be identity but we won't assume it)
+        ## LINKNO to WSNO in stream shapefile (should be identity but we won't assume it unless isHAWQS)
         # WSNO is same as PolygonId in watershed shapefile, 
         # while LINKNO is used in DSLINKNO in stream shapefile
         self.linkToBasin = dict()
@@ -193,6 +193,12 @@ class QSWATTopology:
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
+        ## flage for HAWQS projects
+        self.isHAWQS = isHAWQS
+        ## use LINKNO for WSNO and Subbasin for PolygonId in HAWQS projects
+        if isHAWQS:
+            QSWATTopology._WSNO = 'LINKNO'
+            QSWATTopology._POLYGONID = 'Subbasin'
         
     def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float) -> None:
         """Set DEM size parameters and stream orientation, and store source and outlet points for stream reaches."""
@@ -266,19 +272,19 @@ class QSWATTopology:
         dsNodeIndex = self.getIndex(streamLayer, QSWATTopology._DSNODEID, ignoreMissing=ignoreWithGridOrExisting)
         self.wsnoIndex = self.getIndex(streamLayer, QSWATTopology._WSNO, ignoreMissing=ignoreError)
         if self.wsnoIndex < 0:
-            QSWATUtils.loginfo('No WSNO field in stream layer')
+            QSWATUtils.loginfo('No {0} field in stream layer'.format(QSWATTopology._WSNO))
             return False
         lengthIndex = self.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=ignoreWithGridOrExisting)
         dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP, ignoreMissing=True)
         if dropIndex < 0:
             dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP2, ignoreMissing=ignoreWithGridOrExisting)
         totDAIndex = self.getIndex(streamLayer, QSWATTopology._TOTDASQKM, ignoreMissing=ignoreTotDA)
+        subbasinIndex = self.getIndex(wshedLayer, QSWATTopology._SUBBASIN, ignoreMissing=ignoreWithGridOrExisting)
         polyIndex = self.getIndex(wshedLayer, QSWATTopology._POLYGONID, ignoreMissing=ignoreError)
         if polyIndex < 0:
-            QSWATUtils.loginfo('No POLYGONID field in watershed layer')
+            QSWATUtils.loginfo('No {0} field in watershed layer'.format(QSWATTopology._POLYGONID))
             return False
         areaIndex = self.getIndex(wshedLayer, QSWATTopology._AREA, ignoreMissing=ignoreWithGridOrExisting) 
-        subbasinIndex = self.getIndex(wshedLayer, QSWATTopology._SUBBASIN, ignoreMissing=ignoreWithGridOrExisting)
         if outletLayer:
             idIndex = self.getIndex(outletLayer, QSWATTopology._ID, ignoreMissing=ignoreError)
             if idIndex < 0:
@@ -1405,7 +1411,7 @@ class QSWATTopology:
         Assumes the orientation found for this shape can be used generally for the layer.
         For HUC models just returns False immediately as NHD flowlines start from source end.
         """
-        if self.isHUC:
+        if self.isHUC or self.isHAWQS:
             return False
         self.linkIndex = self.getIndex(streamLayer, QSWATTopology._LINKNO, ignoreMissing=False)
         if self.linkIndex < 0:
@@ -1435,6 +1441,19 @@ class QSWATTopology:
             QSWATUtils.information('Cannot find link with a downstream link in {0}.  Do you only have one stream?'.format(QSWATUtils.layerFileInfo(streamLayer).filePath()), self.isBatch)
             return True
         for (upReach, downReach) in candidates:
+            # try nearest point
+            upGeom = upReach.geometry()
+            downGeom = downReach.geometry()
+            nearest = upGeom.nearestPoint(downGeom).asPoint()
+            if upGeom.isMultipart():
+                mpl = upGeom.asMultiPolyline()
+            else:
+                mpl = [upGeom.asPolyLine()]
+            for line in mpl:
+                if QSWATTopology.samePoint(nearest, line[0], self.dx, self.dy):
+                    return True 
+                if QSWATTopology.samePoint(nearest, line[-1], self.dx, self.dy):
+                    return False
             downStart = QSWATTopology.reachFirstLine(downReach, self.dx, self.dy)
             if downStart is None:
                 continue
@@ -1560,6 +1579,14 @@ class QSWATTopology:
                 return linei
         # should not get here
         return None
+    
+    @staticmethod 
+    def samePoint(p1: QgsPointXY, p2: QgsPointXY, dx: float, dy: float):
+        """Return True if p1 and p2 are within dx and dy horizontally and vertically."""
+        xThreshold = dx * Parameters._NEARNESSTHRESHOLD
+        yThreshold = dy * Parameters._NEARNESSTHRESHOLD
+        return abs(p1.x() - p2.x()) < xThreshold and abs(p1.y() - p2.y()) < yThreshold
+        
     
     @staticmethod
     def pointOnLine(point: QgsPointXY, line: List[QgsPointXY], dx: float, dy: float) -> bool:

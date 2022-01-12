@@ -45,7 +45,7 @@ if TYPE_CHECKING:
     
 class GlobalVars:
     """Data used across across the plugin, and some utilities on it."""
-    def __init__(self, iface: Any, isBatch: bool, isHUC=False, logFile=None) -> None:
+    def __init__(self, iface: Any, isBatch: bool, isHUC=False, isHAWQS=False, logFile=None) -> None:
         """Initialise class variables."""
         ## QGIS interface
         self.iface = iface
@@ -145,7 +145,7 @@ class GlobalVars:
         ## Number of elevation bands
         self.numElevBands = 0
         ## Topology object
-        self.topo = QSWATTopology(isBatch, isHUC)
+        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS)
         projFile = QgsProject.instance().fileName()
         projPath = QFileInfo(projFile).canonicalFilePath()
         # avoid / on Windows because of SWAT Editor
@@ -187,13 +187,15 @@ class GlobalVars:
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
+        ## flag for HAWQS projects
+        self.isHAWQS = isHAWQS
         ## log file for message output for HUC projects
         self.logFile = logFile
         ## data directory for HUC projects
         # default for debugging
         self.HUCDataDir = 'I:/Data'
         ## Path of project database
-        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.logFile, self.isBatch)
+        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isHAWQS, self.logFile, self.isBatch)
         ## multiplier to turn elevations to metres
         self.verticalFactor = 1.0
         ## vertical units

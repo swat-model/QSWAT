@@ -43,12 +43,14 @@ class DBUtils:
     
     """Functions for interacting with project and reference databases."""
     
-    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, logFile: Optional[str], isBatch: bool) -> None:
+    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isHAWQS: bool, logFile: Optional[str], isBatch: bool) -> None:
         """Initialise class variables."""
         ## Flag showing if batch run
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
+        ## flag for HAWQS projects
+        self.isHAWQS = isHAWQS
         ## message logging file for HUC projects
         self.logFile = logFile
         ## project directory
@@ -173,14 +175,17 @@ class DBUtils:
         self.useSSURGO = False
         ## map of SSURGO map values to SSURGO MUID (only used with HUC)
         self.SSURGOSoils: Dict[int, int] = dict()
-        if isHUC:
-            ## SSURGO soil database (only used with HUC)
-            # changed to use copy one up frpm projDir
-            self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
+        if isHUC or isHAWQS:
+            ## SSURGO soil database (only used with HUC and HAWQS)
+            if isHUC:
+                # changed to use copy one up frpm projDir
+                self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
+            else:
+                self.SSURGODbFile = QSWATUtils.join(os.path.split(dbRefTemplate)[0], Parameters._SSURGODB_HUC)
             self.SSURGOConn = sqlite3.connect(self.SSURGODbFile)  # @UndefinedVariable
-        ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC)
+        ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC and HAWQS)
         self.SSURGOUndefined = -1
-        ## regular expression for checking if SSURGO soils are water (only used with HUC)
+        ## regular expression for checking if SSURGO soils are water (only used with HUC and HAWQS)
         self.waterPattern = re.compile(r'\bwaters?\b', re.IGNORECASE)  # @UndefinedVariable
         if self.isHUC:
             self.writeSubmapping()

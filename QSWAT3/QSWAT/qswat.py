@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.4.7'
+    __version__ = '1.4.8'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -245,7 +245,7 @@ class QSwat(QObject):
         self._odlg.raise_()
         self.setupProject(proj, False)
     
-    def setupProject(self, proj, isBatch, isHUC=False, logFile=None) -> None:
+    def setupProject(self, proj, isBatch, isHUC=False, isHAWQS=False, logFile=None) -> None:
         """Set up the project."""
         self._odlg.mainBox.setVisible(True)
         self._odlg.mainBox.setEnabled(False)
@@ -265,10 +265,19 @@ class QSwat(QObject):
             # use value in project file
             isHUCFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHUC', False)
             isHUC = isHUCFromProjfile
-            #QSWATUtils.information('isHUC found in proj file: set to {0}'.format(isHUC), isBatch)
+        # same as isHUC for isHAWQS
+        _, found = proj.readNumEntry(title, 'delin/isHAWQS', -1)
+        if not found:
+            # isHAWQS not previously set.  Use parameter above and record
+            proj.writeEntryBool(title, 'delin/isHAWQS', isHAWQS)
+        else:
+            # use value in project file
+            isHAWQSFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHAWQS', False)
+            isHAWQS = isHAWQSFromProjfile
+            #QSWATUtils.information('isHAWQS found in proj file: set to {0}'.format(isHAWQS), isBatch)
         # now have project so initiate global vars
         # if we do this earlier we cannot for example find the project database
-        self._gv = GlobalVars(self._iface, isBatch, isHUC, logFile)
+        self._gv = GlobalVars(self._iface, isBatch, isHUC, isHAWQS, logFile)
         assert self._gv is not None
         self._gv.plugin_dir = self.plugin_dir
         self._odlg.projPath.repaint()
