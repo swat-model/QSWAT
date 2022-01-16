@@ -1491,10 +1491,10 @@ class QSWATTopology:
                 length = reach.geometry().length()
             else:
                 length = attrs[lengthIndex]
-            if self.isHUC:
+            if sourceXIndex >= 0 and sourceYIndex >= 0 and outletXIndex >= 0 and outletYIndex >= 0:  # includes HUC and HAWQS models:
                 basin = attrs[wsnoIndex]
                 self.outlets[basin] = QgsPointXY(attrs[outletXIndex], attrs[outletYIndex])
-                self.nearoutlets[basin] = self.outlets[basin]  # unlikely to be studied viusally, so not important
+                self.nearoutlets[basin] = self.outlets[basin]  # unlikely to include reservoir points, so insignificant
                 self.nearsources[basin] = QgsPointXY(attrs[sourceXIndex], attrs[sourceYIndex])
             elif length > 0: # otherwise can ignore
                 basin = attrs[wsnoIndex]

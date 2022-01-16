@@ -143,6 +143,8 @@ class DBUtils:
         self.defaultLanduse = -1
         ## defaultLanduse code
         self.defaultLanduseCode = ''
+        ## flag to prevent multiple landuse errors being reported as errors: subsequent ones in log
+        self.landuseErrorReported = False
         ## Map of soil id  to soil name
         self.soilNames: Dict[int, str] = dict()
         ## Soil categories may not translate 1-1 into soils.
@@ -402,6 +404,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Collect landuse codes from landuseTable and create lookup tables."""
         OK = True
         self.landuseCodes.clear()
+        revLanduseCodes: Dict[str, int] = dict()
         self._landuseTranslate.clear()
         self.landuseIds.clear()
         self._landuseIDCs.clear()
@@ -423,17 +426,14 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             self.defaultLanduseCode = landuseCode
                             QSWATUtils.loginfo('Default landuse set to {0}'.format(self.defaultLanduseCode))
                         # check if code already defined
-                        equiv = nxt
-                        for (key, code) in self.landuseCodes.items():
-                            if code == landuseCode:
-                                equiv = key
-                                break
-                        if equiv == nxt:
+                        key = revLanduseCodes.get(landuseCode, -1)
+                        if key < 0:
                             # landuseCode was not already defined
                             if not self.storeLanduseCode(nxt, landuseCode):
                                 OK = False
+                            revLanduseCodes[landuseCode] = nxt
                         else:
-                            self.storeLanduseTranslate(nxt, equiv)
+                            self.storeLanduseTranslate(nxt, key)
                 except Exception:
                     QSWATUtils.error('Could not read table {0} in project database {1}: {2}'.format(landuseTable, self.dbFile, traceback.format_exc()), self.isBatch)
                     return False
@@ -490,10 +490,18 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return False
             if not row:
                 if isUrban:
-                    QSWATUtils.error('No data for landuse {0} in reference database tables urban or {1}'.format(landuseCode, table), self.isBatch)
+                    if self.landuseErrorReported:
+                        QSWATUtils.loginfo('No data for landuse {0} in reference database tables urban or {1}'.format(landuseCode, table))
+                    else:
+                        QSWATUtils.error('No data for landuse {0} (and perhaps others) in reference database tables urban or {1}'.format(landuseCode, table), self.isBatch)
+                        self.landuseErrorReported = True
                 else:
-                    QSWATUtils.error('No data for landuse {0} in reference database table {1}'.format(landuseCode, table), self.isBatch)
-                OK = False
+                    if self.landuseErrorReported:
+                        QSWATUtils.loginfo('No data for landuse {0} in reference database table {1}'.format(landuseCode, table))
+                    else:
+                        QSWATUtils.error('No data for landuse {0} (and perhaps others) in reference database table {1}'.format(landuseCode, table), self.isBatch)
+                        self.landuseErrorReported = True
+                #OK = False
             else:
                 landuseId = row[0]
                 landuseIDC = row[1]
@@ -517,7 +525,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         else:
             self._undefinedLanduseIds.append(lid)
             string = str(lid)
-            QSWATUtils.error('Unknown landuse value {0}'.format(string), self.isBatch)
+            #QSWATUtils.error('Unknown landuse value {0}'.format(string), self.isBatch)
+            QSWATUtils.loginfo('Unknown landuse value {0}'.format(string))
             return self.defaultLanduseCode
         
     def getLanduseCat(self, landuseCode: str) -> int:
@@ -546,6 +555,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Store names and groups for soil categories."""
         self.soilNames.clear()
         self.soilTranslate.clear()
+        revSoilNames: Dict[str, int] = dict() # reverse soil name table
         with self.connect(readonly=True) as conn:
             if not conn:
                 return False
@@ -559,16 +569,13 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                         self.defaultSoilName = soilName
                         QSWATUtils.loginfo('Default soil set to {0}'.format(self.defaultSoilName))
                     # check if code already defined
-                    equiv = nxt
-                    for (key, name) in self.soilNames.items():
-                        if name == soilName:
-                            equiv = key
-                            break
-                    if equiv == nxt:
+                    key = revSoilNames.get(soilName, -1)
+                    if key < 0:
                         # soilName not found
                         self.soilNames[nxt] = soilName
+                        revSoilNames[soilName] = nxt
                     else:
-                        self.storeSoilTranslate(nxt, equiv)
+                        self.storeSoilTranslate(nxt, key)
             except Exception:
                 QSWATUtils.error('Could not read table {0} in project database {1}: {2}'.format(soilTable, self.dbFile, traceback.format_exc()), self.isBatch)
                 return False
@@ -610,15 +617,23 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     def checkSoilsDefined(self) -> bool:
         """Check if all soil names in soilNames are in usersoil table in reference database."""
         sql = self.sqlSelect('usersoil', 'SNAM', '', 'SNAM=?')
-        for soilName in self.soilNames.values():
+        errorReported = False
+        for key, soilName in self.soilNames.items():
             try:
                 row = self.connRef.cursor().execute(sql, (soilName,)).fetchone()
             except Exception:
                 QSWATUtils.error('Could not read usersoil table in database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return False
             if not row:
-                QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}'.format(soilName, self.dbRefFile), self.isBatch)
-                return False
+                if not errorReported:
+                    QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}.  Replacing with default soil {2}'
+                                     .format(soilName, self.dbRefFile, self.defaultSoilName), self.isBatch)
+                    errorReported = True 
+                else:
+                    QSWATUtils.loginfo('Soil name {0} not defined.  Replacing with default soil {1}'
+                                     .format(soilName, self.defaultSoilName))
+                self.soilTranslate[key] = self.defaultSoil
+                #return False
         return True
     
     # no longer used
@@ -674,7 +689,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return sid, True
         sid1 = self.soilTranslate.get(sid, None)
         if sid1 is None:
-            return sid, False 
+            return sid, True 
         else:
             return sid1, True
     
