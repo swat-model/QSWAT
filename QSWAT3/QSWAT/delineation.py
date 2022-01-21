@@ -462,7 +462,7 @@ class Delineation(QObject):
             assert self._dlg.tabWidget.currentIndex() == 0
             box = self._dlg.selectOutlets
             self.thresholdChanged = True
-        ft = FileTypes._OUTLETSHUC if self._gv.isHUC else FileTypes._OUTLETS
+        ft = FileTypes._OUTLETSHUC if self._gv.isHUC or self._gv.isHAWQS else FileTypes._OUTLETS
         (outletFile, outletLayer) = QSWATUtils.openAndLoadFile(root, ft, box, self._gv.shapesDir, 
                                                                self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if outletFile and outletLayer:
@@ -847,7 +847,7 @@ class Delineation(QObject):
             QSWATUtils.error('Cannot load streams shapefile {0}'.format(streamFile), self._gv.isBatch)
             return
         if outletFile != '':
-            ft = FileTypes._OUTLETSHUC if self._gv.isHUC else FileTypes._OUTLETS
+            ft = FileTypes._OUTLETSHUC if self._gv.isHUC or self._gv.isHAWQS else FileTypes._OUTLETS
             outletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, ft, 
                                                            self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
             if not outletLayer:

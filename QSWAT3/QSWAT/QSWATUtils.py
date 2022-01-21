@@ -1401,7 +1401,7 @@ class FileTypes:
         """Layer colouring function for soil grid."""
         items: List[QgsPalettedRasterRenderer.Class] = []
         index = 0
-        if len(db.SSURGOSoils) > 0:  # which means isHUC is true
+        if len(db.SSURGOSoils) > 0:  # which means isHUC or isHAWQS is true
             colours = QgsLimitedRandomColorRamp.randomColors(len(db.SSURGOSoils))
             for i, val in db.SSURGOSoils.items():
                 item = QgsPalettedRasterRenderer.Class(int(i), colours[index], str(val))

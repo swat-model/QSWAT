@@ -59,8 +59,8 @@ class DBUtils:
         self.projName = projName
         ## project database
         dbSuffix = os.path.splitext(dbProjTemplate)[1]
-        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC else QSWATUtils.join(projDir,  projName + dbSuffix)
-        if not isHUC:
+        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC or isHAWQS else QSWATUtils.join(projDir,  projName + dbSuffix)
+        if not (isHUC or isHAWQS):
             self._connStr = Parameters._ACCESSSTRING + self.dbFile
             # copy template project database to project folder if not already there
             if not os.path.exists(self.dbFile):
@@ -68,11 +68,11 @@ class DBUtils:
             else:
                 self.updateProjDb(Parameters._SWATEDITORVERSION)
         ## reference database
-        dbRefName = 'QSWATRef2012.sqlite' if isHUC else Parameters._DBREF
+        dbRefName = 'QSWATRef2012.sqlite' if isHUC or isHAWQS else Parameters._DBREF
         self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
-        if isHUC:
-            # look one up from project directory for reference database, so allowing it to be shared
-            if not os.path.isfile(self.dbRefFile):
+        if isHUC or isHAWQS:
+            if isHUC and not os.path.isfile(self.dbRefFile):
+                # look one up from project directory for reference database, so allowing it to be shared
                 self.dbRefFile = QSWATUtils.join(projDir + '/..', dbRefName)
             if not os.path.isfile(self.dbRefFile):
                 QSWATUtils.error('Failed to find HUC reference database {0}'.format(dbRefName), self.isBatch)
@@ -99,8 +99,8 @@ class DBUtils:
             except Exception:
                 QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
                 self.connRef = None  # type: ignore
-        ## WaterBodies (HUC only)
-        self.waterBodiesFile = QSWATUtils.join(projDir + '/..', Parameters._WATERBODIES)
+        ## WaterBodies (HUC and HAWQS only)
+        self.waterBodiesFile = QSWATUtils.join(projDir + '/..', Parameters._WATERBODIES) if isHUC else QSWATUtils.join(projDir, Parameters._WATERBODIES)
         ## Tables in project database containing 'landuse'
         self.landuseTableNames: List[str] = []
         ## Tables in project database containing 'soil'
@@ -196,10 +196,10 @@ class DBUtils:
         
         """Connect to project database."""
         
-        if not self.isHUC and not os.path.exists(self.dbFile):
+        if not os.path.exists(self.dbFile):
             QSWATUtils.error('Cannot find project database {0}.  Have you opened the project?'.format(self.dbFile), self.isBatch) 
         try:
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 conn = sqlite3.connect(self.dbFile)  # @UndefinedVariable
                 conn.row_factory = sqlite3.Row  # @UndefinedVariable
             elif readonly:
@@ -377,7 +377,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         with self.connect(readonly=True) as conn:
             if conn:
                 try:
-                    if self.isHUC:
+                    if self.isHUC or self.isHAWQS:
                         sql = 'SELECT name FROM sqlite_master WHERE TYPE="table"'
                         for row in conn.execute(sql):
                             table = row[0]
@@ -397,7 +397,6 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             self._allTableNames.append(table)
                 except Exception:
                     QSWATUtils.error('Could not read tables in project database {0}'.format(self.dbFile), self.isBatch)
-                    return
             
     def populateLanduseCodes(self, landuseTable: str) -> bool:
         
@@ -419,8 +418,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 try:
                     sql = self.sqlSelect(landuseTable, 'LANDUSE_ID, SWAT_CODE', '', '')
                     for row in conn.cursor().execute(sql):
-                        nxt = int(row['LANDUSE_ID'] if self.isHUC else row.LANDUSE_ID)
-                        landuseCode = row['SWAT_CODE'] if self.isHUC else row.SWAT_CODE
+                        nxt = int(row['LANDUSE_ID'] if self.isHUC or self.isHAWQS else row.LANDUSE_ID)
+                        landuseCode = row['SWAT_CODE'] if self.isHUC or self.isHAWQS else row.SWAT_CODE
                         if self.defaultLanduse < 0:
                             self.defaultLanduse = nxt
                             self.defaultLanduseCode = landuseCode
@@ -548,7 +547,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         return cat
     
     def isAgriculture(self, landuse: int) -> bool:
-        """HUC only.  Return True if landuse counts as agriculture."""
+        """HUC and HAWQS only.  Return True if landuse counts as agriculture."""
         return 81 < landuse < 91 or 99 < landuse < 567 
     
     def populateSoilNames(self, soilTable: str, checkSoils: bool) -> bool:
@@ -594,8 +593,6 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     def getSoilName(self, sid: int) -> Tuple[str, bool]:
         """Return name for soil id sid, plus flag indicating lookup success."""
         if self.useSSURGO:
-            if self.isHUC:
-                return str(sid), True
             return str(sid), True
 #         # Nilepatch for AFSIS soils
 #         if sid < 33000:
@@ -626,13 +623,13 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return False
             if not row:
                 if not errorReported:
-                    QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}.  Replacing with default soil {2}'
-                                     .format(soilName, self.dbRefFile, self.defaultSoilName), self.isBatch)
+                    QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}.'
+                                     .format(soilName, self.dbRefFile), self.isBatch)
                     errorReported = True 
                 else:
-                    QSWATUtils.loginfo('Soil name {0} not defined.  Replacing with default soil {1}'
-                                     .format(soilName, self.defaultSoilName))
-                self.soilTranslate[key] = self.defaultSoil
+                    QSWATUtils.loginfo('Soil name {0} not defined.'
+                                     .format(soilName))
+                #self.soilTranslate[key] = self.defaultSoil
                 #return False
         return True
     
@@ -680,23 +677,20 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             self.soilTranslate[sid] = equiv
         
     def translateSoil(self, sid: int) -> Tuple[int, bool]:
-        """Translate a soil id to its equivalent id in soilNames, plUs flag indicating lookup success."""
+        """Translate a soil id to its equivalent id in soilNames, plus flag indicating lookup success."""
         ListFuns.insertIntoSortedList(sid, self.soilVals, True)
         if self.useSSURGO:
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 return self.translateSSURGOSoil(sid)
             else:
                 return sid, True
-        sid1 = self.soilTranslate.get(sid, None)
-        if sid1 is None:
-            return sid, True 
-        else:
-            return sid1, True
+        sid1 = self.soilTranslate.get(sid, sid)
+        return sid1, True
     
     def translateSSURGOSoil(self, sid: int) -> Tuple[int, bool]:
-        """Use table to convert soil map values to SSURGO muids, plUs flag indicating lookup success.  
+        """Use table to convert soil map values to SSURGO muids, plus flag indicating lookup success.  
         Replace any soil with sname Water with Parameters._SSURGOWater.  
-        Report undefined SSURGO soils.  Only used with HUC."""
+        Report undefined SSURGO soils.  Only used with HUC and HAWQS."""
         if sid in self._undefinedSoilIds:
             return self.SSURGOUndefined, False
         muid = self.SSURGOSoils.get(sid, -1)
@@ -706,8 +700,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         with self.connect(readonly=True) as conn:
             lookup_row = conn.execute(sql, (sid,)).fetchone()
             if lookup_row is None:
-                huc12 = self.projName[3:]
-                QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey in project huc{1}'.format(sid, huc12), self.isBatch, logFile=self.logFile)
+                QSWATUtils.information('WARNING: SSURGO soil map value {0} not defined as lkey in statsgo_ssurgo_lkey'.format(sid), self.isBatch, logFile=self.logFile)
                 self._undefinedSoilIds.append(sid)
                 return sid, False
             # only an information issue, not an error for now 
@@ -718,8 +711,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
             row = self.SSURGOConn.execute(sql, (lookup_row[1],)).fetchone()
             if row is None:
-                huc12 = self.projName[3:]
-                QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined in project huc{2}'.format(sid, lookup_row[1], huc12), self.isBatch, logFile=self.logFile)
+                QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch, logFile=self.logFile)
                 self._undefinedSoilIds.append(sid)
                 return self.SSURGOUndefined, False
             #if row[0].lower().strip() == 'water':
@@ -898,7 +890,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         
         Return true if successful, else false.
         """
-        if self.isHUC:
+        if self.isHUC or self.isHAWQS:
             cursor = conn.cursor()
             sql0 = 'DROP TABLE IF EXISTS MasterProgress'
             cursor.execute(sql0)
@@ -943,7 +935,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         conn = self.connect()
         cursor = conn.cursor()
         # remove old table completely, for backward compatibility, since structure changed
-        table = self._BASINSDATAHUC1 if self.isHUC else self._BASINSDATA1
+        table = self._BASINSDATAHUC1 if self.isHUC or self.isHAWQS else self._BASINSDATA1
         if table in self._allTableNames:
             dropSQL = 'DROP TABLE ' + table
             try:
@@ -952,7 +944,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 QSWATUtils.error('Could not drop table {0} from project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
                 conn.close()
                 return (None, None, None)
-        if self.isHUC:
+        if self.isHUC or self.isHAWQS:
             createSQL = 'CREATE TABLE ' + table + ' ' + self._BASINSDATA1TABLEHUC
         else:
             createSQL = 'CREATE TABLE ' + table + ' ' + self._BASINSDATA1TABLE
@@ -962,7 +954,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             QSWATUtils.error('Could not create table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
             conn.close()
             return (None, None, None)
-        if self.isHUC:
+        if self.isHUC or self.isHAWQS:
             sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         else:
             sql1 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
@@ -994,7 +986,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             if index < 0:
                 # error occurred - no point in repeating the failure
                 break
-        if self.isHUC:
+        if self.isHUC or self.isHAWQS:
             conn.commit()
         else:
             self.hashDbTable(conn, self._BASINSDATA1)
@@ -1004,14 +996,14 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 
         # note we coerce all double values to float to avoid 'SQLBindParameter' error if an int becomes a long
         try:
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
                              float(data.pondArea), float(data.reservoirArea), float(data.playaArea), float(data.lakeArea), \
                              float(data.wetlandArea), float(data.totalElevation), float(data.totalSlope), \
                              data.outletCol, data.outletRow, float(data.outletElevation), data.startCol, data.startRow, \
                              float(data.startToOutletDistance), float(data.startToOutletDrop), data.farCol, data.farRow, \
                              data.farthest, float(data.farElevation), float(data.farDistance), float(data.maxElevation), \
-                             float(data.cropSoilSlopeArea), data.relHru, 0, 0))
+                             float(data.cropSoilSlopeArea), data.relHru, float(data.streamArea), float(data.WATRInStreamArea)))
             else:
                 curs.execute(sql1, basin, data.cellCount, float(data.area), float(data.drainArea),  \
                              float(data.pondArea), float(data.reservoirArea), float(data.totalElevation), float(data.totalSlope), \
@@ -1028,10 +1020,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                     cd = data.hruMap[hru]
                     index += 1
                     try:
-                        if self.isHUC:
-                            curs.execute(sql2, (index, basin, crop, soil, slope, hru, cd.cellCount, float(cd.area), float(cd.totalSlope)))
-                        else:
-                            curs.execute(sql2, index, basin, crop, soil, slope, hru, cd.cellCount, float(cd.area), float(cd.totalSlope))
+                        curs.execute(sql2, (index, basin, crop, soil, slope, hru, cd.cellCount, float(cd.area), float(cd.totalSlope)))
                     except Exception:
                         QSWATUtils.error('Could not write to table {0} in project database {1}: {2}'.format(self._BASINSDATA2, self.dbFile, traceback.format_exc()), self.isBatch)
                         return -1
@@ -1042,7 +1031,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             basins = dict()
             with self.connect(readonly=True) as conn:
-                if self.isHUC:
+                if self.isHUC or self.isHAWQS:
                     conn.row_factory = sqlite3.Row  # @UndefinedVariable
                     try:
                         for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
@@ -1143,7 +1132,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return
             cursor = conn.cursor()
             table = 'ElevationBand'
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 dropSQL = 'DROP TABLE IF EXISTS ' + table
                 try:
                     cursor.execute(dropSQL)
@@ -1202,7 +1191,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 except Exception:
                     QSWATUtils.error('Could not write to table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
                     return
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 conn.commit()
             else:
                 self.hashDbTable(conn, table)

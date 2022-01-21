@@ -346,7 +346,7 @@ class GlobalVars:
                     oid += 1
                     cursor.execute(sql, oid, luse, subluse, percent)
             conn.commit()
-            if not self.isHUC:
+            if not (self.isHUC or self.isHAWQS):
                 self.db.hashDbTable(conn, exemptTable)
                 self.db.hashDbTable(conn, splitTable)
         return True
@@ -406,18 +406,15 @@ class GlobalVars:
                 row = None    
             if row:
                 if doneDelin == -1:
-                    doneDelinNum = row['DoneWSDDel'] if self.isHUC else row.DoneWSDDel
+                    doneDelinNum = row['DoneWSDDel'] if self.isHUC or self.isHAWQS else row.DoneWSDDel
                 else:
                     doneDelinNum = doneDelin
                 if doneSoilLand == -1:
-                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC else row.DoneSoilLand
+                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC or self.isHAWQS else row.DoneSoilLand
                 else:
                     doneSoilLandNum = doneSoilLand
                 sql = 'UPDATE ' + table + ' SET SoilOption=?,NumLuClasses=?,DoneWSDDel=?,DoneSoilLand=?'
-                if self.isHUC:
-                    conn.cursor().execute(sql, (soilOption, numLUs, doneDelinNum, doneSoilLandNum))
-                else:
-                    conn.cursor().execute(sql, soilOption, numLUs, doneDelinNum, doneSoilLandNum)
+                conn.cursor().execute(sql, (soilOption, numLUs, doneDelinNum, doneSoilLandNum))
             else:
                 if doneDelin == -1:
                     doneDelinNum = 0
@@ -431,13 +428,9 @@ class GlobalVars:
                 # so easiest to make a new table with this field, so we know how many fields to fill
                 if self.db.createMasterProgressTable(conn):
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                    if self.isHUC:
-                        conn.cursor().execute(sql, (workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
+                    conn.cursor().execute(sql, (workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
                                           doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0))
-                    else:
-                        conn.cursor().execute(sql, workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
-                                          doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0)
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 conn.commit()
                     
     def isDelinDone(self) -> bool:

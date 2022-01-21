@@ -195,10 +195,6 @@ class QSWATTopology:
         self.isHUC = isHUC
         ## flage for HAWQS projects
         self.isHAWQS = isHAWQS
-        ## use LINKNO for WSNO and Subbasin for PolygonId in HAWQS projects
-        if isHAWQS:
-            QSWATTopology._WSNO = 'LINKNO'
-            QSWATTopology._POLYGONID = 'Subbasin'
         
     def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float) -> None:
         """Set DEM size parameters and stream orientation, and store source and outlet points for stream reaches."""
@@ -260,7 +256,6 @@ class QSWATTopology:
         ignoreWithExisting = existing or not reportErrors
         ignoreWithGrid = useGridModel or not reportErrors
         ignoreWithGridOrExisting = ignoreWithGrid or ignoreWithExisting
-        ignoreTotDA = not self.isHUC
         self.linkIndex = self.getIndex(streamLayer, QSWATTopology._LINKNO, ignoreMissing=ignoreError)
         if self.linkIndex < 0:
             QSWATUtils.loginfo('No LINKNO field in stream layer')
@@ -278,7 +273,7 @@ class QSWATTopology:
         dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP, ignoreMissing=True)
         if dropIndex < 0:
             dropIndex = self.getIndex(streamLayer, QSWATTopology._DROP2, ignoreMissing=ignoreWithGridOrExisting)
-        totDAIndex = self.getIndex(streamLayer, QSWATTopology._TOTDASQKM, ignoreMissing=ignoreTotDA)
+        totDAIndex = self.getIndex(streamLayer, QSWATTopology._TOTDASQKM, ignoreMissing=True)
         subbasinIndex = self.getIndex(wshedLayer, QSWATTopology._SUBBASIN, ignoreMissing=ignoreWithGridOrExisting)
         polyIndex = self.getIndex(wshedLayer, QSWATTopology._POLYGONID, ignoreMissing=ignoreError)
         if polyIndex < 0:
@@ -320,11 +315,11 @@ class QSWATTopology:
         maxLink = 0
         manyBasins = streamLayer.featureCount() > 950  # set smaller than Python recursion depth limit, which is 1000
         # drainAreas is a mapping from link number (used as index to array) of grid cell areas in sq m
-        if self.isHUC:
+        if totDAIndex >= 0:
             # make it a dictionary rather than a numpy array because there is a big gap
             # between most basin numbers and the nunbers for inlets (10000 +)
             # and we need to do no calculation
-            # create it here for HUC models as we set it up from totDASqKm field in streamLayer
+            # create it here for HUC and HAWQS models as we set it up from totDASqKm field in streamLayer
             self.drainAreas = dict()
         for reach in streamLayer.getFeatures():
             attrs = reach.attributes()
@@ -360,14 +355,14 @@ class QSWATTopology:
             # if the length is zero there will not (for TauDEM) be an entry in the wshed shapefile
             # unless the zero length is caused by something in the inlets/outlets file
             # but with HUC models there are empty basins for the zero length links inserted for inlets, and these have positive DSNODEIDs
-            if not useGridModel and length == 0 and (dsNode < 0 or self.isHUC):
+            if not useGridModel and length == 0 and (dsNode < 0 or self.isHUC or self.isHAWQS):
                 self.emptyBasins.add(wsno)
             self.downLinks[link] = dsLink
             self.streamLengths[link] = length
             self.streamSlopes[link] = slope
             if dsNode >= 0:
                 dsNodeToLink[dsNode] = link
-            if dsLink >= 0 and not (self.isHUC and link >= QSWATTopology._HUCPointId):  # keep HUC links out of us map
+            if dsLink >= 0 and not ((self.isHUC or self.isHAWQS) and link >= QSWATTopology._HUCPointId):  # keep HUC links out of us map
                 if not useGridModel and not manyBasins:
                     if dsLink in us and us[dsLink]:
                         us[dsLink].append(link)
@@ -379,10 +374,10 @@ class QSWATTopology:
                             QSWATUtils.error(u'Circular drainage network from link {0}'.format(dsLink), self.isBatch)
                             # remove link from upstream of dsLink
                             us[dsLink].remove(link)
-            if self.isHUC:
+            if totDAIndex >= 0:
                 self.drainAreas[link] = attrs[totDAIndex] * 1E6  # sq km to sq m
         # create drainAreas here for non-HUC models as we now have maxLink value to size the numpy array
-        if not self.isHUC:
+        if totDAIndex < 0:
             self.drainAreas = zeros((maxLink + 1), dtype=float)
         time2 = time.process_time()
         QSWATUtils.loginfo('Topology setup took {0} seconds'.format(int(time2 - time1)))
@@ -452,7 +447,7 @@ class QSWATTopology:
                         if isPtSource:
                             self.ptSrcLinks.add(link)
                         else:
-                            if self.isHUC:
+                            if self.isHUC or self.isHAWQS:
                                 # in HUC models inlets are allowed which do not split streams
                                 # so use only the zero length stream added to support the inlet
                                 self.inletLinks.add(link)
@@ -485,7 +480,7 @@ class QSWATTopology:
             QSWATUtils.loginfo('Empty basins: {0!s}'.format(self.emptyBasins))
         time4 = time.process_time()
         # set drainAreas
-        if not self.isHUC:
+        if totDAIndex < 0:
             if useGridModel:
                 self.setGridDrainageAreas(maxLink)
             elif manyBasins:
@@ -634,7 +629,7 @@ class QSWATTopology:
         
     def getReachData(self, reach: QgsFeature, demLayer: Optional[QgsRasterLayer]) -> Optional[ReachData]:
         """Generate ReachData record for reach."""
-        if self.isHUC:
+        if self.isHUC or self.isHAWQS:
             wsno = reach[self.wsnoIndex]
             pStart = self.nearsources[wsno]
             pFinish = self.outlets[wsno]
@@ -653,7 +648,7 @@ class QSWATTopology:
         finishVal = QSWATTopology.valueAtPoint(pFinish, demLayer)
         if startVal is None or startVal == self.demNodata:
             if finishVal is None or finishVal == self.demNodata:
-                if self.isHUC:
+                if self.isHUC or self.isHAWQS:
                     # allow for streams outside DEM
                     startVal = 0
                     finishVal = 0
@@ -833,7 +828,7 @@ class QSWATTopology:
                 return
             curs = conn.cursor()
             table = 'MonitoringPoint'
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 sql0 = 'DROP TABLE IF EXISTS MonitoringPoint'
                 curs.execute(sql0)
                 sql1 = QSWATTopology._MONITORINGPOINTCREATESQL
@@ -885,7 +880,7 @@ class QSWATTopology:
                 self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'R')
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing MonitoringPoint table took {0} seconds'.format(int(time2 - time1)))
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 conn.commit()
             else:
                 self.db.hashDbTable(conn, table)
@@ -897,7 +892,7 @@ class QSWATTopology:
         POINTID = 0 # not used by SWAT Editor
         HydroID = self.MonitoringPointFid + 400000
         OutletID = self.MonitoringPointFid + 100000
-        if self.isHUC and typ == 'W':
+        if (self.isHUC or self.isHAWQS) and typ == 'W':
             # point is associated with zero length link added for it, which has an empty basin
             # so need to use downstream basin
             dsLink = self.downLinks[link]
@@ -920,12 +915,8 @@ class QSWATTopology:
         elev = 0 # only used for weather gauges
         name = '' # only used for weather gauges
         sql = "INSERT INTO " + table + " VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?)"
-        if self.isHUC:
-            cursor.execute(sql, (self.MonitoringPointFid, POINTID, GRID_CODE, \
+        cursor.execute(sql, (self.MonitoringPointFid, POINTID, GRID_CODE, \
                            float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID))
-        else:
-            cursor.execute(sql, self.MonitoringPointFid, POINTID, GRID_CODE, \
-                           float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID)
         self.MonitoringPointFid += 1;
     
     def writeReachTable(self, streamLayer: QgsVectorLayer, gv: Any) -> Optional[QgsVectorLayer]:  # setting type of gv to GlobalVars prevents plugin loading
@@ -1029,7 +1020,7 @@ class QSWATTopology:
                 return None
             table = 'Reach'
             curs = conn.cursor()
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 sql0 = 'DROP TABLE IF EXISTS Reach'
                 curs.execute(sql0)
                 sql1 = QSWATTopology._REACHCREATESQL
@@ -1097,14 +1088,9 @@ class QSWATTopology:
                     mmap[fid1][OutletIdIdx] = SWATBasin + 100000
                 oid += 1
                 sql = "INSERT INTO " + table + " VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-                if self.isHUC:
-                    curs.execute(sql, (oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
+                curs.execute(sql, (oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
                                  drainAreaHa, length, slopePercent, channelWidth, channelDepth, minEl, maxEl, \
                                  length, SWATBasin + 200000, SWATBasin + 100000))
-                else:
-                    curs.execute(sql, oid, SWATBasin, SWATBasin, SWATBasin, downSWATBasin, SWATBasin, downSWATBasin, \
-                                 drainAreaHa, length, slopePercent, channelWidth, channelDepth, minEl, maxEl, \
-                                 length, SWATBasin + 200000, SWATBasin + 100000)
             for SWATBasin in subsToDelete:
                 request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([subIdx])
                 for feature in riv1Layer.getFeatures(request):
@@ -1113,7 +1099,7 @@ class QSWATTopology:
                         break
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing Reach table took {0} seconds'.format(int(time2 - time1)))
-            if self.isHUC:
+            if self.isHUC or self.isHAWQS:
                 conn.commit()
             else:
                 self.db.hashDbTable(conn, table)
@@ -1385,6 +1371,20 @@ class QSWATTopology:
             QSWATUtils.error('Cannot find field {0} in provider'.format(name), self.isBatch)
         return index
     
+    @staticmethod 
+    def getHUCIndex(layer: QgsVectorLayer) -> Tuple[int, int]:
+        """Return index of first HUCnn field plus field name, else (-1, '')."""
+        provider = layer.dataProvider()
+        fields = provider.fieldNameMap()
+        fieldName = ''
+        hucIndex = -1
+        for name, index in fields.items():
+            if name.startswith('HUC'):
+                hucIndex = index
+                fieldName = name
+                break
+        return (hucIndex, fieldName)
+    
     def makePointInLine(self, reach: QgsFeature, percent: float) -> QgsPointXY:
         """Return a point percent along line from outlet end to next point."""
         if self.outletAtStart:
@@ -1479,12 +1479,13 @@ class QSWATTopology:
         self.outlets.clear()
         self.nearoutlets.clear()
         self.nearsources.clear()
-        lengthIndex = self.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=not self.isHUC)
-        wsnoIndex = self.getIndex(streamLayer, QSWATTopology._WSNO, ignoreMissing=not self.isHUC)
-        sourceXIndex = self.getIndex(streamLayer, QSWATTopology._SOURCEX, ignoreMissing=not self.isHUC)
-        sourceYIndex = self.getIndex(streamLayer, QSWATTopology._SOURCEY, ignoreMissing=not self.isHUC)
-        outletXIndex = self.getIndex(streamLayer, QSWATTopology._OUTLETX, ignoreMissing=not self.isHUC)
-        outletYIndex = self.getIndex(streamLayer, QSWATTopology._OUTLETY, ignoreMissing=not self.isHUC)
+        isHUCOrHAWQS = self.isHUC or self.isHAWQS
+        lengthIndex = self.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=not isHUCOrHAWQS)
+        wsnoIndex = self.getIndex(streamLayer, QSWATTopology._WSNO, ignoreMissing=not isHUCOrHAWQS)
+        sourceXIndex = self.getIndex(streamLayer, QSWATTopology._SOURCEX, ignoreMissing=not isHUCOrHAWQS)
+        sourceYIndex = self.getIndex(streamLayer, QSWATTopology._SOURCEY, ignoreMissing=not isHUCOrHAWQS)
+        outletXIndex = self.getIndex(streamLayer, QSWATTopology._OUTLETX, ignoreMissing=not isHUCOrHAWQS)
+        outletYIndex = self.getIndex(streamLayer, QSWATTopology._OUTLETY, ignoreMissing=not isHUCOrHAWQS)
         for reach in streamLayer.getFeatures():
             attrs = reach.attributes()
             if lengthIndex < 0:

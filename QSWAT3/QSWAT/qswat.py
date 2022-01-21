@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.4.8'
+    __version__ = '1.4.9'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -391,7 +391,7 @@ class QSwat(QObject):
         if result == 1 and self._gv.isDelinDone():
             self.allowCreateHRU()
             # remove old data so cannot be reused
-            basinsdataTable = 'BASINSDATAHUC1'  if self._gv.isHUC else 'BASINSDATA1'
+            basinsdataTable = 'BASINSDATAHUC1'  if self._gv.isHUC or self._gv.isHAWQS else 'BASINSDATA1'
             self._gv.db.clearTable(basinsdataTable)
             # make sure HRUs starts from scratch
             if self.hrus and self.hrus._dlg is not None:
@@ -465,7 +465,7 @@ class QSwat(QObject):
         outletFile, found = proj.readEntry(title, 'delin/outlets', '')
         if found and outletFile != '':
             outletFile = QSWATUtils.join(self._gv.projDir, outletFile)
-            ft = FileTypes._OUTLETSHUC if self._gv.isHUC else FileTypes._OUTLETS
+            ft = FileTypes._OUTLETSHUC if self._gv.isHUC or self._gv.isHAWQS else FileTypes._OUTLETS
             outletLayer, _ = \
                 QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, ft,
                                               self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
