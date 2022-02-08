@@ -1019,6 +1019,9 @@ size</string>
         <property name="minimum">
          <number>1</number>
         </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="0" column="3">
@@ -1110,15 +1113,6 @@ output</string>
        </widget>
       </item>
      </layout>
-     <zorder>GridSizeLabel</zorder>
-     <zorder>GridSize</zorder>
-     <zorder>GridBox</zorder>
-     <zorder>numProcesses</zorder>
-     <zorder>numProcessesLabel</zorder>
-     <zorder>showTaudem</zorder>
-     <zorder>progressLabel</zorder>
-     <zorder>OKButton</zorder>
-     <zorder>cancelButton</zorder>
     </widget>
    </item>
   </layout>
