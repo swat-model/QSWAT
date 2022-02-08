@@ -11,5 +11,5 @@ ui_*.py
 *.pyd
 *.obj
 *.lib
-
+*.exp
 
