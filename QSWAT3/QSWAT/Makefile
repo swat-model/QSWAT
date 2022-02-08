@@ -34,9 +34,6 @@ ifeq ($(QSWAT_PROJECT), QSWAT3)
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
-else ifeq ($(QSWAT_PROJECT), QSWATGrid)
-	COMPILER = msvc
-	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
 endif
 
 PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py raster.py \

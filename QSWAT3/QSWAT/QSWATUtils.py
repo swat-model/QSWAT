@@ -89,6 +89,11 @@ class QSWATUtils:
     _DRAINSTREAMSLEGEND: str = 'Drainage streams'
     _HRUSLEGEND: str = 'HRUs'
     
+    ## x-offsets for TauDEM D8 flow directions, which run 1-8, so we use dir - 1 as index
+    _dX: List[int] = [1, 1, 0, -1, -1, -1, 0, 1]
+    ## y-offsets for TauDEM D8 flow directions, which run 1-8, so we use dir - 1 as index
+    _dY: List[int] = [0, -1, -1, -1, 0, 1, 1, 1]
+    
     @staticmethod
     def qgisName() -> str:
         """QGIS name as used in QGIS prefix path.

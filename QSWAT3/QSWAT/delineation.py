@@ -24,7 +24,8 @@ from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVar
 from qgis.PyQt.QtGui import QIntValidator, QDoubleValidator, QColor
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext 
-from qgis.gui import QgsMapTool, QgsMapToolEmitPoint   
+from qgis.gui import QgsMapTool, QgsMapToolEmitPoint
+from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry   
 import os
 import glob
 import shutil
@@ -53,7 +54,7 @@ class GridData:
     
     """Data about grid cell."""
     
-    def __init__(self, num: int, area: int, drainArea: float, maxRow: int, maxCol: int) -> None:
+    def __init__(self, num: int, area: int, drainArea: float, maxAcc: int, maxRow: int, maxCol: int) -> None:
         """Constructor."""
         ## PolygonId of this grid cell
         self.num = num
@@ -67,6 +68,8 @@ class GridData:
         self.area = area
         ## area being drained in sq km to start of stream in this grid cell
         self.drainArea = drainArea
+        ## accumulation at maximum accumulation point
+        self.maxAcc = maxAcc
         ## Row in accumulation grid of maximum accumulation point
         self.maxRow = maxRow
         ## Column in accumulation grid of maximum accumulation point
@@ -282,6 +285,8 @@ class Delineation(QObject):
         layers = root.findLayers()
         if not self._gv.existingWshed and self._gv.useGridModel:
             streamLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._GRIDSTREAMS), layers)
+            if streamLayer is not None:
+                streamLayer = streamLayer.layer()
         else:
             streamLayer = QSWATUtils.getLayerByFilename(layers, self._gv.streamFile, FileTypes._STREAMS, None, None, None)[0]
         if streamLayer is None:
@@ -293,10 +298,11 @@ class Delineation(QObject):
                 QSWATUtils.error('Stream reaches layer not found: have you run TauDEM?', self._gv.isBatch)
             return
         if not self._gv.existingWshed and self._gv.useGridModel:
-            wshedLayer = QSWATUtils.getLayerByLegend(QSWATUtils._GRIDLEGEND, layers)
-            if wshedLayer is None:
+            wshedTreeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._GRIDLEGEND, layers)
+            if wshedTreeLayer is None:
                 QSWATUtils.error('Grid layer not found.', self._gv.isBatch)
                 return
+            wshedLayer = wshedTreeLayer.layer()
         else:
             ft = FileTypes._EXISTINGWATERSHED if self._gv.existingWshed else FileTypes._WATERSHED
             wshedLayer = QSWATUtils.getLayerByFilename(layers, self._gv.wshedFile, ft, None, None, None)[0]
@@ -333,7 +339,7 @@ class Delineation(QObject):
                 extraOutletLayer = QSWATUtils.getLayerByFilename(layers, self._gv.extraOutletFile, FileTypes._OUTLETS, None, None, None)[0]
             else:
                 extraOutletLayer = None
-            if not self._gv.existingWshed:
+            if not self._gv.existingWshed and not self._gv.useGridModel:
                 self.progress('Tributary channel lengths ...')
                 threshold = self._gv.topo.makeStreamOutletThresholds(self._gv, root)
                 if threshold > 0:
@@ -796,7 +802,7 @@ class Delineation(QObject):
         self.createWatershedShapefile(wFile, wshedFile, root)
         self._gv.wshedFile = wshedFile
         if self._dlg.GridBox.isChecked():
-            self.createGridShapefile(demLayer, pFile, ad8File, wshedFile)
+            self.createGridShapefile(demLayer, pFile, ad8File, wFile)
         if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
             self.cleanUp(-1)
             return
@@ -2171,33 +2177,14 @@ class Delineation(QObject):
         QSWATUtils.copyPrj(wshedFile, wFile)
         return wFile
     
-    def createGridShapefile(self, demLayer: QgsRasterLayer, pFile: str, ad8File: str, wshedFile: str) -> None:
+    def createGridShapefile(self, demLayer: QgsRasterLayer, pFile: str, ad8File: str, wFile: str) -> None:
         """Create grid shapefile for watershed."""
         self.progress('Creating grid ...')
         gridSize = self._dlg.GridSize.value()
-        # assume DEM already clipped if no outlets file
-        if self._dlg.useOutlets.isChecked():
-            demPath = QSWATUtils.layerFileInfo(demLayer).absoluteFilePath()
-            # clip flow accumulation ad8 and flow direction p file to watershed boundary
-            base, suffix = os.path.splitext(demPath)
-            accFile = base + 'acc_clip' + suffix
-            flowFile = base + 'flow_clip' + suffix
-            time1 = time.process_time()
-            command = 'gdalwarp -dstnodata -1 -q -overwrite -cutline "{0}" -crop_to_cutline -of GTiff "{1}" "{2}"'.format(wshedFile, ad8File, accFile)
-            # os.system(command)
-            subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
-            assert os.path.exists(accFile), u'Failed to create clipped accumulation file {0}'.format(accFile)
-            command = 'gdalwarp -dstnodata -1 -q -overwrite -cutline "{0}" -crop_to_cutline -of GTiff "{1}" "{2}"'.format(wshedFile, pFile, flowFile)
-            # os.system(command)
-            subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
-            assert os.path.exists(flowFile), u'Failed to create clipped flow directions file {0}'.format(flowFile)
-            time2 = time.process_time()
-            QSWATUtils.loginfo('Clipping ad8 and p files took {0} seconds'.format(int(time2 - time1)))
-        else:
-            accFile = ad8File
-            flowFile = pFile
-            time2 = time.process_time()
-        storeGrid, accTransform, minDrainArea, maxDrainArea = self.storeGridData(accFile, gridSize)
+        accFile = ad8File
+        flowFile = pFile
+        time2 = time.process_time()
+        storeGrid, accTransform, minDrainArea, maxDrainArea = self.storeGridData(accFile, wFile, gridSize)
         time3 = time.process_time()
         QSWATUtils.loginfo('Storing grid data took {0} seconds'.format(int(time3 - time2)))
         if storeGrid:
@@ -2211,19 +2198,47 @@ class Delineation(QObject):
                 numOutlets = self.writeGridStreamsShapefile(storeGrid, flowFile, minDrainArea, maxDrainArea, accTransform)
                 time6 = time.process_time()
                 QSWATUtils.loginfo('Writing grid streams shapefile took {0} seconds'.format(int(time6 - time5)))
-                if numOutlets >= 0:
-                    msg = 'Grid processing done with delineation threshold {0} sq.km: {1} outlets'.format(self._dlg.area.text(), numOutlets)
-                    QSWATUtils.loginfo(msg)
-                    self._iface.messageBar().pushMessage(msg, level=Qgis.Info, duration=10)
-                    if self._gv.isBatch:
-                        print(msg)
+                # if numOutlets >= 0:
+                #     msg = 'Grid processing done with delineation threshold {0} sq.km: {1} outlets'.format(self._dlg.area.text(), numOutlets)
+                #     QSWATUtils.loginfo(msg)
+                #     self._iface.messageBar().pushMessage(msg, level=Qgis.Info, duration=10)
+                #     if self._gv.isBatch:
+                #         print(msg)
         return
     
-    def storeGridData(self, accFile: str, gridSize: int) -> Tuple[Optional[Dict[int, Dict[int, GridData]]], Optional[Transform], float, float]:
+    def storeGridData(self, ad8File: str, basinFile: str, gridSize: int) -> Tuple[Optional[Dict[int, Dict[int, GridData]]], Optional[Transform], float, float]:
         """Create grid data in array and return it."""
-        accRaster = gdal.Open(accFile)
+        # mask accFile with basinFile to exclude small outflowing watersheds
+        ad8Layer = QgsRasterLayer(ad8File, 'P')
+        entry1 = QgsRasterCalculatorEntry()
+        entry1.bandNumber = 1
+        entry1.raster = ad8Layer
+        entry1.ref = 'P@1'        
+        basinLayer = QgsRasterLayer(basinFile, 'Q')
+        entry2 = QgsRasterCalculatorEntry()
+        entry2.bandNumber = 1
+        entry2.raster = basinLayer
+        entry2.ref = 'Q@1'
+        base = os.path.splitext(ad8File)[0]
+        accFile = base + 'clip.tif'
+        QSWATUtils.tryRemoveFiles(accFile)
+        # The formula is a standard way of masking P with Q, since 
+        # where Q is nodata Q / Q evaluates to nodata, and elsewhere evaluates to 1.
+        # We use 'Q+1' instead of Q to avoid problems in first subbasin 
+        # when PolygonId is zero so Q is zero
+        formula = '((Q@1 + 1) / (Q@1 + 1)) * P@1'
+        calc = QgsRasterCalculator(formula, accFile, 'GTiff', ad8Layer.extent(), ad8Layer.width(), ad8Layer.height(), [entry1, entry2],
+                                   QgsCoordinateTransformContext())
+        result = calc.processCalculation(feedback=None)
+        if result == 0:
+            assert os.path.exists(accFile), 'QGIS calculator formula {0} failed to write output'.format(formula)
+            QSWATUtils.copyPrj(ad8File, accFile)
+        else:
+            QSWATUtils.error('QGIS calculator formula {0} failed: returned {1}'.format(formula, result), self._gv.isBatch)
+            return None, None, 0, 0
+        accRaster = gdal.Open(accFile, gdal.GA_ReadOnly)
         if accRaster is None:
-            QSWATUtils.error('Cannot open clipped accumulation file {0}'.format(accFile), self._gv.isBatch)
+            QSWATUtils.error('Cannot open accumulation file {0}'.format(accFile), self._gv.isBatch)
             return None, None, 0, 0
         # for now read whole clipped accumulation file into memory
         accBand = accRaster.GetRasterBand(1)
@@ -2236,7 +2251,7 @@ class Delineation(QObject):
         # grid cells will be gridSize x gridSize squares
         numGridRows = (accBand.YSize // gridSize) + 1
         numGridCols = (accBand.XSize // gridSize) + 1
-        storeGrid: Dict[int, Dict[int, GridData]] = dict()
+        storeGrid: Dict[int, Dict[int, GridData]] = dict() # dictionary gridRow -> gridCol -> gridData
         maxDrainArea = 0
         minDrainArea = float('inf')
         for gridRow in range(numGridRows):
@@ -2255,7 +2270,9 @@ class Delineation(QObject):
                             accVal = accArray[accRow, accCol]
                             if accVal != accNoData:
                                 valCount += 1
-                                if accVal > maxAcc:
+                                # can get points with same (rounded) accumulation when values are high.
+                                # prefer one on edge if possible
+                                if accVal > maxAcc or (accVal == maxAcc and self.onEdge(row, col, gridSize)):
                                     maxAcc = accVal
                                     maxRow = accRow
                                     maxCol = accCol
@@ -2272,7 +2289,7 @@ class Delineation(QObject):
                     minDrainArea = drainArea
                 if drainArea > maxDrainArea:
                     maxDrainArea = drainArea
-                data = GridData(polyId, valCount, drainArea, maxRow, maxCol)
+                data = GridData(polyId, valCount, drainArea, maxAcc, maxRow, maxCol)
                 if gridRow not in storeGrid:
                     storeGrid[gridRow] = dict()
                 storeGrid[gridRow][gridCol] = data
@@ -2280,58 +2297,99 @@ class Delineation(QObject):
         accArray = None
         return storeGrid, accTransform, minDrainArea, maxDrainArea
     
+    @staticmethod
+    def onEdge(row: int, col:int, gridSize: int) -> bool:
+        """Returns true of (row, col) is on the edge of the cell."""
+        return row == 0 or row == gridSize - 1 or col == 0 or col == gridSize - 1
+    
     def addDownstreamData(self, storeGrid: Dict[int, Dict[int, GridData]], flowFile: str, gridSize: int, accTransform: Transform) -> bool:
         """Use flow direction flowFile to see to which grid cell a D8 step takes you from the max accumulation point and store in array."""
-        pRaster = gdal.Open(flowFile)
+        pRaster = gdal.Open(flowFile, gdal.GA_ReadOnly)
         if pRaster is None:
             QSWATUtils.error('Cannot open flow direction file {0}'.format(flowFile), self._gv.isBatch)
             return False
         # for now read whole D8 flow direction file into memory
         pBand = pRaster.GetRasterBand(1)
-        pNoData = pBand.GetNoDataValue()
+        #pNoData = pBand.GetNoDataValue()
         pTransform = pRaster.GetGeoTransform()
         if pTransform[1] != accTransform[1] or pTransform[5] != accTransform[5]:
-            QSWATUtils.error('Flow direction and accumulation files must have same cell size', self._gv.isBatch)
-            return False
+            # problem with comparing floating point numbers
+            # actually OK if the vertical/horizontal difference times the number of rows/columns
+            # is less than half the depth/width of a cell
+            if abs(pTransform[1] - accTransform[1]) * pBand.XSize > pTransform[1] * 0.5 or \
+            abs(pTransform[5] - accTransform[5]) * pBand.YSize > abs(pTransform[5]) * 0.5:
+                QSWATUtils.error('Flow direction and accumulation files must have same cell size', self._gv.isBatch)
+                pRaster = None
+                return False
         pArray = pBand.ReadAsArray(0, 0, pBand.XSize, pBand.YSize)
-        sameCoords = (pTransform == accTransform)
+        # we know the cell sizes are sufficiently close;
+        # accept the origins as the same if they are within a tenth of the cell size
+        sameCoords = (pTransform == accTransform) or \
+                    (abs(pTransform[0] - accTransform[0]) < pTransform[1] * 0.1 and
+                     abs(pTransform[3] - accTransform[3]) < abs(pTransform[5]) * 0.1)
         for gridRow, gridCols in storeGrid.items():
             for gridCol, gridData in gridCols.items():
+                # since we have same cell sizes, can simplify conversion from accumulation row, col to direction row, col
                 if sameCoords:
-                    pRow = gridData.maxRow
-                    pCol = gridData.maxCol
+                    accToPRow = 0
+                    accToPCol = 0
                 else:
-                    pRow = QSWATTopology.yToRow(QSWATTopology.rowToY(gridData.maxRow, accTransform), pTransform)
-                    pCol = QSWATTopology.xToCol(QSWATTopology.colToX(gridData.maxCol, accTransform), pTransform)
-                if 0 <= pRow < pBand.YSize and 0 <= pCol < pBand.XSize:
-                    direction = pArray[pRow, pCol]
-                else:
-                    continue
-                # apply a step in direction
-                if 1 <= direction <= 8:
-                    targetPRow = pRow + self.dY[direction - 1]
-                    targetPCol = pCol + self.dX[direction - 1]
-                else:
-                    continue
+                    accToPCol = int((accTransform[0] - pTransform[0]) / accTransform[1] + 0.5)
+                    accToPRow = int((accTransform[3] - pTransform[3]) / accTransform[5] + 0.5)
+                    #pRow = QSWATTopology.yToRow(QSWATTopology.rowToY(gridData.maxRow, accTransform), pTransform)
+                    #pCol = QSWATTopology.xToCol(QSWATTopology.colToX(gridData.maxCol, accTransform), pTransform)
+                currentPRow = gridData.maxRow + accToPRow
+                currentPCol = gridData.maxCol + accToPCol
                 # try to find downstream grid cell.  If we fail downstram number left as -1, which means outlet
-                if 0 <= targetPRow < pBand.YSize and 0 <= targetPCol < pBand.XSize and pArray[targetPRow, targetPCol] != pNoData:
-                    targetAccRow = targetPRow - pRow + gridData.maxRow
-                    targetAccCol = targetPCol - pCol + gridData.maxCol
-                    targetGridRow = targetAccRow / gridSize
-                    targetGridCol = targetAccCol / gridSize
-                    if targetGridRow in storeGrid:
-                        if targetGridCol in storeGrid[targetGridRow]:
-                            targetData = storeGrid[targetGridRow][targetGridCol]
-                            gridData.downNum = targetData.num
-                            gridData.downRow = targetGridRow
-                            gridData.downCol = targetGridCol
+                # rounding of large accumulation values means that the maximum accumulation point found
+                # may not be at the outflow point, so we need to move until we find a new grid cell, or hit a map edge
+                maxSteps = 2 * gridSize
+                found = False
+                while not found:
+                    if 0 <= currentPRow < pBand.YSize and 0 <= currentPCol < pBand.XSize:
+                        direction = pArray[currentPRow, currentPCol]
+                    else:
+                        break
+                    # apply a step in direction
+                    if 1 <= direction <= 8:
+                        currentPRow = currentPRow + QSWATUtils._dY[direction - 1]
+                        currentPCol = currentPCol + QSWATUtils._dX[direction - 1]
+                    else:
+                        break
+                    currentAccRow = currentPRow - accToPRow
+                    currentAccCol = currentPCol - accToPCol
+                    currentGridRow = currentAccRow // gridSize
+                    currentGridCol = currentAccCol // gridSize
+                    found = currentGridRow != gridRow or currentGridCol != gridCol
+                    if not found:
+                        maxSteps -= 1
+                        if maxSteps <= 0:
+                            x0, y0 = QSWATTopology.cellToProj(gridData.maxCol, gridData.maxRow, accTransform)
+                            x, y = QSWATTopology.cellToProj(currentAccCol, currentAccRow, accTransform)
+                            QSWATUtils.error('Loop in flow directions in grid id {4} starting from ({0},{1}) and so far reaching ({2},{3})'.
+                                             format(int(x0), int(y0), int(x), int(y), gridData.num), self._gv.isBatch)
+                            break
+                if found:
+                    cols =  storeGrid.get(currentGridRow, None)
+                    if cols is not None:
+                        currentData = cols.get(currentGridCol, None)
+                        if currentData is not None:
+                            if currentData.maxAcc < gridData.maxAcc:
+                                QSWATUtils.loginfo("WARNING: while calculating stream drainage, target grid cell {0} has lower maximum accumulation {1} than source grid cell {2}'s accumulation {3}"  \
+                                                   .format(currentData.num, currentData.maxAcc, gridData.num, gridData.maxAcc))
+                            gridData.downNum = currentData.num
+                            gridData.downRow = currentGridRow
+                            gridData.downCol = currentGridCol
                             #if gridData.num <= 5:
-                            #    QSWATUtils.loginfo('Grid ({0},{1}) drains to acc ({2},{3}) in grid ({4},{5})'.format(gridRow, gridCol, targetAccCol, targetAccRow, targetGridRow, targetGridCol))
+                            #    QSWATUtils.loginfo('Grid ({0},{1}) drains to acc ({2},{3}) in grid ({4},{5})'.format(gridRow, gridCol, currentAccCol, currentAccRow, currentGridRow, currentGridCol))
                             #    QSWATUtils.loginfo('{0} at {1},{2} given down id {3}'.format(gridData.num, gridRow, gridCol, gridData.downNum))
                             if gridData.downNum == gridData.num:
                                 x, y = QSWATTopology.cellToProj(gridData.maxCol, gridData.maxRow, accTransform)
                                 maxAccPoint = QgsPointXY(x, y)
-                                QSWATUtils.loginfo('Grid ({0},{1}) id {5} at ({2},{3}) which is {4} draining to ({6},{7})'.format(gridCol, gridRow, gridData.maxCol, gridData.maxRow, maxAccPoint.toString(), gridData.num, targetAccCol, targetAccRow))
+                                QSWATUtils.loginfo('Grid ({0},{1}) id {5} at ({2},{3}) which is {4} draining to ({6},{7})'.
+                                                     format(gridCol, gridRow, gridData.maxCol, gridData.maxRow, maxAccPoint.toString(),
+                                                            gridData.num, currentAccCol, currentAccRow))
+                                gridData.downNum = -1
                             #assert gridData.downNum != gridData.num
                             storeGrid[gridRow][gridCol] = gridData
         pRaster = None
@@ -2344,7 +2402,7 @@ class Delineation(QObject):
         self.progress('Writing grid ...')
         fields = QgsFields()
         fields.append(QgsField(QSWATTopology._POLYGONID, QVariant.Int))
-        fields.append(QgsField('DownId', QVariant.Int))
+        fields.append(QgsField(QSWATTopology._DOWNID, QVariant.Int))
         fields.append(QgsField(QSWATTopology._AREA, QVariant.Int))
         gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
         root = QgsProject.instance().layerTreeRoot()
@@ -2356,17 +2414,18 @@ class Delineation(QObject):
             QSWATUtils.error('Cannot create grid shapefile {0}: {1}'.format(gridFile, writer.errorMessage()), self._gv.isBatch)
             return
         idIndex = fields.indexFromName(QSWATTopology._POLYGONID)
-        downIndex = fields.indexFromName('DownId')
+        downIndex = fields.indexFromName(QSWATTopology._DOWNID)
         areaIndex = fields.indexFromName(QSWATTopology._AREA)
         ul_x, x_size, _, ul_y, _, y_size = accTransform
         xDiff = x_size * gridSize * 0.5
         yDiff = y_size * gridSize * 0.5
-        features = list()
         self._gv.topo.basinCentroids = dict()
         for gridRow, gridCols in storeGrid.items():
+            # grids can be big so we'll add one row at a time
+            centreY = (gridRow + 0.5) * gridSize * y_size + ul_y
+            features = list()
             for gridCol, gridData in gridCols.items():
                 centreX = (gridCol + 0.5) * gridSize * x_size + ul_x
-                centreY = (gridRow + 0.5) * gridSize * y_size + ul_y
                 # this is strictly not the centroid for incomplete grid squares on the edges,
                 # but will make little difference.  
                 # Needs to be centre of grid for correct identification of landuse, soil and slope rows
@@ -2385,9 +2444,9 @@ class Delineation(QObject):
                 geometry = QgsGeometry.fromPolygonXY([ring])
                 feature.setGeometry(geometry)
                 features.append(feature)
-        if not writer.addFeatures(features):
-            QSWATUtils.error('Unable to add features to grid shapefile {0}'.format(gridFile), self._gv.isBatch)
-            return
+            if not writer.addFeatures(features):
+                QSWATUtils.error('Unable to add features to grid shapefile {0}'.format(gridFile), self._gv.isBatch)
+                return
         # load grid shapefile
         # need to release writer before making layer
         writer = None  # type: ignore
@@ -2395,6 +2454,7 @@ class Delineation(QObject):
         # make wshed layer active so loads above it
         wshedLayer = QSWATUtils.getLayerByLegend(QSWATUtils._WATERSHEDLEGEND, root.findLayers())
         if wshedLayer:
+            wshedlayer = wshedLayer.layer()
             self._iface.setActiveLayer(wshedLayer)
             QSWATUtils.setLayerVisibility(wshedLayer, False, root)
         gridLayer, loaded = QSWATUtils.getLayerByFilename(root.findLayers(), gridFile, FileTypes._GRID, 
@@ -2437,9 +2497,10 @@ class Delineation(QObject):
             areaToPenWidth = lambda x: (x - minDrainArea) * 1.8 / rng + 0.2
         else:
             areaToPenWidth = lambda _: 1.0
-        features = list()
         numOutlets = 0
         for gridCols in storeGrid.values():
+            # grids can be big so we'll add one row at a time
+            features = list()
             for gridData in gridCols.values():
                 downNum = gridData.downNum
                 sourceX, sourceY = QSWATTopology.cellToProj(gridData.maxCol, gridData.maxRow, accTransform)
@@ -2449,7 +2510,8 @@ class Delineation(QObject):
                 else:
                     targetX, targetY = sourceX, sourceY
                     numOutlets += 1
-                link = [QgsPointXY(sourceX, sourceY), QgsPointXY(targetX, targetY)]
+                # respect default 'start at outlet' of TauDEM
+                link = [QgsPointXY(targetX, targetY), QgsPointXY(sourceX, sourceY)]
                 feature = QgsFeature()
                 feature.setFields(fields)
                 feature.setAttribute(linkIndex, gridData.num)
@@ -2462,12 +2524,13 @@ class Delineation(QObject):
                 geometry = QgsGeometry.fromPolylineXY(link)
                 feature.setGeometry(geometry)
                 features.append(feature)
-        if not writer.addFeatures(features):
-            QSWATUtils.error('Unable to add features to grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
-            return -1
+            if not writer.addFeatures(features):
+                QSWATUtils.error('Unable to add features to grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
+                return -1
+        # flush writer
+        writer.flushBuffer()
+        del writer
         # load grid streams shapefile
-        # need to release writer before making layer
-        writer = None  # type: ignore
         QSWATUtils.copyPrj(flowFile, gridStreamsFile)
         #styleFile = FileTypes.styleFile(FileTypes._GRIDSTREAMS)
         # try to load above grid layer

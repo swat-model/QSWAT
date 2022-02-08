@@ -290,6 +290,7 @@ class QSwat(QObject):
             if choice >= 0:  # NB values from convertFromArc.py, 0 for full, 1 for existing, 2 for no gis.
                 self._odlg.editLabel.setEnabled(True)
                 self._odlg.editButton.setEnabled(True)
+        self._gv.useGridModel = proj.readBoolEntry(title, 'delin/useGridModel', False)[0]
         if self.demProcessed():
             self._demIsProcessed = True
             self.allowCreateHRU()
@@ -556,10 +557,11 @@ class QSwat(QObject):
             if not (demTime <= felTime <= wshedTime):
                 QSWATUtils.loginfo('demProcessed failed: not up to date')
                 return False
-            self._gv.distFile = base + 'dist.tif'
-            if not os.path.exists(self._gv.distFile):
-                QSWATUtils.loginfo('demProcessed failed: no distance to outlet raster')
-                return False
+            if not self._gv.useGridModel:
+                self._gv.distFile = base + 'dist.tif'
+                if not os.path.exists(self._gv.distFile):
+                    QSWATUtils.loginfo('demProcessed failed: no distance to outlet raster')
+                    return False
         if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
             return False
         basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)

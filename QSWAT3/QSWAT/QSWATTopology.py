@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import QPoint, QVariant
 #from qgis.PyQt.QtGui import * # @UnusedWildImport
 #from qgis.PyQt.QtWidgets import * # @UnusedWildImport
-from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider
+from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider
 from osgeo import gdal
 from numpy import * # @UnusedWildImport
 import os.path
@@ -97,6 +97,7 @@ class QSWATTopology:
     _RES = 'RES'
     _PTSOURCE = 'PTSOURCE'
     _POLYGONID = 'PolygonId'
+    _DOWNID = 'DownId'
     _AREA = 'Area'
     _STREAMLINK = 'StreamLink'
     _STREAMLEN = 'StreamLen'
@@ -482,7 +483,7 @@ class QSWATTopology:
         # set drainAreas
         if totDAIndex < 0:
             if useGridModel:
-                self.setGridDrainageAreas(maxLink)
+                self.setGridDrainageAreas(streamLayer, wshedLayer, maxLink)
             elif manyBasins:
                 self.setManyDrainageAreas(maxLink)
             else:
@@ -555,7 +556,7 @@ class QSWATTopology:
                     self.upstreamFromInlets.add(up)
                     self.addUpstreamLinks(up, us)
     
-    def setGridDrainageAreas(self, maxLink: int) -> None:
+    def setGridDrainageAreas(self, streamLayer: QgsVectorLayer, wshedLayer: QgsVectorLayer, maxLink: int) -> None:
         """Calculate and save grid drain areas in sq km."""
         gridArea = self.dx * self.dy * self.gridRows * self.gridRows # area of grid cell in sq m
         self.drainAreas.fill(gridArea)
@@ -578,7 +579,65 @@ class QSWATTopology:
         # incount values should now all be zero
         remainder = [link for link in range(maxLink + 1) if incount[link] > 0]
         if remainder:
-            QSWATUtils.error(u'Drainage areas incomplete.  There is a circularity in links {0!s}'.format(remainder), self.isBatch)
+            # QSWATUtils.information(u'Drainage areas incomplete.  There is a circularity in links {0!s}'.format(remainder), self.isBatch)
+            # remainder may contain a number of circles.
+            rings: List[List[int]] = []
+            nextRing: List[int] = []
+            link = remainder.pop(0)
+            while True:
+                nextRing.append(link)
+                dsLink = self.downLinks[link]
+                if dsLink in nextRing:
+                    # complete the ring
+                    nextRing.append(dsLink)
+                    rings.append(nextRing)
+                    if remainder:
+                        nextRing = []
+                        link = remainder.pop(0)
+                    else:
+                        break
+                else:
+                    # continue
+                    remainder.remove(dsLink)
+                    link = dsLink
+            numRings = len(rings)
+            if numRings > 0:
+                streamMap: Dict[int, Dict[int, int]] = dict()
+                polyMap: Dict[int, Dict[int, int]] = dict()
+                streamProvider = streamLayer.dataProvider()
+                linkIndex = streamProvider.fieldNameIndex(QSWATTopology._LINKNO)
+                DSLINKNO = QSWATTopology._DSLINKNO
+                dsLinkIndex = streamProvider.fieldNameIndex(DSLINKNO)
+                subProvider = wshedLayer.dataProvider()
+                dsPolyIndex = subProvider.fieldNameIndex(QSWATTopology._DOWNID)
+                QSWATUtils.information('Drainage areas incomplete.  There are {0} circularities.  Will try to remove them.  See the QSWAT log for details'.
+                                 format(numRings), self.isBatch)
+                for ring in rings:
+                    QSWATUtils.loginfo('Circularity in links {0!s}'.format(ring))
+                    # fix the circularity by making the largest drainage link an exit in the downChannels map
+                    maxDrainage = 0
+                    maxLink = -1
+                    for link in ring:
+                        drainage = self.drainAreas[link]
+                        if drainage > maxDrainage:
+                            maxLink = link
+                            maxDrainage = drainage
+                    if maxLink < 0:
+                        QSWATUtils.error('Failed to find link with largest drainage in circle {0!s}'.format(ring), self.isBatch)
+                    else:
+                        self.downLinks[maxLink] = -1
+                        linkExpr = QgsExpression('"{0}" = {1}'.format(QSWATTopology._LINKNO, maxLink))
+                        linkRequest = QgsFeatureRequest(linkExpr).setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([linkIndex, dsLinkIndex])
+                        for feature in streamProvider.getFeatures(linkRequest):
+                            streamMap[feature.id()] = {dsLinkIndex: -1}
+                        basin = self.linkToBasin[maxLink]
+                        polyExpr = QgsExpression('"{0}" = {1}'.format(QSWATTopology._POLYGONID, basin))
+                        polyRequest = QgsFeatureRequest(polyExpr).setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([])
+                        for feature in subProvider.getFeatures(polyRequest):
+                            polyMap[feature.id()] = {dsPolyIndex: -1}
+                        QSWATUtils.loginfo('Link {0} and polygon {1} made into an exit'.format(maxLink, basin))
+                streamProvider.changeAttributeValues(streamMap)
+                subProvider.changeAttributeValues(polyMap)
     
                
     def setManyDrainageAreas(self, maxLink: int) -> None:
