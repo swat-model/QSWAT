@@ -132,10 +132,10 @@ class runHUC():
         #landCombo = hrudlg.selectLanduseTable
         #landIndex = landCombo.findText('nlcd2001_landuses')
         #landCombo.setCurrentIndex(landIndex)
-        #self.hrus.landuseTable = 'nlcd2001_landuses'
+        #gv.landuseTable = 'nlcd2001_landuses'
         huc2 = os.path.split(self.projDir)[1][3:5]
         isCDL = 'Fields_CDL' in self.projDir
-        self.hrus.landuseTable = 'landuse_fields_CDL_{0}'.format(huc2) if isCDL else 'landuse_fields_{0}'.format(huc2)
+        gv.landuseTable = 'landuse_fields_CDL_{0}'.format(huc2) if isCDL else 'landuse_fields_{0}'.format(huc2)
         hrudlg.SSURGOButton.setChecked(True)
         gv.db.useSSURGO = True
         gv.db.slopeLimits = [2,8]

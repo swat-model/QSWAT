@@ -680,7 +680,7 @@ class QSWATUtils:
                 fun: Optional[Callable[[QgsRasterLayer, Any], None]] = FileTypes.colourFun(ft)
                 if fun is not None:
                     assert isinstance(mapLayer, QgsRasterLayer)
-                    fun(mapLayer, gv.db)
+                    fun(mapLayer, gv)
                 if not (styleFile is None or styleFile == ''):
                     # note thic causes 'Calling appendChild() on a null node does nothing.' to be output
                     mapLayer.loadNamedStyle(QSWATUtils.join(gv.plugin_dir, styleFile))
@@ -707,10 +707,10 @@ class QSWATUtils:
         return (None, False)
     
     @staticmethod
-    def groupIndex(group: Optional[QgsLayerTreeGroup], layer: QgsLayerTreeLayer) -> int:
+    def groupIndex(group: Optional[QgsLayerTreeGroup], layer: Optional[QgsLayerTreeLayer]) -> int:
         """Find index of tree layer in group's children, defaulting to 0."""
         index = 0
-        if group is None:
+        if group is None or layer is None:
             return index
         for child in group.children():
             node = cast(QgsLayerTreeNode, child)
@@ -780,7 +780,7 @@ class QSWATUtils:
     @staticmethod    
     def openAndLoadFile(root: QgsLayerTreeGroup, ft: int,
                         box: QLineEdit, saveDir: str, gv: Any, 
-                        subLayer: QgsLayerTreeLayer, groupName: str, clipToDEM: bool=False, runFix: bool=False) \
+                        subLayer: Optional[QgsLayerTreeLayer], groupName: str, clipToDEM: bool=False, runFix: bool=False) \
                             -> Tuple[Optional[str], Optional[QgsMapLayer]]:
         """
         Use dialog to open file of FileType ft chosen by user  (or get from box if is batch, intended for testing), 
@@ -864,12 +864,12 @@ class QSWATUtils:
                 epsgProject = gv.topo.crsProject.authid()
                 epsgLoad = layer.crs().authid()
                 if epsgProject != epsgLoad:
-                    QSWATUtils.error('File {0} has a projection {1} which is different from the project projection {2}.  Please reproject and reload.'.
+                    QSWATUtils.information('WARNING: File {0} has a projection {1} which is different from the project projection {2}.  You may need to reproject and reload.'.
                                      format(outFileName, epsgLoad, epsgProject), gv.isBatch)
-                    QgsProject.instance().removeMapLayer(layer.id())
-                    del layer
-                    gv.iface.mapCanvas().refresh()
-                    return (None, None)
+                    #QgsProject.instance().removeMapLayer(layer.id())
+                    #del layer
+                    #gv.iface.mapCanvas().refresh()
+                    #return (None, None)
             return (outFileName, layer)
         else:
             return (None, None)
@@ -1016,7 +1016,24 @@ class QSWATUtils:
             return False
      
     @staticmethod   
-    def centreGridCell(cell: QgsFeature) -> Tuple[QgsPointXY, Tuple[float, float], Tuple[float, float]]:
+    def centreGridCell(cell: QgsFeature) -> QgsPointXY:
+        """Return centre point of (assumed rectangular) cell."""
+        geom = cell.geometry()
+        if geom.isMultipart():
+            poly = geom.asMultiPolygon()[0]
+        else:
+            poly = geom.asPolygon()
+        points: List[QgsPointXY] = poly[0]
+        corner1: QgsPointXY = points[0]
+        corner2: QgsPointXY = points[2]
+        x1: float = corner1.x()
+        x2: float = corner2.x()
+        y1: float = corner1.y()
+        y2: float = corner2.y()
+        return QgsPointXY((x1 + x2) / 2.0, (y1 + y2) / 2.0)
+     
+    @staticmethod   
+    def centreGridCellWithExtent(cell: QgsFeature) -> Tuple[QgsPointXY, Tuple[float, float], Tuple[float, float]]:
         """Return centre point of (assumed rectangular) cell, 
         plus extent as minimum and maximum x and y values."""
         geom = cell.geometry()
@@ -1358,7 +1375,7 @@ class FileTypes:
             return None
 
     @staticmethod
-    def colourDEM(layer: QgsRasterLayer, _: Any) -> None:
+    def colourDEM(layer: QgsRasterLayer, gv: Any) -> None:
         """Layer colouring function for DEM."""
         shader: QgsRasterShader = QgsRasterShader()
         stats: QgsRasterBandStats = layer.dataProvider().bandStatistics(1,
@@ -1377,14 +1394,21 @@ class FileTypes:
         fcn: QgsColorRampShader = QgsColorRampShader(minVal, maxVal)
         fcn.setColorRampType(QgsColorRampShader.Interpolated)
         fcn.setColorRampItemList([item0, item1, item2])
+        if gv.QGISSubVersion >= 18:
+            #legend settings is QGIS 3.18 or later
+            # from qgis.core import QgsColorRampLegendNodeSettings  # @UnresolvedImport
+            legendSettings = fcn.legendSettings()
+            legendSettings.setUseContinuousLegend(False)
+            fcn.setLegendSettings(legendSettings)
         shader.setRasterShaderFunction(fcn)
         renderer: QgsSingleBandPseudoColorRenderer = QgsSingleBandPseudoColorRenderer(layer.dataProvider(), 1, shader)
         layer.setRenderer(renderer)
         layer.triggerRepaint()
         
     @staticmethod
-    def colourLanduses(layer: QgsRasterLayer, db: Any) -> None:
+    def colourLanduses(layer: QgsRasterLayer, gv: Any) -> None:
         """Layer colouring function for landuse grid."""
+        db = gv.db
         items: List[QgsPalettedRasterRenderer.Class] = []
         colours = QgsLimitedRandomColorRamp.randomColors(len(db.landuseVals))
         index = 0
@@ -1402,8 +1426,9 @@ class FileTypes:
         layer.triggerRepaint()
     
     @staticmethod
-    def colourSoils(layer: QgsRasterLayer, db: Any) -> None:
+    def colourSoils(layer: QgsRasterLayer, gv: Any) -> None:
         """Layer colouring function for soil grid."""
+        db = gv.db
         items: List[QgsPalettedRasterRenderer.Class] = []
         index = 0
         if len(db.SSURGOSoils) > 0:  # which means isHUC or isHAWQS is true
@@ -1431,8 +1456,9 @@ class FileTypes:
         layer.triggerRepaint()
         
     @staticmethod
-    def colourSlopes(layer: QgsRasterLayer, db: Any) -> None:
+    def colourSlopes(layer: QgsRasterLayer, gv: Any) -> None:
         """Layer colouring for slope bands grid."""
+        db = gv.db
         shader: QgsRasterShader = QgsRasterShader()
         items: List[QgsColorRampShader.ColorRampItem] = []
         numItems: int = len(db.slopeLimits) + 1

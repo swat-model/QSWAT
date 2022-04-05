@@ -256,7 +256,7 @@ class Visualise(QObject):
         group = root.findGroup(QSWATUtils._WATERSHED_GROUP_NAME)
         wshedTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._SUBBASINS), root.findLayers())
         if wshedTreeLayer:
-            wshedLayer: Optional[QgsVectorLayer] = wshedTreeLayer.layer()
+            wshedLayer: Optional[QgsVectorLayer] = wshedTreeLayer.layer()  # type: ignore
         else:
             wshedFile = os.path.join(self._gv.shapesDir, 'subs1.shp')
             if os.path.isfile(wshedFile):
@@ -346,8 +346,8 @@ class Visualise(QObject):
             elif demLayer is not None:
                 subLayer = demLayer
             if hrusLayer is None and hasHRUs:
-                hrusLayer = QSWATUtils.getLayerByFilename(root.findLayers(), hrusFile, FileTypes._HRUS, 
-                                                            self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)
+                hrusLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), hrusFile, FileTypes._HRUS, \
+                                                            self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
         watershedLayers = QSWATUtils.getLayersInGroup(QSWATUtils._WATERSHED_GROUP_NAME, root)
         # make subbasins, channels, LSUs, HRUs and aquifers visible
         if self._gv.useGridModel:
@@ -618,7 +618,7 @@ class Visualise(QObject):
         # remove animation layers
         proj = QgsProject.instance()
         for animation in QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, proj.layerTreeRoot()):
-            proj.removeMapLayer(animation.layer().id())
+            proj.removeMapLayer(animation.layer().id())  # type: ignore
         # only close connection after removing animation layers as the map title is affected and recalculation needs connection
         self.conn = None
         self._dlg.close()
@@ -1623,11 +1623,11 @@ class Visualise(QObject):
         self.animationTemplate = QSWATUtils.join(self._gv.tablesOutDir, 'AnimationTemplate.qpt')
         # make substitution table
         subs = dict()
-        northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), Visualise._NORTHARROW)
+        northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), Visualise._NORTHARROW)  # type: ignore
         if not os.path.isfile(northArrow):
             # may be qgis-ltr for example
             northArrowRel = Visualise._NORTHARROW.replace('qgis', QSWATUtils.qgisName(), 1)
-            northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), northArrowRel)
+            northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), northArrowRel)  # type: ignore
         if not os.path.isfile(northArrow):
             QSWATUtils.error('Failed to find north arrow {0}.  You will need to repair the layout.'.format(northArrow), self._gv.isBatch)
         subs['%%NorthArrow%%'] = northArrow
@@ -1663,6 +1663,7 @@ class Visualise(QObject):
         layerStr = '<Layer source="{0}" provider="ogr" name="{1}">{2}</Layer>'
         for i in range(count):
             layer = animationLayers[i].layer()
+            assert layer is not None
             subs['%%LayerId{0}%%'.format(i)] = layer.id()
             subs['%%LayerName{0}%%'.format(i)] = layer.name()
             subs['%%YMin{0}%%'.format(i)] = str(ymin)
@@ -1674,6 +1675,7 @@ class Visualise(QObject):
         for i in range(6):  # 6 entries in template for background layers
             if i < len(watershedLayers):
                 wLayer = watershedLayers[i].layer()
+                assert wLayer is not None
                 subs['%%WshedLayer{0}%%'.format(i)] = layerStr.format(QSWATUtils.layerFilename(wLayer), wLayer.name(), wLayer.id())
             else:  # remove unused ones
                 subs['%%WshedLayer{0}%%'.format(i)] = ''
@@ -1795,7 +1797,7 @@ class Visualise(QObject):
             else:
                 root = QgsProject.instance().layerTreeRoot()
                 animateTreeLayers = QSWATUtils.getLayersInGroup(QSWATUtils._ANIMATION_GROUP_NAME, root, visible=False)
-                animateLayers = [layer.layer() for layer in animateTreeLayers if layer is not None]
+                animateLayers = [layer.layer() for layer in animateTreeLayers if layer is not None]  # type: ignore
             for animateLayer in animateLayers:
                 if animateLayer is None:
                     continue
@@ -2086,11 +2088,11 @@ class Visualise(QObject):
         templateOut = QSWATUtils.join(self._gv.tablesOutDir, self.title + templ)
         # make substitution table
         subs = dict()
-        northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), Visualise._NORTHARROW)
+        northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), Visualise._NORTHARROW)  # type: ignore
         if not os.path.isfile(northArrow):
             # may be qgis-ltr for example
             northArrowRel = Visualise._NORTHARROW.replace('qgis', QSWATUtils.qgisName(), 1)
-            northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), northArrowRel)
+            northArrow = QSWATUtils.join(os.getenv('OSGEO4W_ROOT'), northArrowRel)  # type: ignore
         if not os.path.isfile(northArrow):
             QSWATUtils.error('Failed to find north arrow {0}.  You will need to repair the layout.'.format(northArrow), self._gv.isBatch)
         subs['%%NorthArrow%%'] = northArrow
@@ -2126,6 +2128,7 @@ class Visualise(QObject):
         layerStr = '<Layer source="{0}" provider="ogr" name="{1}">{2}</Layer>'
         for i in range(count):
             layer = resultsLayers[i].layer()
+            assert layer is not None
             subs['%%LayerId{0}%%'.format(i)] = layer.id()
             subs['%%LayerName{0}%%'.format(i)] = layer.name()
             subs['%%YMin{0}%%'.format(i)] = str(ymin)
@@ -2137,6 +2140,7 @@ class Visualise(QObject):
         for i in range(6):  # 6 entries in template for background layers
             if i < len(watershedLayers):
                 wLayer = watershedLayers[i].layer()
+                assert wLayer is not None
                 subs['%%WshedLayer{0}%%'.format(i)] = layerStr.format(QSWATUtils.layerFilename(wLayer), wLayer.name(), wLayer.id())
             else:  # remove unused ones
                 subs['%%WshedLayer{0}%%'.format(i)] = ''
@@ -2809,10 +2813,11 @@ class Visualise(QObject):
             return
         for treeLayer in animationLayers:
             mapLayer = treeLayer.layer()
+            assert mapLayer is not None
             if self.mapTitle is None:
                 self.mapTitle = MapTitle(canvas, self.title, mapLayer)
                 canvas.refresh()
-                self.animateLayer = mapLayer
+                self.animateLayer = cast(QgsVectorLayer, mapLayer)
                 return
             elif mapLayer == self.mapTitle.layer:
                 # nothing to do
@@ -2824,7 +2829,7 @@ class Visualise(QObject):
                 date = self.dateToString(dat)
                 self.mapTitle = MapTitle(canvas, self.title, mapLayer, line2=date)
                 canvas.refresh()
-                self.animateLayer = mapLayer
+                self.animateLayer = cast(QgsVectorLayer, mapLayer)
                 return
         # if we get here, no visible animation layers
         self.clearMapTitle()
@@ -2847,7 +2852,8 @@ class Visualise(QObject):
         else:
             for treeLayer in resultsLayers:
                 mapLayer = treeLayer.layer()
-                self.currentResultsLayer = mapLayer
+                assert mapLayer is not None
+                self.currentResultsLayer = cast(QgsVectorLayer, mapLayer)
                 assert self.currentResultsLayer is not None
                 self.mapTitle = MapTitle(canvas, self.title, mapLayer)
                 canvas.refresh()

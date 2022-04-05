@@ -139,7 +139,7 @@ class DBUtils:
         ## Sorted list of values occurring in landuse map
         self.landuseVals: List[int] = []
         ## Default landuse
-        ## Set to first landuse in lookup table and used to replace landuse nodata when using grid model
+        ## Set to first landuse in lookup table or landuse with 0 landuse id and used to replace landuse nodata when using grid model
         self.defaultLanduse = -1
         ## defaultLanduse code
         self.defaultLanduseCode = ''
@@ -162,7 +162,7 @@ class DBUtils:
         ## Sorted list of values occurring in soil map
         self.soilVals: List[int] = []
         ## Default soil
-        ## Set to first soil in lookup table and used to replace soil nodata when using grid model
+        ## Set to first soil in lookup table or soil with 0 soil id and used to replace soil nodata when using grid model
         self.defaultSoil = -1
         ## name of defaultSoil
         self.defaultSoilName = ''
@@ -420,10 +420,9 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                     for row in conn.cursor().execute(sql):
                         nxt = int(row['LANDUSE_ID'] if self.isHUC or self.isHAWQS else row.LANDUSE_ID)
                         landuseCode = row['SWAT_CODE'] if self.isHUC or self.isHAWQS else row.SWAT_CODE
-                        if self.defaultLanduse < 0:
+                        if nxt == 0 or self.defaultLanduse < 0:
                             self.defaultLanduse = nxt
                             self.defaultLanduseCode = landuseCode
-                            QSWATUtils.loginfo('Default landuse set to {0}'.format(self.defaultLanduseCode))
                         # check if code already defined
                         key = revLanduseCodes.get(landuseCode, -1)
                         if key < 0:
@@ -433,6 +432,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             revLanduseCodes[landuseCode] = nxt
                         else:
                             self.storeLanduseTranslate(nxt, key)
+                    QSWATUtils.loginfo('Default landuse set to {0}'.format(self.defaultLanduseCode))
                 except Exception:
                     QSWATUtils.error('Could not read table {0} in project database {1}: {2}'.format(landuseTable, self.dbFile, traceback.format_exc()), self.isBatch)
                     return False
@@ -563,10 +563,9 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 for row in conn.cursor().execute(sql):
                     nxt = int(row[0])
                     soilName = row[1]
-                    if self.defaultSoil < 0:
+                    if nxt == 0 or self.defaultSoil < 0:
                         self.defaultSoil = nxt
                         self.defaultSoilName = soilName
-                        QSWATUtils.loginfo('Default soil set to {0}'.format(self.defaultSoilName))
                     # check if code already defined
                     key = revSoilNames.get(soilName, -1)
                     if key < 0:
@@ -575,6 +574,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                         revSoilNames[soilName] = nxt
                     else:
                         self.storeSoilTranslate(nxt, key)
+                QSWATUtils.loginfo('Default soil set to {0}'.format(self.defaultSoilName))
             except Exception:
                 QSWATUtils.error('Could not read table {0} in project database {1}: {2}'.format(soilTable, self.dbFile, traceback.format_exc()), self.isBatch)
                 return False
@@ -615,7 +615,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Check if all soil names in soilNames are in usersoil table in reference database."""
         sql = self.sqlSelect('usersoil', 'SNAM', '', 'SNAM=?')
         errorReported = False
-        for key, soilName in self.soilNames.items():
+        for soilName in self.soilNames.values():
             try:
                 row = self.connRef.cursor().execute(sql, (soilName,)).fetchone()
             except Exception:
@@ -722,6 +722,12 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 muid = int(lookup_row[1])
                 self.SSURGOSoils[int(sid)] = muid
                 return muid, True
+            
+    def copyUsersoil(self, table: str) -> None:
+        """Replace contents of usersoil with table."""
+        with self.connectRef() as conn:
+            conn.execute('DELETE FROM usersoil')
+            conn.execute('INSERT INTO usersoil SELECT * FROM {0}'.format(table))
     
     def populateAllLanduses(self, listBox: QListWidget) -> None:
         """Make list of all landuses in listBox."""
@@ -974,6 +980,11 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             QSWATUtils.error('Could not create table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
             conn.close()
             return (None, None, None)
+        indexSQL = 'CREATE INDEX bsasinindex ON {0} (basin)'.format(table)
+        try:
+            cursor.execute(indexSQL)
+        except Exception:
+            QSWATUtils.error('Failed to create index on table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
         sql2 = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?)'
         return (conn, sql1, sql2)
                         
@@ -1097,12 +1108,12 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                             basin = row.basin
                             basins[basin] = bd
                             # avoid WHERE x = n bug
-                            #sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
-                            #for row2 in conn.cursor().execute(sql, basin):
-                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', '')
-                            for row2 in conn.cursor().execute(sql):
-                                if row2.basin != basin:
-                                    continue
+                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
+                            for row2 in conn.cursor().execute(sql, (basin,)):
+                            # sql = self.sqlSelect(self._BASINSDATA2, '*', '', '')
+                            # for row2 in conn.cursor().execute(sql):
+                            #     if row2.basin != basin:
+                            #         continue
                                 crop = row2.crop
                                 soil = row2.soil
                                 slope = row2.slope
@@ -1244,8 +1255,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             self.landuseTableNames.append(table)
         return table
     
-    def initWHUTables(self, curs: Any) -> Tuple[str, str, str]:
-        """Clear Watershed, hrus and uncomb tables.  Return sql for inserting rows into them."""
+    def initWHUTables(self, curs: Any) -> Tuple[str, str, str, str]:
+        """Clear Watershed, hrus, uncomb and ElevationBandtables.  Return sql for inserting rows into them."""
         table1 = 'Watershed'
         clearSQL = 'DELETE FROM ' + table1
         curs.execute(clearSQL)
@@ -1258,79 +1269,11 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         clearSQL = 'DELETE FROM ' + table3
         curs.execute(clearSQL)
         sql3 = 'INSERT INTO ' + table3 + ' VALUES(?,?,?,?,?,?,?,?,?,?,?)'
-        return (sql1, sql2, sql3)
-    
-    def writeWHUTables(self, oid: int, SWATBasin: int, basinData: BasinData, 
-                       cursor: Any, sql1: str, sql2: str, sql3: str, 
-                       centroidll: QgsPointXY) -> int:
-        """
-        Write basin data to Watershed, hrus and uncomb tables.
-        
-        This is used when using grid model.  Makes one HRU, dominant landuse and soil, for each basin.
-        """
-        areaKm = float(basinData.area) / 1E6  # area in square km.
-        areaHa = areaKm * 100
-        meanSlope = float(basinData.totalSlope) / (1 if basinData.cellCount == 0 else basinData.cellCount)
-        meanSlopePercent = meanSlope * 100
-        farDistance = basinData.farDistance
-        slsubbsn = QSWATUtils.getSlsubbsn(meanSlope)
-        assert farDistance > 0, 'Longest flow length is zero for basin {0!s}'.format(SWATBasin)
-        farSlopePercent = (float(basinData.farElevation - basinData.outletElevation) / basinData.farDistance) * 100
-        # formula from Srinivasan 11/01/06
-        tribChannelWidth = 1.29 * (areaKm ** 0.6)
-        tribChannelDepth = 0.13 * (areaKm ** 0.4)
-        lon = centroidll.x()
-        lat = centroidll.y()
-        assert basinData.cellCount > 0, 'Basin {0!s} has zero cell count'.format(SWATBasin)
-        meanElevation = float(basinData.totalElevation) / basinData.cellCount
-        elevMin = basinData.outletElevation
-        elevMax = basinData.maxElevation
-        cursor.execute(sql1, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
-                       float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
-                       float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
-                       SWATBasin + 300000, SWATBasin + 100000))
-        
-        # original code for 1 HRU per grid cell
-        luNum = BasinData.dominantKey(basinData.originalCropAreas)
-        soilNum = BasinData.dominantKey(basinData.originalSoilAreas)
-        slpNum = BasinData.dominantKey(basinData.originalSlopeAreas)
-        lu = self.getLanduseCode(luNum)
-        soil, _ = self.getSoilName(soilNum)
-        slp = self.slopeRange(slpNum)
-        meanSlopePercent = meanSlope * 100
-        uc = lu + '_' + soil + '_' + slp
-        filebase = QSWATUtils.fileBase(SWATBasin, 1)
-        oid += 1
-        cursor.execute(sql2, (oid, SWATBasin, float(areaHa), lu, float(areaHa), soil, float(areaHa), slp, \
-                               float(areaHa), float(meanSlopePercent), uc, 1, filebase))
-        cursor.execute(sql3, (oid, SWATBasin, luNum, lu, soilNum, soil, slpNum, slp, \
-                                   float(meanSlopePercent), float(areaHa), uc))
-        return oid
-        
-        # TODO: code for multiple HRUs
-        # note this does not assume one hru per subbasin
-        # but if there are more than one will generate HRUs for all of them
-        #=======================================================================
-        # for crop, ssn in basinData.cropSoilSlopeNumbers.items():
-        #     for soil, sn in ssn.items():
-        #         for slope,hru in sn.items():
-        #             cellData = basinData.hruMap[hru]
-        #             lu = self.getLanduseCode(crop)
-        #             soilName = self.getSoilName(soil)
-        #             slp = self.slopeRange(slope)
-        #             hruha = float(cellData.area) / 10000
-        #             arlu = float(basinData.cropArea(crop)) / 10000
-        #             arso = float(basinData.cropSoilArea(crop, soil)) / 10000
-        #             uc = lu + '_' + soilName + '_' + slp
-        #             slopePercent = (float(cellData.totalSlope) / cellData.cellCount) * 100
-        #             filebase = QSWATUtils.fileBase(SWATBasin, hru)
-        #             oid += 1
-        #             cursor.execute(sql2, (oid, SWATBasin, areaHa, lu, arlu, soilName, arso, slp, \
-        #                            areaHa, slopePercent, uc, oid, filebase))
-        #             cursor.execute(sql3, (oid, SWATBasin, crop, lu, soil, soilName, slope, slp, \
-        #                            slopePercent, hruha, uc))
-        # return oid
-        #=======================================================================
+        table4 = 'ElevationBand'
+        clearSQL = 'DELETE FROM ' + table4
+        curs.execute(clearSQL)
+        sql4 = 'INSERT INTO ' + table4 + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        return (sql1, sql2, sql3, sql4)
         
     def lastUpdateTime(self, table: str) -> Optional[datetime.datetime]:
         """Return last update time for table, or None if not available.  Returns a datetime value."""

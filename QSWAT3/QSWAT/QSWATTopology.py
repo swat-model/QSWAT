@@ -23,21 +23,24 @@
 from qgis.PyQt.QtCore import QPoint, QVariant
 #from qgis.PyQt.QtGui import * # @UnusedWildImport
 #from qgis.PyQt.QtWidgets import * # @UnusedWildImport
-from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider
-from osgeo import gdal
+from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL
+from osgeo import gdal  # type: ignore
 from numpy import * # @UnusedWildImport
 import os.path
+import glob
 import time
 import traceback
+import processing  # type: ignore  # @UnresolvedImport
 from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 
-try:
-    from .QSWATUtils import QSWATUtils, FileTypes, ListFuns
-    from .parameters import Parameters
-except ImportError:
-    # for convert from Arc and to plus
-    from QSWATUtils import QSWATUtils, FileTypes, ListFuns
-    from parameters import Parameters
+if not TYPE_CHECKING:
+    try:
+        from .QSWATUtils import QSWATUtils, FileTypes, ListFuns
+        from .parameters import Parameters
+    except ImportError:
+        # for convert from Arc and to plus
+        from QSWATUtils import QSWATUtils, FileTypes, ListFuns
+        from parameters import Parameters
     
 
 class ReachData():
@@ -116,7 +119,7 @@ class QSWATTopology:
     
     _HUCPointId = 100000  # for HUC models all point ids are this number or greater (must match value in HUC12Models.py in HUC12Watersheds 
     
-    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool) -> None:
+    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool, fromGRASS: bool, forTNC: bool) -> None:
         """Initialise class variables."""
         ## Link to project database
         self.db = None
@@ -158,12 +161,12 @@ class QSWATTopology:
         self.basinAreas = dict()
         ## links which are user-defined or main outlets
         self.outletLinks = set()
-        ## links with reservoirs
-        self.reservoirLinks = set()
+        ## links with reservoirs mapped to point id
+        self.reservoirLinks = dict()
         ## links with inlets
         self.inletLinks = set()
-        ## links with point sources at their outlet points
-        self.ptSrcLinks = set()
+        ## links with point sources at their outlet points mapped to point id
+        self.ptSrcLinks = dict()
         ## links draining to inlets
         self.upstreamFromInlets = set()
         ## key to MonitoringPoint table
@@ -196,8 +199,12 @@ class QSWATTopology:
         self.isHUC = isHUC
         ## flage for HAWQS projects
         self.isHAWQS = isHAWQS
+        ## flag for projects using GRASS delineation
+        self.fromGRASS = fromGRASS
+        ## flag for TNC projects
+        self.forTNC = forTNC
         
-    def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float) -> None:
+    def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float) -> bool:
         """Set DEM size parameters and stream orientation, and store source and outlet points for stream reaches."""
         # can fail if demLayer is None or not projected
         try:
@@ -227,7 +234,7 @@ class QSWATTopology:
         return True
         
     def setUp(self, demLayer: QgsRasterLayer, streamLayer: QgsVectorLayer, wshedLayer: QgsVectorLayer, 
-              outletLayer: QgsVectorLayer, extraOutletLayer: QgsVectorLayer, db: Any, 
+              outletLayer: Optional[QgsVectorLayer], extraOutletLayer: Optional[QgsVectorLayer], db: Any, 
               existing: bool, recalculate: bool, useGridModel: bool, reportErrors: bool) -> bool:
         """Create topological data from layers."""
         self.db = db
@@ -299,6 +306,10 @@ class QSWATTopology:
                 QSWATUtils.loginfo('No RES field in outlets layer')
                 return False
         if extraOutletLayer:
+            extraIdIndex = self.getIndex(extraOutletLayer, QSWATTopology._ID, ignoreMissing=ignoreError)
+            if extraIdIndex < 0:
+                QSWATUtils.loginfo('No ID field in extra outlets layer')
+                return False
             extraPtSourceIndex = self.getIndex(extraOutletLayer, QSWATTopology._PTSOURCE, ignoreMissing=ignoreError)
             if extraPtSourceIndex < 0:
                 QSWATUtils.loginfo('No PTSOURCE field in extra outlets layer')
@@ -446,7 +457,7 @@ class QSWATTopology:
                     isReservoir = attrs[resIndex] == 1
                     if isInlet:
                         if isPtSource:
-                            self.ptSrcLinks.add(link)
+                            self.ptSrcLinks[link] = dsNode
                         else:
                             if self.isHUC or self.isHAWQS:
                                 # in HUC models inlets are allowed which do not split streams
@@ -456,7 +467,7 @@ class QSWATTopology:
                                 # inlet links need to be associated with their downstream links
                                 self.inletLinks.add(self.downLinks[link])
                     elif isReservoir:
-                        self.reservoirLinks.add(link)
+                        self.reservoirLinks[link] = dsNode
                     else:
                         self.outletLinks.add(link)
         if not useGridModel and not manyBasins:
@@ -468,13 +479,14 @@ class QSWATTopology:
         if extraOutletLayer:
             for point in extraOutletLayer.getFeatures():
                 attrs = point.attributes()
+                pointId = attrs[extraIdIndex]
                 basin = attrs[extraBasinIndex]
                 link = self.basinToLink[basin]
                 if basin not in self.emptyBasins and not link in self.upstreamFromInlets: 
                     if attrs[extraResIndex] == 1:
-                        self.reservoirLinks.add(link)
+                        self.reservoirLinks[link] = pointId
                     if attrs[extraPtSourceIndex] == 1:
-                        self.ptSrcLinks.add(link)
+                        self.ptSrcLinks[link] = pointId
         if not useGridModel:
             QSWATUtils.loginfo('Reservoir links: {0!s}'.format(self.reservoirLinks))
             QSWATUtils.loginfo('Point source links: {0!s}'.format(self.ptSrcLinks))
@@ -907,7 +919,7 @@ class QSWATTopology:
                 if basin not in self.basinToSWATBasin:
                     continue
                 data = self.reachesData[link]
-                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'L')
+                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 0, 'L')
             # Add outlets
             for link in self.outletLinks:
                 # omit basins upstream from inlets
@@ -917,26 +929,65 @@ class QSWATTopology:
                 if basin not in self.basinToSWATBasin:
                     continue
                 data = self.reachesData[link]
-                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'T')
+                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 0, 'T')
             # Add inlets
             for link in self.inletLinks:
                 if link in self.upstreamFromInlets: 
                 # shouldn't happen, but users can be stupid
                     continue
                 data = self.reachesData[link]
-                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'W')
+                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 0, 'W')
             # Add point sources
-            for link in self.ptSrcLinks:
+            for link, pointId in self.ptSrcLinks.items():
                 if link in self.upstreamFromInlets:
                     continue
                 data = self.reachesData[link]
-                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'P')
+                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, pointId, 'P')
             # Add reservoirs
-            for link in self.reservoirLinks:
+            for link, pointId in self.reservoirLinks.items():
                 if link in self.upstreamFromInlets:
                     continue
                 data = self.reachesData[link]
-                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, 'R')
+                self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, pointId, 'R')
+            # for TNC projects (marked by forTNC True) there should be a CCdams.shp file in the sources directory
+            # and we add these to reservoirLinks and to MonitoringPoint table
+            if self.forTNC:
+                projDir = self.db.projDir
+                sourceDir = QSWATUtils.join(projDir, 'Source')
+                shapesDir = QSWATUtils.join(projDir, 'Watershed/Shapes')
+                damsPattern = QSWATUtils.join(sourceDir, '??dams.shp')
+                dams = None
+                for f in glob.iglob(damsPattern):
+                    dams = f 
+                    break
+                if dams is not None:
+                    import processing
+                    from processing.core.Processing import Processing
+                    Processing.initialize()
+                    alg = 'native:joinattributesbylocation'
+                    params = { 'DISCARD_NONMATCHING' : False, 
+                              'INPUT' : QSWATUtils.join(shapesDir, 'grid.shp'), 
+                              'JOIN' : dams, 
+                              'JOIN_FIELDS' : ['GRAND_ID'], 
+                              'METHOD' : 1, 
+                              'OUTPUT' : QSWATUtils.join(shapesDir, 'grid_res.shp'), 
+                              'PREDICATE' : [0], 
+                              'PREFIX' : '' }
+                    result = processing.run(alg, params)
+                    gridRes = result['OUTPUT']
+                    gridResLayer = QgsVectorLayer(gridRes, 'grid', 'ogr')
+                    subIndex = self.getIndex(gridResLayer, QSWATTopology._SUBBASIN)
+                    damIndex = self.getIndex(gridResLayer, 'GRAND_ID')
+                    polyIndex = self.getIndex(gridResLayer, QSWATTopology._POLYGONID)
+                    for cell in gridResLayer.getFeatures():
+                        res = cell[damIndex]
+                        sub = cell[subIndex]
+                        if res != NULL and sub > 0:
+                            resId = int(res)
+                            link = cell[polyIndex]  # polygonid = wsno = link for GRASS delineated models
+                            self.reservoirLinks[link] = resId
+                            data = self.reachesData[link]
+                            self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, resId, 'R')
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing MonitoringPoint table took {0} seconds'.format(int(time2 - time1)))
             if self.isHUC or self.isHAWQS:
@@ -945,10 +996,10 @@ class QSWATTopology:
                 self.db.hashDbTable(conn, table)
     
     def addMonitoringPoint(self, cursor: Any, demLayer: QgsRasterLayer, streamLayer: QgsVectorLayer,  # @UnusedVariable
-                           link: int, data: ReachData, typ: str) -> None:
+                           link: int, data: ReachData, pointId: int, typ: str) -> None:
         """Add a point to the MonitoringPoint table."""
         table = 'MonitoringPoint'
-        POINTID = 0 # not used by SWAT Editor
+        POINTID = pointId 
         HydroID = self.MonitoringPointFid + 400000
         OutletID = self.MonitoringPointFid + 100000
         if (self.isHUC or self.isHAWQS) and typ == 'W':
@@ -1282,10 +1333,10 @@ class QSWATTopology:
         return threshold
       
     @staticmethod      
-    def burnStream(streamFile: str, demFile: str, burnFile: str, verticalFactor: float, isBatch: bool) -> None:
+    def burnStream(streamFile: str, demFile: str, burnFile: str, verticalFactor: float, burnDepth: float, isBatch: bool) -> None:
         """Create as burnFile a copy of demFile with points on lines streamFile reduced in height by 50 metres."""
         # use vertical factor to convert from metres to vertical units of DEM
-        demReduction = 50.0 / verticalFactor # TODO: may want to change this value or allow user to change
+        demReduction = burnDepth / verticalFactor # TODO: may want to change this value or allow user to change
         assert not os.path.exists(burnFile)
         demDs = gdal.Open(demFile)
         driver = gdal.GetDriverByName('GTiff')
@@ -1472,6 +1523,8 @@ class QSWATTopology:
         """
         if self.isHUC or self.isHAWQS:
             return False
+        if self.fromGRASS:
+            return True
         self.linkIndex = self.getIndex(streamLayer, QSWATTopology._LINKNO, ignoreMissing=False)
         if self.linkIndex < 0:
             QSWATUtils.error('No LINKNO field in stream layer', self.isBatch)
@@ -1538,6 +1591,8 @@ class QSWATTopology:
         self.outlets.clear()
         self.nearoutlets.clear()
         self.nearsources.clear()
+        if self.fromGRASS:
+            return True
         isHUCOrHAWQS = self.isHUC or self.isHAWQS
         lengthIndex = self.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=not isHUCOrHAWQS)
         wsnoIndex = self.getIndex(streamLayer, QSWATTopology._WSNO, ignoreMissing=not isHUCOrHAWQS)
@@ -1698,6 +1753,93 @@ class QSWATTopology:
         col = int((x - transform[0]) / transform[1])
         row = int((y - transform[3]) / transform[5])
         return (col, row)
+                
+    @staticmethod
+    def translateCoords(transform1: Dict[int, float], transform2: Dict[int, float], 
+                        numRows1: int, numCols1: int) -> Tuple[Callable[[int, float], int], Callable[[int, float], int]]:
+        """
+        Return a pair of functions:
+        row, latitude -> row and column, longitude -> column
+        for transforming positions in raster1 to row and column of raster2.
+        
+        The functions are:
+        identities on the first argument if the rasters have (sufficiently) 
+        the same origins and cell sizes;
+        a simple shift on the first argument if the rasters have 
+        the same cell sizes but different origins;
+        otherwise a full transformation on the second argument.
+        It is assumed that the first and second arguments are consistent, 
+        ie they identify the same cell in raster1.
+        """
+        
+        if QSWATTopology.sameTransform(transform1, transform2, numRows1, numCols1):
+            return (lambda row, _: row), (lambda col, _: col)
+        xOrigin1, xSize1, _, yOrigin1, _, ySize1 = transform1
+        xOrigin2, xSize2, _, yOrigin2, _, ySize2 = transform2
+        # accept the origins as the same if they are within a tenth of the cell size
+        sameXOrigin = abs(xOrigin1 - xOrigin2) < xSize2 * 0.1
+        sameYOrigin = abs(yOrigin1 - yOrigin2) < abs(ySize2) * 0.1
+        # accept cell sizes as equivalent if  vertical/horizontal difference 
+        # in cell size times the number of rows/columns
+        # in the first is less than half the depth/width of a cell in the second
+        sameXSize = abs(xSize1 - xSize2) * numCols1 < xSize2 * 0.5
+        sameYSize = abs(ySize1 - ySize2) * numRows1 < abs(ySize2) * 0.5
+        if sameXSize:
+            if sameXOrigin:
+                xFun = (lambda col, _: col)
+            else:
+                # just needs origin shift
+                # note that int truncates, i.e. rounds towards zero
+                if xOrigin1 > xOrigin2:
+                    colShift = int((xOrigin1 - xOrigin2) / xSize1 + 0.5)
+                    xFun = lambda col, _: col + colShift
+                else:
+                    colShift = int((xOrigin2 - xOrigin1) / xSize1 + 0.5)
+                    xFun = lambda col, _: col - colShift
+        else:
+            # full transformation
+            xFun = lambda _, x: int((x - xOrigin2) / xSize2)
+        if sameYSize:
+            if sameYOrigin:
+                yFun = (lambda row, _: row)
+            else:
+                # just needs origin shift
+                # note that int truncates, i.e. rounds towards zero, and y size will be negative
+                if yOrigin1 > yOrigin2:
+                    rowShift = int((yOrigin2 - yOrigin1) / ySize1 + 0.5)
+                    yFun = lambda row, _: row - rowShift
+                else:
+                    rowShift = int((yOrigin1 - yOrigin2) / ySize1 + 0.5)
+                    yFun = lambda row, _: row + rowShift
+        else:
+            # full transformation
+            yFun = lambda _, y: int((y - yOrigin2) / ySize2)
+        # note row, column order of return (same as order of reading rasters)
+        return yFun, xFun
+    
+    @staticmethod
+    def sameTransform(transform1: Dict[int, float], transform2: Dict[int, float], numRows1: int, numCols1: int) -> bool:
+        """Return true if transforms are sufficiently close to be regarded as the same,
+        i.e. row and column numbers for the first can be used without transformation to read the second.  
+        Avoids relying on equality between real numbers."""
+        # may work, thuough we are comparing real values
+        if transform1 == transform2:
+            return True
+        xOrigin1, xSize1, _, yOrigin1, _, ySize1 = transform1
+        xOrigin2, xSize2, _, yOrigin2, _, ySize2 = transform2
+        # accept the origins as the same if they are within a tenth of the cell size
+        sameXOrigin = abs(xOrigin1 - xOrigin2) < xSize2 * 0.1
+        if sameXOrigin:
+            sameYOrigin = abs(yOrigin1 - yOrigin2) < abs(ySize2) * 0.1
+            if sameYOrigin:
+                # accept cell sizes as equivalent if  vertical/horizontal difference 
+                # in cell size times the number of rows/columns
+                # in the first is less than half the depth/width of a cell in the second
+                sameXSize = abs(xSize1 - xSize2) * numCols1 < xSize2 * 0.5
+                if sameXSize:
+                    sameYSize = abs(ySize1 - ySize2) * numRows1 < abs(ySize2) * 0.5
+                    return sameYSize
+        return False
         
     _REACHCREATESQL = \
     """

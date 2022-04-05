@@ -30,13 +30,16 @@ QGISDIR=AppData/Roaming/QGIS/QGIS3/profiles/default
 #TRANSLATIONS = i18n/qswat_en.ts
 TRANSLATIONS =
 
-# global
-PLUGINNAME = $(QSWAT_PROJECT)
-export PLUGINNAME
+PACKAGE = QSWAT
+SUBDIR = $(PACKAGE)
+export SUBDIR
 
 ifeq ($(QSWAT_PROJECT), QSWAT3)
 	METADATA = metadata32.txt
 	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat
+else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
+	METADATA = metadata3_9.txt
+	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat runHUC64.bat
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	METADATA = metadata64.txt
 	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat runHUC64.bat
@@ -45,8 +48,8 @@ else ifeq ($(QSWAT_PROJECT), QSWATGrid)
 	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat
 endif
 
-SUBDIR = QSWAT
-export SUBDIR
+PLUGINNAME = $(QSWAT_PROJECT)
+export PLUGINNAME
 
 UPPER_PY_FILES = __init__.py runHUC.py test_qswat.py test_polygonize.py  test_polygonizeInC.py test_polygonizeInC2.py
 

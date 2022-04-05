@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-from qgis.core import Qgis, QgsProject, QgsVectorLayer, QgsUnitTypes
+from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsUnitTypes
 import os.path
 import subprocess
 import time
@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.4.10'
+    __version__ = '1.5.3'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -105,7 +105,7 @@ class QSwat(QObject):
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
                 
-        self._gv = None  # set later
+        self._gv: Optional[GlobalVars] = None  # set later
         # font = QFont('MS Shell Dlg 2', 8)
         # Create the dialog (after translation) and keep reference
         self._odlg = QSwatDialog()
@@ -123,11 +123,11 @@ class QSwat(QObject):
         # flag used in initialising delineation form
         self._demIsProcessed = False
         ## deineation window
-        self.delin = None
+        self.delin: Optional[Delineation] = None
         ## create hrus window
-        self.hrus = None
+        self.hrus: Optional[HRUs] = None
         ## visualise window
-        self.vis = None
+        self.vis: Optional[Visualise] = None
         
         # report QGIS version
         QSWATUtils.loginfo('QGIS version: {0}; QSWAT version: {1}'.format(Qgis.QGIS_VERSION, QSwat.__version__))
@@ -245,7 +245,7 @@ class QSwat(QObject):
         self._odlg.raise_()
         self.setupProject(proj, False)
     
-    def setupProject(self, proj, isBatch, isHUC=False, isHAWQS=False, logFile=None) -> None:
+    def setupProject(self, proj, isBatch, isHUC=False, isHAWQS=False, logFile=None, fromGRASS=False, TNCDir='') -> None:
         """Set up the project."""
         self._odlg.mainBox.setVisible(True)
         self._odlg.mainBox.setEnabled(False)
@@ -275,9 +275,26 @@ class QSwat(QObject):
             isHAWQSFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHAWQS', False)
             isHAWQS = isHAWQSFromProjfile
             #QSWATUtils.information('isHAWQS found in proj file: set to {0}'.format(isHAWQS), isBatch)
+        # same as isHUC for fromGRASS
+        _, found = proj.readNumEntry(title, 'delin/fromGRASS', -1)
+        if not found:
+            # fromGRASS not previously set.  Use parameter above and record
+            proj.writeEntryBool(title, 'delin/fromGRASS', fromGRASS)
+        else:
+            # use value in project file
+            fromGRASSFromProjfile, _ = proj.readBoolEntry(title, 'delin/fromGRASS', False)
+            fromGRASS = fromGRASSFromProjfile
+            #QSWATUtils.information('fromGRASS found in proj file: set to {0}'.format(fromGRASS), isBatch)
+        TNCDirFromProjFile, found = proj.readEntry(title, 'delin/TNCDir', '')
+        if not found:
+            # TNCDir not previously set: use parameter above and record
+            proj.writeEntry(title, 'delin/TNCDir', TNCDir)
+        else:
+            TNCDir = TNCDirFromProjFile
+        
         # now have project so initiate global vars
         # if we do this earlier we cannot for example find the project database
-        self._gv = GlobalVars(self._iface, isBatch, isHUC, isHAWQS, logFile)
+        self._gv = GlobalVars(self._iface, isBatch, isHUC, isHAWQS, logFile, fromGRASS, TNCDir)
         assert self._gv is not None
         self._gv.plugin_dir = self.plugin_dir
         self._odlg.projPath.repaint()
@@ -383,6 +400,7 @@ class QSwat(QObject):
 
     def doDelineation(self) -> None:
         """Run the delineation dialog."""
+        assert self._gv is not None
         # avoid getting second window
         if self.delin is not None and self.delin._dlg.isEnabled():
             self.delin._dlg.close()
@@ -410,6 +428,7 @@ class QSwat(QObject):
         
     def doCreateHRUs(self) -> None:
         """Run the HRU creation dialog."""
+        assert self._gv is not None
         # avoid getting second window
         if self.hrus is not None and self.hrus._dlg.isEnabled():
             self.hrus._dlg.close()
@@ -453,6 +472,7 @@ class QSwat(QObject):
         if not demLayer:
             QSWATUtils.loginfo('demProcessed failed: no DEM layer')
             return False
+        assert isinstance(demLayer, QgsRasterLayer)
         self._gv.demFile = demFile
         self._gv.elevationNoData = demLayer.dataProvider().sourceNoDataValue(1)
         units = demLayer.crs().mapUnits()
@@ -489,6 +509,7 @@ class QSwat(QObject):
         if not streamLayer:
             QSWATUtils.loginfo('demProcessed failed: no stream reaches layer')
             return False
+        assert isinstance(streamLayer, QgsVectorLayer)
         self._gv.streamFile = streamFile
         wshedFile, found = proj.readEntry(title, 'delin/wshed', '')
         if not found or wshedFile == '':
@@ -503,6 +524,7 @@ class QSwat(QObject):
         if not wshedLayer:
             QSWATUtils.loginfo('demProcessed failed: no watershed layer')
             return False
+        assert isinstance(wshedLayer, QgsVectorLayer)
         self._gv.wshedFile = wshedFile
         extraOutletFile, found = proj.readEntry(title, 'delin/extraOutlets', '')
         if found and extraOutletFile != '':
@@ -522,12 +544,18 @@ class QSwat(QObject):
             return False
         base = QSWATUtils.join(demInfo.absolutePath(), demInfo.baseName())
         self._gv.slopeFile = base + 'slp.tif'
+        # GRASS slope file should be based on original DEM
+        if self._gv.fromGRASS and self._gv.slopeFile.endswith('_burnedslp.tif'):
+            unburnedslp = self._gv.slopeFile.replace('_burnedslp.tif', 'slp.tif')
+            if os.path.isfile(unburnedslp):
+                self._gv.slopeFile = unburnedslp 
         if not os.path.exists(self._gv.slopeFile):
             QSWATUtils.loginfo('demProcessed failed: no slope raster')
             return False
         self._gv.basinFile = base + 'w.tif'
         if self._gv.useGridModel:
-            self._gv.isBig = wshedLayer.featureCount() > 100000
+            self._gv.isBig = wshedLayer.featureCount() > 100000 or self._gv.forTNC
+            QSWATUtils.loginfo('isBig is {0}'.format(self._gv.isBig))
         if self._gv.existingWshed:
             if not self._gv.useGridModel:
                 if not os.path.exists(self._gv.basinFile):
@@ -548,20 +576,21 @@ class QSwat(QObject):
             if not os.path.exists(self._gv.pFile):
                 QSWATUtils.loginfo('demProcessed failed: no p raster')
                 return False
-            felInfo = QFileInfo(base + 'fel.tif')
-            if not (felInfo.exists() and wshedInfo.exists()):
-                QSWATUtils.loginfo('demProcessed failed: no filled raster')
-                return False
-            demTime = demInfo.lastModified()
-            felTime = felInfo.lastModified()
-            if not (demTime <= felTime <= wshedTime):
-                QSWATUtils.loginfo('demProcessed failed: not up to date')
-                return False
-            if not self._gv.useGridModel:
-                self._gv.distFile = base + 'dist.tif'
-                if not os.path.exists(self._gv.distFile):
-                    QSWATUtils.loginfo('demProcessed failed: no distance to outlet raster')
+            if not self._gv.fromGRASS:
+                felInfo = QFileInfo(base + 'fel.tif')
+                if not (felInfo.exists() and wshedInfo.exists()):
+                    QSWATUtils.loginfo('demProcessed failed: no filled raster')
                     return False
+                demTime = demInfo.lastModified()
+                felTime = felInfo.lastModified()
+                if not (demTime <= felTime <= wshedTime):  # type: ignore
+                    QSWATUtils.loginfo('demProcessed failed: not up to date')
+                    return False
+                if not self._gv.useGridModel:
+                    self._gv.distFile = base + 'dist.tif'
+                    if not os.path.exists(self._gv.distFile):
+                        QSWATUtils.loginfo('demProcessed failed: no distance to outlet raster')
+                        return False
         if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
             return False
         basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)
@@ -573,12 +602,13 @@ class QSwat(QObject):
             self._gv.topo.basinCentroids[basin] = (centroid.x(), centroid.y())
         # this can go wrong if eg the streams and watershed files exist but are inconsistent
         try:
-            if not self._gv.topo.setUp(demLayer, streamLayer, wshedLayer, outletLayer, extraOutletLayer, self._gv.db, self._gv.existingWshed, False, self._gv.useGridModel, False):
+            if not self._gv.topo.setUp(demLayer, streamLayer, wshedLayer, outletLayer, extraOutletLayer, self._gv.db, self._gv.existingWshed, False, self._gv.useGridModel, False): # type: ignore
                 QSWATUtils.loginfo('demProcessed failed: topo setup failed')
                 return False
             if not self._gv.topo.inletLinks:
                 # no inlets, so no need to expand subbasins layer legend
                 treeSubbasinsLayer = root.findLayer(wshedLayer.id())
+                assert treeSubbasinsLayer is not None
                 treeSubbasinsLayer.setExpanded(False)
         except Exception:
             QSWATUtils.loginfo('demProcessed failed: topo setup raised exception: {0}'.format(traceback.format_exc()))

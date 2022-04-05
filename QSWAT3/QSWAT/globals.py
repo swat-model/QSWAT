@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import QFileInfo, QPoint, QSettings
 #from PyQt5.QtGui import * # @UnusedWildImport
 from qgis.PyQt.QtWidgets import QComboBox
-from qgis.core import QgsProject, QgsVectorFileWriter
+from qgis.core import QgsProject, QgsVectorFileWriter, Qgis
 import os.path
 import shutil
 import xml.etree.ElementTree as ET
@@ -34,18 +34,18 @@ from .QSWATUtils import QSWATUtils  # type: ignore # @UnusedImport
 from .DBUtils import DBUtils  # type: ignore  # @UnusedImport
 from .parameters import Parameters  # type: ignore
 
-if TYPE_CHECKING:
-    from QSWATUtils import QSWATUtils  # @UnresolvedImport @Reimport
-    from delineation import Delineation  # @UnresolvedImport @UnusedImport
-    from DBUtils import DBUtils # @UnresolvedImport @Reimport
-    from hrus import HRUs  # @UnresolvedImport @UnusedImport
-    from visualise import Visualise  # @UnresolvedImport @UnusedImport
-    from qswat import QSwat  # @UnresolvedImport @UnusedImport
-    from QSWATData import CellData, BasinData, HRUData   # @UnresolvedImport @UnusedImport
+# if TYPE_CHECKING:
+#     from QSWATUtils import QSWATUtils  # @UnresolvedImport @Reimport
+#     from delineation import Delineation  # @UnresolvedImport @UnusedImport
+#     from DBUtils import DBUtils # @UnresolvedImport @Reimport
+#     from hrus import HRUs  # @UnresolvedImport @UnusedImport
+#     from visualise import Visualise  # @UnresolvedImport @UnusedImport
+#     from qswat import QSwat  # @UnresolvedImport @UnusedImport
+#     from QSWATData import CellData, BasinData, HRUData   # @UnresolvedImport @UnusedImport
     
 class GlobalVars:
     """Data used across across the plugin, and some utilities on it."""
-    def __init__(self, iface: Any, isBatch: bool, isHUC=False, isHAWQS=False, logFile=None) -> None:
+    def __init__(self, iface: Any, isBatch: bool, isHUC=False, isHAWQS=False, logFile=None, fromGRASS=False, TNCDir='') -> None:
         """Initialise class variables."""
         ## QGIS interface
         self.iface = iface
@@ -68,10 +68,20 @@ class GlobalVars:
             self.SWATExeDir = SWATEditorDir + '/'
         ## Path of SWAT Editor
         self.SWATEditorPath = QSWATUtils.join(SWATEditorDir, Parameters._SWATEDITOR)
+        # base directory for projects for The Nature Conservancy, otherwise ''
+        self.TNCDir = TNCDir
+        ## flag to show project for TNC
+        self.forTNC = TNCDir != ''
         ## Path of template project database
-        self.dbProjTemplate =  QSWATUtils.join(QSWATUtils.join(SWATEditorDir, Parameters._DBDIR), Parameters._DBPROJ)
+        if self.forTNC:
+            self.dbProjTemplate = QSWATUtils.join(TNCDir, Parameters._TNCDBPROJ)
+        else:
+            self.dbProjTemplate =  QSWATUtils.join(QSWATUtils.join(SWATEditorDir, Parameters._DBDIR), Parameters._DBPROJ)
         ## Path of template reference database
-        self.dbRefTemplate = QSWATUtils.join(QSWATUtils.join(SWATEditorDir, Parameters._DBDIR), Parameters._DBREF)
+        if self.forTNC:
+            self.dbRefTemplate = QSWATUtils.join(TNCDir, Parameters._TNCDBREF)
+        else:
+            self.dbRefTemplate = QSWATUtils.join(QSWATUtils.join(SWATEditorDir, Parameters._DBDIR), Parameters._DBREF)
         ## Directory of TauDEM executables
         self.TauDEMDir = QSWATUtils.join(SWATEditorDir, Parameters._TAUDEMDIR)
         ## Path of mpiexec
@@ -80,6 +90,8 @@ class GlobalVars:
         else:
             settings.setValue('/QSWAT/mpiexecDir', Parameters._MPIEXECDEFAULTDIR)
             self.mpiexecPath = QSWATUtils.join(Parameters._MPIEXECDEFAULTDIR, Parameters._MPIEXEC)
+        ## QGIS sub version number
+        self.QGISSubVersion = int(Qgis.QGIS_VERSION.split('.')[1])
         ## Flag showing if using existing watershed
         self.existingWshed = False
         ## Flag showing if using grid model
@@ -118,8 +130,12 @@ class GlobalVars:
         self.landuseFile = ''
         ## Path of soil grid
         self.soilFile = ''
+        ## Landuse lookup table
+        self.landuseTable = ''
+        ## Soil lookup table
+        self.soilTable = ''
         ## Nodata value for DEM
-        self.elevationNoData = 0
+        self.elevationNoData = 0.0
         ## DEM horizontal block size
         self.xBlockSize = 0
         ## DEM vertical block size
@@ -145,7 +161,7 @@ class GlobalVars:
         ## Number of elevation bands
         self.numElevBands = 0
         ## Topology object
-        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS)
+        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS, fromGRASS, self.forTNC)
         projFile = QgsProject.instance().fileName()
         projPath = QFileInfo(projFile).canonicalFilePath()
         # avoid / on Windows because of SWAT Editor
@@ -194,6 +210,8 @@ class GlobalVars:
         ## data directory for HUC projects
         # default for debugging
         self.HUCDataDir = 'I:/Data'
+        # flag for projects using GRASS to do delineation
+        self.fromGRASS = fromGRASS
         ## Path of project database
         self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isHAWQS, self.logFile, self.isBatch)
         ## multiplier to turn elevations to metres
@@ -309,6 +327,17 @@ class GlobalVars:
             self.verticalFactor = Parameters._INCHESTOMETRES
         elif self.verticalUnits == Parameters._YARDS:
             self.verticalFactor = Parameters._YARDSTOMETRES
+            
+    def setSoilTable(self, soilTable: str) -> None:
+        """Set soil lookup table and also, for TNC projects, appropriate usersoil"""
+        self.soilTable = soilTable
+        if self.forTNC:
+            if soilTable == Parameters._TNCFAOLOOKUP:
+                self.db.copyUsersoil(Parameters._TNCFAOUSERSOIL)
+            elif soilTable == Parameters._TNCHWSDLOOKUP:
+                self.db.copyUsersoil(Parameters._TNCHWSDUSERSOIL)
+            else:
+                QSWATUtils.error('Inappropriate lookup table {0} for TNC project'.format(soilTable), self.isBatch)
      
     def isExempt(self, landuseId: int) -> bool:
         """Return true if landuse is exempt 

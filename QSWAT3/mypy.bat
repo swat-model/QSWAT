@@ -1,4 +1,4 @@
-SET OSGEO4W_ROOT=G:\OSGEO4W64_3
+SET OSGEO4W_ROOT=K:\Program Files\QGIS 3.16
 set PYTHONHOME=%OSGEO4W_ROOT%\apps\Python37
 set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python
 rem QGIS binaries
@@ -8,11 +8,11 @@ set QGIS_DEBUG=-1
 
 rem default QGIS plugins
 set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python\plugins;%OSGEO4W_ROOT%\apps\qgis-ltr\python\plugins\processing
-set MYPYPATH=G:\Users\Public\mypy_stubs
+set MYPYPATH=K:\Users\Public\mypy_stubs
 rem user installed plugins
 set PYTHONPATH=%PYTHONPATH%;QSWAT3
 
-pushd QSWAT
-mypy.exe %1
-popd
+rem pushd QSWAT
+mypy.exe --follow-imports=silent QSWAT/globals.py QSWAT/QSWATUtils.py QSWAT/delineation.py QSWAT/DBUtils.py QSWAT/hrus.py QSWAT/visualise.py QSWAT/qswat.py QSWAT/QSWATData.py
+rem popd
 

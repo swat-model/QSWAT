@@ -44,8 +44,7 @@ from .parameters import Parameters  # type: ignore
 from .exempt import Exempt  # type: ignore
 from .split import Split  # type: ignore
 from .elevationbands import ElevationBands  # type: ignore
-from .DBUtils import DBUtils  # type: ignore 
-from pandas._libs import index
+from .DBUtils import DBUtils  # type: ignore
 
 
 useSlowPolygonize = False
@@ -73,10 +72,6 @@ class HRUs(QObject):
         self.landuseFile = ''
         ## Soil grid
         self.soilFile = ''
-        ## Landuse lookup table
-        self.landuseTable = ''
-        ## Soil lookup table
-        self.soilTable = ''
         ## Landuse grid layer
         self.landuseLayer: Optional[QgsRasterLayer] = None
         ## Soil grid layer
@@ -212,10 +207,10 @@ class HRUs(QObject):
     #         if not self._db.hasData('BASINSDATA1'): 
     #             QSWATUtils.loginfo('HRUs tryRun failed: no basins data')
     #             return False
-    #         if not self.initLanduses(self.landuseTable):
+    #         if not self.initLanduses(self._gv.landuseTable):
     #             QSWATUtils.loginfo('HRUs tryRun failed: cannot initialise landuses')
     #             return False
-    #         if not self.initSoils(self.soilTable, False):
+    #         if not self.initSoils(self._gv._gv.soilTable, False):
     #             QSWATUtils.loginfo('HRUs tryRun failed: cannot initialise soils')
     #             return False
     #         time1 = time.process_time()
@@ -270,15 +265,16 @@ class HRUs(QObject):
         """Recreate Watershed, hrus and uncomb tables from basins map.  Used with grid model."""
         with self._gv.db.connect() as conn:
             cursor = conn.cursor()
-            (sql1, sql2, sql3) = self._gv.db.initWHUTables(cursor)
+            (sql1, sql2, sql3, sql4) = self._gv.db.initWHUTables(cursor)
             oid = 0
+            elevBandId = 0
             for basin, basinData in self.CreateHRUs.basins.items():
                 SWATBasin = self._gv.topo.basinToSWATBasin.get(basin, 0)
                 if SWATBasin == 0:
                     continue
                 centreX, centreY = self._gv.topo.basinCentroids[basin]
                 centroidll = self._gv.topo.pointToLatLong(QgsPointXY(centreX, centreY))
-                oid = self._gv.db.writeWHUTables(oid, SWATBasin, basinData, cursor, sql1, sql2, sql3, centroidll)
+                oid, elevBandId = self.writeWHUTables(oid, elevBandId, SWATBasin, basin, basinData, cursor, sql1, sql2, sql3, sql4, centroidll)
     
     def readFiles(self) -> bool:
         """Read landuse and soil data from files 
@@ -304,10 +300,10 @@ class HRUs(QObject):
             QSWATUtils.information('Soil file: {0}'.format(os.path.split(self.soilFile)[1]), True)
         if self._gv.isBatch:
             # use names from project file settings
-            luse = self.landuseTable
-            QSWATUtils.information('Landuse lookup table: {0}'.format(self.landuseTable), True)
-            soil = self.soilTable
-            QSWATUtils.information('Soil lookup table: {0}'.format(self.soilTable), True)
+            luse = self._gv.landuseTable
+            QSWATUtils.information('Landuse lookup table: {0}'.format(self._gv.landuseTable), True)
+            soil = self._gv.soilTable
+            QSWATUtils.information('Soil lookup table: {0}'.format(self._gv.soilTable), True)
         else: # allow user to choose
             luse = ''
             soil = ''
@@ -317,13 +313,13 @@ class HRUs(QObject):
             self._dlg.setCursor(Qt.ArrowCursor)
             self.progress('')
             return False
-        #QSWATUtils.information('Using {0} as landuse table'.format(self.landuseTable), self._gv.isBatch)
+        #QSWATUtils.information('Using {0} as landuse table'.format(self._gv.landuseTable), self._gv.isBatch)
         self.progress('Checking soils ...')
         if not self.initSoils(soil, self._dlg.readFromMaps.isChecked()):
             self._dlg.setCursor(Qt.ArrowCursor)
             self.progress('')
             return False
-        #QSWATUtils.information('Using {0} as soil table'.format(self.soilTable), self._gv.isBatch)
+        #QSWATUtils.information('Using {0} as soil table'.format(self._gv.soilTable), self._gv.isBatch)
         if self._dlg.readFromPrevious.isChecked():
             # read from database
             self.progress('Reading basin data from database ...')
@@ -360,12 +356,14 @@ class HRUs(QObject):
                 treeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._FULLHRUSLEGEND, root.findLayers())
                 if treeLayer is not None:
                     fullHRUsLayer = treeLayer.layer()
-                    fullHRUsFile = QSWATUtils.layerFileInfo(fullHRUsLayer).absoluteFilePath()
+                    assert fullHRUsLayer is not None
+                    fullHRUsFile = QSWATUtils.layerFileInfo(fullHRUsLayer).absoluteFilePath()  # type: ignore
                     QSWATUtils.removeLayer(fullHRUsFile, root)
                     treeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._ACTHRUSLEGEND, root.findLayers())
                     if treeLayer is not None:
                         actHRUsLayer = treeLayer.layer()
-                        actHRUsFile = QSWATUtils.layerFileInfo(actHRUsLayer).absoluteFilePath()
+                        assert actHRUsLayer is not None
+                        actHRUsFile = QSWATUtils.layerFileInfo(actHRUsLayer).absoluteFilePath()  # type: ignore
                         QSWATUtils.removeLayer(actHRUsFile, root)
             time1 = time.process_time()
             OK = self.CreateHRUs.generateBasins(self._dlg.progressBar, self._dlg.progressLabel, root)
@@ -379,8 +377,10 @@ class HRUs(QObject):
             # now have occurrences of landuses and soils, so can make proper colour schemes and legend entries
             # causes problems for HUC models, and no point in any case when batch
             if not self._gv.isBatch:
-                FileTypes.colourLanduses(self.landuseLayer, self._db)
-                FileTypes.colourSoils(self.soilLayer, self._db)
+                assert self.landuseLayer is not None
+                FileTypes.colourLanduses(self.landuseLayer, self._gv)
+                assert self.soilLayer is not None
+                FileTypes.colourSoils(self.soilLayer, self._gv)
                 treeModel = QgsLayerTreeModel(root)
                 assert self.landuseLayer is not None
                 landuseTreeLayer = root.findLayer(self.landuseLayer.id())
@@ -390,16 +390,16 @@ class HRUs(QObject):
                 soilTreeLayer = root.findLayer(self.soilLayer.id())
                 assert soilTreeLayer is not None
                 treeModel.refreshLayerLegend(soilTreeLayer)
-                if len(self._gv.db.slopeLimits) > 0:
+                if not self._gv.useGridModel and len(self._gv.db.slopeLimits) > 0:
                     slopeBandsLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.slopeBandsFile, FileTypes._SLOPEBANDS, 
                                                                             self._gv, None, QSWATUtils._SLOPE_GROUP_NAME)
                     if slopeBandsLayer:
                         slopeBandsTreeLayer = root.findLayer(slopeBandsLayer.id())
                         assert slopeBandsTreeLayer is not None
                         treeModel.refreshLayerLegend(slopeBandsTreeLayer)
-            if self._gv.isBatch:
-                QSWATUtils.information('Writing landuse and soil report ...', True)
             if not self._gv.useGridModel or not self._gv.isBig:
+                if self._gv.isBatch:
+                    QSWATUtils.information('Writing landuse and soil report ...', True)
                 self.CreateHRUs.printBasins(False, None)
             self._dlg.progressBar.setVisible(False)
         self._dlg.fullHRUsLabel.setText('Full HRUs count: {0}'.format(self.CreateHRUs.countFullHRUs()))
@@ -411,7 +411,7 @@ class HRUs(QObject):
         self.saveProj()
         if self._gv.useGridModel and self._gv.isBig:
             self._gv.writeMasterProgress(-1, 1)
-            msg = 'HRUs done: {0!s} HRUs formed, 1 in each grid cell.'.format(self.CreateHRUs.countFullHRUs())
+            msg = 'HRUs done: {0!s} HRUs formed'.format(self.CreateHRUs.countFullHRUs())
             self._iface.messageBar().pushMessage(msg, level=Qgis.Info, duration=10)  # type: ignore
             self.completed = True
             self._dlg.close()
@@ -422,18 +422,18 @@ class HRUs(QObject):
         """Set up landuse lookup tables."""
         self._gv.db.landuseVals = []
         if table == '':
-            self.landuseTable = self._dlg.selectLanduseTable.currentText()
-            if self.landuseTable == Parameters._USECSV:
-                self.landuseTable = self.readLanduseCsv()
-                if self.landuseTable != '':
-                    self._dlg.selectLanduseTable.insertItem(0, self.landuseTable)
+            self._gv.landuseTable = self._dlg.selectLanduseTable.currentText()
+            if self._gv.landuseTable == Parameters._USECSV:
+                self._gv.landuseTable = self.readLanduseCsv()
+                if self._gv.landuseTable != '':
+                    self._dlg.selectLanduseTable.insertItem(0, self._gv.landuseTable)
                     self._dlg.selectLanduseTable.setCurrentIndex(0)
-            if self.landuseTable not in self._gv.db.landuseTableNames:
+            if self._gv.landuseTable not in self._gv.db.landuseTableNames:
                 QSWATUtils.error('Please select a landuse table', self._gv.isBatch)
                 return False
         else: # doing tryRun and table already read from project file
-            self.landuseTable = table
-        return self._gv.db.populateLanduseCodes(self.landuseTable)
+            self._gv.landuseTable = table
+        return self._gv.db.populateLanduseCodes(self._gv.landuseTable)
         
     def readLanduseCsv(self) -> str:
         """Read landuse csv file."""
@@ -478,18 +478,18 @@ class HRUs(QObject):
         if self._gv.db.useSSURGO: # no lookup table needed
             return True
         if table == '':
-            self.soilTable = self._dlg.selectSoilTable.currentText()
-            if self.soilTable == Parameters._USECSV:
-                self.soilTable = self.readSoilCsv()
-                if self.soilTable != '':
-                    self._dlg.selectSoilTable.insertItem(0, self.soilTable)
+            self._gv.soilTable = self._dlg.selectSoilTable.currentText()
+            if self._gv.soilTable == Parameters._USECSV:
+                self._gv.soilTable = self.readSoilCsv()
+                if self._gv.soilTable != '':
+                    self._dlg.selectSoilTable.insertItem(0, self._gv.soilTable)
                     self._dlg.selectSoilTable.setCurrentIndex(0)
-            if self.soilTable not in self._gv.db.soilTableNames:
+            if self._gv.soilTable not in self._gv.db.soilTableNames:
                 QSWATUtils.error('Please select a soil table', self._gv.isBatch)
                 return False
         else: # doing tryRun and table already read from project file
-            self.soilTable = table
-        return self._gv.db.populateSoilNames(self.soilTable, checkSoils)
+            self._gv.soilTable = table
+        return self._gv.db.populateSoilNames(self._gv.soilTable, checkSoils)
     
     def calcHRUs(self) -> None:
         """Create HRUs."""
@@ -507,7 +507,9 @@ class HRUs(QObject):
             self.CreateHRUs.useArea = self._dlg.areaButton.isChecked()
             if not self._gv.saveExemptSplit():
                 return
-            if self.CreateHRUs.isMultiple:
+            if self._gv.forTNC:
+                self.CreateHRUs.removeSmallHRUsbySubbasinTarget()
+            elif self.CreateHRUs.isMultiple:
                 if self.CreateHRUs.isArea:
                     self.CreateHRUs.removeSmallHRUsByArea()
                 elif self.CreateHRUs.isTarget:
@@ -536,7 +538,7 @@ class HRUs(QObject):
                 time2 = time.process_time()
                 QSWATUtils.loginfo('Writing hrus and uncomb tables took {0} seconds'.format(int(time2 - time1)))
             else:
-                self.CreateHRUs.printBasins(True, fullHRUsLayer)
+                self.CreateHRUs.printBasins(True, fullHRUsLayer)  # type: ignore
             time1 = time.process_time()
             self.CreateHRUs.writeWatershedTable()
             time2 = time.process_time()
@@ -709,6 +711,7 @@ class HRUs(QObject):
                                        self._dlg.selectLanduse, self._gv.landuseDir, 
                                        self._gv, None, QSWATUtils._LANDUSE_GROUP_NAME, clipToDEM=True)
         if landuseFile and landuseLayer:
+            assert isinstance(landuseLayer, QgsRasterLayer)
             self.landuseFile = landuseFile
             self.landuseLayer = landuseLayer
         
@@ -721,19 +724,21 @@ class HRUs(QObject):
                                        self._dlg.selectSoil, self._gv.soilDir, 
                                        self._gv, None, QSWATUtils._SOIL_GROUP_NAME, clipToDEM=True)
         if soilFile and soilLayer:
+            assert isinstance(soilLayer, QgsRasterLayer)
             self.soilFile = soilFile
             self.soilLayer = soilLayer
         
     def setLanduseTable(self) -> None:
         """Set landuse table."""
-        self.landuseTable = self._dlg.selectLanduseTable.currentText()
+        self._gv.landuseTable = self._dlg.selectLanduseTable.currentText()
         # set to read from maps 
         self._dlg.readFromPrevious.setEnabled(False)
         self._dlg.readFromMaps.setChecked(True)
         
     def setSoilTable(self) -> None:
         """Set soil table."""
-        self.soilTable = self._dlg.selectSoilTable.currentText()
+        # need to check for TNC usersoil tables
+        self._gv.setSoilTable(self._dlg.selectSoilTable.currentText())
         # set to read from maps 
         self._dlg.readFromPrevious.setEnabled(False)
         self._dlg.readFromMaps.setChecked(True)
@@ -929,7 +934,7 @@ class HRUs(QObject):
         title = proj.title()
         root = proj.layerTreeRoot()
         landuseFile, found = proj.readEntry(title, 'landuse/file', '')
-        landuseLayer: Optional[QgsRasterLayer] = None
+        landuseLayer = None
         if found and landuseFile != '':
             landuseFile = QSWATUtils.join(self._gv.projDir, landuseFile)
             landuseLayer, _ = \
@@ -939,16 +944,17 @@ class HRUs(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._LANDUSES), root.findLayers())
             if treeLayer is not None:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._LANDUSES)), self._gv.isBatch, True) == QMessageBox.Yes:
                     landuseLayer = layer
                     landuseFile = possFile
         if landuseLayer: 
             self._dlg.selectLanduse.setText(landuseFile)
             self.landuseFile = landuseFile
+            assert isinstance(landuseLayer, QgsRasterLayer)
             self.landuseLayer = landuseLayer
         soilFile, found = proj.readEntry(title, 'soil/file', '')
-        soilLayer: Optional[QgsRasterLayer] = None
+        soilLayer = None
         if found and soilFile != '':
             soilFile = QSWATUtils.join(self._gv.projDir, soilFile)
             soilLayer, _  = \
@@ -958,13 +964,14 @@ class HRUs(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._SOILS), root.findLayers())
             if treeLayer is not None:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._SOILS)), self._gv.isBatch, True) == QMessageBox.Yes:
                     soilLayer = layer
                     soilFile = possFile
         if soilLayer:
             self._dlg.selectSoil.setText(soilFile)
             self.soilFile = soilFile
+            assert isinstance(soilLayer, QgsRasterLayer)
             self.soilLayer = soilLayer
         self._gv.db.useSTATSGO, found = proj.readBoolEntry(title, 'soil/useSTATSGO', False)
         if found and self._gv.db.useSTATSGO:
@@ -987,7 +994,7 @@ class HRUs(QObject):
                 index = self._dlg.selectLanduseTable.findText(landuseTable)
                 if index >= 0:
                     self._dlg.selectLanduseTable.setCurrentIndex(index)
-                self.landuseTable = landuseTable
+                self._gv.landuseTable = landuseTable
         soilTable, found = proj.readEntry(title, 'soil/table', '')
         if found:
             if '.csv' in soilTable:
@@ -1003,7 +1010,7 @@ class HRUs(QObject):
                 index = self._dlg.selectSoilTable.findText(soilTable)
                 if index >= 0:
                     self._dlg.selectSoilTable.setCurrentIndex(index)
-                self.soilTable = soilTable
+                self._gv.soilTable = soilTable
         elevBandsThreshold, found = proj.readNumEntry(title, 'hru/elevBandsThreshold', 0)
         if found:
             self._gv.elevBandsThreshold = elevBandsThreshold
@@ -1014,7 +1021,7 @@ class HRUs(QObject):
         if found and slopeBands != '':
             self._gv.db.slopeLimits = QSWATUtils.parseSlopes(slopeBands)
         slopeBandsFile, found = proj.readEntry(title, 'hru/slopeBandsFile', '')
-        slopeBandsLayer: Optional[QgsRasterLayer] = None
+        slopeBandsLayer = None
         if found and slopeBandsFile != '':
             slopeBandsFile = QSWATUtils.join(self._gv.projDir, slopeBandsFile)
             slopeBandsLayer, _ = \
@@ -1024,7 +1031,7 @@ class HRUs(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._SLOPEBANDS), root.findLayers())
             if treeLayer is not None:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._SLOPEBANDS)), 
                                        self._gv.isBatch, True) == QMessageBox.Yes:
                     slopeBandsLayer = layer
@@ -1075,8 +1082,8 @@ class HRUs(QObject):
         title = proj.title()
         proj.writeEntry(title, 'landuse/file', QSWATUtils.relativise(self.landuseFile, self._gv.projDir))
         proj.writeEntry(title, 'soil/file', QSWATUtils.relativise(self.soilFile, self._gv.projDir))
-        proj.writeEntry(title, 'landuse/table', self.landuseTable)
-        proj.writeEntry(title, 'soil/table', self.soilTable)
+        proj.writeEntry(title, 'landuse/table', self._gv.landuseTable)
+        proj.writeEntry(title, 'soil/table', self._gv.soilTable)
         proj.writeEntry(title, 'soil/useSTATSGO', self._gv.db.useSTATSGO)
         proj.writeEntry(title, 'soil/useSSURGO', self._gv.db.useSSURGO)
         proj.writeEntry(title, 'hru/elevBandsThreshold', self._gv.elevBandsThreshold)
@@ -1167,7 +1174,6 @@ class CreateHRUs(QObject):
         ## Map from basin number to array of elevation frequencies.
         # Index i in array corresponds to elevation minElev + i.
         # Used to generate elevation report.
-        # not used for grid model
         self.basinElevMap: Dict[int, List[int]] = dict()
         ## Map from SWAT basin number to list of (start of band elevation, mid point, percent of subbasin area) pairs.
         # List is None if bands not wanted or maximum elevation of subbasin below threshold.
@@ -1211,17 +1217,16 @@ class CreateHRUs(QObject):
         if not elevationDs:
             QSWATUtils.error('Cannot open DEM {0}'.format(self._gv.demFile), self._gv.isBatch)
             return False
-        if not self._gv.useGridModel:
-            basinDs = gdal.Open(self._gv.basinFile, gdal.GA_ReadOnly)
-            if not basinDs:
-                QSWATUtils.error('Cannot open watershed grid {0}'.format(self._gv.basinFile), self._gv.isBatch)
-                return False
-            basinNumberRows = basinDs.RasterYSize
-            basinNumberCols = basinDs.RasterXSize
-            fivePercent = int(basinNumberRows / 20)
-            basinTransform = basinDs.GetGeoTransform()
-            basinBand = basinDs.GetRasterBand(1)
-            basinNoData = basinBand.GetNoDataValue()
+        basinDs = gdal.Open(self._gv.basinFile, gdal.GA_ReadOnly)
+        if not basinDs:
+            QSWATUtils.error('Cannot open watershed grid {0}'.format(self._gv.basinFile), self._gv.isBatch)
+            return False
+        basinNumberRows = basinDs.RasterYSize
+        basinNumberCols = basinDs.RasterXSize
+        fivePercent = int(basinNumberRows / 20)
+        basinTransform = basinDs.GetGeoTransform()
+        basinBand = basinDs.GetRasterBand(1)
+        basinNoData = basinBand.GetNoDataValue()
         if not self._gv.existingWshed and not self._gv.useGridModel:
             distDs = gdal.Open(self._gv.distFile, gdal.GA_ReadOnly)
             if not distDs:
@@ -1261,16 +1266,32 @@ class CreateHRUs(QObject):
         
         # if grids have same coords we can use (col, row) from one in another
         if self._gv.useGridModel:
-            cropSameCoords = (cropTransform == elevationTransform)
-            soilSameCoords = (soilTransform == elevationTransform)
-            slopeSameCoords = (slopeTransform == elevationTransform)
+            cropRowFun, cropColFun = \
+                QSWATTopology.translateCoords(elevationTransform, cropTransform, 
+                                              elevationNumberRows, elevationNumberCols)
+            soilRowFun, soilColFun = \
+                QSWATTopology.translateCoords(elevationTransform, soilTransform, 
+                                              elevationNumberRows, elevationNumberCols)
+            slopeRowFun, slopeColFun = \
+                QSWATTopology.translateCoords(elevationTransform, slopeTransform, 
+                                              elevationNumberRows, elevationNumberCols)
         else:
-            if not self._gv.existingWshed and not self._gv.useGridModel:
-                distSameCoords = (distTransform == basinTransform)
-            cropSameCoords = (cropTransform == basinTransform)
-            soilSameCoords = (soilTransform == basinTransform)
-            slopeSameCoords = (slopeTransform == basinTransform)
-            elevationSameCoords = (elevationTransform == basinTransform)
+            if not self._gv.existingWshed:
+                distRowFun, distColFun = \
+                    QSWATTopology.translateCoords(basinTransform, distTransform, 
+                                                  basinNumberRows, basinNumberCols)
+            cropRowFun, cropColFun = \
+                QSWATTopology.translateCoords(basinTransform, cropTransform, 
+                                              basinNumberRows, basinNumberCols)
+            soilRowFun, soilColFun = \
+                QSWATTopology.translateCoords(basinTransform, soilTransform, 
+                                              basinNumberRows, basinNumberCols)
+            slopeRowFun, slopeColFun = \
+                QSWATTopology.translateCoords(basinTransform, slopeTransform, 
+                                              basinNumberRows, basinNumberCols)
+            elevationRowFun, elevationColFun = \
+                QSWATTopology.translateCoords(basinTransform, elevationTransform, 
+                                              basinNumberRows, basinNumberCols)
         
         if not self._gv.existingWshed and not self._gv.useGridModel:
             distBand = distDs.GetRasterBand(1)
@@ -1302,6 +1323,14 @@ class CreateHRUs(QObject):
                 link = stream[linkIndex]
                 basin = self._gv.topo.linkToBasin[link]
                 streamGeoms[basin] = stream.geometry()
+        if self._gv.useGridModel and len(self._gv.topo.basinCentroids) == 0:
+            # need to calculate centroids from wshedFile
+            gridLayer = QgsVectorLayer(self._gv.wshedFile, 'grid', 'ogr')
+            basinIndex = self._gv.topo.getIndex(gridLayer, QSWATTopology._POLYGONID)
+            for feature in gridLayer.getFeatures():
+                basin = feature[basinIndex]
+                centroid = QSWATUtils.centreGridCell(feature)
+                self._gv.topo.basinCentroids[basin] = (centroid.x(), centroid.y())
         slopeNoData = slopeBand.GetNoDataValue()
         if not self._gv.useGridModel:
             self._gv.basinNoData = basinNoData
@@ -1388,11 +1417,15 @@ class CreateHRUs(QObject):
             minDist = min(abs(elevationTransform[1]), abs(elevationTransform[5])) * self._gv.topo.gridRows
             elevationReadRows = self._gv.topo.gridRows
             elevationRowDepth = float(elevationReadRows) * elevationTransform[5]
-            # as well as rounding (with + 0.5) we add an extra row since edges of rows may not
-            # line up with elevation map.  E.g if 2 rows are sufficient, 3 guarantees coverage
-            cropReadRows = elevationReadRows if cropSameCoords else max(1, int(elevationRowDepth / cropTransform[5] + 2))
-            soilReadRows = elevationReadRows if soilSameCoords else max(1, int(elevationRowDepth / soilTransform[5] + 2))
-            slopeReadRows = elevationReadRows if slopeSameCoords else max(1, int(elevationRowDepth / slopeTransform[5] + 2))
+            # we add an extra 2 rows since edges of rows may not
+            # line up with elevation map.
+            cropReadRows = max(1, int(elevationRowDepth / cropTransform[5] + 2))
+            cropActReadRows = cropReadRows
+            soilReadRows = max(1, int(elevationRowDepth / soilTransform[5] + 2))
+            soilActReadRows = soilReadRows
+            slopeReadRows = max(1, int(elevationRowDepth / slopeTransform[5] + 2))
+            slopeActReadRows = slopeReadRows
+            basinReadRows = 1
             QSWATUtils.loginfo('{0}, {1}, {2} rows of landuse, soil and slope for each grid cell'.format(cropReadRows, soilReadRows, slopeReadRows))
         else:
             # cell dimensions may be negative!
@@ -1414,7 +1447,7 @@ class CreateHRUs(QObject):
             if not self._gv.existingWshed and not self._gv.useGridModel:
                 distCurrentRow = -1
                 distData = numpy.empty([distReadRows, distNumberCols], dtype=float)  # type: ignore
-        hrusRasterWanted = not self._gv.isHUC  # True  # TODO:
+        hrusRasterWanted = not self._gv.isHUC  and not self._gv.forTNC  # True  # TODO:
         if self.fullHRUsWanted or hrusRasterWanted:
             # last HRU number used
             lastHru = 0
@@ -1428,6 +1461,7 @@ class CreateHRUs(QObject):
                 transform = basinTransform
                 hruRow = numpy.empty((basinNumberCols,), dtype=int)  # type: ignore
             shapes = Polygonize(True, elevationNumberCols, -1, QgsPointXY(transform[0], transform[3]), transform[1], abs(transform[5]))
+            hrusData = numpy.empty([basinReadRows, basinNumberCols], dtype=int)  # type: ignore
         cropCurrentRow = -1
         cropData = numpy.empty([cropReadRows, cropNumberCols], dtype=int)  # type: ignore
         soilCurrentRow = -1
@@ -1436,18 +1470,28 @@ class CreateHRUs(QObject):
         slopeData = numpy.empty([slopeReadRows, slopeNumberCols], dtype=float)  # type: ignore
         elevationCurrentRow = -1
         elevationData = numpy.empty([elevationReadRows, elevationNumberCols], dtype=float)  # type: ignore
-        hrusData = numpy.empty([basinReadRows, basinNumberCols], dtype=int)  # type: ignore
         progressCount = 0
         
         if self._gv.useGridModel:
+            if self._gv.soilTable == Parameters._TNCFAOLOOKUP:
+                waterSoil = Parameters._TNCFAOWATERSOIL
+                waterSoils = Parameters._TNCFAOWATERSOILS
+            elif self._gv.soilTable == Parameters._TNCHWSDLOOKUP:
+                waterSoil = Parameters._TNCHWSDWATERSOIL
+                waterSoils = Parameters._TNCHWSDWATERSOILS
+            else:
+                waterSoil = -1
+                waterSoils = set()
             if self._gv.isBig:
                 with self._gv.db.connect() as conn:
                     cursor = conn.cursor()
-                    (sql1, sql2, sql3) = self._gv.db.initWHUTables(cursor)
+                    (sql1, sql2, sql3, sql4) = self._gv.db.initWHUTables(cursor)
                     oid = 0
+                    elevBandId = 0
             fivePercent = int(len(self._gv.topo.basinToSWATBasin) / 20)
             gridCount = 0
             for link, basin in self._gv.topo.linkToBasin.items():
+                self.basinElevMap[basin] = [0] * elevMapSize
                 SWATBasin = self._gv.topo.basinToSWATBasin.get(basin, 0)
                 if SWATBasin == 0:
                     continue
@@ -1491,6 +1535,8 @@ class CreateHRUs(QObject):
                 data = BasinData(outletCol, outletRow, outletElev, sourceCol, sourceRow, length, drop, minDist, self._gv.isBatch)
                 # add drainage areas
                 data.drainArea = self._gv.topo.drainAreas[link]
+                maxGridElev = -419
+                minGridElev = 8849
                 # read data if necessary
                 if elevationTopRow != elevationCurrentRow:
                     if self.fullHRUsWanted and lastHru > 0: # something has been written to hruRows
@@ -1500,7 +1546,7 @@ class CreateHRUs(QObject):
                     elevationData = elevationBand.ReadAsArray(0, elevationTopRow, elevationNumberCols, min(elevationReadRows, elevationNumberRows - elevationTopRow))
                     elevationCurrentRow = elevationTopRow
                 topY = QSWATTopology.rowToY(elevationTopRow, elevationTransform)
-                cropTopRow = elevationTopRow if cropSameCoords else QSWATTopology.yToRow(topY, cropTransform)
+                cropTopRow = cropRowFun(elevationTopRow, topY)
                 if cropTopRow != cropCurrentRow:
                     if 0 <= cropTopRow <= cropNumberRows - cropReadRows:
                         cropData = cropBand.ReadAsArray(0, cropTopRow, cropNumberCols, cropReadRows)
@@ -1514,7 +1560,7 @@ class CreateHRUs(QObject):
                             cropCurrentRow = cropTopRow
                     else:
                         cropActReadRows = 0
-                soilTopRow = elevationTopRow if soilSameCoords else QSWATTopology.yToRow(topY, soilTransform)
+                soilTopRow = soilRowFun(elevationTopRow, topY)
                 if soilTopRow != soilCurrentRow:
                     if 0 <= soilTopRow <= soilNumberRows - soilReadRows:
                         soilData = soilBand.ReadAsArray(0, soilTopRow, soilNumberCols, soilReadRows)
@@ -1528,7 +1574,7 @@ class CreateHRUs(QObject):
                             soilCurrentRow = soilTopRow
                     else:
                         soilActReadRows = 0
-                slopeTopRow = elevationTopRow if slopeSameCoords else QSWATTopology.yToRow(topY, slopeTransform)
+                slopeTopRow = slopeRowFun(elevationTopRow, topY)
                 if slopeTopRow != slopeCurrentRow:
                     if 0 <= slopeTopRow <= slopeNumberRows - slopeReadRows:
                         slopeData = slopeBand.ReadAsArray(0, slopeTopRow, slopeNumberCols, slopeReadRows)
@@ -1544,13 +1590,15 @@ class CreateHRUs(QObject):
                         slopeActReadRows = 0
                 for row in rowRange:
                     y = QSWATTopology.rowToY(row, elevationTransform)
-                    cropRow = row if cropSameCoords else QSWATTopology.yToRow(y, cropTransform)
-                    soilRow = row if soilSameCoords else QSWATTopology.yToRow(y, soilTransform)
-                    slopeRow = row if slopeSameCoords else QSWATTopology.yToRow(y, slopeTransform)
+                    cropRow = cropRowFun(row, y)
+                    soilRow = soilRowFun(row, y)
+                    slopeRow = slopeRowFun(row, y)
                     for col in colRange:
-                        elevation = cast(float, elevationData[row - elevationTopRow, col]) * self._gv.verticalFactor
+                        elevation = cast(float, elevationData[row - elevationTopRow, col])
                         if elevation != elevationNoData:
-                            elevation = int(elevation)
+                            elevation = int(elevation * self._gv.verticalFactor)
+                            maxGridElev = max(maxGridElev, elevation)
+                            minGridElev = min(minGridElev, elevation)
                             index = elevation - self.minElev
                             # can have index too large because max not calculated properly by gdal
                             if index >= elevMapSize:
@@ -1558,6 +1606,7 @@ class CreateHRUs(QObject):
                                 self.elevMap += [0] * extra
                                 elevMapSize += extra
                             self.elevMap[index] += 1
+                            self.basinElevMap[basin][index] += 1
                         if self.fullHRUsWanted:
                             if basin in basinCropSoilSlopeNumbers:
                                 cropSoilSlopeNumbers = basinCropSoilSlopeNumbers[basin]
@@ -1567,7 +1616,7 @@ class CreateHRUs(QObject):
                         x = QSWATTopology.colToX(col, elevationTransform)
                         dist = distNoData
                         if 0 <= cropRow - cropTopRow < cropActReadRows:
-                            cropCol = col if cropSameCoords else QSWATTopology.xToCol(x, cropTransform)
+                            cropCol = cropColFun(col, x)
                             if 0 <= cropCol < cropNumberCols:
                                 crop = cast(int, cropData[cropRow - cropTopRow, cropCol])
                                 if crop is None or math.isnan(crop):
@@ -1586,7 +1635,7 @@ class CreateHRUs(QObject):
                         # use an equivalent landuse if any
                         crop = self._gv.db.translateLanduse(int(crop))
                         if 0 <= soilRow - soilTopRow < soilActReadRows:
-                            soilCol = col if soilSameCoords else QSWATTopology.xToCol(x, soilTransform)
+                            soilCol = soilColFun(col, x)
                             if 0 <= soilCol < soilNumberCols:
                                 soil = cast(int, soilData[soilRow - soilTopRow, soilCol])
                                 if soil is None or math.isnan(soil):
@@ -1610,20 +1659,39 @@ class CreateHRUs(QObject):
                             soilDefinedCount += 1
                         else:
                             soilUndefinedCount += 1
+                        isWater = False
+                        if crop != cropNoData:
+                            cropCode = self._gv.db.getLanduseCode(crop)
+                            isWater = cropCode == 'WATR' 
+                        if waterSoil > 0:
+                            if isWater:
+                                soil = waterSoil
+                            elif soil in waterSoils:
+                                isWater = True 
+                                soil = waterSoil
+                                if crop == cropNoData or cropCode not in Parameters._TNCWATERLANDUSES:
+                                    crop = self._gv.db.getLanduseCat('WATR')
                         if 0 <= slopeRow - slopeTopRow < slopeActReadRows:
-                            slopeCol = col if slopeSameCoords else QSWATTopology.xToCol(x, slopeTransform)
+                            slopeCol = slopeColFun(col, x)
                             if 0 <= slopeCol < slopeNumberCols:
                                 slopeValue = cast(float, slopeData[slopeRow - slopeTopRow, slopeCol])
                             else:
                                 slopeValue = slopeNoData 
                         else:
                             slopeValue = slopeNoData
-                        if slopeValue != slopeNoData:
-                            slope = self._gv.db.slopeIndex(slopeValue * 100)
-                        else:
+                        if slopeValue == slopeNoData:
                             # when using grid model small amounts of
                             # no data for crop, soil or slope could lose subbasin
-                            slopeValue = 0.005
+                            slopeValue = Parameters._GRIDDEFAULTSLOPE
+                        elif self._gv.fromGRASS:
+                            # GRASS slopes are percentages
+                            slopeValue /= 100
+                        if crop == self._gv.db.getLanduseCat('RICE'):
+                            slopeValue = min(slopeValue, Parameters._RICEMAXSLOPE)
+                        slope = self._gv.db.slopeIndex(slopeValue * 100)
+                        # set water or wetland pixels to have slope at most WATERMAXSLOPE
+                        if isWater or cropCode in Parameters._TNCWATERLANDUSES:
+                            slopeValue = min(slopeValue, Parameters._WATERMAXSLOPE)
                             slope = 0
                         data.addCell(crop, soil, slope, self._gv.cellArea, elevation, slopeValue, dist, self._gv)
                         if not self._gv.isBig:
@@ -1637,7 +1705,9 @@ class CreateHRUs(QObject):
                                 hruRows[row - elevationTopRow, col] = hru
                 data.setAreas(True)
                 if self._gv.isBig:
-                    oid = self._gv.db.writeWHUTables(oid, SWATBasin, data, cursor, sql1, sql2, sql3, centroidll) 
+                    oid, elevBandId = self.writeWHUTables(oid, elevBandId, SWATBasin, basin, data, cursor, sql1, sql2, sql3, sql4, centroidll, self.basinElevMap[basin], minGridElev, maxGridElev)
+            if self._gv.isBig:
+                self.writeGridSubsFile()
         else:  # not grid model  
             # tic = time.perf_counter()            
             for row in range(basinNumberRows):
@@ -1653,19 +1723,19 @@ class CreateHRUs(QObject):
                     basinData = basinBand.ReadAsArray(0, row, basinNumberCols, 1)
                 y = QSWATTopology.rowToY(row, basinTransform)
                 if not self._gv.existingWshed:
-                    distRow = row if distSameCoords else QSWATTopology.yToRow(y, distTransform)
+                    distRow = distRowFun(row, y)
                     if 0 <= distRow < distNumberRows and distRow != distCurrentRow:
                         distCurrentRow = distRow
                         distData = distBand.ReadAsArray(0, distRow, distNumberCols, 1)
-                cropRow = row if cropSameCoords else QSWATTopology.yToRow(y, cropTransform)
+                cropRow = cropRowFun(row, y)
                 if 0 <= cropRow < cropNumberRows and cropRow != cropCurrentRow:
                     cropCurrentRow = cropRow
                     cropData = cropBand.ReadAsArray(0, cropRow, cropNumberCols, 1)
-                soilRow = row if soilSameCoords else QSWATTopology.yToRow(y, soilTransform)
+                soilRow = soilRowFun(row, y)
                 if 0 <= soilRow < soilNumberRows and soilRow != soilCurrentRow:
                     soilCurrentRow = soilRow
                     soilData = soilBand.ReadAsArray(0, soilRow, soilNumberCols, 1)
-                slopeRow = row if slopeSameCoords else QSWATTopology.yToRow(y, slopeTransform)
+                slopeRow = slopeRowFun(row, y)
                 if 0 <= slopeRow < slopeNumberRows and slopeRow != slopeCurrentRow:
                     if len(self._gv.db.slopeLimits) > 0 and 0 <= slopeCurrentRow < slopeNumberRows:
                         # generate slope bands data and write it before reading next row
@@ -1675,7 +1745,7 @@ class CreateHRUs(QObject):
                         slopeBandsBand.WriteArray(slopeData, 0, slopeCurrentRow)
                     slopeCurrentRow = slopeRow
                     slopeData = slopeBand.ReadAsArray(0, slopeRow, slopeNumberCols, 1)
-                elevationRow = row if elevationSameCoords else QSWATTopology.yToRow(y, elevationTransform)
+                elevationRow = elevationRowFun(row, y)
                 if 0 <= elevationRow < elevationNumberRows and elevationRow != elevationCurrentRow:
                     elevationCurrentRow = elevationRow
                     elevationData = elevationBand.ReadAsArray(0, elevationRow, elevationNumberCols, 1)
@@ -1691,7 +1761,7 @@ class CreateHRUs(QObject):
                                 basinCropSoilSlopeNumbers[basin] = cropSoilSlopeNumbers
                         x = QSWATTopology.colToX(col, basinTransform)
                         if not self._gv.existingWshed:
-                            distCol = col if distSameCoords else QSWATTopology.xToCol(x, distTransform)
+                            distCol = distColFun(col, x)
                             if 0 <= distCol < distNumberCols and 0 <= distRow < distNumberRows:
                                 # coerce dist to float else considered by Access to be a numpy float
                                 dist = float(distData[0, distCol])
@@ -1699,7 +1769,7 @@ class CreateHRUs(QObject):
                                 dist = distNoData
                         else:
                             dist = distNoData
-                        cropCol = col if cropSameCoords else QSWATTopology.xToCol(x, cropTransform)
+                        cropCol = cropColFun(col, x)
                         if 0 <= cropCol < cropNumberCols and 0 <= cropRow < cropNumberRows:
                             crop = cast(int, cropData[0, cropCol])
                             if crop is None or math.isnan(crop):
@@ -1716,7 +1786,7 @@ class CreateHRUs(QObject):
                             landuseCount += 1
                             # use an equivalent landuse if any
                             crop = self._gv.db.translateLanduse(int(crop))
-                        soilCol = col if soilSameCoords else QSWATTopology.xToCol(x, soilTransform)
+                        soilCol = soilColFun(col, x)
                         if 0 <= soilCol < soilNumberCols and 0 <= soilRow < soilNumberRows:
                             soil = cast(int, soilData[0, soilCol])
                             if soil is None or math.isnan(soil):
@@ -1748,11 +1818,14 @@ class CreateHRUs(QObject):
                                     isWet = True
                                     if crop == cropNoData or cropCode not in Parameters._WATERLANDUSES:
                                         crop = self._gv.db.getLanduseCat('WATR')
-                        slopeCol = col if slopeSameCoords else QSWATTopology.xToCol(x, slopeTransform)
+                        slopeCol = slopeColFun(col, x)
                         if 0 <= slopeCol < slopeNumberCols and 0 <= slopeRow < slopeNumberRows:
                             slopeValue = cast(float, slopeData[0, slopeCol])
                         else:
                             slopeValue = slopeNoData
+                        # GRASS slopes are percentages
+                        if self._gv.fromGRASS and slopeValue != slopeNoData:
+                            slopeValue /= 100
                         # set water or wetland pixels to have slope at most WATERMAXSLOPE
                         if isWet:
                             if slopeValue == slopeNoData:
@@ -1767,13 +1840,13 @@ class CreateHRUs(QObject):
                                 slope = 0
                         else:
                             slope = -1
-                        elevationCol = col if elevationSameCoords else QSWATTopology.xToCol(x, elevationTransform)
+                        elevationCol = elevationColFun(col, x)
                         if 0 <= elevationCol < elevationNumberCols and 0 <= elevationRow < elevationNumberRows:
-                            elevation = cast(float, elevationData[0, elevationCol]) * self._gv.verticalFactor
+                            elevation = cast(float, elevationData[0, elevationCol])
                         else:
                             elevation = elevationNoData
                         if elevation != elevationNoData:
-                            elevation = int(elevation)
+                            elevation = int(elevation * self._gv.verticalFactor)
                         if basin in self.basins:
                             data = self.basins[basin]
                         else:
@@ -1849,7 +1922,7 @@ class CreateHRUs(QObject):
                     shapes.addRow(hruRow, row)
                 if  hrusRasterWanted:   
                     hrusRasterBand.WriteArray(hrusData, 0, row)
-            if len(self._gv.db.slopeLimits) > 0 and 0 <= slopeCurrentRow < slopeNumberRows:
+            if not self._gv.useGridModel and len(self._gv.db.slopeLimits) > 0 and 0 <= slopeCurrentRow < slopeNumberRows:
                 # write final slope bands row
                 for i in range(slopeNumberCols):
                     slopeValue = cast(float, slopeData[0, i])
@@ -1919,7 +1992,7 @@ class CreateHRUs(QObject):
                 shapes.finishShapes(progressBar)
                 #print('{0} shapes in shapesTable' .format(len(shapes.shapesTable)))
             else:
-                shapes.finish()
+                shapes.finish()  # type: ignore
             #QSWATUtils.loginfo(shapes.makeString())
             QSWATUtils.progress('Writing FullHRUs shapes ...', progressLabel)
             self.progress_signal.emit('Writing FullHRUs shapes ...') 
@@ -1958,7 +2031,7 @@ class CreateHRUs(QObject):
         # write raw data to tables before adding water bodies
         # first for HUC and HAWQS save stream water data for basin
         if self._gv.isHUC or self._gv.isHAWQS:
-            for basin, basinData in self.basins.items():
+            for basin, basinData in self.basins.items():  # type: ignore
                 (_, streamArea, WATRInStreamArea) = basinStreamWaterData[basin]
                 basinData.streamArea = streamArea
                 basinData.WATRInStreamArea = WATRInStreamArea
@@ -1970,9 +2043,10 @@ class CreateHRUs(QObject):
             self.addWaterBodies()
         self.saveAreas(True, redistributeNodata=not (under95 and (self._gv.isHUC or self._gv.isHAWQS))) 
         conn.close()
-        QSWATUtils.progress('Writing topographic report ...', progressLabel)
-        self.progress_signal.emit('Writing topographic report ...')
-        self.writeTopoReport()
+        if not self._gv.isBig:
+            QSWATUtils.progress('Writing topographic report ...', progressLabel)
+            self.progress_signal.emit('Writing topographic report ...')
+            self.writeTopoReport()
         return True
                 
     def addWaterBodies(self) -> None:
@@ -2124,7 +2198,7 @@ class CreateHRUs(QObject):
         def topoSort(basins: Set[int]) -> List[int]:
             """Make sorted list of basins so that a basin always drains to a basin earlier in the list, if any.
             Algorithm assumes the set of basins is complete: if a basin has one downstream it will be in the set."""
-            result = []
+            result: List[int] = []
             todo = list(basins)[:]
             while len(todo) > 0:
                 basin = todo.pop(0)
@@ -2147,6 +2221,7 @@ class CreateHRUs(QObject):
             for basin in sortedBasins:
                 if basin in basins:
                     return basin
+            return -1 # for typecheck
             
         subbasinsFile = self._gv.wshedFile
         waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5072Fixed.shp')
@@ -2165,7 +2240,7 @@ class CreateHRUs(QObject):
                     interArea = intersect.area()
                     if interArea >= 50:  # otherwise will round to 0.00 ha
                         interAreas[basin] = interAreas.get(basin, 0) + interArea
-        sortedBasins = topoSort(self.basins.keys())
+        sortedBasins = topoSort(self.basins.keys())  # type: ignore
         QSWATUtils.loginfo('Sorted basins: {0}'.format(sortedBasins))
         totalInterArea = 0.0
         OK = True
@@ -2314,6 +2389,7 @@ class CreateHRUs(QObject):
                                                               None, None, None)[0]
             if layer is None:
                 layer = QgsVectorLayer(self._gv.fullHRUsFile, '{0} ({1})'.format(legend, QFileInfo(self._gv.fullHRUsFile).baseName()), 'ogr')
+            assert isinstance(layer, QgsVectorLayer)
             if not QSWATUtils.removeAllFeatures(layer):
                 QSWATUtils.error('Failed to delete features from {0}.  Please delete the file manually and try again'.format(self._gv.fullHRUsFile), self._gv.isBatch)
                 return False
@@ -2354,7 +2430,7 @@ class CreateHRUs(QObject):
             if hillshadeLayer is not None:
                 subLayer = hillshadeLayer
             elif demLayer is not None:
-                subLayer = root.findLayer(demLayer.id())
+                subLayer = root.findLayer(demLayer.id())  # type: ignore
             else:
                 subLayer = None
             group = root.findGroup(QSWATUtils._WATERSHED_GROUP_NAME)
@@ -2371,13 +2447,10 @@ class CreateHRUs(QObject):
         
     def countFullHRUs(self) -> int:
         """Count possible HRUs in watershed."""
-        if self._gv.useGridModel and self._gv.isBig:
-            return len(self._gv.topo.basinToSWATBasin)
-        else:
-            count = 0
-            for data in self.basins.values():
-                count += data.relHru
-            return count
+        count = 0
+        for data in self.basins.values():
+            count += len(data.hruMap)
+        return count
     
     def saveAreas(self, isOriginal: bool, redistributeNodata=True) -> None:
         """Create area maps for each subbasin."""
@@ -2516,6 +2589,7 @@ class CreateHRUs(QObject):
                 return
             if not self.isMultiple:
                 hru += 1
+                relHru = 1
                 if self.isDominantHRU:
                     (crop, soil, slope) = basinData.getDominantHRU()
                 else:
@@ -2535,6 +2609,25 @@ class CreateHRUs(QObject):
                 hruData = HRUData(basin, crop, origCrop, soil, slope, cellCount, area, totalSlope, self._gv.cellArea, 1)
                 self.hrus[hru] = hruData
             else: # multiple
+                if self._gv.forTNC:
+                    # Add dummy HRU for TNC projects, 0.1% of grid cell.
+                    # Easiest method is to use basinData.addCell for each cell: there will not be many. 
+                    # Before we add a dummy HRU of 0.1% we should reduce all the existing HRUs by that amount.
+                    pointOnePercent = 0.001
+                    basinData.redistribute(1 - pointOnePercent)
+                    # alse reduce basin area
+                    basinData.area *= (1 - pointOnePercent)
+                    cellCount = max(1, int(basinData.cellCount * pointOnePercent + 0.5))
+                    crop = self._gv.db.getLanduseCat('DUMY')
+                    soil = BasinData.dominantKey(basinData.originalSoilAreas)
+                    area = self._gv.cellArea
+                    meanElevation = basinData.totalElevation / basinData.cellCount
+                    meanSlopeValue = basinData.totalSlope / basinData.cellCount
+                    slope = self._gv.db.slopeIndex(meanSlopeValue)
+                    for _ in range(cellCount):
+                        basinData.addCell(crop, soil, slope, area, meanElevation, meanSlopeValue, self._gv.distNoData, self._gv)
+                    # bring areas up to date (including adding DUMY crop).  Not original since we have already removed small HRUs.
+                    basinData.setAreas(False)
                 # hru number within subbasin
                 relHru = 0
                 for (crop, soilSlopeNumbers) in basinData.cropSoilSlopeNumbers.items():
@@ -2549,6 +2642,10 @@ class CreateHRUs(QObject):
                             origCrop = cellData.crop
                             hruData = HRUData(basin, crop, origCrop, soil, slope, cellCount, area, totalSlope, self._gv.cellArea, relHru)
                             self.hrus[hru] = hruData
+        # ensure dummy HRU not eliminated
+        if self._gv.forTNC:
+            self._gv.exemptLanduses.append('DUMY')
+                
         
     def maxBasinArea(self) -> float:
         """Return the maximum subbasin area in hectares."""
@@ -3047,11 +3144,44 @@ class CreateHRUs(QObject):
         numToRemove = min(self.countFullHRUs() - self.targetVal, len(removals))
         for i in range(numToRemove):
             nextItem = removals[i]
-            self.removeHru(nextItem[0], nextItem[1], nextItem[2], nextItem[3], nextItem[4])
+            basinData = self.basins[nextItem[0]]
+            self.removeHru(nextItem[0], basinData, nextItem[1], nextItem[2], nextItem[3], nextItem[4])
             
-    def removeHru(self, basin: int, hru: int, crop: int, soil: int, slope: int) -> None:
+    def removeSmallHRUsbySubbasinTarget(self) -> None:
+        """Only used for TNC projects (forTNC is true).
+        Impose maximum number of HRUs per subbasin (which is grid cell).
+        """
+        # first make a list of (hru, crop, soil, slope, size) tuples
+        for basin, basinData in self.basins.items():
+            self.makeSubbasinTargetHRUs(basin, basinData)
+            
+    def makeSubbasinTargetHRUs(self, basin: int, basinData: BasinData):
+        """Only used for TNC projects, which use grids.
+        Impose maximum number of HRUs per subbasin (which is grid cell).
+        The strategy is for each subbasin to make a list of all potential HRUs and their sizes 
+        for which the landuses are not exempt, sort this list by increasing size, 
+        and remove HRUs according to this list until the target is met."""
+        target = self.targetVal
+        removals = []
+        hruCount = len(basinData.hruMap)
+        for crop, soilSlopeNumbers in basinData.cropSoilSlopeNumbers.items():
+            if not self._gv.isExempt(crop):
+                for soil, slopeNumbers in soilSlopeNumbers.items():
+                    for slope, hru in slopeNumbers.items():
+                        hruArea = basinData.hruMap[hru].area
+                        removals.append((hru, crop, soil, slope, hruArea))
+        # sort by increasing size
+        sortFun = lambda item: item[4]
+        removals.sort(key=sortFun)
+        # remove HRUs
+        # if some are exempt and target is small, can try to remove more than all in removals, so check for this
+        numToRemove = min(hruCount - target, len(removals))
+        for i in range(numToRemove):
+            nextItem = removals[i]
+            self.removeHru(basin, basinData, nextItem[0], nextItem[1], nextItem[2], nextItem[3])
+            
+    def removeHru(self, basin: int, basinData: BasinData, hru: int, crop: int, soil: int, slope: int) -> None:
         """Remove an HRU and redistribute its area within its subbasin."""
-        basinData = self.basins[basin]
         if len(basinData.hruMap) == 1:
             # last HRU - do not remove
             return
@@ -3063,6 +3193,167 @@ class CreateHRUs(QObject):
                 raise ValueError('No HRUs for basin {0!s}'.format(basin))
             redistributeFactor = float(basinData.cropSoilSlopeArea) / (basinData.cropSoilSlopeArea - areaToRedistribute)
             basinData.redistribute(redistributeFactor)
+    
+    def writeWHUTables(self, oid: int, elevBandId: int, SWATBasin: int, basin: int, basinData: BasinData, 
+                       cursor: Any, sql1: str, sql2: str, sql3: str, sql4: str,
+                       centroidll: QgsPointXY, mapp: List[int], minElev: int, maxElev: int) -> int:
+        """
+        Write basin data to Watershed, hrus and uncomb tables.  Also write ElevationBand entry if max elevation above threshold.
+        
+        This is used when using grid model.  Makes at most self.targetVal HRUs in each grid cell.
+        """
+        areaKm = float(basinData.area) / 1E6  # area in square km.
+        areaHa = areaKm * 100
+        meanSlope = float(basinData.totalSlope) / (1 if basinData.cellCount == 0 else basinData.cellCount)
+        meanSlopePercent = meanSlope * 100
+        farDistance = basinData.farDistance
+        slsubbsn = QSWATUtils.getSlsubbsn(meanSlope)
+        assert farDistance > 0, 'Longest flow length is zero for basin {0!s}'.format(SWATBasin)
+        farSlopePercent = (float(basinData.farElevation - basinData.outletElevation) / basinData.farDistance) * 100
+        # formula from Srinivasan 11/01/06
+        tribChannelWidth = 1.29 * (areaKm ** 0.6)
+        tribChannelDepth = 0.13 * (areaKm ** 0.4)
+        lon = centroidll.x()
+        lat = centroidll.y()
+        assert basinData.cellCount > 0, 'Basin {0!s} has zero cell count'.format(SWATBasin)
+        meanElevation = float(basinData.totalElevation) / basinData.cellCount
+        elevMin = basinData.outletElevation
+        elevMax = basinData.maxElevation
+        cursor.execute(sql1, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
+                       float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
+                       float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
+                       SWATBasin + 300000, SWATBasin + 100000))
+        # TNC models use minimum threshold of 500 and fixed bandwidth of 500
+        if self._gv.forTNC and maxElev > 500:
+            bandWidth = 500
+            self._gv.numElevBands = int(1 + (maxElev - minElev) / bandWidth)
+            thisWidth = min(maxElev + 1 - minElev, bandWidth)  # guard against first band < 500 wide
+            midPoint = minElev + (thisWidth - 1) / 2.0
+            bands = [(minElev, midPoint, 0.0)]
+            nextBand = minElev + thisWidth
+            totalFreq = sum(mapp)
+            for elev in range(minElev, maxElev+1):
+                i = elev - self.minElev
+                freq = mapp[i]
+                percent = (freq / totalFreq) * 100.0
+                if elev >= nextBand: # start a new band
+                    nextWidth = min(maxElev + 1 - elev, bandWidth)
+                    nextMidPoint = elev + (nextWidth -1) / 2.0
+                    bands.append((nextBand, nextMidPoint, percent))
+                    nextBand = min(nextBand + bandWidth, maxElev + 1)
+                else: 
+                    el, mid, frac = bands[-1]
+                    bands[-1] = (el, mid, frac + percent)
+            elevBandId += 1
+            row = [elevBandId, SWATBasin]
+            for i in range(10):
+                if i < len(bands):
+                    row.append(bands[i][1])   # mid point elevation
+                else:
+                    row.append(0)
+            for i in range(10):
+                if i < len(bands):
+                    row.append(bands[i][2] / 100) # fractions were percentages
+                else:
+                    row.append(0)
+            cursor.execute(sql4, tuple(row))    
+        
+        #=======================================================================
+        # # original code for 1 HRU per grid cell
+        # luNum = BasinData.dominantKey(basinData.originalCropAreas)
+        # soilNum = BasinData.dominantKey(basinData.originalSoilAreas)
+        # slpNum = BasinData.dominantKey(basinData.originalSlopeAreas)
+        # lu = self._gv.db.getLanduseCode(luNum)
+        # soil, _ = self._gv.db.getSoilName(soilNum)
+        # slp = self._gv.db.slopeRange(slpNum)
+        # meanSlopePercent = meanSlope * 100
+        # uc = lu + '_' + soil + '_' + slp
+        # filebase = QSWATUtils.fileBase(SWATBasin, 1)
+        # oid += 1
+        # cursor.execute(sql2, (oid, SWATBasin, float(areaHa), lu, float(areaHa), soil, float(areaHa), slp, \
+        #                        float(areaHa), float(meanSlopePercent), uc, 1, filebase))
+        # cursor.execute(sql3, (oid, SWATBasin, luNum, lu, soilNum, soil, slpNum, slp, \
+        #                            float(meanSlopePercent), float(areaHa), uc))
+        # return oid
+        #=======================================================================
+        
+        # code for multiple HRUs
+        # creates self.target HRUs plus a dummy (landuse DUMY) if forTNC
+        self.makeSubbasinTargetHRUs(basin, basinData)
+        if self._gv.forTNC:
+            # Add dummy HRU for TNC projects, 0.1% of grid cell.
+            # Easiest method is to use basinData.addCell for each cell: there will not be many. 
+            # Before we add a dummy HRU of 0.1% we should reduce all the existing HRUs by that amount.
+            pointOnePercent = 0.001
+            basinData.redistribute(1 - pointOnePercent)
+            # alse reduce basin area
+            basinData.area *= (1 - pointOnePercent)
+            cellCount = max(1, int(basinData.cellCount * pointOnePercent + 0.5))
+            crop = self._gv.db.getLanduseCat('DUMY')
+            soil = BasinData.dominantKey(basinData.originalSoilAreas)
+            area = self._gv.cellArea
+            meanElevation = basinData.totalElevation / basinData.cellCount
+            meanSlopeValue = basinData.totalSlope / basinData.cellCount
+            slope = self._gv.db.slopeIndex(meanSlopeValue)
+            for _ in range(cellCount):
+                basinData.addCell(crop, soil, slope, area, meanElevation, meanSlopeValue, self._gv.distNoData, self._gv)
+            # bring areas up to date (including adding DUMY crop).  Not original since we have already removed some HRUs.
+            basinData.setAreas(False)
+        for crop, ssn in basinData.cropSoilSlopeNumbers.items():
+            for soil, sn in ssn.items():
+                for slope,hru in sn.items():
+                    cellData = basinData.hruMap[hru]
+                    lu = self._gv.db.getLanduseCode(crop)
+                    soilName, _ = self._gv.db.getSoilName(soil)
+                    slp = self._gv.db.slopeRange(slope)
+                    hruha = float(cellData.area) / 10000
+                    arlu = float(basinData.cropArea(crop)) / 10000
+                    arso = float(basinData.cropSoilArea(crop, soil)) / 10000
+                    uc = lu + '_' + soilName + '_' + slp
+                    slopePercent = (float(cellData.totalSlope) / cellData.cellCount) * 100
+                    filebase = QSWATUtils.fileBase(SWATBasin, hru)
+                    oid += 1
+                    cursor.execute(sql2, (oid, SWATBasin, areaHa, lu, arlu, soilName, arso, slp, \
+                                   hruha, slopePercent, uc, oid, filebase))
+                    cursor.execute(sql3, (oid, SWATBasin, crop, lu, soil, soilName, slope, slp, \
+                                   slopePercent, hruha, uc))
+        return oid, elevBandId
+            
+    def writeGridSubsFile(self):
+        """Write subs.shp to TablesOut folder for visualisation.  Only used for big grids (isBig is True)."""
+        QSWATUtils.copyShapefile(self._gv.wshedFile, Parameters._SUBS, self._gv.tablesOutDir)
+        subsFile = QSWATUtils.join(self._gv.tablesOutDir, Parameters._SUBS + '.shp')
+        subsLayer = QgsVectorLayer(subsFile, 'Watershed grid ({0})'.format(Parameters._SUBS), 'ogr')
+        provider = subsLayer.dataProvider()
+        # remove fields apart from Subbasin
+        toDelete = []
+        fields = provider.fields()
+        for idx in range(fields.count()):
+            name = fields.field(idx).name()
+            if name != QSWATTopology._SUBBASIN:
+                toDelete.append(idx)
+        if toDelete:
+            provider.deleteAttributes(toDelete)
+        OK = subsLayer.startEditing()
+        if not OK:
+            QSWATUtils.error('Cannot start editing watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
+            return
+        # remove features with 0 subbasin value
+        exp = QgsExpression('{0} = 0'.format(QSWATTopology._SUBBASIN))
+        idsToDelete = []
+        for feature in subsLayer.getFeatures(QgsFeatureRequest(exp).setFlags(QgsFeatureRequest.NoGeometry)):
+            idsToDelete.append(feature.id())
+        OK = provider.deleteFeatures(idsToDelete)
+        if not OK:
+            QSWATUtils.error('Cannot edit watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
+            return
+        OK = subsLayer.commitChanges()
+        if not OK:
+            QSWATUtils.error('Cannot finish editing watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
+            return
+        numDeleted = len(idsToDelete)
+        if numDeleted > 0:
+            QSWATUtils.loginfo('{0} subbasins removed from subs.shp'.format(numDeleted))
 
     def splitHRUs(self) -> bool:
         """Split HRUs according to split landuses."""
@@ -3313,34 +3604,42 @@ class CreateHRUs(QObject):
                         QSWATUtils.information('Dominant Landuse/Soil/Slope option', True)
                     fw.writeLine('Number of HRUs: {0!s}'.format(len(self.basins)))
                 else: # multiple
-                    if self.useArea:
-                        method = 'Using area in hectares'
-                        units = 'ha'
-                    else:
-                        method = 'Using percentage of subbasin'
-                        units = '%'
-                    if self.isTarget:
-                        line1 = method + ' as a measure of size'
-                        line2 = 'Target number of HRUs option'.ljust(47) + \
+                    if self._gv.forTNC:
+                        line = 'Using target number of HRUs per grid cell'.ljust(47) + \
                                      'Target {0}'.format(self.targetVal)
-                    elif self.isArea:
-                        line1 = method + ' as threshold'
-                        line2 = 'Multiple HRUs Area option'.ljust(47) + \
-                                     'Threshold: {:d} {:s}'.format(self.areaVal, units)
+                        fw.writeLine(line)
+                        if self._gv.isBatch:
+                            QSWATUtils.information(line, True)
                     else:
-                        line1 = method + ' as a threshold'
-                        line2 = 'Multiple HRUs Landuse/Soil/Slope option'.ljust(47) + \
-                                     'Thresholds: {0:d}/{1:d}/{2:d} [{3}]'.format(self.landuseVal, self.soilVal, self.slopeVal, units)
-                    fw.writeLine(line1)
-                    if self._gv.isBatch:
-                        QSWATUtils.information(line1, True)
-                    fw.writeLine(line2)
-                    if self._gv.isBatch:
-                        QSWATUtils.information(line2, True)
+                        if self.useArea:
+                            method = 'Using area in hectares'
+                            units = 'ha'
+                        else:
+                            method = 'Using percentage of subbasin'
+                            units = '%'
+                        if self.isTarget:
+                            line1 = method + ' as a measure of size'
+                            line2 = 'Target number of HRUs option'.ljust(47) + \
+                                         'Target {0}'.format(self.targetVal)
+                        elif self.isArea:
+                            line1 = method + ' as threshold'
+                            line2 = 'Multiple HRUs Area option'.ljust(47) + \
+                                         'Threshold: {:d} {:s}'.format(self.areaVal, units)
+                        else:
+                            line1 = method + ' as a threshold'
+                            line2 = 'Multiple HRUs Landuse/Soil/Slope option'.ljust(47) + \
+                                         'Thresholds: {0:d}/{1:d}/{2:d} [{3}]'.format(self.landuseVal, self.soilVal, self.slopeVal, units)
+                        fw.writeLine(line1)
+                        if self._gv.isBatch:
+                            QSWATUtils.information(line1, True)
+                        fw.writeLine(line2)
+                        if self._gv.isBatch:
+                            QSWATUtils.information(line2, True)
                     fw.writeLine('Number of HRUs: {0!s}'.format(len(self.hrus)))
             fw.writeLine('Number of subbasins: {0!s}'.format(len(self._gv.topo.basinToSWATBasin)))
             if withHRUs and self.isMultiple:
-                if len(self._gv.exemptLanduses) > 0:
+                # don't report DUMY when forTNC (and there will not be others)
+                if not self._gv.forTNC and len(self._gv.exemptLanduses) > 0:
                     fw.write('Landuses exempt from thresholds: ')
                     for landuse in self._gv.exemptLanduses:
                         fw.write(landuse.rjust(6))
@@ -3673,8 +3972,8 @@ class CreateHRUs(QObject):
                 # edge inaccuracies can cause WATRInStreamArea > streamArea
                 WATRInStreamHa = min(basinData.WATRInStreamArea, basinData.streamArea) / 1E4
                 streamAreaHa = basinData.streamArea / 1E4
-                WATRHa = 0
-                wetLanduseHa = 0
+                WATRHa = 0.0
+                wetLanduseHa = 0.0
                 for crop, soilSlopeNumbers in basinData.cropSoilSlopeNumbers.items():
                     cropCode = self._gv.db.getLanduseCode(crop)
                     if cropCode in Parameters._WATERLANDUSES:
@@ -4068,8 +4367,8 @@ class CreateHRUs(QObject):
             else:
                 subLayer = None
             ft1 = FileTypes._EXISTINGSUBBASINS if self._gv.existingWshed else FileTypes._SUBBASINS
-            subs1Layer = QSWATUtils.getLayerByFilename(root.findLayers(), subs1File, ft1, 
-                                                       self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)[0]
+            subs1Layer = QSWATUtils.getLayerByFilename(root.findLayers(), subs1File, ft1, \
+                                                       self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)[0]  # type: ignore
             subs1Layer.setLabelsEnabled(True)
             # no need to expand legend since any subbasins upstream from inlets have been removed
             subs1TreeLayer = root.findLayer(subs1Layer.id())

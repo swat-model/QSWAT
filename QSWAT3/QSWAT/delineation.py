@@ -283,10 +283,11 @@ class Delineation(QObject):
         self.finishHasRun = True
         root = QgsProject.instance().layerTreeRoot()
         layers = root.findLayers()
+        streamLayer = None
         if not self._gv.existingWshed and self._gv.useGridModel:
-            streamLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._GRIDSTREAMS), layers)
-            if streamLayer is not None:
-                streamLayer = streamLayer.layer()
+            treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._GRIDSTREAMS), layers)
+            if treeLayer is not None:
+                streamLayer = treeLayer.layer()
         else:
             streamLayer = QSWATUtils.getLayerByFilename(layers, self._gv.streamFile, FileTypes._STREAMS, None, None, None)[0]
         if streamLayer is None:
@@ -312,6 +313,7 @@ class Delineation(QObject):
                 else:
                     QSWATUtils.error('Watershed layer not found: have you run TauDEM?', self._gv.isBatch)
                 return
+        assert wshedLayer is not None
         # this may be None
         if self._gv.outletFile == '':
             outletLayer = None
@@ -321,7 +323,7 @@ class Delineation(QObject):
         if demLayer is None:
             QSWATUtils.error('DEM layer not found: have you removed it?', self._gv.isBatch)
             return
-        if not self.setDimensions(demLayer):
+        if not self.setDimensions(cast(QgsRasterLayer, demLayer)):
             return
         if not self._gv.useGridModel and self._gv.basinFile == '':
             # must have merged some subbasins: recreate the watershed grid
@@ -329,7 +331,7 @@ class Delineation(QObject):
             if not demLayer:
                 QSWATUtils.error('Cannot find DEM layer for file {0}'.format(self._gv.demFile), self._gv.isBatch)
                 return
-            self._gv.basinFile = self.createBasinFile(self._gv.wshedFile, demLayer, root)
+            self._gv.basinFile = self.createBasinFile(self._gv.wshedFile, cast(QgsRasterLayer, demLayer), root)
             if self._gv.basinFile == '':
                 return
             # QSWATUtils.loginfo('Recreated watershed grid as {0}'.format(self._gv.basinFile))
@@ -356,7 +358,8 @@ class Delineation(QObject):
                     self._gv.existingWshed = True
             recalculate = self._gv.existingWshed and self._dlg.recalcButton.isChecked()
             self.progress('Constructing topology ...')
-            self._gv.isBig = self._gv.useGridModel and wshedLayer.featureCount() > 100000
+            self._gv.isBig = self._gv.useGridModel and cast(QgsVectorLayer, wshedLayer).featureCount() > 100000 or self._gv.forTNC
+            QSWATUtils.loginfo('isBig is {0}'.format(self._gv.isBig))
             if self._gv.topo.setUp(demLayer, streamLayer, wshedLayer, outletLayer, extraOutletLayer, self._gv.db, self._gv.existingWshed, recalculate, self._gv.useGridModel, True):
                 if not self._gv.topo.inletLinks:
                     # no inlets, so no need to expand subbasins layer legend
@@ -396,7 +399,7 @@ class Delineation(QObject):
                                                          self._gv.sourceDir, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if demFile and demMapLayer:
             self._gv.demFile = demFile
-            self.setDefaultNumCells(demMapLayer)
+            self.setDefaultNumCells(cast(QgsRasterLayer, demMapLayer))
             # warn if large DEM
             numCells = self.demWidth * self.demHeight
             if numCells > 4E6:
@@ -404,7 +407,9 @@ class Delineation(QObject):
                 self._iface.messageBar().pushMessage('Large DEM', \
                                                  'This DEM has over {0!s} million cells and could take some time to process.  Be patient!'.format(millions), \
                                                  level=Qgis.Warning, duration=20)
-            self.addHillshade(demFile, root, demMapLayer, self._gv)
+            # hillshade wastes of (a lot of) time for TNC DEMs
+            if not self._gv.forTNC:
+                self.addHillshade(demFile, root, cast(QgsRasterLayer, demMapLayer), self._gv)
          
     @staticmethod   
     def addHillshade(demFile: str, root: QgsLayerTree, demMapLayer: QgsRasterLayer, gv: Any) -> None:
@@ -439,6 +444,7 @@ class Delineation(QObject):
             if not hillMapLayer:
                 QSWATUtils.information('Failed to load hillshade file {0}'.format(hillshadeFile), gv.isBatch)
                 return
+            assert isinstance(hillMapLayer, QgsRasterLayer)
             # compress legend entry
             hillTreeLayer = root.findLayer(hillMapLayer.id())
             assert hillTreeLayer is not None
@@ -452,6 +458,7 @@ class Delineation(QObject):
         (burnFile, burnLayer) = QSWATUtils.openAndLoadFile(root, FileTypes._BURN, self._dlg.selectBurn, 
                                                            self._gv.sourceDir, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if burnFile and burnLayer:
+            assert isinstance(burnLayer, QgsVectorLayer)
             fileType = QgsWkbTypes.geometryType(burnLayer.dataProvider().wkbType())
             if fileType != QgsWkbTypes.LineGeometry:
                 QSWATUtils.error('Burn in file {0} is not a line shapefile'.format(burnFile), self._gv.isBatch)
@@ -472,6 +479,7 @@ class Delineation(QObject):
         (outletFile, outletLayer) = QSWATUtils.openAndLoadFile(root, ft, box, self._gv.shapesDir, 
                                                                self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if outletFile and outletLayer:
+            assert isinstance(outletLayer, QgsVectorLayer)
             self.snapFile = ''
             self._dlg.snappedLabel.setText('')
             fileType = QgsWkbTypes.geometryType(outletLayer.dataProvider().wkbType())
@@ -486,6 +494,7 @@ class Delineation(QObject):
         wshedFile, wshedLayer = QSWATUtils.openAndLoadFile(root, FileTypes._EXISTINGWATERSHED, self._dlg.selectWshed, 
                                                            self._gv.sourceDir, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if wshedFile and wshedLayer:
+            assert isinstance(wshedLayer, QgsVectorLayer)
             fileType = QgsWkbTypes.geometryType(wshedLayer.dataProvider().wkbType())
             if fileType != QgsWkbTypes.PolygonGeometry:
                 QSWATUtils.error('Subbasins file {0} is not a polygon shapefile'.format(self._dlg.selectWshed.text()), self._gv.isBatch)
@@ -498,6 +507,7 @@ class Delineation(QObject):
         streamFile, streamLayer = QSWATUtils.openAndLoadFile(root, FileTypes._STREAMS, self._dlg.selectNet, 
                                                              self._gv.sourceDir, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
         if streamFile and streamLayer:
+            assert isinstance(streamLayer, QgsVectorLayer, )
             fileType = QgsWkbTypes.geometryType(streamLayer.dataProvider().wkbType())
             if fileType != QgsWkbTypes.LineGeometry:
                 QSWATUtils.error('Stream reaches file {0} is not a line shapefile'.format(self._dlg.selectNet.text()), self._gv.isBatch)
@@ -550,6 +560,7 @@ class Delineation(QObject):
         if not demLayer:
             QSWATUtils.error('Cannot load DEM {0}'.format(self._gv.demFile), self._gv.isBatch)
             return
+        assert isinstance(demLayer, QgsRasterLayer)
         # changing default number of cells 
         if not self.setDefaultNumCells(demLayer):
             return
@@ -574,14 +585,44 @@ class Delineation(QObject):
                 self.progress('Burning streams ...')
                 #burnRasterFile = self.streamToRaster(demLayer, burnFile, root)
                 #processing.runalg('saga:burnstreamnetworkintodem', demFile, burnRasterFile, burnMethod, burnEpsilon, burnedFile)
-                QSWATTopology.burnStream(burnFile, demFile, burnedDemFile, self._gv.verticalFactor, self._gv.isBatch)
+                burnDepth = 25.0 if self._gv.fromGRASS else 50.0
+                QSWATTopology.burnStream(burnFile, demFile, burnedDemFile, self._gv.verticalFactor, burnDepth, self._gv.isBatch)
                 if not os.path.exists(burnedDemFile):
+                    self.cleanUp(-1)
                     return
+            if self._gv.fromGRASS:
+                # just running to create burned file
+                self.cleanUp(-1)
+                return
             self._gv.burnedDemFile = burnedDemFile
             delineationDem = burnedDemFile
         else:
             self._gv.burnedDemFile = ''
             delineationDem = demFile
+        if self._gv.fromGRASS:
+            self._gv.pFile = base + 'p.tif'
+            self._gv.basinFile = base + 'w.tif'
+            self._gv.slopeFile = base + 'slp.tif'
+            # slope file should be based on original DEM
+            if self._gv.slopeFile.endswith('_burnedslp.tif'):
+                unburnedslp = self._gv.slopeFile.replace('_burnedslp.tif', 'slp.tif')
+                if os.path.isfile(unburnedslp):
+                    self._gv.slopeFile = unburnedslp 
+            ad8File = base + 'ad8.tif'
+            self._gv.outletFile = ''
+            self._gv.streamFile = base + 'net.shp'
+            self._gv.wshedFile = base + 'wshed.shp'
+            self.createGridShapefile(demLayer, self._gv.pFile, ad8File, self._gv.basinFile)
+            streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.streamFile, FileTypes._STREAMS, 
+                                                            self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+            if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
+                self.cleanUp(-1)
+                return
+            self.isDelineated = True
+            self.setMergeResGroups()
+            self.saveProj()
+            self.cleanUp(-1)
+            return
         numProcesses = self._dlg.numProcesses.value()
         mpiexecPath = self._gv.mpiexecPath
         if numProcesses > 0 and (mpiexecPath == '' or not os.path.exists(mpiexecPath)):
@@ -683,12 +724,13 @@ class Delineation(QObject):
         elif hillshadeLayer is not None:
             subLayer = hillshadeLayer
         else:
-            subLayer = root.findLayer(demLayer.id())
+            subLayer = root.findLayer(demLayer.id())  # type: ignore
         streamLayer, loaded = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
                                                             self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)
         if not streamLayer or not loaded:
             self.cleanUp(-1)
             return
+        assert isinstance(streamLayer, QgsVectorLayer)
         self._gv.streamFile = streamFile
         if not makeWshed:
             self.snapFile = ''
@@ -707,6 +749,7 @@ class Delineation(QObject):
             if not outletLayer:
                 self.cleanUp(-1)
                 return
+            assert isinstance(outletLayer, QgsVectorLayer)
             self.progress('SnapOutletsToStreams ...')
             ok = self.createSnapOutletFile(outletLayer, streamLayer, outletFile, snapFile, root)  
             if not ok:
@@ -757,13 +800,14 @@ class Delineation(QObject):
             elif hillshadeLayer is not None:
                 subLayer = hillshadeLayer
             else:
-                subLayer = root.findLayer(demLayer.id())
+                subLayer = root.findLayer(demLayer.id())  # type: ignore
             streamLayer, loaded = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
-                                                                self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)
+                                                                self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
             if not streamLayer or not loaded:
                 self.cleanUp(-1)
                 return
             # check if stream network has only one feature
+            assert isinstance(streamLayer, QgsVectorLayer)
             if streamLayer.featureCount() == 1:
                 QSWATUtils.error('There is only one stream reach in your watershed, so you will only get one subbasin.  You need to reduce the threshold.', self._gv.isBatch)
                 self.cleanUp(-1)
@@ -837,18 +881,20 @@ class Delineation(QObject):
         # find layers (or load them)
         root = QgsProject.instance().layerTreeRoot()
         demLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.demFile, FileTypes._DEM,
-                                                    self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+                                                    self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
         if not demLayer:
             QSWATUtils.error('Cannot load DEM {0}'.format(self._gv.demFile), self._gv.isBatch)
             return
+        assert isinstance(demLayer, QgsRasterLayer)
         self.addHillshade(self._gv.demFile, root, demLayer, self._gv)
         wshedLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), wshedFile, FileTypes._EXISTINGWATERSHED, 
-                                                           self._gv, demLayer, QSWATUtils._WATERSHED_GROUP_NAME)
+                                                           self._gv, demLayer, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
         if not wshedLayer:
             QSWATUtils.error('Cannot load watershed shapefile {0}'.format(wshedFile), self._gv.isBatch)
             return
+        assert isinstance(wshedLayer, QgsVectorLayer)
         streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
-                                                      self._gv, wshedLayer, QSWATUtils._WATERSHED_GROUP_NAME)
+                                                      self._gv, wshedLayer, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
         if not streamLayer:
             QSWATUtils.error('Cannot load streams shapefile {0}'.format(streamFile), self._gv.isBatch)
             return
@@ -953,7 +999,7 @@ class Delineation(QObject):
         self._gv.xBlockSize = provider.xBlockSize()
         self._gv.yBlockSize = provider.yBlockSize()
         QSWATUtils.loginfo('DEM horizontal and vertical block sizes are {0} and {1}'.format(self._gv.xBlockSize, self._gv.yBlockSize))
-        demFile = QSWATUtils.layerFileInfo(demLayer).absoluteFilePath()
+        demFile = QSWATUtils.layerFileInfo(demLayer).absoluteFilePath()  # type: ignore
         demPrj = os.path.splitext(demFile)[0] + '.prj'
         demPrjTxt = demPrj + '.txt'
         if os.path.exists(demPrj) and not os.path.exists(demPrjTxt):
@@ -1145,6 +1191,7 @@ class Delineation(QObject):
         root = QgsProject.instance().layerTreeRoot()
         outletLayer = QSWATUtils.getLayerByFilenameOrLegend(root.findLayers(), self._gv.outletFile, FileTypes._OUTLETS, '', self._gv.isBatch)
         if outletLayer:  # we have a current outlet layer - give user a choice 
+            assert isinstance(outletLayer, QgsVectorLayer)
             msgBox = QMessageBox()
             msgBox.move(self._gv.selectOutletFilePos)
             msgBox.setWindowTitle('Select inlets/outlets file to draw on')
@@ -1167,6 +1214,7 @@ class Delineation(QObject):
         else:
             drawCurrent = False
         if drawCurrent:
+            assert isinstance(outletLayer, QgsVectorLayer)
             if not self._iface.setActiveLayer(outletLayer):
                 QSWATUtils.error('Could not make inlets/outlets layer active', self._gv.isBatch)
                 return
@@ -1180,9 +1228,8 @@ class Delineation(QObject):
                 drawOutletFile = QSWATUtils.join(self._gv.shapesDir, 'drawoutlets1.shp')
             if not self.createOutletFile(drawOutletFile, self._gv.demFile, False, root):
                 return
-            self.drawOutletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), 
-                                                                          drawOutletFile, FileTypes._OUTLETS, 
-                                                                          self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+            self.drawOutletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), drawOutletFile, FileTypes._OUTLETS, \
+                                                                    self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
             if not self.drawOutletLayer:
                 QSWATUtils.error('Unable to load shapefile {0}'.format(drawOutletFile), self._gv.isBatch)
                 return
@@ -1202,9 +1249,8 @@ class Delineation(QObject):
                 # need to save memory layer
                 QgsVectorFileWriter.writeAsVectorFormatV2(self.drawOutletLayer, drawOutletFile, 
                                                           QgsCoordinateTransformContext(), self._gv.vectorFileWriterOptions)
-                self.drawOutletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), 
-                                                                        drawOutletFile, FileTypes._OUTLETS, 
-                                                                        self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+                self.drawOutletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), drawOutletFile, FileTypes._OUTLETS, \
+                                                                        self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
             # points added by drawing will have ids of -1, so fix them
             self.fixPointIds()
             if not drawCurrent:
@@ -1296,6 +1342,7 @@ class Delineation(QObject):
             if not selFromLayer:
                 QSWATUtils.error('Cannot find inlets/outlets layer.  Please choose the layer you want to select from in the layers panel.', self._gv.isBatch)
                 return
+        assert isinstance(selFromLayer, QgsVectorLayer)
         if not self._iface.setActiveLayer(selFromLayer):
             QSWATUtils.error('Could not make inlets/outlets layer active', self._gv.isBatch)
             return
@@ -1330,6 +1377,7 @@ class Delineation(QObject):
         selFromLayer.removeSelection()
         # make a copy of selected layer's file, then remove non-selected features from it
         info = QSWATUtils.layerFileInfo(selFromLayer)
+        assert info is not None
         baseName = info.baseName()
         path = info.absolutePath()
         pattern = QSWATUtils.join(path, baseName) + '.*'
@@ -1351,6 +1399,7 @@ class Delineation(QObject):
         if not selOutletLayer or not loaded:
             QSWATUtils.error('Could not load selected inlets/outlets shapefile {0}'.format(self._gv.outletFile), self._gv.isBatch)
             return
+        assert isinstance(selOutletLayer, QgsVectorLayer)
         # remove non-selected features
         featuresToDelete = []
         for feature in selOutletLayer.getFeatures():
@@ -1377,6 +1426,7 @@ class Delineation(QObject):
         if not self._iface.setActiveLayer(wshedLayer):
             QSWATUtils.error('Could not make watershed layer active', self._gv.isBatch)
             return
+        assert isinstance(wshedLayer, QgsVectorLayer)
         # set selection to already intended reservoirs, in case called twice
         basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)
         reservoirIds = []
@@ -1429,11 +1479,13 @@ class Delineation(QObject):
         if not wshedLayer:
             QSWATUtils.error('Cannot find watershed layer', self._gv.isBatch)
             return
+        assert isinstance(wshedLayer, QgsVectorLayer)
         wshedLayer.removeSelection()
         streamLayer = QSWATUtils.getLayerByFilenameOrLegend(root.findLayers(), self._gv.streamFile, FileTypes._STREAMS, '', self._gv.isBatch)
         if not streamLayer:
             QSWATUtils.error('Cannot find streams layer', self._gv.isBatch)
             return
+        assert isinstance(streamLayer, QgsVectorLayer)
         linkIndex = self._gv.topo.getIndex(streamLayer, QSWATTopology._LINKNO)
         wsnoIndex = self._gv.topo.getIndex(streamLayer, QSWATTopology._WSNO)
         nodeidIndex = self._gv.topo.getIndex(streamLayer, QSWATTopology._DSNODEID, ignoreMissing=True)
@@ -1502,8 +1554,8 @@ class Delineation(QObject):
                 feature.setGeometry(QgsGeometry.fromPointXY(point))
                 provider.addFeatures([feature])
         if pid > 0:
-            extraOutletLayer, loaded = QSWATUtils.getLayerByFilename(root.findLayers(), extraOutletFile, FileTypes._OUTLETS, 
-                                                                     self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+            extraOutletLayer, loaded = QSWATUtils.getLayerByFilename(root.findLayers(), extraOutletFile, FileTypes._OUTLETS, \
+                                                                     self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
             if not (extraOutletLayer and loaded):
                 QSWATUtils.error('Could not load extra outlets/inlets file {0}'.format(extraOutletFile), self._gv.isBatch)
                 return
@@ -1527,11 +1579,13 @@ class Delineation(QObject):
         if not outletLayer:
             QSWATUtils.error('Cannot find inlets/outlets layer', self._gv.isBatch)
             return
+        assert isinstance(outletLayer, QgsVectorLayer)
         if self.snapFile == '' or self.snapErrors:
             streamLayer = QSWATUtils.getLayerByFilenameOrLegend(root.findLayers(), self._gv.streamFile, FileTypes._STREAMS, '', self._gv.isBatch)
             if not streamLayer:
                 QSWATUtils.error('Cannot find stream reaches layer', self._gv.isBatch)
                 return
+            assert isinstance(streamLayer, QgsVectorLayer)
             outletBase = os.path.splitext(self._gv.outletFile)[0]
             snapFile = outletBase + '_snap.shp'
             if not self.createSnapOutletFile(outletLayer, streamLayer, self._gv.outletFile, snapFile, root):
@@ -1575,11 +1629,13 @@ class Delineation(QObject):
         if not wshedLayer:
             QSWATUtils.error('Cannot find watershed layer', self._gv.isBatch)
             return
+        assert isinstance(wshedLayer, QgsVectorLayer)
         streamLayer = QSWATUtils.getLayerByFilenameOrLegend(root.findLayers(), self._gv.streamFile, FileTypes._STREAMS, '', self._gv.isBatch)
         if not streamLayer:
             QSWATUtils.error('Cannot find stream reaches layer', self._gv.isBatch)
             wshedLayer.removeSelection()
             return
+        assert isinstance(streamLayer, QgsVectorLayer)
         selection = wshedLayer.selectedFeatures()
         if len(selection) == 0:
             QSWATUtils.information("Please select at least one subbasin to be merged", self._gv.isBatch)
@@ -1655,6 +1711,7 @@ class Delineation(QObject):
         self._gv.writeMasterProgress(0, 0)
         for polygonidA in pids:
             wshedA = QSWATUtils.getFeatureByValue(wshedLayer, polygonidField, polygonidA)
+            assert wshedA is not None
             wshedAattrs = wshedA.attributes()
             reachA = QSWATUtils.getFeatureByValue(streamLayer, wsnoField, polygonidA)
             if not reachA:
@@ -1669,6 +1726,7 @@ class Delineation(QObject):
             if dsnodeidnField >= 0:
                 dsnodeidA = reachAattrs[dsnodeidnField]
                 if outletLayer:
+                    assert isinstance(outletLayer, QgsVectorLayer)
                     pointFeature = QSWATUtils.getFeatureByValue(outletLayer, nodeidField, dsnodeidA)
                     if pointFeature:
                         attrs = pointFeature.attributes()
@@ -1689,6 +1747,7 @@ class Delineation(QObject):
             # check whether a reach immediately upstream from A has an inlet
             inletUpFromA = False
             if dsnodeidnField >= 0 and outletLayer:
+                assert isinstance(outletLayer, QgsVectorLayer)
                 for reachUA in reachUAs:
                     reachUAattrs = reachUA.attributes()
                     dsnodeidUA = reachUAattrs[dsnodeidnField]
@@ -1729,10 +1788,11 @@ class Delineation(QObject):
                 if nextLink < 0:
                     # reached main outlet
                     break
-                nextReach = QSWATUtils.getFeatureByValue(streamLayer, linknoField, nextLink)
+                nextReach = QSWATUtils.getFeatureByValue(streamLayer, linknoField, nextLink)  # type: ignore
             if not wshedD:
                 QSWATUtils.information('No downstream subbasin from subbasin with {0} value {1!s}: nothing to merge'.format(QSWATTopology._POLYGONID, polygonidA), self._gv.isBatch)
                 continue
+            assert wshedD is not None
             wshedDattrs = wshedD.attributes()
             reachD = nextReach
             reachDattrs = reachD.attributes()
@@ -2121,8 +2181,8 @@ class Delineation(QObject):
                     subLayer = root.findLayer(demLayer.id())
                 else:
                     subLayer = None
-        wshedLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), wshedFile, FileTypes._WATERSHED, 
-                                                           self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)
+        wshedLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), wshedFile, FileTypes._WATERSHED, \
+                                                           self._gv, subLayer, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
         if wshedLayer is None:
             QSWATUtils.error('Failed to load watershed shapefile {0}'.format(wshedFile), self._gv.isBatch)
             return
@@ -2153,7 +2213,7 @@ class Delineation(QObject):
         
     def createBasinFile(self, wshedFile: str, demLayer: QgsRasterLayer, root: QgsLayerTree) -> str:
         """Create basin file from watershed shapefile."""
-        demPath = QSWATUtils.layerFileInfo(demLayer).canonicalFilePath()
+        demPath = QSWATUtils.layerFileInfo(demLayer).canonicalFilePath()  # type: ignore
         wFile = os.path.splitext(demPath)[0] + 'w.tif'
         shapeBase = os.path.splitext(wshedFile)[0]
         # if basename of wFile is used rasterize fails
@@ -2179,6 +2239,24 @@ class Delineation(QObject):
     
     def createGridShapefile(self, demLayer: QgsRasterLayer, pFile: str, ad8File: str, wFile: str) -> None:
         """Create grid shapefile for watershed."""
+        gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
+        gridStreamsFile = QSWATUtils.join(self._gv.shapesDir, 'gridstreams.shp')
+        if QSWATUtils.isUpToDate(self._gv.demFile, gridFile) and QSWATUtils.isUpToDate(self._gv.demFile, gridStreamsFile):
+            # restore settings of wshed and streams shapefiles
+            self._gv.wshedFile = gridFile
+            self._gv.streamFile = gridStreamsFile
+            # make sure grid layers are loaded
+            root = QgsProject.instance().layerTreeRoot()
+            gridLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), gridFile, FileTypes._GRID, 
+                                                          self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+            if not gridLayer:
+                QSWATUtils.error('Failed to load grid shapefile {0}'.format(gridFile), self._gv.isBatch)
+                return
+            gridStreamsLayer = QSWATUtils.getLayerByFilename(root.findLayers(), gridStreamsFile, FileTypes._GRIDSTREAMS, 
+                                                             self._gv, gridLayer, QSWATUtils._WATERSHED_GROUP_NAME)[0]
+            if not gridStreamsLayer:
+                QSWATUtils.error('Failed to load grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
+            return
         self.progress('Creating grid ...')
         gridSize = self._dlg.GridSize.value()
         accFile = ad8File
@@ -2209,33 +2287,35 @@ class Delineation(QObject):
     def storeGridData(self, ad8File: str, basinFile: str, gridSize: int) -> Tuple[Optional[Dict[int, Dict[int, GridData]]], Optional[Transform], float, float]:
         """Create grid data in array and return it."""
         # mask accFile with basinFile to exclude small outflowing watersheds
-        ad8Layer = QgsRasterLayer(ad8File, 'P')
-        entry1 = QgsRasterCalculatorEntry()
-        entry1.bandNumber = 1
-        entry1.raster = ad8Layer
-        entry1.ref = 'P@1'        
-        basinLayer = QgsRasterLayer(basinFile, 'Q')
-        entry2 = QgsRasterCalculatorEntry()
-        entry2.bandNumber = 1
-        entry2.raster = basinLayer
-        entry2.ref = 'Q@1'
+        # only do this if result needs updating and if not from GRASS (since ad8 file from GRASS was masked by basinFile)
         base = os.path.splitext(ad8File)[0]
-        accFile = base + 'clip.tif'
-        QSWATUtils.tryRemoveFiles(accFile)
-        # The formula is a standard way of masking P with Q, since 
-        # where Q is nodata Q / Q evaluates to nodata, and elsewhere evaluates to 1.
-        # We use 'Q+1' instead of Q to avoid problems in first subbasin 
-        # when PolygonId is zero so Q is zero
-        formula = '((Q@1 + 1) / (Q@1 + 1)) * P@1'
-        calc = QgsRasterCalculator(formula, accFile, 'GTiff', ad8Layer.extent(), ad8Layer.width(), ad8Layer.height(), [entry1, entry2],
-                                   QgsCoordinateTransformContext())
-        result = calc.processCalculation(feedback=None)
-        if result == 0:
-            assert os.path.exists(accFile), 'QGIS calculator formula {0} failed to write output'.format(formula)
-            QSWATUtils.copyPrj(ad8File, accFile)
-        else:
-            QSWATUtils.error('QGIS calculator formula {0} failed: returned {1}'.format(formula, result), self._gv.isBatch)
-            return None, None, 0, 0
+        accFile = ad8File if self._gv.fromGRASS else base + 'clip.tif'
+        if not (self._gv.fromGRASS or QSWATUtils.isUpToDate(ad8File, accFile)):
+            ad8Layer = QgsRasterLayer(ad8File, 'P')
+            entry1 = QgsRasterCalculatorEntry()
+            entry1.bandNumber = 1
+            entry1.raster = ad8Layer
+            entry1.ref = 'P@1'        
+            basinLayer = QgsRasterLayer(basinFile, 'Q')
+            entry2 = QgsRasterCalculatorEntry()
+            entry2.bandNumber = 1
+            entry2.raster = basinLayer
+            entry2.ref = 'Q@1'
+            QSWATUtils.tryRemoveFiles(accFile)
+            # The formula is a standard way of masking P with Q, since 
+            # where Q is nodata Q / Q evaluates to nodata, and elsewhere evaluates to 1.
+            # We use 'Q+1' instead of Q to avoid problems in first subbasin 
+            # when PolygonId is zero so Q is zero
+            formula = '((Q@1 + 1) / (Q@1 + 1)) * P@1'
+            calc = QgsRasterCalculator(formula, accFile, 'GTiff', ad8Layer.extent(), ad8Layer.width(), ad8Layer.height(), [entry1, entry2],
+                                       QgsCoordinateTransformContext())
+            result = calc.processCalculation(feedback=None)
+            if result == 0:
+                assert os.path.exists(accFile), 'QGIS calculator formula {0} failed to write output'.format(formula)
+                QSWATUtils.copyPrj(ad8File, accFile)
+            else:
+                QSWATUtils.error('QGIS calculator formula {0} failed: returned {1}'.format(formula, result), self._gv.isBatch)
+                return None, None, 0, 0
         accRaster = gdal.Open(accFile, gdal.GA_ReadOnly)
         if accRaster is None:
             QSWATUtils.error('Cannot open accumulation file {0}'.format(accFile), self._gv.isBatch)
@@ -2452,9 +2532,10 @@ class Delineation(QObject):
         writer = None  # type: ignore
         QSWATUtils.copyPrj(flowFile, gridFile)
         # make wshed layer active so loads above it
-        wshedLayer = QSWATUtils.getLayerByLegend(QSWATUtils._WATERSHEDLEGEND, root.findLayers())
-        if wshedLayer:
-            wshedlayer = wshedLayer.layer()
+        wshedTreeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._WATERSHEDLEGEND, root.findLayers())
+        if wshedTreeLayer:
+            wshedLayer = wshedTreeLayer.layer()
+            assert wshedLayer is not None
             self._iface.setActiveLayer(wshedLayer)
             QSWATUtils.setLayerVisibility(wshedLayer, False, root)
         gridLayer, loaded = QSWATUtils.getLayerByFilename(root.findLayers(), gridFile, FileTypes._GRID, 
@@ -2464,6 +2545,7 @@ class Delineation(QObject):
             return
         self._gv.wshedFile = gridFile
         styleFile = FileTypes.styleFile(FileTypes._GRID)
+        assert styleFile is not None
         gridLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, styleFile))
         # make grid active layer so streams layer comes above it.
         self._iface.setActiveLayer(gridLayer)
@@ -2540,6 +2622,7 @@ class Delineation(QObject):
         if not gridStreamsLayer:
             QSWATUtils.error('Failed to load grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
             return -1
+        assert isinstance(gridStreamsLayer, QgsVectorLayer)
         #gridStreamsLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, styleFile))
         # make stream width dependent on drainage values (drainage is accumulation, ie number of dem cells draining to start of stream)
         numClasses = 5
@@ -2760,6 +2843,7 @@ class Delineation(QObject):
         if not outletLayer:
             QSWATUtils.error('Cannot find inlets/outlets layer', self._gv.isBatch)
             return result
+        assert isinstance(outletLayer, QgsVectorLayer)
         idIndex = self._gv.topo.getIndex(outletLayer, QSWATTopology._ID)
         fieldIndex = self._gv.topo.getIndex(outletLayer, field)
         for f in outletLayer.getFeatures():
@@ -2806,13 +2890,14 @@ class Delineation(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._DEM), root.findLayers())
             if treeLayer is not None:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._DEM)), self._gv.isBatch, True) == QMessageBox.Yes:
                     demLayer = layer
                     demFile = possFile
         if demLayer:
             self._gv.demFile = demFile
             self._dlg.selectDem.setText(self._gv.demFile)
+            assert isinstance(demLayer, QgsRasterLayer)
             self.setDefaultNumCells(demLayer)
         else:
             self._gv.demFile = '' 
@@ -2839,7 +2924,7 @@ class Delineation(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(ft), root.findLayers())
             if treeLayer is not None:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(ft)), self._gv.isBatch, True) == QMessageBox.Yes:
                     wshedLayer = layer
                     wshedFile = possFile
@@ -2858,7 +2943,7 @@ class Delineation(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._BURN), root.findLayers())
             if treeLayer is not None:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._BURN)), self._gv.isBatch, True) == QMessageBox.Yes:
                     burnLayer = layer
                     burnFile = possFile
@@ -2878,7 +2963,7 @@ class Delineation(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._STREAMS), root.findLayers())
             if treeLayer:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._STREAMS)), self._gv.isBatch, True) == QMessageBox.Yes:
                     streamLayer = layer
                     streamFile = possFile
@@ -2901,7 +2986,7 @@ class Delineation(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._OUTLETS), root.findLayers())
             if treeLayer:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._OUTLETS)), self._gv.isBatch, True) == QMessageBox.Yes:
                     outletLayer = layer
                     outletFile = possFile
@@ -2921,11 +3006,12 @@ class Delineation(QObject):
             treeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._EXTRALEGEND, root.findLayers())
             if treeLayer:
                 layer = treeLayer.layer()
-                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()
+                possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, QSWATUtils._EXTRALEGEND), self._gv.isBatch, True) == QMessageBox.Yes:
                     extraOutletLayer = layer
                     extraOutletFile = possFile 
         if extraOutletLayer:
+            assert isinstance(extraOutletLayer, QgsVectorLayer)
             self._gv.extraOutletFile = extraOutletFile
             basinIndex = self._gv.topo.getIndex(extraOutletLayer, QSWATTopology._SUBBASIN)
             resIndex = self._gv.topo.getIndex(extraOutletLayer, QSWATTopology._RES)

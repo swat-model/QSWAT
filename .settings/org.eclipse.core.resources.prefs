@@ -58,6 +58,7 @@ encoding//QSWAT3/QSWAT/visualise.py=utf-8
 encoding//QSWAT3/QSWAT/visualisedialog.py=utf-8
 encoding//QSWAT3/__init__.py=utf-8
 encoding//QSWAT3/runHUC.py=utf-8
+encoding//QSWAT3/runTNC.py=utf-8
 encoding//QSWAT3/test_polygonize.py=utf-8
 encoding//QSWAT3/test_polygonizeInC.py=utf-8
 encoding//QSWAT3/test_polygonizeInC2.py=utf-8

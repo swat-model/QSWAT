@@ -31,6 +31,9 @@ TRANSLATIONS =
 ifeq ($(QSWAT_PROJECT), QSWAT3)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
+else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
+	COMPILER = msvc
+	PYD_FILES = $(PYX_FILES:.pyx=.cp39-win_amd64.pyd)
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
@@ -42,7 +45,7 @@ PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.
 		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py QSWATData.py \
 		QSWATUtils.py DBUtils.py polygonize.py QSWATTopology.py TauDEMUtils.py globals.py swatgraph.py graphdialog.py graphdialog1.py \
 		convertToPlus.py convertdialog.py convertFromArc.py arc_convertdialog.py \
-		setuppyx.py make_uis.py				
+		setuppyx.py setuppyx3_9.py make_uis.py				
 
 PYC_FILES = $(PY_FILES:.py=.pyc)
 
@@ -84,6 +87,9 @@ compile: $(RESOURCE_FILES) $(PYD_FILES)
 
 %.cp37-win_amd64.pyd : %.pyx
 	python setuppyx.py build_ext --inplace --compiler=$(COMPILER)
+
+%.cp39-win_amd64.pyd : %.pyx
+	python setuppyx3_9.py build_ext --inplace --compiler=$(COMPILER)
 	
 #%_rc.py : %.qrc
 #	pyrcc5 -o $*_rc.py  $<

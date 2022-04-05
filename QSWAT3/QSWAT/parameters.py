@@ -53,6 +53,14 @@ class Parameters:
     _DBPROJ = 'QSWATProj2012.mdb'
     # TODO: the reference database is the official one with crop table extended for global landuses
     _DBREF = 'QSWATRef2012.mdb'
+    # databases for TNC projects
+    _TNCDBPROJ = 'QSWATProj2012_TNC.mdb'
+    _TNCDBREF = 'QSWATRef2012_TNC.mdb'
+    # possible soil tables for TNC projects
+    _TNCFAOLOOKUP = 'FAO_soils_TNC'
+    _TNCFAOUSERSOIL = 'usersoil_FAO'
+    _TNCHWSDLOOKUP = 'HWSD_soils_TNC'
+    _TNCHWSDUSERSOIL = 'usersoil_HWSD'
     # Use later driver
     _ACCESSSTRING = 'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='
     # _ACCESSSTRING = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ='
@@ -132,6 +140,16 @@ class Parameters:
     # landuses for which we use just one SSURGO soil and where we make the slope at most _WATERMAXSLOPE 
     _WATERLANDUSES = {'WATR', 'WETN', 'WETF', 'RIWF', 'UPWF', 'RIWN', 'UPWN'}
     _WATERMAXSLOPE = 0.00001
+    # similar for TNC projects using FAO or HWSD soils
+    _TNCWATERLANDUSES = {'WEWO', 'WETL', 'WEHB', 'WATR', 'TWEW', 'TWET', 'TWEH'}
+    _TNCFAOWATERSOIL = 6997 # 'WATER-6997'
+    _TNCFAOWATERSOILS = {6997, 1972} # {'WATER-6997', 'WATER-1972'}
+    _TNCHWSDWATERSOIL = 39997 # 'WATER-6997'
+    _TNCHWSDWATERSOILS = {39997, 34972} # {'WATER-6997', 'WATER-1972'}
+    # default value for slope in grid models (to replace slope no data)
+    _GRIDDEFAULTSLOPE = 0.005
+    # maximum slope for RICE
+    _RICEMAXSLOPE = 0.005
     
     def __init__(self, gv):
         """Initialise class variables."""
