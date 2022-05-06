@@ -194,9 +194,9 @@ class runHUC():
             name = '' # only used for weather gauges
             typ = 'W'
             sql2 = 'INSERT INTO ' + table + ' VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?)'
-            cursor.execute(sql2, maxId, POINTID, GRID_CODE,
+            cursor.execute(sql2, (maxId, POINTID, GRID_CODE,
                        float(pointXY.x()), float(pointXY.y()), float(pointll.y()), float(pointll.x()), 
-                       float(elev), name, typ, SWATBasin, HydroID, OutletID)
+                       float(elev), name, typ, SWATBasin, HydroID, OutletID))
             
 def runProject(d, dataDir, scale, minHRUha):
     """Run a QSWAT project on directory d"""

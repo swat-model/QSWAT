@@ -34,6 +34,7 @@ from osgeo.gdalconst import *  # type: ignore # @UnusedWildImport
 import glob
 from datetime import date
 import math
+import sqlite3
 import traceback
 from typing import Dict, List, Set, Tuple, Optional, Union, Any, TYPE_CHECKING, cast  # @UnusedImport
 
@@ -309,6 +310,8 @@ class Visualise(QObject):
         pattern = QSWATUtils.join(self._gv.scenariosDir, '*')
         for direc in glob.iglob(pattern):
             db = QSWATUtils.join(QSWATUtils.join(direc, Parameters._TABLESOUT), Parameters._OUTPUTDB)
+            if self._gv.forTNC:
+                db = db.replace('.mdb', '.sqlite')
             if os.path.exists(db):
                 self._dlg.scenariosCombo.addItem(os.path.split(direc)[1])
         for month in Visualise._MONTHS:
@@ -371,15 +374,18 @@ class Visualise(QObject):
         if not os.path.exists(cioFile):
             QSWATUtils.error('Cannot find cio file {0}'.format(cioFile), self._gv.isBatch)
             return
-        self.conn = self._gv.db.connectDb(self.db, readonly=True)
         if not self.conn:
             return
         self.readCio(cioFile)
         self._dlg.outputCombo.clear()
         self._dlg.outputCombo.addItem('')
         tables: List[str] = []
-        for row in self.conn.cursor().tables(tableType='TABLE'):
-            tables.append(row.table_name)
+        if self._gv.forTNC:
+            for row in self.conn.execute("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1"):
+                tables.append(row[0])
+        else:
+            for row in self.conn.cursor().tables(tableType='TABLE'):
+                tables.append(row.table_name)
         self.setHRUs(tables)
         for table in tables:
             if (self.HRUsSetting > 0 and table == 'hru') or table == 'rch' or table == 'sub' or table == 'sed' or table == 'wql':
@@ -396,7 +402,11 @@ class Visualise(QObject):
         scenDir = QSWATUtils.join(self._gv.scenariosDir, scenario)
         outDir = QSWATUtils.join(scenDir, Parameters._TABLESOUT)
         self.db = QSWATUtils.join(outDir, Parameters._OUTPUTDB)
-        self.conn = self._gv.db.connectDb(self.db, readonly=True)
+        if self._gv.forTNC:
+            self.db = self.db.replace('.mdb', '.sqlite')
+            self.conn = sqlite3.connect('file:{0}?mode=ro'.format(self.db), uri=True)
+        else:
+            self.conn = self._gv.db.connectDb(self.db, readonly=True)
         
     def setupTable(self) -> None:
         """Initialise the plot table."""
@@ -432,12 +442,20 @@ class Visualise(QObject):
         self._dlg.variablePlot.addItem('')
         self._dlg.variableList.clear()
         cursor = self.conn.cursor()
-        for row in cursor.columns(table=self.table):
-            var = row.column_name
-            if not var in self.ignoredVars:
-                self._dlg.variableCombo.addItem(var)
-                self._dlg.animationVariableCombo.addItem(var)
-                self._dlg.variablePlot.addItem(var)
+        if self._gv.forTNC:
+            for row in cursor.execute("SELECT name from pragma_table_info('{0}')".format(self.table)):
+                var = row[0]
+                if not var in self.ignoredVars:
+                    self._dlg.variableCombo.addItem(var)
+                    self._dlg.animationVariableCombo.addItem(var)
+                    self._dlg.variablePlot.addItem(var)
+        else:
+            for row in cursor.columns(table=self.table):
+                var = row.column_name
+                if not var in self.ignoredVars:
+                    self._dlg.variableCombo.addItem(var)
+                    self._dlg.animationVariableCombo.addItem(var)
+                    self._dlg.variablePlot.addItem(var)
         self.updateCurrentPlotRow(1)
                 
     def plotting(self) -> bool:
@@ -692,7 +710,8 @@ class Visualise(QObject):
                     return
             else:
                 if table == 'hru':
-                    hrugis = int(sub) * 10000 + int(hru)
+                    hrufactor = 100 if self._gv.forTNC else 10000
+                    hrugis = int(sub) * hrufactor + int(hru)
                     # note that HRUGIS string as stored seems to have preceding space
                     where = "HRUGIS=' {0:09}'".format(hrugis)
                     num = hrugis if self.HRUsSetting == 2 else int(sub)
@@ -1111,9 +1130,11 @@ class Visualise(QObject):
         maxSub = 0
         sql = self._gv.db.sqlSelect('hru', QSWATTopology._HRUGIS, '', '')
         for row in self.conn.execute(sql):
-            hrugis = int(row.HRUGIS)
-            hru = hrugis % 10000
-            sub = hrugis // 10000
+            hrugis = int(row[0])
+            # TNC projects use 7+2 filenames, instead of 5+4
+            hrufactor = 100 if self._gv.forTNC else 10000
+            hru = hrugis % hrufactor
+            sub = hrugis // hrufactor
             maxHRU = max(maxHRU, hru)
             maxSub = max(maxSub, sub)
             self.hruNums[sub] = max(hru, self.hruNums.get(sub, 0))
@@ -1265,7 +1286,8 @@ class Visualise(QObject):
         if self.useSubs():
             # add labels
             assert self.subResultsLayer is not None
-            self.subResultsLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'subresults.qml'))
+            if not self._gv.useGridModel:
+                self.subResultsLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'subresults.qml'))
             self.internalChangeToSubRenderer = False
             baseMapTip = FileTypes.mapTip(FileTypes._SUBBASINS)
         elif self.useHRUs():
@@ -1641,8 +1663,8 @@ class Visualise(QObject):
         xmin = extent.xMinimum()
         ymin = extent.yMinimum()
         ymax = extent.yMaximum()
-        QSWATUtils.loginfo('Map canvas extent {0}, {1}, {2}, {3}'.format(str(int(xmin + 0.5)), str(int(ymin + 0.5)), 
-                                                                         str(int(xmax + 0.5)), str(int(ymax + 0.5))))
+        QSWATUtils.loginfo('Map canvas extent {0}, {1}, {2}, {3}'.format(str(round(xmin)), str(round(ymin)), 
+                                                                         str(round(xmax)), str(round(ymax))))
         # need to expand either x or y extent to fit map shape
         xdiff = ((ymax - ymin) / height) * width - (xmax - xmin)
         if xdiff > 0:
@@ -1654,12 +1676,12 @@ class Visualise(QObject):
             ydiff = (((xmax - xmin) / width) * height) - (ymax - ymin)
             ymin = ymin - ydiff / 2
             ymax = ymax + ydiff / 2
-        QSWATUtils.loginfo('Map extent set to {0}, {1}, {2}, {3}'.format(str(int(xmin + 0.5)), str(int(ymin + 0.5)), 
-                                                                         str(int(xmax + 0.5)), str(int(ymax + 0.5))))
+        QSWATUtils.loginfo('Map extent set to {0}, {1}, {2}, {3}'.format(str(round(xmin)), str(round(ymin)), 
+                                                                         str(round(xmax)), str(round(ymax))))
         # estimate of segment size for scale
         # aim is approx 10mm for 1 segment
         # we make size a power of 10 so that segments are 1km, or 10, or 100, etc.
-        segSize = 10 ** int(math.log10((xmax - xmin) / (width / 10)) + 0.5)
+        segSize = 10 ** round(math.log10((xmax - xmin) / (width / 10)))
         layerStr = '<Layer source="{0}" provider="ogr" name="{1}">{2}</Layer>'
         for i in range(count):
             layer = animationLayers[i].layer()
@@ -1943,8 +1965,8 @@ class Visualise(QObject):
             title = strng.format(float(minv), float(maxv))
         else:
             factor = int(10 ** abs(precision))
-            minv1 = int(minv / factor + 0.5) * factor
-            maxv1 = int(maxv / factor + 0.5) * factor
+            minv1 = round(minv / factor) * factor
+            maxv1 = round(maxv / factor) * factor
             title = '{0} - {1}'.format(minv1, maxv1)
         rng = QgsRendererRange(minv, maxv, symbol, title)
         return rng
@@ -2106,8 +2128,8 @@ class Visualise(QObject):
         xmin = extent.xMinimum()
         ymin = extent.yMinimum()
         ymax = extent.yMaximum()
-        QSWATUtils.loginfo('Map canvas extent {0}, {1}, {2}, {3}'.format(str(int(xmin + 0.5)), str(int(ymin + 0.5)), 
-                                                                         str(int(xmax + 0.5)), str(int(ymax + 0.5))))
+        QSWATUtils.loginfo('Map canvas extent {0}, {1}, {2}, {3}'.format(str(round(xmin)), str(round(ymin)), 
+                                                                         str(round(xmax)), str(round(ymax))))
         # need to expand either x or y extent to fit map shape
         xdiff = ((ymax - ymin) / height) * width - (xmax - xmin)
         if xdiff > 0:
@@ -2119,12 +2141,12 @@ class Visualise(QObject):
             ydiff = (((xmax - xmin) / width) * height) - (ymax - ymin)
             ymin = ymin - ydiff / 2
             ymax = ymax + ydiff / 2
-        QSWATUtils.loginfo('Map extent set to {0}, {1}, {2}, {3}'.format(str(int(xmin + 0.5)), str(int(ymin + 0.5)), 
-                                                                         str(int(xmax + 0.5)), str(int(ymax + 0.5))))
+        QSWATUtils.loginfo('Map extent set to {0}, {1}, {2}, {3}'.format(str(round(xmin)), str(round(ymin)), 
+                                                                         str(round(xmax)), str(round(ymax))))
         # estimate of segment size for scale
         # aim is approx 10mm for 1 segment
         # we make size a power of 10 so that segments are 1km, or 10, or 100, etc.
-        segSize = 10 ** int(math.log10((xmax - xmin) / (width / 10)) + 0.5)
+        segSize = 10 ** round(math.log10((xmax - xmin) / (width / 10)))
         layerStr = '<Layer source="{0}" provider="ogr" name="{1}">{2}</Layer>'
         for i in range(count):
             layer = resultsLayers[i].layer()
@@ -2223,9 +2245,9 @@ class Visualise(QObject):
             if self.isDaily or self.table == 'wql':
                 animateLength = self.periodDays
             elif self.isAnnual:
-                animateLength = int(self.periodYears + 0.5)
+                animateLength = round(self.periodYears)
             else:
-                animateLength = int(self.periodMonths + 0.5)
+                animateLength = round(self.periodMonths)
             self._dlg.slider.setMinimum(1)
             self._dlg.slider.setMaximum(animateLength)
             self.colourAnimationLayer()

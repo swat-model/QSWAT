@@ -11,9 +11,9 @@
 [general]
 name=QSWAT3
 qgisMinimumVersion=3.16
-#qgisMaximumVersion=
+qgisMaximumVersion=3.18
 description=Create SWAT inputs
-version=1.4.10
+version=1.5.4
 author=Chris George
 email=cgeorge@mcmaster.ca
 

@@ -53,7 +53,7 @@ class CellData:
         
     def multiply(self, factor: float) -> None:
         """Multiply cell values by factor."""
-        self.cellCount = int(self.cellCount * factor + 0.5) 
+        self.cellCount = round(self.cellCount * factor) 
         self.area *= factor
         self.totalSlope *= factor 
         
@@ -454,9 +454,9 @@ class BasinData:
             if hru >= 0:  # have existing WATR HRU
                 hruData = self.hruMap[hru]
                 hruData.area = area
-                hruData.cellCount = int(area / gv.cellArea + 0.5)
+                hruData.cellCount = round(area / gv.cellArea)
             else:  # create a water HRU
-                cellCount = int(area / gv.cellArea + 0.5)
+                cellCount = round(area / gv.cellArea)
                 hruData = CellData(cellCount, area, Parameters._WATERMAXSLOPE * cellCount, waterLanduse)
                 self.relHru += 1
                 self.hruMap[self.relHru] = hruData

@@ -74,6 +74,8 @@ class GridData:
         self.maxRow = maxRow
         ## Column in accumulation grid of maximum accumulation point
         self.maxCol = maxCol
+        ## polygonId of outlet cell
+        self.outlet = -1  # -1 means not yet set
 
 class Delineation(QObject):
     
@@ -407,7 +409,7 @@ class Delineation(QObject):
                 self._iface.messageBar().pushMessage('Large DEM', \
                                                  'This DEM has over {0!s} million cells and could take some time to process.  Be patient!'.format(millions), \
                                                  level=Qgis.Warning, duration=20)
-            # hillshade wastes of (a lot of) time for TNC DEMs
+            # hillshade waste of (a lot of) time for TNC DEMs
             if not self._gv.forTNC:
                 self.addHillshade(demFile, root, cast(QgsRasterLayer, demMapLayer), self._gv)
          
@@ -936,14 +938,17 @@ class Delineation(QObject):
                 return
             self.progress('DinfFlowDir done')
         if self._gv.useGridModel:
-            # set centroids
+            # set centroids and catchment outlets
             basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)
+            outletIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._OUTLET)
             if basinIndex < 0:
                 return
             for feature in wshedLayer.getFeatures():
                 basin = feature[basinIndex]
+                outlet = feature[outletIndex]
                 centroid = feature.geometry().centroid().asPoint()
                 self._gv.topo.basinCentroids[basin] = (centroid.x(), centroid.y())
+                self._gv.topo.catchmentOutlets[basin] = outlet
         else:
             # generate watershed raster
             wFile = base + 'w' + suffix
@@ -1053,7 +1058,7 @@ class Delineation(QObject):
             return False
         self.demWidth = demLayer.width()
         self.demHeight = demLayer.height()
-        if int(demLayer.rasterUnitsPerPixelX() + 0.5) != int(demLayer.rasterUnitsPerPixelY() + 0.5):
+        if round(demLayer.rasterUnitsPerPixelX()) != round(demLayer.rasterUnitsPerPixelY()):
             QSWATUtils.information('WARNING: DEM cells are not square: {0!s} x {1!s}'.format(demLayer.rasterUnitsPerPixelX(), demLayer.rasterUnitsPerPixelY()), self._gv.isBatch)
         self.sizeX = demLayer.rasterUnitsPerPixelX() * factor
         self.sizeY = demLayer.rasterUnitsPerPixelY() * factor
@@ -2239,8 +2244,14 @@ class Delineation(QObject):
     
     def createGridShapefile(self, demLayer: QgsRasterLayer, pFile: str, ad8File: str, wFile: str) -> None:
         """Create grid shapefile for watershed."""
-        gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
-        gridStreamsFile = QSWATUtils.join(self._gv.shapesDir, 'gridstreams.shp')
+        gridSize = self._dlg.GridSize.value()
+        if self._gv.forTNC:
+            # store grid and gridstreams with DEM so can be reused for same grid size
+            gridFile = QSWATUtils.join(self._gv.sourceDir, 'grid{0}.shp'.format(gridSize))
+            gridStreamsFile = QSWATUtils.join(self._gv.sourceDir, 'grid{0}streams.shp'.format(gridSize))
+        else:
+            gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
+            gridStreamsFile = QSWATUtils.join(self._gv.shapesDir, 'gridstreams.shp')
         if QSWATUtils.isUpToDate(self._gv.demFile, gridFile) and QSWATUtils.isUpToDate(self._gv.demFile, gridStreamsFile):
             # restore settings of wshed and streams shapefiles
             self._gv.wshedFile = gridFile
@@ -2258,7 +2269,6 @@ class Delineation(QObject):
                 QSWATUtils.error('Failed to load grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
             return
         self.progress('Creating grid ...')
-        gridSize = self._dlg.GridSize.value()
         accFile = ad8File
         flowFile = pFile
         time2 = time.process_time()
@@ -2270,10 +2280,13 @@ class Delineation(QObject):
             if self.addDownstreamData(storeGrid, flowFile, gridSize, accTransform):
                 time4 = time.process_time()
                 QSWATUtils.loginfo('Adding downstream data took {0} seconds'.format(int(time4 - time3)))
-                self.writeGridShapefile(storeGrid, flowFile, gridSize, accTransform)
+                self.addGridOutlets(storeGrid)
+                time4a = time.process_time()
+                QSWATUtils.loginfo('Adding outlets took {0} seconds'.format(int(time4a - time4)))
+                self.writeGridShapefile(storeGrid, gridFile, flowFile, gridSize, accTransform)
                 time5 = time.process_time()
-                QSWATUtils.loginfo('Writing grid shapefile took {0} seconds'.format(int(time5 - time4)))
-                numOutlets = self.writeGridStreamsShapefile(storeGrid, flowFile, minDrainArea, maxDrainArea, accTransform)
+                QSWATUtils.loginfo('Writing grid shapefile took {0} seconds'.format(int(time5 - time4a)))
+                numOutlets = self.writeGridStreamsShapefile(storeGrid, gridStreamsFile, flowFile, minDrainArea, maxDrainArea, accTransform)
                 time6 = time.process_time()
                 QSWATUtils.loginfo('Writing grid streams shapefile took {0} seconds'.format(int(time6 - time5)))
                 # if numOutlets >= 0:
@@ -2414,8 +2427,8 @@ class Delineation(QObject):
                     accToPRow = 0
                     accToPCol = 0
                 else:
-                    accToPCol = int((accTransform[0] - pTransform[0]) / accTransform[1] + 0.5)
-                    accToPRow = int((accTransform[3] - pTransform[3]) / accTransform[5] + 0.5)
+                    accToPCol = round((accTransform[0] - pTransform[0]) / accTransform[1])
+                    accToPRow = round((accTransform[3] - pTransform[3]) / accTransform[5])
                     #pRow = QSWATTopology.yToRow(QSWATTopology.rowToY(gridData.maxRow, accTransform), pTransform)
                     #pCol = QSWATTopology.xToCol(QSWATTopology.colToX(gridData.maxCol, accTransform), pTransform)
                 currentPRow = gridData.maxRow + accToPRow
@@ -2475,8 +2488,31 @@ class Delineation(QObject):
         pRaster = None
         pArray = None
         return True
+    
+    @staticmethod
+    def addGridOutlets(storeGrid: Dict[int, Dict[int, GridData]]) -> None:
+        """Add outlets to grid data."""
+        for gridRow, gridCols in storeGrid.items():
+            for gridCol in gridCols:
+                current  = gridRow, gridCol
+                downChain: List[int] = []
+                while True:
+                    currentGrid = storeGrid[current[0]][current[1]]
+                    if currentGrid.downNum < 0:
+                        currentGrid.outlet = currentGrid.num
+                    if currentGrid.outlet >= 0:
+                        for row, col in downChain:
+                            storeGrid[row][col].outlet = currentGrid.outlet
+                        break
+                    if current in downChain:
+                        QSWATUtils.loginfo('Row {0} column {1} links to itself in the grid'.format(current[0], current[1]))
+                        for row, col in downChain:
+                            storeGrid[row][col].outlet = currentGrid.num
+                        break
+                    downChain.append(current)
+                    current = currentGrid.downRow, currentGrid.downCol
         
-    def writeGridShapefile(self, storeGrid: Dict[int, Dict[int, GridData]], 
+    def writeGridShapefile(self, storeGrid: Dict[int, Dict[int, GridData]], gridFile: str,
                            flowFile: str, gridSize: int, accTransform: Transform) -> None:
         """Write grid data to grid shapefile.  Also writes centroids dictionary."""
         self.progress('Writing grid ...')
@@ -2484,7 +2520,7 @@ class Delineation(QObject):
         fields.append(QgsField(QSWATTopology._POLYGONID, QVariant.Int))
         fields.append(QgsField(QSWATTopology._DOWNID, QVariant.Int))
         fields.append(QgsField(QSWATTopology._AREA, QVariant.Int))
-        gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
+        fields.append(QgsField(QSWATTopology._OUTLET, QVariant.Int))
         root = QgsProject.instance().layerTreeRoot()
         QSWATUtils.removeLayer(gridFile, root)
         transform_context = QgsProject.instance().transformContext()
@@ -2496,10 +2532,12 @@ class Delineation(QObject):
         idIndex = fields.indexFromName(QSWATTopology._POLYGONID)
         downIndex = fields.indexFromName(QSWATTopology._DOWNID)
         areaIndex = fields.indexFromName(QSWATTopology._AREA)
+        outletIndex = fields.indexFromName(QSWATTopology._OUTLET)
         ul_x, x_size, _, ul_y, _, y_size = accTransform
         xDiff = x_size * gridSize * 0.5
         yDiff = y_size * gridSize * 0.5
         self._gv.topo.basinCentroids = dict()
+        self._gv.topo.catchmentOutlets = dict()
         for gridRow, gridCols in storeGrid.items():
             # grids can be big so we'll add one row at a time
             centreY = (gridRow + 0.5) * gridSize * y_size + ul_y
@@ -2511,6 +2549,7 @@ class Delineation(QObject):
                 # Needs to be centre of grid for correct identification of landuse, soil and slope rows
                 # when creating HRUs.
                 self._gv.topo.basinCentroids[gridData.num] = (centreX, centreY)
+                self._gv.topo.catchmentOutlets[gridData.num] = gridData.outlet
                 x1 = centreX - xDiff
                 x2 = centreX + xDiff
                 y1 = centreY - yDiff
@@ -2521,6 +2560,7 @@ class Delineation(QObject):
                 feature.setAttribute(idIndex, gridData.num)
                 feature.setAttribute(downIndex, gridData.downNum)
                 feature.setAttribute(areaIndex, gridData.area)
+                feature.setAttribute(outletIndex, gridData.outlet)
                 geometry = QgsGeometry.fromPolygonXY([ring])
                 feature.setGeometry(geometry)
                 features.append(feature)
@@ -2550,7 +2590,7 @@ class Delineation(QObject):
         # make grid active layer so streams layer comes above it.
         self._iface.setActiveLayer(gridLayer)
         
-    def writeGridStreamsShapefile(self, storeGrid: Dict[int, Dict[int, GridData]], flowFile: str, 
+    def writeGridStreamsShapefile(self, storeGrid: Dict[int, Dict[int, GridData]], gridStreamsFile: str, flowFile: str, 
                                   minDrainArea: float, maxDrainArea: float, accTransform: Transform) -> int:
         """Write grid data to grid streams shapefile."""
         self.progress('Writing grid streams ...')
@@ -2559,9 +2599,9 @@ class Delineation(QObject):
         fields.append(QgsField(QSWATTopology._LINKNO, QVariant.Int))
         fields.append(QgsField(QSWATTopology._DSLINKNO, QVariant.Int))
         fields.append(QgsField(QSWATTopology._WSNO, QVariant.Int))
+        fields.append(QgsField(QSWATTopology._OUTLET, QVariant.Int))
         fields.append(QgsField('Drainage', QVariant.Double, len=10, prec=2))
         fields.append(QgsField(QSWATTopology._PENWIDTH, QVariant.Double))
-        gridStreamsFile = QSWATUtils.join(self._gv.shapesDir, 'gridstreams.shp')
         QSWATUtils.removeLayer(gridStreamsFile, root)
         transform_context = QgsProject.instance().transformContext()
         writer = QgsVectorFileWriter.create(gridStreamsFile, fields, QgsWkbTypes.LineString, self._gv.topo.crsProject,
@@ -2572,6 +2612,7 @@ class Delineation(QObject):
         linkIndex = fields.indexFromName(QSWATTopology._LINKNO)
         downIndex = fields.indexFromName(QSWATTopology._DSLINKNO)
         wsnoIndex = fields.indexFromName(QSWATTopology._WSNO)
+        outletIndex = fields.indexFromName(QSWATTopology._OUTLET)
         drainIndex = fields.indexFromName('Drainage')
         penIndex = fields.indexFromName(QSWATTopology._PENWIDTH)
         if maxDrainArea > minDrainArea: # guard against division by zero
@@ -2599,6 +2640,7 @@ class Delineation(QObject):
                 feature.setAttribute(linkIndex, gridData.num)
                 feature.setAttribute(downIndex, downNum)
                 feature.setAttribute(wsnoIndex, gridData.num)
+                feature.setAttribute(outletIndex, gridData.outlet)
                 # area needs coercion to float or will not write
                 feature.setAttribute(drainIndex, float(gridData.drainArea))
                 # set pen width to value in range 0 .. 2

@@ -1063,11 +1063,13 @@ class QSWATUtils:
         return datetime.datetime.now().strftime('%H.%M')
     
     @staticmethod
-    def fileBase(SWATBasin: int, relhru: int) -> str:
+    def fileBase(SWATBasin: int, relhru: int, forTNC=False) -> str:
         """
         Return the string used to name SWAT input files 
         from basin and relative HRU number.
         """
+        if forTNC:
+            return '{0:07d}{1:02d}'.format(SWATBasin, relhru)
         return '{0:05d}{1:04d}'.format(SWATBasin, relhru)
     
     @staticmethod
@@ -1380,8 +1382,8 @@ class FileTypes:
         shader: QgsRasterShader = QgsRasterShader()
         stats: QgsRasterBandStats = layer.dataProvider().bandStatistics(1,
                                                                         QgsRasterBandStats.Min | QgsRasterBandStats.Max)
-        minVal: int = int(stats.minimumValue + 0.5)
-        maxVal: int = int(stats.maximumValue + 0.5)
+        minVal: int = round(stats.minimumValue)
+        maxVal: int = round(stats.maximumValue)
         mean: int = (minVal + maxVal) // 2
         s1: str = str((minVal * 2 + maxVal) // 3)
         s2: str = str((minVal + maxVal * 2) // 3)

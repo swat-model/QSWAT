@@ -20,7 +20,7 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import QPoint, QVariant
+from qgis.PyQt.QtCore import QVariant
 #from qgis.PyQt.QtGui import * # @UnusedWildImport
 #from qgis.PyQt.QtWidgets import * # @UnusedWildImport
 from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL
@@ -30,7 +30,8 @@ import os.path
 import glob
 import time
 import traceback
-import processing  # type: ignore  # @UnresolvedImport
+import math
+#import processing  # type: ignore  # @UnresolvedImport
 from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 
 if not TYPE_CHECKING:
@@ -112,6 +113,7 @@ class QSWATTopology:
     _PENWIDTH = 'PenWidth'
     _HRUGIS = 'HRUGIS'
     _TOTDASQKM = 'TotDASqKm'
+    _OUTLET = 'Outlet'
     _SOURCEX = 'SourceX'
     _SOURCEY = 'SourceY'
     _OUTLETX = 'OutletX'
@@ -149,6 +151,8 @@ class QSWATTopology:
         self.emptyBasins = set()
         ## centroids of basins as (x, y) pairs in projected units
         self.basinCentroids = dict()
+        ## catchment outlets, map of basin to basin, only used with grid meodels
+        self.catchmentOutlets = dict()
         ## link to reach length in metres
         self.streamLengths = dict()
         ## reach slopes in m/m
@@ -287,7 +291,8 @@ class QSWATTopology:
         if polyIndex < 0:
             QSWATUtils.loginfo('No {0} field in watershed layer'.format(QSWATTopology._POLYGONID))
             return False
-        areaIndex = self.getIndex(wshedLayer, QSWATTopology._AREA, ignoreMissing=ignoreWithGridOrExisting) 
+        areaIndex = self.getIndex(wshedLayer, QSWATTopology._AREA, ignoreMissing=ignoreWithGridOrExisting)
+        wshedOutletIndex = self.getIndex(wshedLayer, QSWATTopology._OUTLET, ignoreMissing=True)
         if outletLayer:
             idIndex = self.getIndex(outletLayer, QSWATTopology._ID, ignoreMissing=ignoreError)
             if idIndex < 0:
@@ -394,20 +399,22 @@ class QSWATTopology:
         time2 = time.process_time()
         QSWATUtils.loginfo('Topology setup took {0} seconds'.format(int(time2 - time1)))
         #QSWATUtils.loginfo('Finished setting tables from streams shapefile')
+        if wshedOutletIndex >= 0:
+            self.catchmentOutlets.clear()
         for polygon in wshedLayer.getFeatures():
             attrs = polygon.attributes()
+            basin = attrs[polyIndex]
+            if wshedOutletIndex >= 0:
+                self.catchmentOutlets[basin] = attrs[wshedOutletIndex]
             if areaIndex < 0 or recalculate:
                 area = polygon.geometry().area()
             else:
                 area = attrs[areaIndex]
-            basin = attrs[polyIndex]
-            if useGridModel:
+            if useGridModel and self.gridRows == 0:
                 # all areas the same, so just use first
                 # gridArea = area # not used
-                self.gridRows = int(polygon.geometry().length() / (4 * self.dy) + 0.5)
+                self.gridRows = round(polygon.geometry().length() / (4 * self.dy))
                 QSWATUtils.loginfo('Using {0!s} DEM grid rows per grid cell'.format(self.gridRows))
-                # note this break leaves centroids unset for grid model
-                break
             self.basinAreas[basin] = area
             if manyBasins:
                 # initialise drainAreas
@@ -871,7 +878,7 @@ class QSWATTopology:
             return None
         else:
             assert 0 <= prop < 1
-            return QPoint(x1 - prop * X, y1 - prop * Y)
+            return QgsPointXY(x1 - prop * X, y1 - prop * Y)
         
     @staticmethod
     def nearer(p1: Optional[QgsPointXY], p2: Optional[QgsPointXY], p: QgsPointXY) -> Optional[QgsPointXY]:
@@ -899,7 +906,7 @@ class QSWATTopology:
                 return
             curs = conn.cursor()
             table = 'MonitoringPoint'
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 sql0 = 'DROP TABLE IF EXISTS MonitoringPoint'
                 curs.execute(sql0)
                 sql1 = QSWATTopology._MONITORINGPOINTCREATESQL
@@ -990,7 +997,7 @@ class QSWATTopology:
                             self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, resId, 'R')
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing MonitoringPoint table took {0} seconds'.format(int(time2 - time1)))
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 conn.commit()
             else:
                 self.db.hashDbTable(conn, table)
@@ -1130,7 +1137,7 @@ class QSWATTopology:
                 return None
             table = 'Reach'
             curs = conn.cursor()
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 sql0 = 'DROP TABLE IF EXISTS Reach'
                 curs.execute(sql0)
                 sql1 = QSWATTopology._REACHCREATESQL
@@ -1209,7 +1216,7 @@ class QSWATTopology:
                         break
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing Reach table took {0} seconds'.format(int(time2 - time1)))
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 conn.commit()
             else:
                 self.db.hashDbTable(conn, table)
@@ -1840,6 +1847,20 @@ class QSWATTopology:
                     sameYSize = abs(ySize1 - ySize2) * numRows1 < abs(ySize2) * 0.5
                     return sameYSize
         return False
+    
+    @staticmethod
+    def distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+        """Return distance in m between points with latlon coordinates, using the haversine formula."""
+        dLat = math.radians(lat2 - lat1)
+        dLon = math.radians(lon2 - lon1)
+        latrad1 = math.radians(lat1)
+        latrad2 = math.radians(lat2)
+        sindLat = math.sin(dLat / 2)
+        sindLon = math.sin(dLon / 2)
+        a = sindLat * sindLat + sindLon * sindLon * math.cos(latrad1) * math.cos(latrad2)
+        radius = 6371000 # radius of earth in m
+        c = 2 * math.asin(math.sqrt(a))
+        return radius * c
         
     _REACHCREATESQL = \
     """

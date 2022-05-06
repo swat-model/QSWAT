@@ -54,8 +54,8 @@ class Parameters:
     # TODO: the reference database is the official one with crop table extended for global landuses
     _DBREF = 'QSWATRef2012.mdb'
     # databases for TNC projects
-    _TNCDBPROJ = 'QSWATProj2012_TNC.mdb'
-    _TNCDBREF = 'QSWATRef2012_TNC.mdb'
+    _TNCDBPROJ = 'QSWATProj2012_TNC.sqlite'
+    _TNCDBREF = 'QSWATRef2012_TNC.sqlite'
     # possible soil tables for TNC projects
     _TNCFAOLOOKUP = 'FAO_soils_TNC'
     _TNCFAOUSERSOIL = 'usersoil_FAO'
@@ -150,6 +150,34 @@ class Parameters:
     _GRIDDEFAULTSLOPE = 0.005
     # maximum slope for RICE
     _RICEMAXSLOPE = 0.005
+    
+    # TNC data
+    TNCExtents = {'CentralAmerica': (-92.3, 7.2, -59.4, 23.2),
+                  'NorthAmerica': (-178.3, 0, -29.9, 60.0),
+                  'SouthAmerica': (-109.7, -56.2, -34.5, 12.9),
+                  'Australia': (89.9, -55.0, 180, 0),
+                  'Africa': (-25.6, -35.1, 60.1, 27.6),
+                  'Europe': (-31.6, 34.3, 69.9, 60.0),
+                  'Asia': (-0.1, -11.1, 180, 60.0)}
+    wgnDb = 'swatplus_wgn.sqlite'
+    CHIRPSDir = 'CHIRPS'
+    CHIRPSGridsDir = 'grids_with_elevation'
+    CHIRPSStationsCsv = {'CentralAmerica': ['North_America_grids_w_elevation.csv', 'South_America_grids_w_elevation.csv'],
+                  'NorthAmerica': ['North_America_grids_w_elevation.csv'],
+                  'SouthAmerica': ['South_America_grids_w_elevation.csv'],
+                  'Australia': ['Australia_grids_w_elevation.csv', 'Asia_grids_w_elevation_02.csv'],
+                  'Africa': ['Africa_grids_w_elevation.csv'],
+                  'Europe': ['Europe_grids_w_elevation.csv', 'Asia_grids_w_elevation_01.csv', 'Asia_grids_w_elevation_02.csv'],
+                  'Asia': ['Europe_grids_w_elevation.csv', 'Asia_grids_w_elevation_01.csv', 'Asia_grids_w_elevation_02.csv']}
+    ERA5Dir = 'ERA5'
+    ERA5GridsDir = 'Weather'
+    ERA5StationsCsv = {'CentralAmerica': ['north_america_grids.csv', 'south_america_grids.csv'],
+                  'NorthAmerica': ['north_america_grids.csv'],
+                  'SouthAmerica': ['south_america_grids.csv'],
+                  'Australia': ['australia_grids.csv', 'asia_grids.csv'],
+                  'Africa': ['africa_grids.csv'],
+                  'Europe': ['europe_grids.csv'],
+                  'Asia': ['europe_grids.csv', 'asia_grids.csv']}
     
     def __init__(self, gv):
         """Initialise class variables."""

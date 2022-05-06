@@ -60,7 +60,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.5.3'
+    __version__ = '1.5.4'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -162,6 +162,7 @@ class QSwat(QObject):
         self._odlg.reportsLabel.setVisible(False)
         self._odlg.reportsBox.clear()
         self._odlg.reportsBox.addItem(QSWATUtils.trans('Select report to view'))
+        self._odlg.finished.connect(self.finish)
         # connect buttons
         self._odlg.aboutButton.clicked.connect(self.about)
         self._odlg.newButton.clicked.connect(self.newProject)
@@ -319,7 +320,10 @@ class QSwat(QObject):
                 self.showReports()
                 self._odlg.editLabel.setEnabled(True)
                 self._odlg.editButton.setEnabled(True)
-        if os.path.exists(QSWATUtils.join(self._gv.tablesOutDir, Parameters._OUTPUTDB)):
+        outputDb = QSWATUtils.join(self._gv.tablesOutDir, Parameters._OUTPUTDB)
+        if self._gv.forTNC:
+            outputDb = outputDb.replace('.mdb', '.sqlite')
+        if os.path.exists(outputDb):
             self._odlg.visualiseLabel.setVisible(True)
             self._odlg.visualiseButton.setVisible(True)
             self.loadVisualisationLayers()
@@ -649,9 +653,30 @@ class QSwat(QObject):
             return
         self._gv.setSWATEditorParams()
         subprocess.call(self._gv.SWATEditorPath)
-        if os.path.exists(QSWATUtils.join(self._gv.tablesOutDir, Parameters._OUTPUTDB)):
+        outputDb = QSWATUtils.join(self._gv.tablesOutDir, Parameters._OUTPUTDB)
+        if self._gv.forTNC:
+            outputDb = outputDb.replace('.mdb', '.sqlite')
+        if os.path.exists(outputDb):
             self._odlg.visualiseLabel.setVisible(True)
             self._odlg.visualiseButton.setVisible(True)
+                    
+    def finish(self):   
+        """Close the database connections and subsidiary forms."""
+        if QSWATUtils is not None:
+            QSWATUtils.loginfo('Closing databases')
+        try:
+            self.delin = None
+            self.hrus = None
+            self.vis = None
+            if self._gv and self._gv.db:
+                if self._gv.db.connRef:
+                    self._gv.db.connRef.close()
+                    if (self._gv.isHUC or self._gv.isHAWQS) and self._gv.db.SSURGOConn:
+                        self._gv.db.SSURGOConn.close()
+            if QSWATUtils is not None:
+                QSWATUtils.loginfo('Databases closed') 
+        except Exception:
+            pass
         
     def visualise(self) -> None:
         """Run visualise form."""

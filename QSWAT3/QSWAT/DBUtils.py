@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import Qt
 #from PyQt5.QtGui import * # @UnusedWildImport
 from qgis.PyQt.QtWidgets import QComboBox, QListWidget
-from qgis.core import QgsPointXY
+#from qgis.core import QgsPointXY
 import os.path
 import pyodbc  # type: ignore
 import sqlite3
@@ -43,7 +43,7 @@ class DBUtils:
     
     """Functions for interacting with project and reference databases."""
     
-    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isHAWQS: bool, logFile: Optional[str], isBatch: bool) -> None:
+    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isHAWQS: bool, forTNC: bool, logFile: Optional[str], isBatch: bool) -> None:
         """Initialise class variables."""
         ## Flag showing if batch run
         self.isBatch = isBatch
@@ -51,6 +51,8 @@ class DBUtils:
         self.isHUC = isHUC
         ## flag for HAWQS projects
         self.isHAWQS = isHAWQS
+        ## flag for TNC projects
+        self.forTNC = forTNC
         ## message logging file for HUC projects
         self.logFile = logFile
         ## project directory
@@ -59,8 +61,10 @@ class DBUtils:
         self.projName = projName
         ## project database
         dbSuffix = os.path.splitext(dbProjTemplate)[1]
-        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC or isHAWQS else QSWATUtils.join(projDir,  projName + dbSuffix)
-        if not (isHUC or isHAWQS):
+        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC or isHAWQS or forTNC else QSWATUtils.join(projDir,  projName + dbSuffix)
+        if forTNC and not os.path.isfile(self.dbFile):
+            shutil.copyfile(dbProjTemplate, self.dbFile)
+        if not (isHUC or isHAWQS or forTNC):
             self._connStr = Parameters._ACCESSSTRING + self.dbFile
             # copy template project database to project folder if not already there
             if not os.path.exists(self.dbFile):
@@ -68,17 +72,20 @@ class DBUtils:
             else:
                 self.updateProjDb(Parameters._SWATEDITORVERSION)
         ## reference database
-        dbRefName = 'QSWATRef2012.sqlite' if isHUC or isHAWQS else Parameters._DBREF
-        self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
-        if isHUC or isHAWQS:
+        if forTNC:
+            self.dbRefFile = dbRefTemplate
+        else:
+            dbRefName = 'QSWATRef2012.sqlite' if isHUC or isHAWQS else Parameters._DBREF
+            self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
+        if isHUC or isHAWQS or forTNC:
             if isHUC and not os.path.isfile(self.dbRefFile):
                 # look one up from project directory for reference database, so allowing it to be shared
                 self.dbRefFile = QSWATUtils.join(projDir + '/..', dbRefName)
             if not os.path.isfile(self.dbRefFile):
-                QSWATUtils.error('Failed to find HUC reference database {0}'.format(dbRefName), self.isBatch)
+                QSWATUtils.error('Failed to find reference database {0}'.format(dbRefName), self.isBatch)
                 return
             try:
-                self.connRef = sqlite3.connect(self.dbRefFile)  # @UndefinedVariable
+                self.connRef = sqlite3.connect('file:{0}?mode=ro'.format(self.dbRefFile), uri=True)  # @UndefinedVariable
                 if self.connRef is None:
                     QSWATUtils.error('Failed to connect to reference database {0}.'.format(self.dbRefFile), self.isBatch)
             except Exception:
@@ -89,13 +96,13 @@ class DBUtils:
             # copy template reference database to project folder if not already there
             if not os.path.exists(self.dbRefFile):
                 shutil.copyfile(dbRefTemplate, self.dbRefFile)
-            else:
-                self.updateRefDb(Parameters._SWATEDITORVERSION, dbRefTemplate)
             ## reference database connection
             try:
                 self.connRef = pyodbc.connect(self._connRefStr, readonly=True)
                 if self.connRef is None:
                     QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
+                else:
+                    self.updateRefDb(Parameters._SWATEDITORVERSION, dbRefTemplate)
             except Exception:
                 QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
                 self.connRef = None  # type: ignore
@@ -166,6 +173,8 @@ class DBUtils:
         self.defaultSoil = -1
         ## name of defaultSoil
         self.defaultSoilName = ''
+        ## name of usersoil table: can be changed for TNC projects
+        self.usersoil = 'usersoil'
         ## List of limits for slopes.
         #
         # A list [a,b] means slopes are in ranges [slopeMin,a), [a,b), [b,slopeMax] 
@@ -199,7 +208,7 @@ class DBUtils:
         if not os.path.exists(self.dbFile):
             QSWATUtils.error('Cannot find project database {0}.  Have you opened the project?'.format(self.dbFile), self.isBatch) 
         try:
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 conn = sqlite3.connect(self.dbFile)  # @UndefinedVariable
                 conn.row_factory = sqlite3.Row  # @UndefinedVariable
             elif readonly:
@@ -215,26 +224,31 @@ class DBUtils:
             QSWATUtils.error('Failed to connect to project database {0}: {1}.\n{2}'.format(self.dbFile, traceback.format_exc(), self.connectionProblem()), self.isBatch)
         return None
     
-    def connectRef(self, readonly=False) -> Any:
-        
-        """Connect to reference database."""
-        
-        if not os.path.exists(self.dbRefFile):
-            QSWATUtils.error('Cannot find reference database {0}'.format(self.dbRefFile), self.isBatch)
-            return None 
-        try:
-            if readonly:
-                conn = pyodbc.connect(self._connRefStr, readonly=True)
-            else:
-                # use autocommit when writing to tables, hoping to save storing rollback data
-                conn = pyodbc.connect(self._connRefStr, autocommit=True)
-            if conn:
-                return conn
-            else:
-                QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
-        except Exception:
-            QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
-        return None
+    #===========no longer used================================================================
+    # def connectRef(self, readonly=False) -> Any:
+    #     
+    #     """Connect to reference database."""
+    #     
+    #     if not os.path.exists(self.dbRefFile):
+    #         QSWATUtils.error('Cannot find reference database {0}'.format(self.dbRefFile), self.isBatch)
+    #         return None 
+    #     try:
+    #         if self.isHUC or self.isHAWQS or self.forTNC:
+    #             conn = sqlite3.connect(self.dbRefFile)  # @UndefinedVariable
+    #             conn.row_factory = sqlite3.Row  # @UndefinedVariable
+    #         elif readonly:
+    #             conn = pyodbc.connect(self._connRefStr, readonly=True)
+    #         else:
+    #             # use autocommit when writing to tables, hoping to save storing rollback data
+    #             conn = pyodbc.connect(self._connRefStr, autocommit=True)
+    #         if conn:
+    #             return conn
+    #         else:
+    #             QSWATUtils.error('Failed to connect to reference database {0}.\n{1}'.format(self.dbRefFile, self.connectionProblem()), self.isBatch)
+    #     except Exception:
+    #         QSWATUtils.error('Failed to connect to reference database {0}: {1}.\n{2}'.format(self.dbRefFile, traceback.format_exc(),self.connectionProblem()), self.isBatch)
+    #     return None
+    #===========================================================================
     
     def connectDb(self, db: str, readonly=False) -> Any:
         """Connect to database db."""
@@ -336,35 +350,34 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """ SWAT Editor 2012.10_2.18 renamed ElevationBandsrng to ElevationBandrng and added tblOutputVars."""
         
         if SWATEditorVersion == '2012.10_2.18' or SWATEditorVersion == '2012.10.19':
-            with self.connectRef() as connRef:
-                try:
-                    cursor = connRef.cursor()
-                    hasElevationBandrng = False
-                    hasElevationBandsrng = False
-                    hasTblOututVars = False
-                    for row in cursor.tables(tableType='TABLE'):
-                        table = row.table_name
-                        if table == 'ElevationBandrng':
-                            hasElevationBandrng = True
-                        elif table == 'ElevationBandsrng':
-                            hasElevationBandsrng = True
-                        elif table == 'tblOutputVars':
-                            hasTblOututVars = True
-                    if not hasElevationBandrng:
-                        sql = 'SELECT * INTO ElevationBandrng FROM [MS Access;DATABASE=' + dbRefTemplate + '].ElevationBandrng'
-                        cursor.execute(sql)
-                        QSWATUtils.loginfo('Created ElevationBandrng')
-                    if hasElevationBandsrng:
-                        sql = 'DROP TABLE ElevationBandsrng'
-                        cursor.execute(sql)
-                        QSWATUtils.loginfo('Deleted ElevationBandsrng')
-                    if not hasTblOututVars:
-                        sql = 'SELECT * INTO tblOutputVars FROM [MS Access;DATABASE=' + dbRefTemplate + '].tblOutputVars'
-                        cursor.execute(sql)
-                        QSWATUtils.loginfo('Created tblOutputVars')
-                except Exception:
-                    QSWATUtils.error('Could not update tables in reference database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
-                    return
+            try:
+                cursor = self.connRef.cursor()
+                hasElevationBandrng = False
+                hasElevationBandsrng = False
+                hasTblOututVars = False
+                for row in cursor.tables(tableType='TABLE'):
+                    table = row.table_name
+                    if table == 'ElevationBandrng':
+                        hasElevationBandrng = True
+                    elif table == 'ElevationBandsrng':
+                        hasElevationBandsrng = True
+                    elif table == 'tblOutputVars':
+                        hasTblOututVars = True
+                if not hasElevationBandrng:
+                    sql = 'SELECT * INTO ElevationBandrng FROM [MS Access;DATABASE=' + dbRefTemplate + '].ElevationBandrng'
+                    cursor.execute(sql)
+                    QSWATUtils.loginfo('Created ElevationBandrng')
+                if hasElevationBandsrng:
+                    sql = 'DROP TABLE ElevationBandsrng'
+                    cursor.execute(sql)
+                    QSWATUtils.loginfo('Deleted ElevationBandsrng')
+                if not hasTblOututVars:
+                    sql = 'SELECT * INTO tblOutputVars FROM [MS Access;DATABASE=' + dbRefTemplate + '].tblOutputVars'
+                    cursor.execute(sql)
+                    QSWATUtils.loginfo('Created tblOutputVars')
+            except Exception:
+                QSWATUtils.error('Could not update tables in reference database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
+                return
                       
     
     def populateTableNames(self) -> None:
@@ -377,7 +390,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         with self.connect(readonly=True) as conn:
             if conn:
                 try:
-                    if self.isHUC or self.isHAWQS:
+                    if self.isHUC or self.isHAWQS or self.forTNC:
                         sql = 'SELECT name FROM sqlite_master WHERE TYPE="table"'
                         for row in conn.execute(sql):
                             table = row[0]
@@ -418,8 +431,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 try:
                     sql = self.sqlSelect(landuseTable, 'LANDUSE_ID, SWAT_CODE', '', '')
                     for row in conn.cursor().execute(sql):
-                        nxt = int(row['LANDUSE_ID'] if self.isHUC or self.isHAWQS else row.LANDUSE_ID)
-                        landuseCode = row['SWAT_CODE'] if self.isHUC or self.isHAWQS else row.SWAT_CODE
+                        nxt = int(row['LANDUSE_ID'] if self.isHUC or self.isHAWQS or self.forTNC else row.LANDUSE_ID)
+                        landuseCode = row['SWAT_CODE'] if self.isHUC or self.isHAWQS or self.forTNC else row.SWAT_CODE
                         if nxt == 0 or self.defaultLanduse < 0:
                             self.defaultLanduse = nxt
                             self.defaultLanduseCode = landuseCode
@@ -613,18 +626,18 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 
     def checkSoilsDefined(self) -> bool:
         """Check if all soil names in soilNames are in usersoil table in reference database."""
-        sql = self.sqlSelect('usersoil', 'SNAM', '', 'SNAM=?')
+        sql = self.sqlSelect(self.usersoil, 'SNAM', '', 'SNAM=?')
         errorReported = False
         for soilName in self.soilNames.values():
             try:
                 row = self.connRef.cursor().execute(sql, (soilName,)).fetchone()
             except Exception:
-                QSWATUtils.error('Could not read usersoil table in database {0}: {1}'.format(self.dbRefFile, traceback.format_exc()), self.isBatch)
+                QSWATUtils.error('Could not read {0} table in database {1}: {2}'.format(self.usersoil, self.dbRefFile, traceback.format_exc()), self.isBatch)
                 return False
             if not row:
                 if not errorReported:
-                    QSWATUtils.error('Soil name {0} (and perhaps others) not defined in usersoil table in database {1}.'
-                                     .format(soilName, self.dbRefFile), self.isBatch)
+                    QSWATUtils.error('Soil name {0} (and perhaps others) not defined in {1} table in database {2}.'
+                                     .format(soilName, self.usersoil, self.dbRefFile), self.isBatch)
                     errorReported = True 
                 else:
                     QSWATUtils.loginfo('Soil name {0} not defined.'
@@ -722,12 +735,6 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 muid = int(lookup_row[1])
                 self.SSURGOSoils[int(sid)] = muid
                 return muid, True
-            
-    def copyUsersoil(self, table: str) -> None:
-        """Replace contents of usersoil with table."""
-        with self.connectRef() as conn:
-            conn.execute('DELETE FROM usersoil')
-            conn.execute('INSERT INTO usersoil SELECT * FROM {0}'.format(table))
     
     def populateAllLanduses(self, listBox: QListWidget) -> None:
         """Make list of all landuses in listBox."""
@@ -896,7 +903,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         
         Return true if successful, else false.
         """
-        if self.isHUC or self.isHAWQS:
+        if self.isHUC or self.isHAWQS or self.forTNC:
             cursor = conn.cursor()
             sql0 = 'DROP TABLE IF EXISTS MasterProgress'
             cursor.execute(sql0)
@@ -997,7 +1004,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             if index < 0:
                 # error occurred - no point in repeating the failure
                 break
-        if self.isHUC or self.isHAWQS:
+        if self.isHUC or self.isHAWQS or self.forTNC:
             conn.commit()
         else:
             self.hashDbTable(conn, self._BASINSDATA1)
@@ -1007,7 +1014,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 
         # note we coerce all double values to float to avoid 'SQLBindParameter' error if an int becomes a long
         try:
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
                              float(data.pondArea), float(data.reservoirArea), float(data.playaArea), float(data.lakeArea), \
                              float(data.wetlandArea), float(data.totalElevation), float(data.totalSlope), \
@@ -1042,7 +1049,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             basins = dict()
             with self.connect(readonly=True) as conn:
-                if self.isHUC or self.isHAWQS:
+                if self.isHUC or self.isHAWQS or self.forTNC:
                     conn.row_factory = sqlite3.Row  # @UndefinedVariable
                     try:
                         for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
@@ -1258,9 +1265,11 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     def initWHUTables(self, curs: Any) -> Tuple[str, str, str, str]:
         """Clear Watershed, hrus, uncomb and ElevationBandtables.  Return sql for inserting rows into them."""
         table1 = 'Watershed'
-        clearSQL = 'DELETE FROM ' + table1
-        curs.execute(clearSQL)
-        sql1 = 'INSERT INTO ' + table1 + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        # Extra CatchmentId field added 21/4/22, so recreate
+        dropSQL = 'DROP TABLE IF EXISTS ' + table1
+        curs.execute(dropSQL)
+        curs.execute(DBUtils._WATERSHEDCREATESQL)
+        sql1 = 'INSERT INTO ' + table1 + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         table2 = 'hrus'
         clearSQL = 'DELETE FROM ' + table2
         curs.execute(clearSQL)
@@ -1335,7 +1344,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         Defined_Area  REAL,
         HRU_Area REAL,
         HydroID  INTEGER,
-        OutletID INTEGER
+        OutletID INTEGER,
+        CatchmentId INTEGER
     );
     """
     

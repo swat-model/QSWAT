@@ -82,6 +82,8 @@ class GlobalVars:
             self.dbRefTemplate = QSWATUtils.join(TNCDir, Parameters._TNCDBREF)
         else:
             self.dbRefTemplate = QSWATUtils.join(QSWATUtils.join(SWATEditorDir, Parameters._DBDIR), Parameters._DBREF)
+        if self.forTNC:
+            self.globaldata = QSWATUtils.join(TNCDir, '../globaldata')
         ## Directory of TauDEM executables
         self.TauDEMDir = QSWATUtils.join(SWATEditorDir, Parameters._TAUDEMDIR)
         ## Path of mpiexec
@@ -213,7 +215,7 @@ class GlobalVars:
         # flag for projects using GRASS to do delineation
         self.fromGRASS = fromGRASS
         ## Path of project database
-        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isHAWQS, self.logFile, self.isBatch)
+        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isHAWQS, self.forTNC, self.logFile, self.isBatch)
         ## multiplier to turn elevations to metres
         self.verticalFactor = 1.0
         ## vertical units
@@ -260,13 +262,13 @@ class GlobalVars:
         """Create subdirectories under project file's directory."""
         if not os.path.exists(self.projDir):
             os.makedirs(self.projDir)
-        self.sourceDir = QSWATUtils.join(self.projDir, 'Source')
+        self.sourceDir = QSWATUtils.join(self.projDir, '../../DEM') if self.forTNC else QSWATUtils.join(self.projDir, 'Source')
         if not os.path.exists(self.sourceDir):
             os.makedirs(self.sourceDir)
-        self.soilDir = QSWATUtils.join(self.sourceDir, 'soil')
+        self.soilDir = QSWATUtils.join(self.projDir, '../../Soil') if self.forTNC else QSWATUtils.join(self.sourceDir, 'soil')
         if not os.path.exists(self.soilDir):
             os.makedirs(self.soilDir)
-        self.landuseDir = QSWATUtils.join(self.sourceDir, 'crop')
+        self.landuseDir = QSWATUtils.join(self.projDir, '../../Landuse') if self.forTNC else QSWATUtils.join(self.sourceDir, 'crop')
         if not os.path.exists(self.landuseDir):
             os.makedirs(self.landuseDir)
         self.scenariosDir = QSWATUtils.join(self.projDir, 'Scenarios')
@@ -332,12 +334,16 @@ class GlobalVars:
         """Set soil lookup table and also, for TNC projects, appropriate usersoil"""
         self.soilTable = soilTable
         if self.forTNC:
-            if soilTable == Parameters._TNCFAOLOOKUP:
-                self.db.copyUsersoil(Parameters._TNCFAOUSERSOIL)
-            elif soilTable == Parameters._TNCHWSDLOOKUP:
-                self.db.copyUsersoil(Parameters._TNCHWSDUSERSOIL)
-            else:
-                QSWATUtils.error('Inappropriate lookup table {0} for TNC project'.format(soilTable), self.isBatch)
+            self.setTNCUsersoil()
+            
+    def setTNCUsersoil(self) -> None:
+        """Set usersoil table for TNC projects."""
+        if self.soilTable == Parameters._TNCFAOLOOKUP:
+            self.db.usersoil = Parameters._TNCFAOUSERSOIL
+        elif self.soilTable == Parameters._TNCHWSDLOOKUP:
+            self.db.usersoil = Parameters._TNCHWSDUSERSOIL
+        else:
+            QSWATUtils.error('Inappropriate lookup table {0} for TNC project'.format(self.soilTable), self.isBatch)
      
     def isExempt(self, landuseId: int) -> bool:
         """Return true if landuse is exempt 
@@ -365,7 +371,7 @@ class GlobalVars:
             sql = 'INSERT INTO ' + exemptTable + ' VALUES(?,?)'
             for luse in self.exemptLanduses:
                 oid += 1
-                cursor.execute(sql, oid, luse)
+                cursor.execute(sql, (oid, luse))
             clearSql = 'DELETE FROM ' + splitTable
             cursor.execute(clearSql)
             oid = 0
@@ -373,9 +379,9 @@ class GlobalVars:
             for luse, subs in self.splitLanduses.items():
                 for subluse, percent in subs.items():
                     oid += 1
-                    cursor.execute(sql, oid, luse, subluse, percent)
+                    cursor.execute(sql, (oid, luse, subluse, percent))
             conn.commit()
-            if not (self.isHUC or self.isHAWQS):
+            if not (self.isHUC or self.isHAWQS or self.forTNC):
                 self.db.hashDbTable(conn, exemptTable)
                 self.db.hashDbTable(conn, splitTable)
         return True
@@ -426,6 +432,8 @@ class GlobalVars:
                 soilOption = 'ssurgo'
             elif self.db.useSTATSGO:
                 soilOption = 'stmuid'
+            elif self.forTNC:
+                soilOption = self.db.usersoil
             else:
                 soilOption = 'name'
             # allow table not to exist for HUC
@@ -435,11 +443,11 @@ class GlobalVars:
                 row = None    
             if row:
                 if doneDelin == -1:
-                    doneDelinNum = row['DoneWSDDel'] if self.isHUC or self.isHAWQS else row.DoneWSDDel
+                    doneDelinNum = row['DoneWSDDel'] if self.isHUC or self.isHAWQS or self.forTNC else row.DoneWSDDel
                 else:
                     doneDelinNum = doneDelin
                 if doneSoilLand == -1:
-                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC or self.isHAWQS else row.DoneSoilLand
+                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC or self.isHAWQS or self.forTNC else row.DoneSoilLand
                 else:
                     doneSoilLandNum = doneSoilLand
                 sql = 'UPDATE ' + table + ' SET SoilOption=?,NumLuClasses=?,DoneWSDDel=?,DoneSoilLand=?'
@@ -459,7 +467,7 @@ class GlobalVars:
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     conn.cursor().execute(sql, (workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
                                           doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0))
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.isHAWQS or self.forTNC:
                 conn.commit()
                     
     def isDelinDone(self) -> bool:
