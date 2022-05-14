@@ -82,7 +82,7 @@ class DBUtils:
                 # look one up from project directory for reference database, so allowing it to be shared
                 self.dbRefFile = QSWATUtils.join(projDir + '/..', dbRefName)
             if not os.path.isfile(self.dbRefFile):
-                QSWATUtils.error('Failed to find reference database {0}'.format(dbRefName), self.isBatch)
+                QSWATUtils.error('Failed to find reference database {0}'.format(self.dbRefFile), self.isBatch)
                 return
             try:
                 self.connRef = sqlite3.connect('file:{0}?mode=ro'.format(self.dbRefFile), uri=True)  # @UndefinedVariable

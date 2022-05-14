@@ -33,6 +33,7 @@ import numpy
 import math
 import sqlite3
 import csv
+from datetime import datetime
 # from processing.core.Processing import Processing  # type: ignore   # @UnresolvedImport
 from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
     
@@ -351,7 +352,7 @@ class HRUs(QObject):
                     if self._reportsCombo.findText(Parameters._BASINITEM) < 0:
                         self._reportsCombo.addItem(Parameters._BASINITEM)
         else:
-            self.progress('Reading grids ...')
+            self.progress('Reading rasters ...')
             self._dlg.progressBar.setValue(0)
             self._dlg.progressBar.setVisible(True)
             root = QgsProject.instance().layerTreeRoot()
@@ -641,7 +642,7 @@ class HRUs(QObject):
                 if len(candidates) > 0:
                     return bestCHIRPS(candidates, point)
                 offset += 1
-                if offset >= 200:
+                if offset >= 500:
                     QSWATUtils.error('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx), self._gv.isBatch)
                     #QSWATUtils.loginfo('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx))
                     return None, 0  
@@ -1877,6 +1878,8 @@ class CreateHRUs(QObject):
                     continue
                 if progressCount == fivePercent:
                     progressBar.setValue(progressBar.value() + 5)
+                    if self._gv.forTNC:
+                        print('Percentage of rasters read: {0} at {1}'.format(progressBar.value(), str(datetime.now())))
                     progressCount = 1
                 else:
                     progressCount += 1

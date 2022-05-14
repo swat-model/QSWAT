@@ -23,15 +23,15 @@
 # Parameters to be set befure run
 
 TNCDir = r'K:\TNC'
-SWATEditorCmd = TNCDir + '/SwatEditorCmd/SwatEditorCmd.exe'
-SWATAppDir = TNCDir + '/SWAT/'  
 Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
-weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
+weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 maxHRUs = 5  # maximum number of HRUs per gid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
+SWATEditorCmd = TNCDir + '/SwatEditorCmd/SwatEditorCmd.exe'
+SWATApp = TNCDir + '/SWAT/Rev_684_64rel.exe'  
 
 
 contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
@@ -149,8 +149,8 @@ class runTNC():
         """Run QSWAT project."""
         gv = self.plugin._gv
         self.hrus = HRUs(gv, self.dlg.reportsBox)
-        if self.hrus.HRUsAreCreated():
-            return
+        #if self.hrus.HRUsAreCreated():
+        #    return
         self.delin = Delineation(gv, self.plugin._demIsProcessed)
         self.delin._dlg.tabWidget.setCurrentIndex(0)
         fileBase = contAbbrev + demBase
@@ -176,10 +176,10 @@ class runTNC():
         gv.soilTable = 'FAO_soils_TNC' if soilName == 'FAO_DSMW' else 'HWSD_soils_TNC'
         self.hrus.landuseFile = self.projDir + '/../../Landuse/' + contAbbrev + 'cover.tif'
         self.hrus.landuseLayer = QgsRasterLayer(self.hrus.landuseFile, 'landuse')
-        self.hrus.soilFile = self.projDir + '/../../Soil/' + contAbbrev + soilName + '.img'
+        self.hrus.soilFile = self.projDir + '/../../Soil/' + contAbbrev + soilName + '.tif'
         if not os.path.isfile(self.hrus.soilFile):
-            # try .tif - certainly needed for Africa
-            self.hrus.soilFile = self.projDir + '/../../Soil/' + contAbbrev + soilName + '.tif'
+            # try .img, but probably reports 65535 as unknown.  .tif should have this set
+            self.hrus.soilFile = self.projDir + '/../../Soil/' + contAbbrev + soilName + '.img'
         self.hrus.soilLayer = QgsRasterLayer(self.hrus.soilFile, 'soil')
         self.hrus.weatherSource = weatherSource
         hrudlg.usersoilButton.setChecked(True)
@@ -421,7 +421,7 @@ class runTNC():
     RCH INTEGER,
     YEAR INTEGER,
     MON INTEGER,
-    AREA REAL,
+    AREAkm2 REAL,
     SED_IN REAL,
     SED_OUT REAL,
     SAND_IN REAL,
@@ -444,7 +444,7 @@ class runTNC():
     );"""
 
     def makeOutputTables(self, outConn):
-        outConn.execute('PRAGMA journal_mode = OFF')
+        #outConn.execute('PRAGMA journal_mode = OFF') # not a good idea in case there is a crash and db left corrupt
         # try:
         #     conn.execute("DELETE FROM hru")
         # except:
@@ -492,7 +492,7 @@ class runTNC():
                     hruMap[int(row[1])] = int(row[0])
                 sqlSub = 'INSERT INTO sub VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 sqlRch = 'INSERT INTO rch VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                #sqlHru = 'INSERT INTO hru VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                sqlHru = 'INSERT INTO hru VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 sqlWql = 'INSERT INTO wql VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 sqlSed = 'INSERT INTO sed VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 startYear = self.readCio(txtInOut + 'file.cio')
@@ -539,37 +539,37 @@ class runTNC():
                             except:
                                 print('Problem with rch data: {0}'.format(data))
                 # collect output.hru
-                # with open(txtInOut + 'output.hru', 'r') as inFile:
-                #     for _ in range(9): next(inFile)
-                #     year = startYear
-                #     lastMon = 0
-                #     lastSub = 0
-                #     relHRU = 0
-                #     for line in inFile.readlines():
-                #         monStr = line[29:34]
-                #         if '.' in monStr:
-                #             continue  # omit summary lines
-                #         mon = int(monStr)
-                #         mon = int(line[29:34])
-                #         if mon == 1 and lastMon >= 12:
-                #             year += 1
-                #         lastMon = mon
-                #         if mon <= 12:  # omit summary lines
-                #             lulc = line[:5]
-                #             hru = int(line[4:9])
-                #             sub = subMap[int(line[20:25])]
-                #             if sub == lastSub:
-                #                 relHRU += 1 
-                #             else:
-                #                 relHRU = 1
-                #                 lastSub = sub
-                #             gis = '{0:07d}{1:02d}'.format(sub, relHRU)
-                #             data = [lulc, hru, gis, sub, year, mon] + line[34:].split()
-                #             try:
-                #                 self.outConn.execute(sqlHru, tuple(data))
-                #                 catchmentOutConn.execute(sqlHru, tuple(data))
-                #             except:
-                #                 print('Problem with hru data: {0}'.format(data))
+                with open(txtInOut + 'output.hru', 'r') as inFile:
+                    for _ in range(9): next(inFile)
+                    year = startYear
+                    lastMon = 0
+                    lastSub = 0
+                    relHRU = 0
+                    for line in inFile.readlines():
+                        monStr = line[29:34]
+                        if '.' in monStr:
+                            continue  # omit summary lines
+                        mon = int(monStr)
+                        mon = int(line[29:34])
+                        if mon == 1 and lastMon >= 12:
+                            year += 1
+                        lastMon = mon
+                        if mon <= 12:  # omit summary lines
+                            lulc = line[:5]
+                            hru = int(line[4:9])
+                            sub = subMap[int(line[20:25])]
+                            if sub == lastSub:
+                                relHRU += 1 
+                            else:
+                                relHRU = 1
+                                lastSub = sub
+                            gis = '{0:07d}{1:02d}'.format(sub, relHRU)
+                            data = [lulc, hru, gis, sub, year, mon] + line[34:].split()
+                            try:
+                                self.outConn.execute(sqlHru, tuple(data))
+                                catchmentOutConn.execute(sqlHru, tuple(data))
+                            except:
+                                print('Problem with hru data: {0}'.format(data))
                 # collect output.wql
                 with open(txtInOut + 'output.wql', 'r') as inFile:
                     next(inFile)
@@ -627,8 +627,8 @@ class runTNC():
             
 def runCatchment(direc):
     cmd = SWATEditorCmd
-    _ = subprocess.run([cmd, direc, SWATAppDir], capture_output=True)
-    #_ = subprocess.run([cmd, direc, SWATAppDir])
+    _ = subprocess.run([cmd, direc, SWATApp], capture_output=True)
+    #_ = subprocess.run([cmd, direc, SWATApp])
                 
 if __name__ == '__main__':
     try:
@@ -638,8 +638,10 @@ if __name__ == '__main__':
         print('Created continental project {0}'.format(tnc.projName))
         print('Partitioning project {0} into catchments'.format(tnc.projName))
         p = Partition(tnc.projDb, tnc.projDir)
+        t1 = time.process_time()
         p.run()
-        print('Partitioned project {0} into {1} catchments'.format(tnc.projName, p.countCatchments))
+        t2 = time.process_time()
+        print('Partitioned project {0} into {1} catchments in {2} seconds'.format(tnc.projName, p.countCatchments, round(t2-t1)))
         pattern = tnc.projDir + '/Catchments/*'
         # restrict to directories only
         dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]

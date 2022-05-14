@@ -300,8 +300,10 @@ class Visualise(QObject):
             
     def run(self) -> None:
         """Do visualisation."""
+        self._iface.mainWindow().setCursor(Qt.WaitCursor)
         self.init()
         self._dlg.show()
+        self._iface.mainWindow().setCursor(Qt.ArrowCursor)
         self._dlg.exec_()
         self._gv.visualisePos = self._dlg.pos()
         
@@ -371,6 +373,15 @@ class Visualise(QObject):
         scenDir = QSWATUtils.join(self._gv.scenariosDir, self.scenario)
         txtInOutDir = QSWATUtils.join(scenDir, Parameters._TXTINOUT)
         cioFile = QSWATUtils.join(txtInOutDir, Parameters._CIO)
+        if self._gv.forTNC:
+            # use a catchment cio file: since only dates being read any cio file will suffice
+            catchmentsDir = QSWATUtils.join(self._gv.projDir, 'Catchments')
+            catchment = 0
+            while catchment < 1000:  # backstop against non termination
+                catchment += 1
+                cioFile = QSWATUtils.join(catchmentsDir, QSWATUtils.join(str(catchment), Parameters._CIO))
+                if os.path.exists(cioFile):
+                    break
         if not os.path.exists(cioFile):
             QSWATUtils.error('Cannot find cio file {0}'.format(cioFile), self._gv.isBatch)
             return
