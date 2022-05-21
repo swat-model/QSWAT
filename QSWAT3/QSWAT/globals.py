@@ -100,6 +100,8 @@ class GlobalVars:
         self.useGridModel = False
         ## flag to show large grid - dominant landuse, soil and slope only
         self.isBig = False
+        ## grid size (grid models only)
+        self.gridSize = 0
         ## Directory containing QSWAT plugin
         self.plugin_dir = ''
         ## Path of DEM grid
@@ -174,6 +176,11 @@ class GlobalVars:
         self.projName = os.path.splitext(base)[0]
         ## Project directory
         self.projDir = QSWATUtils.join(pdir, self.projName)
+        ## flag to show if a TNC project is running on a catchment or the whole continent
+        self.isCatchmentProject = False
+        if self.forTNC:
+            parent = os.path.split(pdir)[1]
+            self.isCatchmentProject = (parent == 'Catchments')
         ## Source directory
         self.sourceDir = ''
         ## Landuse directory

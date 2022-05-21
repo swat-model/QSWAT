@@ -22,7 +22,7 @@
 
 # Parameters to be set befure run
 
-TNCDir = r'K:\TNC'
+TNCDir = r'K:\TNC'  # r'E:\Chris\TNC'
 Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
 weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
@@ -31,7 +31,7 @@ maxHRUs = 5  # maximum number of HRUs per gid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
 SWATEditorCmd = TNCDir + '/SwatEditorCmd/SwatEditorCmd.exe'
-SWATApp = TNCDir + '/SWAT/Rev_684_64rel.exe'  
+SWATApp = TNCDir + '/SWAT/Rev_684_CG_rel.exe'  
 
 
 contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
@@ -46,10 +46,8 @@ import sys
 import os
 import glob
 import subprocess
-import shutil
 from osgeo import gdal, ogr  # type: ignore
 import traceback
-import pyodbc
 import sqlite3
 import time
 
@@ -66,7 +64,7 @@ from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
 from QSWAT.hrus import HRUs  # @UnresolvedImport
 from catchments import Partition  # @UnresolvedImport
-from QSWAT.parameters import Parameters  # @UnresolvedImport
+#from QSWAT.parameters import Parameters  # @UnresolvedImport
 
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
@@ -148,12 +146,14 @@ class runTNC():
     def runProject(self):
         """Run QSWAT project."""
         gv = self.plugin._gv
+        gv.gridSize = gridSize
+        fileBase = contAbbrev + demBase
         self.hrus = HRUs(gv, self.dlg.reportsBox)
-        #if self.hrus.HRUsAreCreated():
-        #    return
+        basinFile = self.projDir + '/../../DEM/' + fileBase + '_burnedw.tif'
+        if self.hrus.HRUsAreCreated(basinFile=basinFile):
+            return
         self.delin = Delineation(gv, self.plugin._demIsProcessed)
         self.delin._dlg.tabWidget.setCurrentIndex(0)
-        fileBase = contAbbrev + demBase
         demFile = self.projDir + '/../../DEM/' + fileBase + '_burned.tif'
         print('DEM: ' + demFile)
         self.delin._dlg.selectDem.setText(demFile)
@@ -444,39 +444,47 @@ class runTNC():
     );"""
 
     def makeOutputTables(self, outConn):
-        #outConn.execute('PRAGMA journal_mode = OFF') # not a good idea in case there is a crash and db left corrupt
+        outConn.execute('PRAGMA journal_mode = OFF')
+        #sdatabase should be newly created, so just create tables
+        outConn.execute(self.createHRU)
+        outConn.execute(self.createSUB)
+        outConn.execute(self.createRCH)
+        outConn.execute(self.createSED)
+        outConn.execute(self.createWQL)
         # try:
-        #     conn.execute("DELETE FROM hru")
+        #     outConn.execute("DELETE FROM hru")
         # except:
-        #     conn.execute(self.createHRU)
-        try:
-            outConn.execute("DELETE FROM sub")
-        except:
-            outConn.execute(self.createSUB)
-        try:
-            outConn.execute("DELETE FROM rch")
-        except:
-            outConn.execute(self.createRCH)
-        try:
-            outConn.execute("DELETE FROM sed")
-        except:
-            outConn.execute(self.createSED)
-        try:
-            outConn.execute("DELETE FROM wql")
-        except:
-            outConn.execute(self.createWQL)
+        #     outConn.execute(self.createHRU)
+        # try:
+        #     outConn.execute("DELETE FROM sub")
+        # except:
+        #     outConn.execute(self.createSUB)
+        # try:
+        #     outConn.execute("DELETE FROM rch")
+        # except:
+        #     outConn.execute(self.createRCH)
+        # try:
+        #     outConn.execute("DELETE FROM sed")
+        # except:
+        #     outConn.execute(self.createSED)
+        # try:
+        #     outConn.execute("DELETE FROM wql")
+        # except:
+        #     outConn.execute(self.createWQL)
         
 
     def collectOutput(self, direc, outConn):
         """Collect ouputs from catchment output into output database."""
         catchment = os.path.split(direc)[1]
         print('Collecting output from catchment ' + catchment)
-        catchmentDb = direc + '/{0}.sqlite'.format(self.projName)
+        catchmentDb = direc + '/{0}.sqlite'.format(catchment)
         if not os.path.isfile(catchmentDb):
             print('Catchment database {0} not found'.format(catchmentDb))
             return
         txtInOut = direc + '/Scenarios/Default/TxtInOut/'
         catchmentOutputDb = direc + '/Scenarios/Default/TablesOut/SWATOutput.sqlite'
+        if os.path.isfile(catchmentOutputDb):
+            os.remove(catchmentOutputDb)
         with sqlite3.connect(catchmentOutputDb) as catchmentOutConn:
             self.makeOutputTables(catchmentOutConn)
             with sqlite3.connect(catchmentDb) as inConn:
@@ -513,8 +521,8 @@ class runTNC():
                             sub = subMap[int(line[6:11])]
                             data = [sub, year, mon] + line[25:].split()
                             try:
-                                outConn.execute(sqlSub, tuple(data))
-                                catchmentOutConn.execute(sqlSub, tuple(data))
+                                outConn.execute(sqlSub, data)
+                                catchmentOutConn.execute(sqlSub, data)
                             except:
                                 print('Problem with sub data: {0}'.format(data))
                 # collect output.rch
@@ -534,8 +542,8 @@ class runTNC():
                             sub = subMap[int(line[5:11])]
                             data = [sub, year, mon] + line[26:].split()
                             try:
-                                outConn.execute(sqlRch, tuple(data))
-                                catchmentOutConn.execute(sqlRch, tuple(data))
+                                outConn.execute(sqlRch, data)
+                                catchmentOutConn.execute(sqlRch, data)
                             except:
                                 print('Problem with rch data: {0}'.format(data))
                 # collect output.hru
@@ -555,9 +563,9 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            lulc = line[:5]
-                            hru = int(line[4:9])
-                            sub = subMap[int(line[20:25])]
+                            lulc = line[:4]
+                            hru = hruMap[int(line[4:9])]
+                            sub = subMap[int(line[19:24])]
                             if sub == lastSub:
                                 relHRU += 1 
                             else:
@@ -566,26 +574,26 @@ class runTNC():
                             gis = '{0:07d}{1:02d}'.format(sub, relHRU)
                             data = [lulc, hru, gis, sub, year, mon] + line[34:].split()
                             try:
-                                self.outConn.execute(sqlHru, tuple(data))
-                                catchmentOutConn.execute(sqlHru, tuple(data))
+                                outConn.execute(sqlHru, data)
+                                catchmentOutConn.execute(sqlHru, data)
                             except:
-                                print('Problem with hru data: {0}'.format(data))
+                                print('Problem with hru data: {0}: {1}'.format(traceback.format_exc(), data))
                 # collect output.wql
                 with open(txtInOut + 'output.wql', 'r') as inFile:
                     next(inFile)
                     year = startYear
                     lastMon = 0
                     for line in inFile.readlines():
-                        mon = int(line[9:14])
+                        mon = int(line[11:16])
                         if mon == 1 and lastMon >= 365:
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[5:10])]
-                            data = [year, sub, mon] + line[14:].split()
+                            sub = subMap[int(line[6:11])]
+                            data = [year, sub, mon] + line[16:].split()
                             try:
-                                outConn.execute(sqlWql, tuple(data))
-                                catchmentOutConn.execute(sqlWql, tuple(data))
+                                outConn.execute(sqlWql, data)
+                                catchmentOutConn.execute(sqlWql, data)
                             except:
                                 print('Problem with wql data: {0}'.format(data))
                 # collect output.sed
@@ -605,8 +613,8 @@ class runTNC():
                             sub = subMap[int(line[7:12])]
                             data = [sub, year, mon] + line[27:].split()
                             try:
-                                outConn.execute(sqlSed, tuple(data))
-                                catchmentOutConn.execute(sqlSed, tuple(data))
+                                outConn.execute(sqlSed, data)
+                                catchmentOutConn.execute(sqlSed, data)
                             except:
                                 print('Problem with sed data: {0}'.format(data))
                         
@@ -620,6 +628,9 @@ class runTNC():
         # refStr = Parameters._ACCESSSTRING + outputDb
         # with pyodbc.connect(refStr) as conn:
         outputDb = self.projDir + '/Scenarios/Default/TablesOut/SWATOutput.sqlite'
+        # crashes can leave corrupt database, so best to remove
+        if os.path.isfile(outputDb):
+            os.remove(outputDb)
         with sqlite3.connect(outputDb) as conn:
             self.makeOutputTables(conn)
             for d in dirs:

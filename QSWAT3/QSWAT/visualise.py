@@ -24,7 +24,7 @@ from qgis.PyQt.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer, QVar
 from qgis.PyQt.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
 from qgis.PyQt.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QListWidgetItem, QFileDialog, QMessageBox, QShortcut, QStyleOptionGraphicsItem
 from qgis.PyQt.QtXml import QDomDocument
-from qgis.core import QgsApplication, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol
+from qgis.core import QgsApplication, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol, QgsProcessingContext
 from qgis.gui import QgsMapCanvas, QgsMapCanvasItem
 import os
 # import random
@@ -36,6 +36,8 @@ from datetime import date
 import math
 import sqlite3
 import traceback
+import processing  # type: ignore # @UnresolvedImport 
+from processing.core.Processing import Processing  # type: ignore # @UnresolvedImport @UnusedImport 
 from typing import Dict, List, Set, Tuple, Optional, Union, Any, TYPE_CHECKING, cast  # @UnusedImport
 
 # Import the code for the dialog
@@ -255,21 +257,72 @@ class Visualise(QObject):
         self.setBackgroundLayers(root)
         # check we have streams and watershed
         group = root.findGroup(QSWATUtils._WATERSHED_GROUP_NAME)
-        wshedTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._SUBBASINS), root.findLayers())
-        if wshedTreeLayer:
-            wshedLayer: Optional[QgsVectorLayer] = wshedTreeLayer.layer()  # type: ignore
-        else:
-            wshedFile = os.path.join(self._gv.shapesDir, 'subs1.shp')
-            if os.path.isfile(wshedFile):
-                wshedLayer = QgsVectorLayer(wshedFile, 'Subbasins (subs1)', 'ogr')
-                wshedLayer = cast(QgsVectorLayer, proj.addMapLayer(wshedLayer, False))
-                assert group is not None
-                group.insertLayer(0, wshedLayer)
+        if self._gv.forTNC:
+            subsFile = QSWATUtils.join(self._gv.tablesOutDir, Parameters._SUBS + '.shp')
+            subsTreeLayer = QSWATUtils.getLayerByLegend('Subbasin grid', root.findLayers())
+            OK = True
+            if subsTreeLayer:
+                subsLayer: Optional[QgsVectorLayer] = subsTreeLayer.layer()  # type: ignore
             else:
-                wshedLayer = None
-        if wshedLayer:
-            # style file like wshed.qml but does not check for subbasins upstream frm inlets
-            wshedLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'wshed2.qml'))
+                subsLayer = QgsVectorLayer(subsFile, 'Subbasin grid', 'ogr')
+                if not self._gv.isCatchmentProject:
+                    subsProvider = subsLayer.dataProvider()
+                    fields = subsProvider.fields()
+                    catchmentIndex = fields.indexOf('Catchment')
+                    if catchmentIndex < 0:
+                        subsProvider.addAttributes([QgsField('Catchment', QVariant.Int)])
+                        fields = subsProvider.fields()
+                        subIndex = fields.indexOf(QSWATTopology._SUBBASIN)
+                        catchmentIndex = fields.indexOf('Catchment')
+                        sql = 'SELECT Subbasin, CatchmentId FROM Watershed'
+                        subToCatchment = dict()
+                        with self._gv.db.connect(readonly=True) as conn:
+                            for row in conn.execute(sql):
+                                subToCatchment[int(row[0])] = int(row[1])
+                        mmap = dict()
+                        for f in subsProvider.getFeatures():
+                            subbasin = f[subIndex]
+                            catchment = subToCatchment[subbasin]
+                            mmap[f.id()] = {catchmentIndex : catchment}
+                        OK = subsProvider.changeAttributeValues(mmap)
+                        if not OK:
+                            QSWATUtils.error(u'Could not add catchments to subs shapefile {0}'.format(subsFile))
+                subsLayer = cast(QgsVectorLayer, proj.addMapLayer(subsLayer, False))
+                assert group is not None
+                group.insertLayer(0, subsLayer)
+            subsLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'grid.qml'))
+            if OK and not self._gv.isCatchmentProject:
+                catchmentsTreeLayer = QSWATUtils.getLayerByLegend('Catchments', root.findLayers())
+                if catchmentsTreeLayer:
+                    catchmentsLayer = catchmentsTreeLayer.layer()  # type: ignore
+                else:
+                    catchmentsFile = QSWATUtils.join(self._gv.tablesOutDir, 'catchments.shp')
+                    if not os.path.exists(catchmentsFile):
+                        context = QgsProcessingContext()
+                        processing.run("native:dissolve", 
+                               {'INPUT': subsFile, 'FIELD': ['Catchment'], 'OUTPUT': catchmentsFile}, context=context)
+                    catchmentsLayer = QgsVectorLayer(catchmentsFile, 'Catchments', 'ogr')
+                    catchmentsLayer = cast(QgsVectorLayer, proj.addMapLayer(catchmentsLayer, False))
+                    assert group is not None
+                    group.insertLayer(0, catchmentsLayer)
+                catchmentsLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'catchments.qml'))
+                catchmentsLayer.setMapTipTemplate('<b>Catchment:</b> [% "Catchment" %]')
+        else:        
+            wshedTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._SUBBASINS), root.findLayers())
+            if wshedTreeLayer:
+                wshedLayer = wshedTreeLayer.layer()  # type: ignore
+            else:
+                wshedFile = os.path.join(self._gv.shapesDir, 'subs1.shp')
+                wshedLayer = QgsVectorLayer(wshedFile, 'Subbasins (subs1)', 'ogr')
+                if os.path.isfile(wshedFile):
+                    wshedLayer = cast(QgsVectorLayer, proj.addMapLayer(wshedLayer, False))
+                    assert group is not None
+                    group.insertLayer(0, wshedLayer)
+                else:
+                    wshedLayer = None
+                if wshedLayer:
+                    # style file like wshed.qml but does not check for subbasins upstream frm inlets
+                    wshedLayer.loadNamedStyle(QSWATUtils.join(self._gv.plugin_dir, 'wshed2.qml'))
         # streamFile = os.path.join(self._gv.shapesDir, 'riv1.shp')
         # if os.path.isfile(streamFile):
         #     streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
@@ -373,13 +426,13 @@ class Visualise(QObject):
         scenDir = QSWATUtils.join(self._gv.scenariosDir, self.scenario)
         txtInOutDir = QSWATUtils.join(scenDir, Parameters._TXTINOUT)
         cioFile = QSWATUtils.join(txtInOutDir, Parameters._CIO)
-        if self._gv.forTNC:
+        if not os.path.isfile(cioFile) and self._gv.forTNC:
             # use a catchment cio file: since only dates being read any cio file will suffice
             catchmentsDir = QSWATUtils.join(self._gv.projDir, 'Catchments')
             catchment = 0
             while catchment < 1000:  # backstop against non termination
                 catchment += 1
-                cioFile = QSWATUtils.join(catchmentsDir, QSWATUtils.join(str(catchment), Parameters._CIO))
+                cioFile = QSWATUtils.join(catchmentsDir, QSWATUtils.join(str(catchment), 'Scenarios/Default/TxtInOut/{0}'.format(Parameters._CIO)))
                 if os.path.exists(cioFile):
                     break
         if not os.path.exists(cioFile):
@@ -393,7 +446,9 @@ class Visualise(QObject):
         tables: List[str] = []
         if self._gv.forTNC:
             for row in self.conn.execute("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1"):
-                tables.append(row[0])
+                name = row[0]
+                if name != 'hru':
+                    tables.append(name)
         else:
             for row in self.conn.cursor().tables(tableType='TABLE'):
                 tables.append(row.table_name)

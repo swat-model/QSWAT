@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
 from qgis.PyQt.QtGui import QDoubleValidator, QTextCursor
 from qgis.PyQt.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
-from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry
+from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry, QgsProcessingContext
 #from qgis.gui import * # @UnusedWildImport
 import os.path
 from osgeo import gdal  # type: ignore
@@ -34,7 +34,8 @@ import math
 import sqlite3
 import csv
 from datetime import datetime
-# from processing.core.Processing import Processing  # type: ignore   # @UnresolvedImport
+import processing
+#from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
 from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
     
 
@@ -165,7 +166,7 @@ class HRUs(QObject):
         else:
             return 0
         
-    def HRUsAreCreated(self) -> bool:
+    def HRUsAreCreated(self, basinFile='') -> bool:
         """Return true if HRUs are up to date, else false.
         
         Requires:
@@ -176,21 +177,25 @@ class HRUs(QObject):
         susb.shp is up to date and Watershed and hrus have data
         """
         try:
-            if not self._gv.useGridModel:
+            if self._gv.forTNC or not self._gv.useGridModel:
                 # TODO: currently grid model does not write the subs.shp file
                 # first check subsFile is up to date
                 subsFile = QSWATUtils.join(self._gv.tablesOutDir, Parameters._SUBS + '.shp')
+                basinFile = basinFile if self._gv.forTNC else self._gv.basinFile
                 #===================================================================
                 # return QSWATUtils.isUpToDate(self._gv.wshedFile, subsFile) and \
                 #         self._gv.db.tableIsUpToDate(self._gv.wshedFile, 'Watershed') and \
                 #         self._gv.db.tableIsUpToDate(self._gv.wshedFile, 'hrus')
                 #===================================================================
-                if not QSWATUtils.isUpToDate(self._gv.basinFile, subsFile):
+                #print('Comparing {0} with {1}'.format(basinFile, subsFile))
+                if not QSWATUtils.isUpToDate(basinFile, subsFile):
+                    #print('HRUSAreCreated failed: subs.shp not up to date')
                     QSWATUtils.loginfo('HRUSAreCreated failed: subs.shp not up to date')
                     if self._gv.logFile is not None:
                         self._gv.logFile.write('HRUSAreCreated failed: subs.shp not up to date\n')
                     return False
             if not self._gv.db.hasData('Watershed'):
+                #print('HRUSAreCreated failed: Watershed table missing or empty')
                 QSWATUtils.loginfo('HRUSAreCreated failed: Watershed table missing or empty')
                 if self._gv.logFile is not None:
                     self._gv.logFile.write('HRUSAreCreated failed: Watershed table missing or empty\n')
@@ -200,8 +205,10 @@ class HRUs(QObject):
             #     QSWATUtils.loginfo(u'HRUSAreCreated failed: hrus table missing or empty')
             #     return False
             if self._gv.isHRUsDone():
+                #print('HRUSAreCreated OK: MasterProgress says HRUs done')
                 return True
             else:
+                #print('HRUSAreCreated failed: MasterProgress says HRUs not done')
                 if self._gv.logFile is not None:
                     self._gv.logFile.write('MasterProgress says HRUs not done\n')
                 return False
@@ -448,17 +455,17 @@ class HRUs(QObject):
         def nearestWgn(point: QgsPointXY) -> Tuple[int, float]:
             """Return id of nearest wgn station to point."""
             
-            def bestWgnId(candidates: List[Tuple[int, float, float]], point: QgsPointXY) -> Tuple[int, float]:
+            def bestWgnId(candidates: List[Tuple[int, float, float]], point: QgsPointXY, latitudeFactor: float) -> Tuple[int, float]:
                 """Return id of nearest point in candidates plus distance in m."""
                 bestId, bestLat, bestLon = candidates.pop(0)
                 px = point.x()
                 py = point.y()
                 dy = bestLat - py
-                dx = bestLon - px
+                dx = (bestLon - px) * latitudeFactor
                 measure = dx * dx + dy * dy
                 for (id1, lat1, lon1) in candidates:
                     dy1 = lat1 - py
-                    dx1 = lon1 - px
+                    dx1 = (lon1 - px) * latitudeFactor
                     measure1 = dx1 * dx1 + dy1 * dy1
                     if measure1 < measure:
                         measure = measure1
@@ -466,7 +473,9 @@ class HRUs(QObject):
                         bestLat = lat1
                         bestLon = lon1 
                 return bestId, QSWATTopology.distance(py, px, bestLat, bestLon)
-                
+            
+            # fraction to reduce E-W distances to allow for latitude    
+            latitudeFactor = math.cos(math.radians(point.y()))
             x = round(point.x())
             y = round(point.y())
             offset = 0
@@ -481,7 +490,7 @@ class HRUs(QObject):
                             if abs(offsetY) == offset or abs(offsetX) == offset:
                                 candidates.extend(tbl.get(x + offsetX, []))
                         if len(candidates) > 0:
-                            return bestWgnId(candidates, point)
+                            return bestWgnId(candidates, point, latitudeFactor)
                         else:
                             offset += 1
                             if offset >= 100:
@@ -604,17 +613,17 @@ class HRUs(QObject):
         def nearestCHIRPS(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
             """Return data of nearest CHIRPS station to point, plus distance in km"""
         
-            def bestCHIRPS(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
+            def bestCHIRPS(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY, latitudeFactor: float) -> Tuple[Tuple[int, str, float, float, float], float]:
                 """Return nearest candidate to point."""
                 px = point.x()
                 py = point.y()   
                 best = candidates.pop(0)
                 dy = best[2] - py
-                dx = best[3] - px
+                dx = (best[3] - px) * latitudeFactor
                 measure = dx * dx + dy * dy
                 for nxt in candidates:
                     dy1 = nxt[2] - py
-                    dx1 = nxt[3] - px
+                    dx1 = (nxt[3] - px) * latitudeFactor 
                     measure1 = dx1 * dx1 + dy1 * dy1
                     if measure1 < measure:
                         best = nxt
@@ -624,6 +633,8 @@ class HRUs(QObject):
                             
             cx = point.x()
             cy = point.y()
+            # fraction to reduce E-W distances to allow for latitude 
+            latitudeFactor = math.cos(math.radians(cy))
             centreRow = round(cy / 0.05)
             centreCol = round(cx / 0.05)
             offset = 0
@@ -640,7 +651,7 @@ class HRUs(QObject):
                                 if data is not None:
                                     candidates.append(data)
                 if len(candidates) > 0:
-                    return bestCHIRPS(candidates, point)
+                    return bestCHIRPS(candidates, point, latitudeFactor)
                 offset += 1
                 if offset >= 500:
                     QSWATUtils.error('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx), self._gv.isBatch)
@@ -701,17 +712,17 @@ class HRUs(QObject):
         def nearestERA5(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
             """Return data of nearest CHIRPS station to point, plus distance in km"""
         
-            def bestERA5(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
+            def bestERA5(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY, latitudeFactor: float) -> Tuple[Tuple[int, str, float, float, float], float]:
                 """Return nearest candidate to point."""
                 px = point.x()
                 py = point.y()   
                 best = candidates.pop(0)
                 dy = best[2] - py
-                dx = best[3] - px
+                dx = (best[3] - px) * latitudeFactor
                 measure = dx * dx + dy * dy
                 for nxt in candidates:
                     dy1 = nxt[2] - py
-                    dx1 = nxt[3] - px
+                    dx1 = (nxt[3] - px) * latitudeFactor
                     measure1 = dx1 * dx1 + dy1 * dy1
                     if measure1 < measure:
                         best = nxt
@@ -719,6 +730,8 @@ class HRUs(QObject):
                         dx = best[3] - px
                 return best, QSWATTopology.distance(py, px, best[2], best[3])    
                             
+            # fraction to reduce E-W distances to allow for latitude 
+            latitudeFactor = math.cos(math.radians(point.y()))
             x = round(point.x())
             y = round(point.y())
             offset = 0
@@ -733,7 +746,7 @@ class HRUs(QObject):
                             if abs(offsetY) == offset or abs(offsetX) == offset:
                                 candidates.extend(tbl.get(x + offsetX, []))
                 if len(candidates) > 0:
-                    return bestERA5(candidates, point)
+                    return bestERA5(candidates, point, latitudeFactor)
                 offset += 1
                 if offset >= 200:
                     QSWATUtils.error('Failed to find ERA5 station for point ({0},{1})'.format(point.x(), point.y()), self._gv.isBatch)
@@ -3709,7 +3722,8 @@ class CreateHRUs(QObject):
         return oid, elevBandId
             
     def writeGridSubsFile(self):
-        """Write subs.shp to TablesOut folder for visualisation.  Only used for big grids (isBig is True)."""
+        """Write subs.shp to TablesOut folder for visualisation.  Only used for big grids (isBig is True).
+        For TNC add Catchments field to subs.shp and make catchments.shp by dissolving subbasins within catchments."""
         QSWATUtils.copyShapefile(self._gv.wshedFile, Parameters._SUBS, self._gv.tablesOutDir)
         subsFile = QSWATUtils.join(self._gv.tablesOutDir, Parameters._SUBS + '.shp')
         subsLayer = QgsVectorLayer(subsFile, 'Watershed grid ({0})'.format(Parameters._SUBS), 'ogr')
@@ -3736,6 +3750,28 @@ class CreateHRUs(QObject):
         if not OK:
             QSWATUtils.error('Cannot edit watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
             return
+        # if for TNC add catchments field and populate 
+        if self._gv.forTNC and not self._gv.isCatchmentProject:
+            fields = provider.fields()
+            catchmentIndex = fields.indexOf('Catchment')
+            if catchmentIndex < 0:
+                provider.addAttributes([QgsField('Catchment', QVariant.Int)])
+                fields = provider.fields()
+                subIndex = fields.indexOf(QSWATTopology._SUBBASIN)
+                catchmentIndex = fields.indexOf('Catchment')
+                sql = 'SELECT Subbasin, CatchmentId FROM Watershed'
+                subToCatchment = dict()
+                with self._gv.db.connect(readonly=True) as conn:
+                    for row in conn.execute(sql):
+                        subToCatchment[int(row[0])] = int(row[1])
+                mmap = dict()
+                for f in provider.getFeatures():
+                    subbasin = f[subIndex]
+                    catchment = subToCatchment[subbasin]
+                    mmap[f.id()] = {catchmentIndex : catchment}
+                OK = provider.changeAttributeValues(mmap)
+                if not OK:
+                    QSWATUtils.error(u'Could not add catchments to subs shapefile {0}'.format(subsFile))
         OK = subsLayer.commitChanges()
         if not OK:
             QSWATUtils.error('Cannot finish editing watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
@@ -3743,6 +3779,12 @@ class CreateHRUs(QObject):
         numDeleted = len(idsToDelete)
         if numDeleted > 0:
             QSWATUtils.loginfo('{0} subbasins removed from subs.shp'.format(numDeleted))
+        if OK and self._gv.forTNC and not self._gv.isCatchmentProject:        
+            catchmentsFile = QSWATUtils.join(self._gv.tablesOutDir, 'catchments.shp')
+            if not os.path.exists(catchmentsFile):
+                context = QgsProcessingContext()
+                processing.run("native:dissolve", 
+                       {'INPUT': subsFile, 'FIELD': ['Catchment'], 'OUTPUT': catchmentsFile}, context=context)
 
     def splitHRUs(self) -> bool:
         """Split HRUs according to split landuses."""

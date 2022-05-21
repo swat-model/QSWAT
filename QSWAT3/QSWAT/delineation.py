@@ -2919,9 +2919,11 @@ class Delineation(QObject):
         QSWATUtils.loginfo('Existing watershed is {0!s}'.format(self._gv.existingWshed))
         self._gv.useGridModel, _ = proj.readBoolEntry(title, 'delin/useGridModel', False)
         QSWATUtils.loginfo('Use grid model is {0!s}'.format(self._gv.useGridModel))
-        gridSize, found = proj.readNumEntry(title, 'delin/gridSize', 1)
-        if found:
-            self._dlg.GridSize.setValue(gridSize)
+        if self._gv.useGridModel:
+            gridSize, found = proj.readNumEntry(title, 'delin/gridSize', 1)
+            if found:
+                self._dlg.GridSize.setValue(gridSize)
+                self._gv.gridSize = gridSize
         demFile, found = proj.readEntry(title, 'delin/DEM', '')
         demLayer = None
         if found and demFile != '':

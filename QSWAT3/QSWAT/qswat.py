@@ -23,12 +23,15 @@
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsUnitTypes
+from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsUnitTypes, QgsApplication
+from qgis.analysis import QgsNativeAlgorithms
 import os.path
 import subprocess
 import time
 import sys
 import traceback
+#import processing
+from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
 from typing import Dict, List, Set, Tuple, Optional, Union, Any, TYPE_CHECKING, cast  # @UnusedImport
 
 # Import the code for the dialog
@@ -60,7 +63,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.5.4'
+    __version__ = '1.5.6'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -301,6 +304,9 @@ class QSwat(QObject):
         self._odlg.projPath.repaint()
         self.checkReports()
         self.setLegendGroups()
+        Processing.initialize()
+        if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
+            QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
         # enable edit button if converted from Arc
         title = proj.title()
         choice, found = proj.readNumEntry(title, 'fromArc', -1)
@@ -309,6 +315,8 @@ class QSwat(QObject):
                 self._odlg.editLabel.setEnabled(True)
                 self._odlg.editButton.setEnabled(True)
         self._gv.useGridModel = proj.readBoolEntry(title, 'delin/useGridModel', False)[0]
+        if self._gv.useGridModel:
+            self._gv.gridSize = proj.readNumEntry(title, 'delin/gridSize', 1)[0]
         if self.demProcessed():
             self._demIsProcessed = True
             self.allowCreateHRU()

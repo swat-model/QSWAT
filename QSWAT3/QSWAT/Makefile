@@ -59,7 +59,8 @@ UI_FILES = ui_qswat.py ui_delineation.py ui_hrus.py ui_outlets.py ui_exempt.py u
 		ui_parameters.py ui_elevationbands.py ui_selectsubs.py ui_about.py ui_visualise.py ui_graph.py ui_graph1.py \
 		ui_convert.py ui_arc_convert.py
 
-QML_FILES = dem.qml fullhrus.qml outlets.qml stream.qml subresults.qml wshed.qml wshed2.qml existingwshed.qml subbasins.qml outletsHUC.qml
+QML_FILES = dem.qml fullhrus.qml outlets.qml stream.qml subresults.qml wshed.qml wshed2.qml existingwshed.qml subbasins.qml \
+		outletsHUC.qml grid.qml catchments.qml
 
 QPT_FILES = PrintTemplate1Landscape.qpt PrintTemplate1Portrait.qpt PrintTemplate2Landscape.qpt \
 			PrintTemplate2Portrait.qpt PrintTemplate3Landscape.qpt PrintTemplate3Portrait.qpt \
