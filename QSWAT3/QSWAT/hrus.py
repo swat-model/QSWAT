@@ -493,7 +493,7 @@ class HRUs(QObject):
                             return bestWgnId(candidates, point, latitudeFactor)
                         else:
                             offset += 1
-                            if offset >= 100:
+                            if offset >= 1000:
                                 QSWATUtils.error('Failed to find wgn station for point ({0},{1})'.format(point.x(), point.y()), self._gv.isBatch)
                                 #QSWATUtils.loginfo('Failed to find wgn station for point ({0},{1})'.format(point.x(), point.y()))
                                 return -1, 0
@@ -653,7 +653,7 @@ class HRUs(QObject):
                 if len(candidates) > 0:
                     return bestCHIRPS(candidates, point, latitudeFactor)
                 offset += 1
-                if offset >= 500:
+                if offset >= 1000:
                     QSWATUtils.error('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx), self._gv.isBatch)
                     #QSWATUtils.loginfo('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx))
                     return None, 0  
@@ -682,28 +682,31 @@ class HRUs(QObject):
             conn.execute(sql0)
             sql1 = 'INSERT INTO pcp VALUES(?,?,?,?,?)'
             sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'
-            #map of CHIRPS id to column in data txt file and position in pcp table
-            pcpIds: Dict[int, Tuple[int, int]] = dict()
+            # map of CHIRPS station name to column in data txt file and position in pcp table
+            # don't use id as will not be unique if more than one set of CHIRPS data: eg Europe also uses Asia
+            pcpIds: Dict[str, Tuple[int, int]] = dict()
             minRec = 0
             orderId = 0
             oid = 0
+            poid = 0
             for basin, (centreX, centreY) in self._gv.topo.basinCentroids.items():
                 SWATBasin = self._gv.topo.basinToSWATBasin.get(basin, 0)
                 if SWATBasin > 0:
                     centroidll = self._gv.topo.pointToLatLong(QgsPointXY(centreX, centreY))
                     data, distance = nearestCHIRPS(centroidll)
                     if data is not None:
-                        pcpId = data[0]
+                        pcpId = data[1]
                         minRec1, orderId1 = pcpIds.get(pcpId, (0,0))
                         if minRec1 == 0:
                             minRec += 1
                             minRec1 = minRec
                             orderId += 1
                             orderId1 = orderId
-                            conn.execute(sql1, (pcpId, data[1], data[2], data[3], data[4]))
+                            poid += 1
+                            conn.execute(sql1, (poid, pcpId, data[2], data[3], data[4]))
                             pcpIds[pcpId] = (minRec, orderId)
                         oid += 1
-                        conn.execute(sql2, (oid, SWATBasin, distance, minRec1, data[1], orderId1))
+                        conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
             conn.commit()                
         
     def addERA5(self, extent: Tuple[float, float, float, float], continent: str) -> None:
@@ -748,7 +751,7 @@ class HRUs(QObject):
                 if len(candidates) > 0:
                     return bestERA5(candidates, point, latitudeFactor)
                 offset += 1
-                if offset >= 200:
+                if offset >= 1000:
                     QSWATUtils.error('Failed to find ERA5 station for point ({0},{1})'.format(point.x(), point.y()), self._gv.isBatch)
                     #QSWATUtils.loginfo('Failed to find ERA5 station for point ({0},{1})'.format(cy, cx))
                     return None, 0  
@@ -783,30 +786,32 @@ class HRUs(QObject):
             sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'
             sql3 = 'INSERT INTO tmp VALUES(?,?,?,?,?)'
             sql4 = 'INSERT INTO Subtmp VALUES(?,?,?,?,?,?,0)'
-            #map of ERA5 id to column in data txt file and position in pcp table.  tmp uses same data
-            pcpIds: Dict[int, Tuple[int, int]] = dict()
+            #map of ERA5 station name to column in data txt file and position in pcp table.  tmp uses same data
+            pcpIds: Dict[str, Tuple[int, int]] = dict()
             minRec = 0
             orderId = 0
             oid = 0
+            poid = 0
             for basin, (centreX, centreY) in self._gv.topo.basinCentroids.items():
                 SWATBasin = self._gv.topo.basinToSWATBasin.get(basin, 0)
                 if SWATBasin > 0:
                     centroidll = self._gv.topo.pointToLatLong(QgsPointXY(centreX, centreY))
                     data, distance = nearestERA5(centroidll)
                     if data is not None:
-                        pcpId = data[0]
+                        pcpId = data[1]
                         minRec1, orderId1 = pcpIds.get(pcpId, (0,0))
                         if minRec1 == 0:
                             minRec += 1
                             minRec1 = minRec
                             orderId += 1
                             orderId1 = orderId
-                            conn.execute(sql1, (pcpId, data[1], data[2], data[3], data[4]))
-                            conn.execute(sql3, (pcpId, data[1], data[2], data[3], data[4]))
+                            poid += 1
+                            conn.execute(sql1, (poid, pcpId, data[2], data[3], data[4]))
+                            conn.execute(sql3, (poid, pcpId, data[2], data[3], data[4]))
                             pcpIds[pcpId] = (minRec, orderId)
                         oid += 1
-                        conn.execute(sql2, (oid, SWATBasin, distance, minRec1, data[1], orderId1))
-                        conn.execute(sql4, (oid, SWATBasin, distance, minRec1, data[1], orderId1))
+                        conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
+                        conn.execute(sql4, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
             conn.commit()    
                 
             
@@ -3701,6 +3706,7 @@ class CreateHRUs(QObject):
                 basinData.addCell(crop, soil, slope, area, meanElevation, meanSlopeValue, self._gv.distNoData, self._gv)
             # bring areas up to date (including adding DUMY crop).  Not original since we have already removed some HRUs.
             basinData.setAreas(False)
+        relHRU = 0
         for crop, ssn in basinData.cropSoilSlopeNumbers.items():
             for soil, sn in ssn.items():
                 for slope,hru in sn.items():
@@ -3715,6 +3721,8 @@ class CreateHRUs(QObject):
                     slopePercent = (float(cellData.totalSlope) / cellData.cellCount) * 100
                     filebase = QSWATUtils.fileBase(SWATBasin, hru, forTNC=self._gv.forTNC)
                     oid += 1
+                    relHRU += 1
+                    filebase = QSWATUtils.fileBase(SWATBasin, hru, forTNC=self._gv.forTNC)
                     cursor.execute(sql2, (oid, SWATBasin, areaHa, lu, arlu, soilName, arso, slp, \
                                    hruha, slopePercent, uc, oid, filebase))
                     cursor.execute(sql3, (oid, SWATBasin, crop, lu, soil, soilName, slope, slp, \

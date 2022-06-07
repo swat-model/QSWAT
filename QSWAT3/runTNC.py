@@ -25,7 +25,7 @@
 TNCDir = r'K:\TNC'  # r'E:\Chris\TNC'
 Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
-weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
+weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 maxHRUs = 5  # maximum number of HRUs per gid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
@@ -186,7 +186,7 @@ class runTNC():
         gv.db.slopeLimits = slopeLimits
         if not self.hrus.readFiles():
             hrudlg.close()
-            return False  # gives True if project is empty
+            return False
         hrudlg.close()
         return True
         
@@ -551,7 +551,6 @@ class runTNC():
                     for _ in range(9): next(inFile)
                     year = startYear
                     lastMon = 0
-                    lastSub = 0
                     relHRU = 0
                     for line in inFile.readlines():
                         monStr = line[29:34]
@@ -565,12 +564,9 @@ class runTNC():
                         if mon <= 12:  # omit summary lines
                             lulc = line[:4]
                             hru = hruMap[int(line[4:9])]
+                            gisCatchment = line[10:19]
+                            relHRU = int(gisCatchment[7:9])
                             sub = subMap[int(line[19:24])]
-                            if sub == lastSub:
-                                relHRU += 1 
-                            else:
-                                relHRU = 1
-                                lastSub = sub
                             gis = '{0:07d}{1:02d}'.format(sub, relHRU)
                             data = [lulc, hru, gis, sub, year, mon] + line[34:].split()
                             try:

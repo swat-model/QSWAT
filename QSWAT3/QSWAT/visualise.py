@@ -26,6 +26,7 @@ from qgis.PyQt.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QL
 from qgis.PyQt.QtXml import QDomDocument
 from qgis.core import QgsApplication, QgsLineSymbol, QgsFillSymbol, QgsColorRamp, QgsFields, QgsPrintLayout, QgsProviderRegistry, QgsRendererRange, QgsStyle, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsField, QgsMapLayer, QgsVectorLayer, QgsProject, QgsLayerTree, QgsReadWriteContext, QgsLayoutExporter, QgsSymbol, QgsProcessingContext
 from qgis.gui import QgsMapCanvas, QgsMapCanvasItem
+from qgis.analysis import QgsNativeAlgorithms
 import os
 # import random
 import numpy
@@ -298,6 +299,9 @@ class Visualise(QObject):
                 else:
                     catchmentsFile = QSWATUtils.join(self._gv.tablesOutDir, 'catchments.shp')
                     if not os.path.exists(catchmentsFile):
+                        Processing.initialize()
+                        if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
+                            QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
                         context = QgsProcessingContext()
                         processing.run("native:dissolve", 
                                {'INPUT': subsFile, 'FIELD': ['Catchment'], 'OUTPUT': catchmentsFile}, context=context)

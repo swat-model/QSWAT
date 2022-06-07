@@ -72,15 +72,14 @@ class DBUtils:
             else:
                 self.updateProjDb(Parameters._SWATEDITORVERSION)
         ## reference database
-        if forTNC:
-            self.dbRefFile = dbRefTemplate
-        else:
-            dbRefName = 'QSWATRef2012.sqlite' if isHUC or isHAWQS else Parameters._DBREF
-            self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
+        dbRefName = 'QSWATRef2012.sqlite' if isHUC or isHAWQS or forTNC else Parameters._DBREF
+        self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
         if isHUC or isHAWQS or forTNC:
             if isHUC and not os.path.isfile(self.dbRefFile):
                 # look one up from project directory for reference database, so allowing it to be shared
                 self.dbRefFile = QSWATUtils.join(projDir + '/..', dbRefName)
+            elif forTNC and not os.path.isfile(self.dbRefFile):
+                shutil.copyfile(dbRefTemplate, self.dbRefFile)
             if not os.path.isfile(self.dbRefFile):
                 QSWATUtils.error('Failed to find reference database {0}'.format(self.dbRefFile), self.isBatch)
                 return
