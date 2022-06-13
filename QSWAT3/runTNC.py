@@ -30,8 +30,8 @@ gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m 
 maxHRUs = 5  # maximum number of HRUs per gid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
-SWATEditorCmd = TNCDir + '/SwatEditorCmd/SwatEditorCmd.exe'
-SWATApp = TNCDir + '/SWAT/Rev_684_CG_rel.exe'  
+SWATEditorTNC = TNCDir + '/SwatEditorTNC/SwatEditorTNC.exe'
+SWATApp = TNCDir + '/SWAT/Rev_684_CG_64rel.exe'  
 
 
 contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
@@ -510,7 +510,7 @@ class runTNC():
                     year = startYear
                     lastMon = 0
                     for line in inFile.readlines():
-                        monStr = line[20:25]
+                        monStr = line[22:26]
                         if '.' in monStr:
                             continue  # omit summary lines
                         mon = int(monStr)
@@ -518,8 +518,8 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[6:11])]
-                            data = [sub, year, mon] + line[25:].split()
+                            sub = subMap[int(line[6:12])]
+                            data = [sub, year, mon] + line[26:].split()
                             try:
                                 outConn.execute(sqlSub, data)
                                 catchmentOutConn.execute(sqlSub, data)
@@ -531,7 +531,7 @@ class runTNC():
                     year = startYear
                     lastMon = 0
                     for line in inFile.readlines():
-                        monStr = line[20:26]
+                        monStr = line[22:26]
                         if '.' in monStr:
                             continue  # omit summary lines
                         mon = int(monStr)
@@ -553,22 +553,21 @@ class runTNC():
                     lastMon = 0
                     relHRU = 0
                     for line in inFile.readlines():
-                        monStr = line[29:34]
-                        if '.' in monStr:
+                        monStr = line[34:38]
+                        if '.' in monStr: 
                             continue  # omit summary lines
                         mon = int(monStr)
-                        mon = int(line[29:34])
                         if mon == 1 and lastMon >= 12:
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
                             lulc = line[:4]
-                            hru = hruMap[int(line[4:9])]
-                            gisCatchment = line[10:19]
+                            hru = hruMap[int(line[5:11])]
+                            gisCatchment = line[12:21]
                             relHRU = int(gisCatchment[7:9])
-                            sub = subMap[int(line[19:24])]
+                            sub = subMap[int(line[21:28])]
                             gis = '{0:07d}{1:02d}'.format(sub, relHRU)
-                            data = [lulc, hru, gis, sub, year, mon] + line[34:].split()
+                            data = [lulc, hru, gis, sub, year, mon] + line[38:].split()
                             try:
                                 outConn.execute(sqlHru, data)
                                 catchmentOutConn.execute(sqlHru, data)
@@ -585,7 +584,7 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[6:11])]
+                            sub = subMap[int(line[5:11])]
                             data = [year, sub, mon] + line[16:].split()
                             try:
                                 outConn.execute(sqlWql, data)
@@ -606,7 +605,7 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[7:12])]
+                            sub = subMap[int(line[6:12])]
                             data = [sub, year, mon] + line[27:].split()
                             try:
                                 outConn.execute(sqlSed, data)
@@ -633,9 +632,13 @@ class runTNC():
                 self.collectOutput(d, conn)
             
 def runCatchment(direc):
-    cmd = SWATEditorCmd
+    cmd = SWATEditorTNC
     _ = subprocess.run([cmd, direc, SWATApp], capture_output=True)
     #_ = subprocess.run([cmd, direc, SWATApp])
+    
+def runEditor(projDir):
+    cmd = SWATEditorTNC
+    _ = subprocess.run([cmd, projDir])
                 
 if __name__ == '__main__':
     try:
@@ -649,6 +652,7 @@ if __name__ == '__main__':
         p.run()
         t2 = time.process_time()
         print('Partitioned project {0} into {1} catchments in {2} seconds'.format(tnc.projName, p.countCatchments, round(t2-t1)))
+        runEditor(tnc.projDir)
         pattern = tnc.projDir + '/Catchments/*'
         # restrict to directories only
         dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]

@@ -156,7 +156,7 @@ class Parameters:
                   'NorthAmerica': (-178.3, 0, -29.9, 60.0),
                   'SouthAmerica': (-109.7, -56.2, -34.5, 12.9),
                   'Australia': (89.9, -55.0, 180, 0),
-                  'Africa': (-25.6, -35.1, 60.1, 27.6),
+                  'Africa': (-25.6, -35.1, 60.1, 37.6),
                   'Europe': (-31.6, 34.3, 69.9, 60.0),
                   'Asia': (-0.1, -11.1, 180, 60.0)}
     wgnDb = 'swatplus_wgn.sqlite'
