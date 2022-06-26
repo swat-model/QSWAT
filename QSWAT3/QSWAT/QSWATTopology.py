@@ -121,7 +121,7 @@ class QSWATTopology:
     
     _HUCPointId = 100000  # for HUC models all point ids are this number or greater (must match value in HUC12Models.py in HUC12Watersheds 
     
-    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool, fromGRASS: bool, forTNC: bool) -> None:
+    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool, fromGRASS: bool, forTNC: bool, TNCCatchmentThreshold: float) -> None:
         """Initialise class variables."""
         ## Link to project database
         self.db = None
@@ -207,6 +207,8 @@ class QSWATTopology:
         self.fromGRASS = fromGRASS
         ## flag for TNC projects
         self.forTNC = forTNC
+        ## minimum catchment size for TNC projects in sq km
+        self.TNCCatchmentThreshold = TNCCatchmentThreshold
         
     def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float) -> bool:
         """Set DEM size parameters and stream orientation, and store source and outlet points for stream reaches."""
@@ -522,8 +524,9 @@ class QSWATTopology:
             for link, basin in self.linkToBasin.items():
                 dsLink = self.downLinks[link]
                 if dsLink >= 0 or self.drainAreas[link] > minDrainArea:
-                    SWATBasin += 1
-                    self.basinToSWATBasin[basin] = SWATBasin
+                    if self.catchmentLargeEnoughForTNC(basin):
+                        SWATBasin += 1
+                        self.basinToSWATBasin[basin] = SWATBasin
         else:
             # if not grid, try existing subbasin numbers as SWAT basin numbers
             ok = subbasinIndex >= 0 and self.trySubbasinAsSWATBasin(wshedLayer, polyIndex, subbasinIndex)
@@ -555,6 +558,15 @@ class QSWATTopology:
         wshedLayer.setLabelsEnabled(True)
         wshedLayer.triggerRepaint()
         return True
+    
+    def catchmentLargeEnoughForTNC(self, basin: int) -> bool:
+        """If not for TNC, return True.  Else return True if catchment size (drain area at outlet) no less than TNCCatchmentThreshold (in sq km)."""
+        if not self.forTNC:
+            return True
+        outlet = self.catchmentOutlets[basin]
+        outletLink = self.basinToLink[outlet]
+        catchmentArea = self.drainAreas[outletLink]
+        return catchmentArea / 1E6 >= self.TNCCatchmentThreshold
     
     @staticmethod
     def reachable(link: int, links: List[int], us: Dict[int, List[int]]) -> bool:

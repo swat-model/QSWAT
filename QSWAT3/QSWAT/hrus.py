@@ -439,7 +439,13 @@ class HRUs(QObject):
     
     def addWeather(self) -> None:
         """Add weather data (for TNC project only)"""
-        continent = os.path.basename(os.path.normpath(os.path.join(self._gv.projDir, '../..')))
+        continent1 = os.path.basename(os.path.normpath(os.path.join(self._gv.projDir, '../..')))
+        # remove underscore if any and anything after 
+        underscoreIndex = continent1.find('_')
+        if underscoreIndex < 0:
+            continent = continent1
+        else:
+            continent = continent1[:underscoreIndex]
         extent = Parameters.TNCExtents.get(continent, (-180, -60, 180, 60))
         self.addWgn(extent)
         if self.weatherSource == 'CHIRPS':
@@ -447,7 +453,7 @@ class HRUs(QObject):
         elif self.weatherSource == 'ERA5':
             self.addERA5(extent, continent)
         else:
-            QSWATUtils.error('Unknown weather source for TNC project: {0}'.format(self.weatherSource))
+            QSWATUtils.error('Unknown weather source for TNC project: {0}'.format(self.weatherSource), self._gv.isBatch)
         
     def addWgn(self, extent: Tuple[float, float, float, float]) -> None:
         """Make table lat -> long -> station id."""
@@ -659,6 +665,7 @@ class HRUs(QObject):
                     return None, 0  
             
         CHIRPSGrids = os.path.join(self._gv.globaldata, os.path.join(Parameters.CHIRPSDir, Parameters.CHIRPSGridsDir))
+        #print('CHIRPSGrids: {0}'.format(CHIRPSGrids))
         self.CHIRPSStations = dict()
         minLon, minLat, maxLon, maxLat = extent
         for f in Parameters.CHIRPSStationsCsv.get(continent, []):

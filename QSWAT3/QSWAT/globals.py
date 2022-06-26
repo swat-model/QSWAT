@@ -72,6 +72,8 @@ class GlobalVars:
         self.TNCDir = TNCDir
         ## flag to show project for TNC
         self.forTNC = TNCDir != ''
+        ## minimum catchment size (in sq km)
+        self.TNCCatchmentThreshold = 150  # default is under two grid cells, with gridSize 100 and 100m DEM
         ## Path of template project database
         if self.forTNC:
             self.dbProjTemplate = QSWATUtils.join(TNCDir, Parameters._TNCDBPROJ)
@@ -165,7 +167,7 @@ class GlobalVars:
         ## Number of elevation bands
         self.numElevBands = 0
         ## Topology object
-        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS, fromGRASS, self.forTNC)
+        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS, fromGRASS, self.forTNC, self.TNCCatchmentThreshold)
         projFile = QgsProject.instance().fileName()
         projPath = QFileInfo(projFile).canonicalFilePath()
         # avoid / on Windows because of SWAT Editor

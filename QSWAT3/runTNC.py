@@ -23,15 +23,18 @@
 # Parameters to be set befure run
 
 TNCDir = r'K:\TNC'  # r'E:\Chris\TNC'
-Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'Africa_Nigeria' # can be same as Continent or Continent plus underscore plus anything for a part project
+                                # DEM, landuse and soil will be sought in TNCDir/ContDir
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
 weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
+catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 150 gives a minimum catchment of two grid cells
 maxHRUs = 5  # maximum number of HRUs per gid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
 SWATEditorTNC = TNCDir + '/SwatEditorTNC/SwatEditorTNC.exe'
-SWATApp = TNCDir + '/SWAT/Rev_684_CG_64rel.exe'  
+SWATApp = TNCDir + '/SWAT/Rev_684_64rel_heap0.exe' 
 
 
 contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
@@ -113,7 +116,8 @@ class runTNC():
         """Initialize"""
         ## project directory
         self.projName = contAbbrev + '_' + soilAbbrev + '_' + weatherSource + '_' + str(gridSize) + '_' + str(maxHRUs)
-        self.projDir = TNCDir + '/' + Continent + '/Projects/' + self.projName
+        self.projDir = TNCDir + '/' + ContDir + '/Projects/' + self.projName
+        os.makedirs(self.projDir, exist_ok=True)
         self.projDb = self.projDir + '/' + self.projName + '.sqlite'
         logFile = self.projDir + '/runTNClog.txt'
         if os.path.isfile(logFile):
@@ -147,6 +151,7 @@ class runTNC():
         """Run QSWAT project."""
         gv = self.plugin._gv
         gv.gridSize = gridSize
+        gv.TNCCatchmentThreshold = catchmentThreshold
         fileBase = contAbbrev + demBase
         self.hrus = HRUs(gv, self.dlg.reportsBox)
         basinFile = self.projDir + '/../../DEM/' + fileBase + '_burnedw.tif'
@@ -175,11 +180,17 @@ class runTNC():
         gv.landuseTable = 'landuse_lookup_TNC'
         gv.soilTable = 'FAO_soils_TNC' if soilName == 'FAO_DSMW' else 'HWSD_soils_TNC'
         self.hrus.landuseFile = self.projDir + '/../../Landuse/' + contAbbrev + 'cover.tif'
+        clip_landuse = self.hrus.landuseFile.replace('.tif', '_clip.tif')
+        if os.path.isfile(clip_landuse):
+            self.hrus.landuseFile = clip_landuse
         self.hrus.landuseLayer = QgsRasterLayer(self.hrus.landuseFile, 'landuse')
         self.hrus.soilFile = self.projDir + '/../../Soil/' + contAbbrev + soilName + '.tif'
         if not os.path.isfile(self.hrus.soilFile):
             # try .img, but probably reports 65535 as unknown.  .tif should have this set
             self.hrus.soilFile = self.projDir + '/../../Soil/' + contAbbrev + soilName + '.img'
+        clip_soil = self.hrus.soilFile.replace('.tif', '_clip.tif')
+        if os.path.isfile(clip_soil):
+            self.hrus.soilFile = clip_soil
         self.hrus.soilLayer = QgsRasterLayer(self.hrus.soilFile, 'soil')
         self.hrus.weatherSource = weatherSource
         hrudlg.usersoilButton.setChecked(True)
@@ -192,6 +203,9 @@ class runTNC():
         
     def readCio(self, cioFile: str) -> int:
         """Read cio file to get period of run and print frequency."""
+        if not os.path.isfile(cioFile):
+            # use default
+            return 1990
         with open(cioFile, 'r') as cio:
             # skip 7 lines
             for _ in range(7): next(cio)
@@ -200,9 +214,9 @@ class runTNC():
             iyrLine = cio.readline()
             cioStartYear = int(iyrLine[:20])
             idafLine = cio.readline()
-            self.julianStartDay = int(idafLine[:20])
+            julianStartDay = int(idafLine[:20])
             idalLine = cio.readline()
-            self.julianFinishDay = int(idalLine[:20])
+            julianFinishDay = int(idalLine[:20])
             # skip 47 lines
             for _ in range(47): next(cio)
             iprintLine = cio.readline()
@@ -389,33 +403,35 @@ class runTNC():
          WTMPdegc REAL
     );"""   
     
-    createWQL = """CREATE TABLE wql (
-    YEAR INTEGER,
-    RCH INTEGER,
-    DAY INTEGER,
-    WTEMP REAL,
-    ALGAE_IN REAL,
-    ALGAE_O REAL,
-    ORGN_IN REAL,
-    ORGN_OUT REAL,
-    NH4_IN REAL,
-    NH4_OUT REAL,
-    NO2_IN REAL,
-    NO2_OUT REAL,
-    NO3_IN REAL,
-    NO3_OUT REAL,
-    ORGP_IN REAL,
-    ORGP_OUT REAL,
-    SOLP_IN REAL,
-    SOLP_OUT REAL,
-    CBOD_IN REAL,
-    CBOD_OUT REAL,
-    SAT_OX REAL,
-    DISOX_IN REAL,
-    DISOX_O REAL,
-    H20VOLUME REAL,
-    TRVL_TIME REAL
-    );"""
+    #===========================================================================
+    # createWQL = """CREATE TABLE wql (
+    # YEAR INTEGER,
+    # RCH INTEGER,
+    # DAY INTEGER,
+    # WTEMP REAL,
+    # ALGAE_IN REAL,
+    # ALGAE_O REAL,
+    # ORGN_IN REAL,
+    # ORGN_OUT REAL,
+    # NH4_IN REAL,
+    # NH4_OUT REAL,
+    # NO2_IN REAL,
+    # NO2_OUT REAL,
+    # NO3_IN REAL,
+    # NO3_OUT REAL,
+    # ORGP_IN REAL,
+    # ORGP_OUT REAL,
+    # SOLP_IN REAL,
+    # SOLP_OUT REAL,
+    # CBOD_IN REAL,
+    # CBOD_OUT REAL,
+    # SAT_OX REAL,
+    # DISOX_IN REAL,
+    # DISOX_O REAL,
+    # H20VOLUME REAL,
+    # TRVL_TIME REAL
+    # );"""
+    #===========================================================================
     
     createSED = """CREATE TABLE sed (
     RCH INTEGER,
@@ -450,7 +466,7 @@ class runTNC():
         outConn.execute(self.createSUB)
         outConn.execute(self.createRCH)
         outConn.execute(self.createSED)
-        outConn.execute(self.createWQL)
+        #outConn.execute(self.createWQL)
         # try:
         #     outConn.execute("DELETE FROM hru")
         # except:
@@ -501,7 +517,7 @@ class runTNC():
                 sqlSub = 'INSERT INTO sub VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 sqlRch = 'INSERT INTO rch VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 sqlHru = 'INSERT INTO hru VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                sqlWql = 'INSERT INTO wql VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                #sqlWql = 'INSERT INTO wql VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 sqlSed = 'INSERT INTO sed VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 startYear = self.readCio(txtInOut + 'file.cio')
                 # collect output.sub
@@ -573,24 +589,26 @@ class runTNC():
                                 catchmentOutConn.execute(sqlHru, data)
                             except:
                                 print('Problem with hru data: {0}: {1}'.format(traceback.format_exc(), data))
-                # collect output.wql
-                with open(txtInOut + 'output.wql', 'r') as inFile:
-                    next(inFile)
-                    year = startYear
-                    lastMon = 0
-                    for line in inFile.readlines():
-                        mon = int(line[11:16])
-                        if mon == 1 and lastMon >= 365:
-                            year += 1
-                        lastMon = mon
-                        if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[5:11])]
-                            data = [year, sub, mon] + line[16:].split()
-                            try:
-                                outConn.execute(sqlWql, data)
-                                catchmentOutConn.execute(sqlWql, data)
-                            except:
-                                print('Problem with wql data: {0}'.format(data))
+                #===============================================================
+                # # collect output.wql
+                # with open(txtInOut + 'output.wql', 'r') as inFile:
+                #     next(inFile)
+                #     year = startYear
+                #     lastMon = 0
+                #     for line in inFile.readlines():
+                #         mon = int(line[11:16])
+                #         if mon == 1 and lastMon >= 365:
+                #             year += 1
+                #         lastMon = mon
+                #         if mon <= 12:  # omit summary lines
+                #             sub = subMap[int(line[5:11])]
+                #             data = [year, sub, mon] + line[16:].split()
+                #             try:
+                #                 outConn.execute(sqlWql, data)
+                #                 catchmentOutConn.execute(sqlWql, data)
+                #             except:
+                #                 print('Problem with wql data: {0}'.format(data))
+                #===============================================================
                 # collect output.sed
                 with open(txtInOut + 'output.sed', 'r') as inFile:
                     next(inFile)
@@ -660,10 +678,13 @@ if __name__ == '__main__':
         numProcesses = min(cpuCount, 24)
         chunk = 1
         args = [(d,) for d in dirs]
+        timec1 = time.perf_counter()
         with Pool(processes=numProcesses) as pool:
             res = pool.starmap_async(runCatchment, args, chunk)
             _ = res.get()
         sys.stdout.flush()
+        timec2 = time.perf_counter()
+        print('Editing and running SWAT took {0} seconds'.format(int(timec2 - timec1)))
         time1 = time.process_time()
         tnc.collectOutputs(dirs)
         time2 = time.process_time()

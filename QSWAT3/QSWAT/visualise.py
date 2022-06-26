@@ -433,10 +433,11 @@ class Visualise(QObject):
         if not os.path.isfile(cioFile) and self._gv.forTNC:
             # use a catchment cio file: since only dates being read any cio file will suffice
             catchmentsDir = QSWATUtils.join(self._gv.projDir, 'Catchments')
+            continentAbbrev = self._gv.projName[:2]
             catchment = 0
             while catchment < 1000:  # backstop against non termination
                 catchment += 1
-                cioFile = QSWATUtils.join(catchmentsDir, QSWATUtils.join(str(catchment), 'Scenarios/Default/TxtInOut/{0}'.format(Parameters._CIO)))
+                cioFile = QSWATUtils.join(catchmentsDir, QSWATUtils.join(continentAbbrev + str(catchment), 'Scenarios/Default/TxtInOut/{0}'.format(Parameters._CIO)))
                 if os.path.exists(cioFile):
                     break
         if not os.path.exists(cioFile):
