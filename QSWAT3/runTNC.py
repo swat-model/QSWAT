@@ -23,13 +23,13 @@
 # Parameters to be set befure run
 
 TNCDir = r'K:\TNC'  # r'E:\Chris\TNC'
-Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'Africa_Nigeria' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'CentralAmerica_Jamaica' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
 weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
-catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 150 gives a minimum catchment of two grid cells
+catchmentThreshold = 1000  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 150 gives a minimum catchment of two grid cells
 maxHRUs = 5  # maximum number of HRUs per gid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
@@ -152,11 +152,13 @@ class runTNC():
         gv = self.plugin._gv
         gv.gridSize = gridSize
         gv.TNCCatchmentThreshold = catchmentThreshold
+        # already passed to QSWATTopology, so fix this
+        gv.topo.TNCCatchmentThreshold = catchmentThreshold
         fileBase = contAbbrev + demBase
         self.hrus = HRUs(gv, self.dlg.reportsBox)
         basinFile = self.projDir + '/../../DEM/' + fileBase + '_burnedw.tif'
-        if self.hrus.HRUsAreCreated(basinFile=basinFile):
-            return
+        #if self.hrus.HRUsAreCreated(basinFile=basinFile):
+        #    return
         self.delin = Delineation(gv, self.plugin._demIsProcessed)
         self.delin._dlg.tabWidget.setCurrentIndex(0)
         demFile = self.projDir + '/../../DEM/' + fileBase + '_burned.tif'
@@ -534,11 +536,12 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[6:12])]
-                            data = [sub, year, mon] + line[26:].split()
+                            catchmentSub = int(line[6:12])
+                            sub = subMap[catchmentSub]
+                            data = [year, mon] + line[26:].split()
                             try:
-                                outConn.execute(sqlSub, data)
-                                catchmentOutConn.execute(sqlSub, data)
+                                outConn.execute(sqlSub, [sub] + data)
+                                catchmentOutConn.execute(sqlSub, [catchmentSub] + data)
                             except:
                                 print('Problem with sub data: {0}'.format(data))
                 # collect output.rch
@@ -555,11 +558,12 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[5:11])]
-                            data = [sub, year, mon] + line[26:].split()
+                            catchmentSub = int(line[5:11])
+                            sub = subMap[catchmentSub]
+                            data = [year, mon] + line[26:].split()
                             try:
-                                outConn.execute(sqlRch, data)
-                                catchmentOutConn.execute(sqlRch, data)
+                                outConn.execute(sqlRch, [sub] + data)
+                                catchmentOutConn.execute(sqlRch, [catchmentSub] + data)
                             except:
                                 print('Problem with rch data: {0}'.format(data))
                 # collect output.hru
@@ -578,15 +582,17 @@ class runTNC():
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
                             lulc = line[:4]
-                            hru = hruMap[int(line[5:11])]
-                            gisCatchment = line[12:21]
+                            catchmentHru = int(line[5:11])
+                            hru = hruMap[catchmentHru]
+                            gisCatchment = '00' + line[12:17] + line[19:21] # 5+4 to 7+2
                             relHRU = int(gisCatchment[7:9])
-                            sub = subMap[int(line[21:28])]
+                            catchmentSub = int(line[21:28])
+                            sub = subMap[catchmentSub]
                             gis = '{0:07d}{1:02d}'.format(sub, relHRU)
-                            data = [lulc, hru, gis, sub, year, mon] + line[38:].split()
+                            data = [year, mon] + line[38:].split()
                             try:
-                                outConn.execute(sqlHru, data)
-                                catchmentOutConn.execute(sqlHru, data)
+                                outConn.execute(sqlHru, [lulc, hru, gis, sub] + data)
+                                catchmentOutConn.execute(sqlHru, [lulc, catchmentHru, gisCatchment, catchmentSub] + data)
                             except:
                                 print('Problem with hru data: {0}: {1}'.format(traceback.format_exc(), data))
                 #===============================================================
@@ -623,11 +629,12 @@ class runTNC():
                             year += 1
                         lastMon = mon
                         if mon <= 12:  # omit summary lines
-                            sub = subMap[int(line[6:12])]
-                            data = [sub, year, mon] + line[27:].split()
+                            catchmentSub = int(line[6:12])
+                            sub = subMap[catchmentSub]
+                            data = [year, mon] + line[27:].split()
                             try:
-                                outConn.execute(sqlSed, data)
-                                catchmentOutConn.execute(sqlSed, data)
+                                outConn.execute(sqlSed, [sub] + data)
+                                catchmentOutConn.execute(sqlSed, [catchmentSub] + data)
                             except:
                                 print('Problem with sed data: {0}'.format(data))
                         
