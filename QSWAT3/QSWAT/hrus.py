@@ -547,7 +547,7 @@ class HRUs(QObject):
                     centroidll = self._gv.topo.pointToLatLong(QgsPointXY(centreX, centreY))
                     wgnId, minDist = nearestWgn(centroidll)
                     if wgnId >= 0:
-                        if wgnId not in wgnIds:
+                        if True:  # wgnId not in wgnIds: changed to include all subbsins in wgn table, even if data repeated
                             wgnIds.add(wgnId)
                             row1 = wgnCursor.execute(sql1r, (wgnId,)).fetchone()
                             tmpmx = dict()

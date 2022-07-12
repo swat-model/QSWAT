@@ -999,6 +999,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         curs = conn.cursor()
         index = 0           
         for basin, data in basins.items():
+            if data.relHru == 0:
+                QSWATUtils.error('There are no HRUs in subbasin with PolygonId {0}.  Check your landuse and soil coverage'.format(basin), self.isBatch)
             index = self.writeBasinsDataItem(basin, data, curs, sql1, sql2, index)
             if index < 0:
                 # error occurred - no point in repeating the failure

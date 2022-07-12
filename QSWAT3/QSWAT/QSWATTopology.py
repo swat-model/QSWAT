@@ -1283,11 +1283,11 @@ class QSWATTopology:
             fun = lambda _: 1.0
         subIdx = provider.fieldNameIndex(QSWATTopology._SUBBASIN)
         if subIdx < 0:
-            QSWATUtils.error(u'Cannot find {0} field in stream reaches results template'.format(QSWATTopology._SUBBASIN))
+            QSWATUtils.error(u'Cannot find {0} field in stream reaches results template'.format(QSWATTopology._SUBBASIN), isBatch)
             return
         penIdx = provider.fieldNameIndex(QSWATTopology._PENWIDTH)
         if penIdx < 0:
-            QSWATUtils.error(u'Cannot find {0} field in stream reaches results template'.format(QSWATTopology._PENWIDTH))
+            QSWATUtils.error(u'Cannot find {0} field in stream reaches results template'.format(QSWATTopology._PENWIDTH), isBatch)
             return
         request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([subIdx, penIdx])
         mmap = dict()
