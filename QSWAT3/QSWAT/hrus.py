@@ -600,21 +600,126 @@ class HRUs(QObject):
                         conn.execute(sql3, (wOid, SWATBasin, minDist, wgnId, row1[0], None, 'wgn_cfsr_world'))
             conn.commit()                
         
-    def addCHIRPS(self, extent: Tuple[float, float, float, float], continent: str) -> None:
-        """Make table row -> col -> station data, create pcp and SubPcp tables."""
-        # CHIRPS data implicitly uses a grid of width and depth 0.05 degrees, and the stations are situated at the centre points.
-        # Dividing centre points' latitude and longitude by 0.5 and rounding gives row and column numbers of the CHIRPS grid.
-        # So doing the same for grid cell centroid gives the position in the grid, if any.  
-        # If this fails we search for the nearest.
+    #======Replaced with newer pcp and tmp data=====================================================================
+    # def addCHIRPSpcp(self, extent: Tuple[float, float, float, float], continent: str) -> None:
+    #     """Make table row -> col -> station data, create pcp and SubPcp tables."""
+    #     # CHIRPS pcp data implicitly uses a grid of width and depth 0.05 degrees, and the stations are situated at the centre points.
+    #     # Dividing centre points' latitude and longitude by 0.5 and rounding gives row and column numbers of the CHIRPS grid.
+    #     # So doing the same for grid cell centroid gives the position in the grid, if any.  
+    #     # If this fails we search for the nearest.
+    #     
+    #     #========currently not used===============================================================
+    #     # def indexToLL(index: int) -> float: 
+    #     #     """Convert row or column index to latitude or longitude."""
+    #     #     if index < 0:
+    #     #         return index * 0.05 - 0.025
+    #     #     else:
+    #     #         return index * 0.05 + 0.025
+    #     #=======================================================================
+    #     
+    #     def nearestCHIRPS(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
+    #         """Return data of nearest CHIRPS station to point, plus distance in km"""
+    #     
+    #         def bestCHIRPS(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY, latitudeFactor: float) -> Tuple[Tuple[int, str, float, float, float], float]:
+    #             """Return nearest candidate to point."""
+    #             px = point.x()
+    #             py = point.y()   
+    #             best = candidates.pop(0)
+    #             dy = best[2] - py
+    #             dx = (best[3] - px) * latitudeFactor
+    #             measure = dx * dx + dy * dy
+    #             for nxt in candidates:
+    #                 dy1 = nxt[2] - py
+    #                 dx1 = (nxt[3] - px) * latitudeFactor 
+    #                 measure1 = dx1 * dx1 + dy1 * dy1
+    #                 if measure1 < measure:
+    #                     best = nxt
+    #                     dy = best[2] - py
+    #                     dx = best[3] - px
+    #             return best, QSWATTopology.distance(py, px, best[2], best[3])    
+    #                         
+    #         cx = point.x()
+    #         cy = point.y()
+    #         # fraction to reduce E-W distances to allow for latitude 
+    #         latitudeFactor = math.cos(math.radians(cy))
+    #         centreRow = round(cy / 0.05)
+    #         centreCol = round(cx / 0.05)
+    #         offset = 0
+    #         candidates: List[Tuple[int, str, float, float, float]] = []
+    #         # search in an expanding square centred on centreRow, centreCol
+    #         while True:
+    #             for row in range(centreRow - offset, centreRow + offset + 1):
+    #                 tbl = self.CHIRPSpcpStations.get(row, None)
+    #                 if tbl is not None:
+    #                     for col in range(centreCol - offset, centreCol + offset + 1):
+    #                         # check we are on perimeter, since inner checked on previous iterations
+    #                         if row in {centreRow - offset, centreRow + offset} or col in {centreCol - offset, centreCol + offset}:
+    #                             data = tbl.get(col, None)
+    #                             if data is not None:
+    #                                 candidates.append(data)
+    #             if len(candidates) > 0:
+    #                 return bestCHIRPS(candidates, point, latitudeFactor)
+    #             offset += 1
+    #             if offset >= 1000:
+    #                 QSWATUtils.error('Failed to find CHIRPS precipitation station for point ({0},{1})'.format(cy, cx), self._gv.isBatch)
+    #                 #QSWATUtils.loginfo('Failed to find CHIRPS precipitation station for point ({0},{1})'.format(cy, cx))
+    #                 return None, 0  
+    #         
+    #     CHIRPSGrids = os.path.join(self._gv.globaldata, os.path.join(Parameters.CHIRPSpcpDir, Parameters.CHIRPSGridsDir))
+    #     #print('CHIRPSGrids: {0}'.format(CHIRPSGrids))
+    #     self.CHIRPSpcpStations = dict()
+    #     minLon, minLat, maxLon, maxLat = extent
+    #     for f in Parameters.CHIRPSpcpStationsCsv.get(continent, []):
+    #         inFile = os.path.join(CHIRPSGrids, f)
+    #         with open(inFile,'r') as csvFile:
+    #             reader= csv.reader(csvFile)
+    #             _ = next(reader)  # skip header
+    #             for line in reader:  # ID, NAME, LAT, LONG, ELEVATION
+    #                 lat = float(line[2])
+    #                 lon = float(line[3])
+    #                 if minLon <= lon <= maxLon and minLat <= lat <= maxLat:
+    #                     row = round(lat / 0.05)
+    #                     col = round(lon / 0.05)
+    #                     tbl = self.CHIRPSpcpStations.get(row, dict())
+    #                     tbl[col] = (int(line[0]), line[1], lat, lon, float(line[4]))   #ID, NAME, LAT, LONG, ELEVATION
+    #                     self.CHIRPSpcpStations[row] = tbl 
+    #     with self._db.connect() as conn:          
+    #         sql0 = 'DELETE FROM pcp'
+    #         conn.execute(sql0)
+    #         sql0 = 'DELETE FROM SubPcp'
+    #         conn.execute(sql0)
+    #         sql1 = 'INSERT INTO pcp VALUES(?,?,?,?,?)'
+    #         sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'
+    #         # map of CHIRPS station name to column in data txt file and position in pcp table
+    #         # don't use id as will not be unique if more than one set of CHIRPS data: eg Europe also uses Asia
+    #         pcpIds: Dict[str, Tuple[int, int]] = dict()
+    #         minRec = 0
+    #         orderId = 0
+    #         oid = 0
+    #         poid = 0
+    #         for basin, (centreX, centreY) in self._gv.topo.basinCentroids.items():
+    #             SWATBasin = self._gv.topo.basinToSWATBasin.get(basin, 0)
+    #             if SWATBasin > 0:
+    #                 centroidll = self._gv.topo.pointToLatLong(QgsPointXY(centreX, centreY))
+    #                 data, distance = nearestCHIRPS(centroidll)
+    #                 if data is not None:
+    #                     pcpId = data[1]
+    #                     minRec1, orderId1 = pcpIds.get(pcpId, (0,0))
+    #                     if minRec1 == 0:
+    #                         minRec += 1
+    #                         minRec1 = minRec
+    #                         orderId += 1
+    #                         orderId1 = orderId
+    #                         poid += 1
+    #                         conn.execute(sql1, (poid, pcpId, data[2], data[3], data[4]))
+    #                         pcpIds[pcpId] = (minRec, orderId)
+    #                     oid += 1
+    #                     conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
+    #         conn.commit()                
+    #===========================================================================
         
-        #========currently not used===============================================================
-        # def indexToLL(index: int) -> float: 
-        #     """Convert row or column index to latitude or longitude."""
-        #     if index < 0:
-        #         return index * 0.05 - 0.025
-        #     else:
-        #         return index * 0.05 + 0.025
-        #=======================================================================
+    def addCHIRPS(self, extent: Tuple[float, float, float, float], continent: str) -> None:
+        """Make table row -> col -> station data, create pcp, tmp, SubPcp and SubTmp tables."""
         
         def nearestCHIRPS(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
             """Return data of nearest CHIRPS station to point, plus distance in km"""
@@ -637,35 +742,30 @@ class HRUs(QObject):
                         dx = best[3] - px
                 return best, QSWATTopology.distance(py, px, best[2], best[3])    
                             
-            cx = point.x()
-            cy = point.y()
             # fraction to reduce E-W distances to allow for latitude 
-            latitudeFactor = math.cos(math.radians(cy))
-            centreRow = round(cy / 0.05)
-            centreCol = round(cx / 0.05)
+            latitudeFactor = math.cos(math.radians(point.y()))
+            x = round(point.x())
+            y = round(point.y())
             offset = 0
             candidates: List[Tuple[int, str, float, float, float]] = []
-            # search in an expanding square centred on centreRow, centreCol
+            # search in an expanding square centred on (x, y)
             while True:
-                for row in range(centreRow - offset, centreRow + offset + 1):
-                    tbl = self.CHIRPSStations.get(row, None)
+                for offsetY in range(-offset, offset+1):
+                    tbl = self.CHIRPSStations.get(y + offsetY, None)
                     if tbl is not None:
-                        for col in range(centreCol - offset, centreCol + offset + 1):
+                        for offsetX in range(-offset, offset+1):
                             # check we are on perimeter, since inner checked on previous iterations
-                            if row in {centreRow - offset, centreRow + offset} or col in {centreCol - offset, centreCol + offset}:
-                                data = tbl.get(col, None)
-                                if data is not None:
-                                    candidates.append(data)
+                            if abs(offsetY) == offset or abs(offsetX) == offset:
+                                candidates.extend(tbl.get(x + offsetX, []))
                 if len(candidates) > 0:
                     return bestCHIRPS(candidates, point, latitudeFactor)
                 offset += 1
                 if offset >= 1000:
-                    QSWATUtils.error('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx), self._gv.isBatch)
+                    QSWATUtils.error('Failed to find CHIRPS station for point ({0},{1})'.format(point.x(), point.y()), self._gv.isBatch)
                     #QSWATUtils.loginfo('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx))
                     return None, 0  
             
-        CHIRPSGrids = os.path.join(self._gv.globaldata, os.path.join(Parameters.CHIRPSDir, Parameters.CHIRPSGridsDir))
-        #print('CHIRPSGrids: {0}'.format(CHIRPSGrids))
+        CHIRPSGrids = os.path.join(self._gv.globaldata, Parameters.CHIRPSDir)
         self.CHIRPSStations = dict()
         minLon, minLat, maxLon, maxLat = extent
         for f in Parameters.CHIRPSStationsCsv.get(continent, []):
@@ -673,24 +773,29 @@ class HRUs(QObject):
             with open(inFile,'r') as csvFile:
                 reader= csv.reader(csvFile)
                 _ = next(reader)  # skip header
-                for line in reader:  # ID, NAME, LAT, LONG, ELEVATION
+                for line in reader:  # ID, ELEVATION, LAT, LONG, NAME
                     lat = float(line[2])
                     lon = float(line[3])
                     if minLon <= lon <= maxLon and minLat <= lat <= maxLat:
-                        row = round(lat / 0.05)
-                        col = round(lon / 0.05)
-                        tbl = self.CHIRPSStations.get(row, dict())
-                        tbl[col] = (int(line[0]), line[1], lat, lon, float(line[4]))   #ID, NAME, LAT, LONG, ELEVATION
-                        self.CHIRPSStations[row] = tbl 
-        with self._db.connect() as conn:          
+                        intLat = round(lat)
+                        intLon = round(lon)
+                        tbl = self.CHIRPSStations.get(intLat, dict())
+                        tbl.setdefault(intLon, []).append((int(line[0]), line[4], lat, lon, float(line[1])))   #ID, NAME, LAT, LONG, ELEVATION
+                        self.CHIRPSStations[intLat] = tbl
+        with self._db.connect() as conn:         
             sql0 = 'DELETE FROM pcp'
             conn.execute(sql0)
             sql0 = 'DELETE FROM SubPcp'
+            conn.execute(sql0)      
+            sql0 = 'DELETE FROM tmp'
+            conn.execute(sql0)
+            sql0 = 'DELETE FROM SubTmp'
             conn.execute(sql0)
             sql1 = 'INSERT INTO pcp VALUES(?,?,?,?,?)'
-            sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'
-            # map of CHIRPS station name to column in data txt file and position in pcp table
-            # don't use id as will not be unique if more than one set of CHIRPS data: eg Europe also uses Asia
+            sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'    
+            sql3 = 'INSERT INTO tmp VALUES(?,?,?,?,?)'
+            sql4 = 'INSERT INTO SubTmp VALUES(?,?,?,?,?,?,0)'
+            #map of CHIRPS station name to column in data txt file and position in pcp table.  tmp uses same data
             pcpIds: Dict[str, Tuple[int, int]] = dict()
             minRec = 0
             orderId = 0
@@ -711,16 +816,18 @@ class HRUs(QObject):
                             orderId1 = orderId
                             poid += 1
                             conn.execute(sql1, (poid, pcpId, data[2], data[3], data[4]))
+                            conn.execute(sql3, (poid, pcpId, data[2], data[3], data[4]))
                             pcpIds[pcpId] = (minRec, orderId)
                         oid += 1
                         conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
-            conn.commit()                
+                        conn.execute(sql4, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
+            conn.commit()               
         
     def addERA5(self, extent: Tuple[float, float, float, float], continent: str) -> None:
         """Make table row -> col -> station data, create pcp and SubPcp tables, plus tmp and SubTmp tables."""
         
         def nearestERA5(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
-            """Return data of nearest CHIRPS station to point, plus distance in km"""
+            """Return data of nearest ERA5 station to point, plus distance in km"""
         
             def bestERA5(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY, latitudeFactor: float) -> Tuple[Tuple[int, str, float, float, float], float]:
                 """Return nearest candidate to point."""
@@ -3737,8 +3844,7 @@ class CreateHRUs(QObject):
         return oid, elevBandId
             
     def writeGridSubsFile(self):
-        """Write subs.shp to TablesOut folder for visualisation.  Only used for big grids (isBig is True).
-        For TNC add Catchments field to subs.shp and make catchments.shp by dissolving subbasins within catchments."""
+        """Write subs.shp to TablesOut folder for visualisation.  Only used for big grids (isBig is True)."""
         QSWATUtils.copyShapefile(self._gv.wshedFile, Parameters._SUBS, self._gv.tablesOutDir)
         subsFile = QSWATUtils.join(self._gv.tablesOutDir, Parameters._SUBS + '.shp')
         subsLayer = QgsVectorLayer(subsFile, 'Watershed grid ({0})'.format(Parameters._SUBS), 'ogr')
@@ -3765,28 +3871,6 @@ class CreateHRUs(QObject):
         if not OK:
             QSWATUtils.error('Cannot edit watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
             return
-        # if for TNC add catchments field and populate 
-        if self._gv.forTNC and not self._gv.isCatchmentProject:
-            fields = provider.fields()
-            catchmentIndex = fields.indexOf('Catchment')
-            if catchmentIndex < 0:
-                provider.addAttributes([QgsField('Catchment', QVariant.Int)])
-                fields = provider.fields()
-                subIndex = fields.indexOf(QSWATTopology._SUBBASIN)
-                catchmentIndex = fields.indexOf('Catchment')
-                sql = 'SELECT Subbasin, CatchmentId FROM Watershed'
-                subToCatchment = dict()
-                with self._gv.db.connect(readonly=True) as conn:
-                    for row in conn.execute(sql):
-                        subToCatchment[int(row[0])] = int(row[1])
-                mmap = dict()
-                for f in provider.getFeatures():
-                    subbasin = f[subIndex]
-                    catchment = subToCatchment[subbasin]
-                    mmap[f.id()] = {catchmentIndex : catchment}
-                OK = provider.changeAttributeValues(mmap)
-                if not OK:
-                    QSWATUtils.error(u'Could not add catchments to subs shapefile {0}'.format(subsFile))
         OK = subsLayer.commitChanges()
         if not OK:
             QSWATUtils.error('Cannot finish editing watershed shapefile {0}'.format(subsFile), self._gv.isBatch)
@@ -3794,13 +3878,7 @@ class CreateHRUs(QObject):
         numDeleted = len(idsToDelete)
         if numDeleted > 0:
             QSWATUtils.loginfo('{0} subbasins removed from subs.shp'.format(numDeleted))
-        if OK and self._gv.forTNC and not self._gv.isCatchmentProject:        
-            catchmentsFile = QSWATUtils.join(self._gv.tablesOutDir, 'catchments.shp')
-            if not os.path.exists(catchmentsFile):
-                context = QgsProcessingContext()
-                processing.run("native:dissolve", 
-                       {'INPUT': subsFile, 'FIELD': ['Catchment'], 'OUTPUT': catchmentsFile}, context=context)
-
+            
     def splitHRUs(self) -> bool:
         """Split HRUs according to split landuses."""
         for (landuse, split) in self._gv.splitLanduses.items():

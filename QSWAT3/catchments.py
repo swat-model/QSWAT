@@ -20,7 +20,10 @@
  ***************************************************************************/
 """
 
-from qgis.core import QgsVectorLayer, QgsFeatureRequest, QgsApplication
+from qgis.core import QgsVectorLayer, QgsFeatureRequest, QgsApplication, QgsField, QgsFields, QgsGeometry, QgsFeature, QgsRasterLayer, \
+    QgsProcessingContext, QgsVectorFileWriter, QgsProject, QgsWkbTypes, QgsPointXY, QgsCoordinateReferenceSystem, QgsCoordinateTransform
+from qgis.PyQt.QtCore import QVariant
+from qgis.analysis import QgsNativeAlgorithms
 
 from QSWAT.parameters import Parameters  # @UnresolvedImport
 from QSWAT.QSWATUtils import QSWATUtils  # @UnresolvedImport
@@ -35,6 +38,8 @@ import time
 from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
 import traceback
 import atexit
+import processing
+from processing.core.Processing import Processing
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
 QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis-ltr', True)
@@ -54,19 +59,27 @@ atexit.register(QgsApplication.exitQgis)
 
 class Partition():
     """Partition a TNC project into a separate project for each catchment.
-    This only creates a project database with the necessary tables to run SwatEditorCmd 
+    This only creates a project database with the necessary tables to run SwatEditorTNC 
     to create the SWAT input files in a TxtInOut directory."""
 
-    def __init__(self, projDb, projDir):
+    def __init__(self, projDb, projDir, maxSubCatchment, crs, proj):
         """Set up"""
         ## project database
         self.projDb = projDb
         ## project directory
         self.projDir = projDir
+        ## chain length of downstream subbasins needed to make catchment
+        self.maxSubCatchment = maxSubCatchment
+        ## coordinate reference system
+        self.crs = crs
+        ## Qgs project instance
+        self.proj = proj
         ## project name
         self.projName = os.path.split(projDir)[1]
         ## partition as map SWATBasin -> catchment
         self.partition = dict()
+        ## map catchment to downstream catchment
+        self.downCatchments = dict()
         ## map catchment -> (SWatBasin -> catchmentBasin)
         self.catchments = dict()
         ## connection to project database
@@ -76,10 +89,8 @@ class Partition():
         
     def run(self):
         """Make the partition."""
-        # make the partition map from the Watershed table
-        sql = 'SELECT Subbasin, CatchmentId FROM Watershed'
-        for row in self.conn.execute(sql):
-            self.partition[row[0]] = row[1]
+        # make the partition map using the maxSubCatchment threshold
+        self.addCatchmentsAuto()
         # map partition -> last partition basin
         nextBasins = {p: 1 for p in self.partition.values()}
         # create catchments map
@@ -87,15 +98,23 @@ class Partition():
             catchmentBasin = nextBasins[catchment]
             nextBasins[catchment] = catchmentBasin + 1
             self.catchments.setdefault(catchment, dict()).update({SWATBasin: catchmentBasin})
-        # store catchments map in main project database
+        # store catchments map and catchmentstree in main project database
         sql = """DROP TABLE IF EXISTS catchments;
                 CREATE TABLE catchments (Catchment INTEGER, Subbasin INTEGER, CatchmentBasin INTEGER);
-                CREATE INDEX catchments_catchment ON catchments (Catchment);"""
+                CREATE INDEX catchments_catchment ON catchments (Catchment);
+                DROP TABLE IF EXISTS catchmentstree;
+                CREATE TABLE catchmentstree (catchment INTEGER, dsCatchment INTEGER);
+                DROP TABLE IF EXISTS catchmentsizes;"""
         self.conn.executescript(sql)
         sql = 'INSERT INTO catchments VALUES(?,?,?)'
         for catchment, table in self.catchments.items():
             for SWATBasin, catchmentBasin in table.items():
                 self.conn.execute(sql, (catchment, SWATBasin, catchmentBasin))
+        sql = 'INSERT INTO catchmentstree VALUES(?,?)'
+        for catchment, dsCatchment in self.downCatchments.items():
+            self.conn.execute(sql, (catchment, dsCatchment))
+        sql = "CREATE TABLE catchmentsizes AS SELECT Catchment, count(Subbasin) from catchments group by Catchment"
+        self.conn.execute(sql)
         self.conn.commit()
         dbTemplate = self.projDir + '/../../../QSWATProj2012_TNC.sqlite'
         # copy reference database from project in case it has been updated
@@ -104,7 +123,7 @@ class Partition():
         catchmentsDir = os.path.join(self.projDir, 'Catchments')
         os.makedirs(catchmentsDir, exist_ok=True)
         self.countCatchments = 0
-        # remove any directories not a partition, elese junk gets into the results
+        # remove any directories not a partition, else junk gets into the results
         for d in glob.iglob(catchmentsDir + '/*'):
             if os.path.isdir(d):
                 nam = os.path.split(d)[1]
@@ -162,24 +181,31 @@ class Partition():
                 sql = 'INSERT INTO catchmentBasins VALUES(?,?)'
                 catchmentConn.executemany(sql, list(basinsMap.items()))
                 def catchmentBasin(subbasin):
-                    return 0 if subbasin == 0 else basinsMap[subbasin]
+                    return basinsMap.get(subbasin, 0)
                 catchmentConn.create_function('catchmentBasin', 1, catchmentBasin)
                 # create HRUs map in catchment database; attach project database
                 sql = """CREATE TABLE catchmentHRUs (Subbasin INTEGER, HRU INTEGER, 
                         CatchmentBasin INTEGER, CatchmentHRU INTEGER);
                         ATTACH "{0}" AS P;""".format(self.projDb)
                 catchmentConn.executescript(sql)
+                sql = "CREATE TABLE IF NOT EXISTS catchmentstree (catchment INTEGER, dsCatchment INTEGER);"
+                catchmentConn.execute(sql)
                 # Watershed table
                 sql = 'INSERT INTO Watershed SELECT * FROM P.Watershed WHERE P.Watershed.CatchmentId = ?'
                 catchmentConn.execute(sql, (catchment,))
                 sql = """UPDATE Watershed SET Subbasin = catchmentBasin(Subbasin);""" 
                 catchmentConn.execute(sql)
-                
+                # catchmentstree table; complete
+                sql = 'INSERT INTO catchmentstree SELECT * FROM P.catchmentstree;'
+                catchmentConn.execute(sql)
                 #print('basinsMap for catchment {0}: {1}'.format(catchment, basinsMap))
                 # Reach table
                 sql = """INSERT INTO Reach SELECT Reach.* FROM P.Reach JOIN catchmentBasins ON P.Reach.Subbasin = catchmentBasins.Subbasin;
                         UPDATE Reach SET (Subbasin, SubbasinR) = (catchmentBasin(Subbasin), catchmentBasin(SubbasinR));"""
-                catchmentConn.executescript(sql)
+                try:
+                    catchmentConn.executescript(sql)
+                except:
+                    print('Failed to localise Reach table.  basinsMap for catchment {0}: {1}'.format(catchment, basinsMap))
                 # MonitoringPoint table
                 sql = """INSERT INTO MonitoringPoint SELECT MonitoringPoint.* FROM P.MonitoringPoint JOIN catchmentBasins ON 
                         MonitoringPoint.Subbasin = catchmentBasins.Subbasin;
@@ -339,7 +365,161 @@ class Partition():
             print('Cannot finish editing catchment rivers {0}'.format(rivsFile))
             return
         
-
+    def addCatchmentsAuto(self):
+        """Add CatchmentIds to Watershed table, using maxChainlength as the minimum length of a cell chain to form a catchment.
+        Add Catchments field to results subs.shp. Write catchments.shp."""
+        
+        crsLatLong = QgsCoordinateReferenceSystem.fromEpsgId(4269)
+        crsTransform = QgsCoordinateTransform(crsLatLong, self.crs, self.proj)
+        
+        def pointGeomFromLatLong(lat, long):
+            geom = QgsGeometry().fromPointXY(QgsPointXY(long, lat))
+            geom.transform(crsTransform)
+            return geom
+          
+        # populate self.partition  
+        self.partition.clear()
+        ds = dict()  # map of subbasin to dowsntream subbasin (or 0)
+        drainArea = dict()  # map of subbasin to area draining into its outlet in sq km
+        sql = 'SELECT Subbasin, SubbasinR, AreaC FROM Reach'
+        for row in self.conn.execute(sql):
+            ds[row[0]] = row[1]
+            drainArea[row[0]] = round(row[2] / 100)  # ha converted to sq km
+        dsv = ds.values()
+        for sub in ds: 
+            if sub not in dsv:
+                current = sub
+                #print('Starting from {0}'.format(current))
+                downChain = []
+                drainSoFar = 0  # drainage to upper catchments created so far
+                while True: 
+                    currentCatchment = self.partition.get(current, -1)
+                    if currentCatchment > 0:
+                        # already been here
+                        for s in downChain:
+                            self.partition[s] = currentCatchment
+                        break
+                    nxt = ds[current]
+                    drainCurrent = drainArea[current]
+                    if nxt == 0:
+                        currentCatchment = current
+                        self.partition[current]  = currentCatchment
+                    elif drainCurrent - drainSoFar > self.maxSubCatchment:
+                        #print('Current: {0}; drainCurrent: {1}; drainSoFar: {2}; max {3}'
+                        #      .format(current, drainCurrent, drainSoFar, self.maxSubCatchment))
+                        # before making an inlet here
+                        # make sure next cell down is not already marked with an outlet
+                        # to avoid the possibility of multiple inlets sharing a downstream node
+                        # since there cannot be more than two such inlets
+                        nxtCatchment = self.partition.get(nxt, -1)
+                        if nxt > 0 and nxtCatchment > 0 and len(downChain) > 0:
+                            # make currentGrid part of downstream catchment
+                            self.partition[current] = nxtCatchment
+                            # upstream cell is last in downChain
+                            prevSub = downChain[len(downChain) - 1]
+                            for s in downChain:
+                                self.partition[s] = prevSub
+                            #print('Inlet at {0} moved upstream from {1}'.format(prevSub, current))
+                            break
+                        else:
+                            self.partition[current] = current
+                            currentCatchment = current
+                            #print('Inlet at {0}'.format(current))
+                    if currentCatchment > 0:
+                        for s in downChain:
+                            self.partition[s]  = currentCatchment
+                        downChain = []
+                        drainSoFar = drainCurrent
+                    if nxt == 0:
+                        break
+                    if current in downChain:  # safety - avoid loop
+                        print('Subbasin {0} links to itself in the grid'.format(current))
+                        for s in downChain:
+                            self.partition[s] = current
+                        break
+                    if currentCatchment < 0:
+                        downChain.append(current)
+                    current = nxt
+        # safety code.
+        # CatchmentId -1 means not in any catchment
+        sql = 'UPDATE Watershed SET CatchmentId = -1'
+        self.conn.execute(sql)
+        sql = """CREATE INDEX IF NOT EXISTS Watershed_Subbasin ON Watershed (Subbasin);
+                CREATE INDEX IF NOT EXISTS Watershed_CatchmentId ON Watershed (CatchmentId);"""
+        self.conn.executescript(sql)
+        sql = 'UPDATE Watershed SET CatchmentId = ? WHERE Subbasin = ?'
+        for sub in self.partition:
+            self.conn.execute(sql, (self.partition[sub], sub))
+        # populate self.downCatchments
+        self.downCatchments.clear()
+        for sub, subR in ds.items():
+            if subR > 0:
+                subCatchment = self.partition[sub]
+                subRCatchment = self.partition[subR]
+                if subCatchment != subRCatchment:
+                    self.downCatchments[subCatchment] = subRCatchment
+        # add catchments field to results subs shapefile and populate 
+        tablesOutDir = QSWATUtils.join(self.projDir, 'Scenarios/Default/TablesOut')
+        subsFile = QSWATUtils.join(tablesOutDir, Parameters._SUBS + '.shp')
+        subsLayer = QgsVectorLayer(subsFile, 'Watershed grid ({0})'.format(Parameters._SUBS), 'ogr')
+        provider = subsLayer.dataProvider()
+        fields = provider.fields()
+        catchmentIndex = fields.indexOf('Catchment')
+        if catchmentIndex < 0:
+            provider.addAttributes([QgsField('Catchment', QVariant.Int)])
+            fields = provider.fields()
+            catchmentIndex = fields.indexOf('Catchment')
+        subIndex = fields.indexOf(QSWATTopology._SUBBASIN)
+        mmap = dict()
+        for f in provider.getFeatures():
+            subbasin = f[subIndex]
+            catchment = self.partition[subbasin]
+            mmap[f.id()] = {catchmentIndex : catchment}
+        OK = provider.changeAttributeValues(mmap)
+        if not OK:
+            print(u'Could not add catchments to subs shapefile {0}'.format(subsFile))
+        # write catchments shapefile by dissolving subs.shp on Catchment field               
+        catchmentsFile = QSWATUtils.join(tablesOutDir, 'catchments.shp')
+        QSWATUtils.tryRemoveFiles(catchmentsFile)
+        Processing.initialize()
+        if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
+            QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
+        context = QgsProcessingContext()
+        processing.run("native:dissolve", 
+                   {'INPUT': subsFile, 'FIELD': ['Catchment'], 'OUTPUT': catchmentsFile}, context=context)
+        # write inlets shapefile
+        fields2 = QgsFields()
+        fields2.append(QgsField('Catchment', QVariant.Int))
+        inletsFile = QSWATUtils.join(self.projDir + '/../../DEM', 'inlets{0}.shp'.format(self.maxSubCatchment))
+        QSWATUtils.tryRemoveFiles(inletsFile)
+        transform_context = QgsProject.instance().transformContext()
+        vectorFileWriterOptions = QgsVectorFileWriter.SaveVectorOptions()
+        vectorFileWriterOptions.ActionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteFile
+        vectorFileWriterOptions.driverName = "ESRI Shapefile"
+        vectorFileWriterOptions.fileEncoding = "UTF-8"
+        writer2 = QgsVectorFileWriter.create(inletsFile, fields2, QgsWkbTypes.Point, self.crs,
+                                            transform_context, vectorFileWriterOptions)
+        if writer2.hasError() != QgsVectorFileWriter.NoError:
+            print('Cannot create inlets shapefile {0}: {1}'.format(inletsFile, writer2.errorMessage()))
+        features2 = []
+        subsFile = QSWATUtils.join(self.projDir, 'Scenarios/Default/TablesOut/subs.shp')
+        subslayer = QgsVectorLayer(subsFile, 'subs', 'ogr')
+        subIndex = subslayer.fields().indexOf('Subbasin')
+        catchmentIndex = subslayer.fields().indexOf('Catchment')
+        for f in subslayer.getFeatures():
+            subbasin = f[subIndex]
+            catchment = f[catchmentIndex]
+            if subbasin == catchment and ds.get(catchment, 0) > 0:
+                pt = QSWATUtils.centreGridCell(f)
+                feature2 = QgsFeature()
+                feature2.setFields(fields2)
+                feature2.setAttribute(0, catchment)
+                feature2.setGeometry(QgsGeometry.fromPointXY(pt))
+                features2.append(feature2)
+        if len(features2) > 0:
+            if not writer2.addFeatures(features2):
+                print('Unable to add features to inlets shapefile {0}'.format(inletsFile))
+                    
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('You must supply a project directory')
@@ -347,13 +527,16 @@ if __name__ == '__main__':
     projDir = sys.argv[1]
     projName = os.path.split(projDir)[1]
     projDb = os.path.join(projDir, projName + '.sqlite')
+    proj = QgsProject.instance()
+    maxSubCatchment = 10000
+    demFile = projDir + '/../../DEM/{0}100albers.tif'.format(projName[:2])
+    demLayer = QgsRasterLayer(demFile, 'DEM')
     print('Partitioning project {0} into catchments'.format(projName))
     try:
-        p = Partition(projDb, projDir)
+        p = Partition(projDb, projDir, maxSubCatchment, demLayer.crs(), proj)
         t1 = time.process_time()
-        for _ in range(1):
-            p.run()
+        p.run()
         t2 = time.process_time()
-        print('Partitioned project {0} int {1} catchments in {2} seconds'.format(projName, p.countCatchments, t2-t1))
+        print('Partitioned project {0} into {1} catchments in {2} seconds'.format(projName, p.countCatchments, t2-t1))
     except Exception:
         print('ERROR: exception: {0}'.format(traceback.format_exc()))

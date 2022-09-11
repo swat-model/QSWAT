@@ -6,10 +6,12 @@ import sqlite3
 import csv 
 import traceback 
 import atexit 
+import glob
 
 from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
 
 from QSWAT.parameters import Parameters  # @UnresolvedImport
+from QSWAT.QSWATUtils import QSWATUtils  # @UnresolvedImport
 
 osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
 QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis-ltr', True)
@@ -26,32 +28,50 @@ QgsApplication.initQgis()
 
 
 atexit.register(QgsApplication.exitQgis)
+
+# Parameters to be set befure run
+
+TNCDir = r'K:/TNC'  # r'E:/Chris/TNC'
+Continent = 'Australia' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'Australia' # can be same as Continent or Continent plus underscore plus anything for a part project
+                                # DEM, landuse and soil will be sought in TNCDir/ContDir
+maxSubCatchment = 10000 # maximum size of subcatchment, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
+soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
+weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
+gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
+catchmentThreshold = 1000  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
+maxHRUs = 5  # maximum number of HRUs per gid cell
+demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
+
+contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
+              'Europe': 'eu', 'Africa': 'af', 'Australia': 'au'}[Continent]
+soilAbbrev = 'FAO' if soilName == 'FAO_DSMW' else 'HWSD'
       
 class Weather:
     
     def __init__(self):
-        self.weatherSource = 'CHIRPS'
-        self.continent = 'CentralAmerica'
+        self.weatherSource = weatherSource
+        self.continent = Continent
         self.centroids = dict()
         self.wgnStations = dict()
         self.CHIRPSStations = dict()
         self.ERA5Stations = dict()
-        self.gridFile = r'K:\TNC\CentralAmerica\DEM\grid100.shp'
-        self.TNCDir = r'K:\TNC'
-        self.projDb = r'K:\TNC\CentralAmerica\Projects\ca_FAO_CHIRPS_100_5\ca_FAO_CHIRPS_100_5.sqlite'
-        self.globaldata = r'K:\globaldata'
-        self.crsProject = QgsCoordinateReferenceSystem('EPSG:5072')
+        self.gridFile = TNCDir + '/' + Continent + '/DEM/grid{0}.shp'.format(gridSize)
+        self.TNCDir = TNCDir
+        projName = '{0}_{1}_{2}_{3}_{4}'.format(contAbbrev, soilAbbrev, weatherSource, gridSize, maxHRUs)
+        self.projDb = TNCDir + '/' + Continent + '/Projects/{0}/{0}.sqlite'.format(projName)
+        self.globaldata = TNCDir + '/../globaldata'
+        self.gridLayer = QgsVectorLayer(self.gridFile, 'grid', 'ogr')
+        self.crsProject = self.gridLayer.crs()
         self.crsLatLong = QgsCoordinateReferenceSystem('EPSG:4326')
         self.makeCentroids()
         
     def makeCentroids(self):
-        layer = QgsVectorLayer(self.gridFile, 'grid', 'ogr')
-        provider = layer.dataProvider()
-        subIndex = layer.fields().indexOf('Subbasin')
+        provider = self.gridLayer.dataProvider()
+        subIndex = self.gridLayer.fields().indexOf('Subbasin')
         for f in provider.getFeatures():
-            print('Subbasin is {0}'.format(f[subIndex]))
-            geom = f.geometry()
-            centroid = geom.centroid().asPoint()
+            #print('Subbasin is {0}'.format(f[subIndex]))
+            centroid = QSWATUtils.centreGridCell(f)
             self.centroids[f[subIndex]] = centroid
         print('Centroid of subbasin 1 is ({0}, {1})'.format(self.centroids[1].x(), self.centroids[1].y()))
         
@@ -142,6 +162,8 @@ class Weather:
                     tbl = self.wgnStations.get(intLat, dict())
                     tbl.setdefault(intLon, []).append((int(row[0]), lat, lon))
                     self.wgnStations[intLat] = tbl
+                    
+            conn.execute('PRAGMA journal_mode=OFF')
             sql0 = 'DELETE FROM wgn'
             conn.execute(sql0)
             sql1 = 'DELETE FROM SubWgn'
@@ -220,21 +242,126 @@ class Weather:
                         conn.execute(sql3, (wOid, SWATBasin, minDist, wgnId, row1[0], None, 'wgn_cfsr_world'))
             conn.commit()                
         
-    def addCHIRPS(self, extent: Tuple[float, float, float, float], continent: str) -> None:
-        """Make table row -> col -> station data, create pcp and SubPcp tables."""
-        # CHIRPS data implicitly uses a grid of width and depth 0.05 degrees, and the stations are situated at the centre points.
-        # Dividing centre points' latitude and longitude by 0.5 and rounding gives row and column numbers of the CHIRPS grid.
-        # So doing the same for grid cell centroid gives the position in the grid, if any.  
-        # If this fails we search for the nearest.
+    #======Replaced with newer pcp and tmp data=====================================================================
+    # def addCHIRPSpcp(self, extent: Tuple[float, float, float, float], continent: str) -> None:
+    #     """Make table row -> col -> station data, create pcp and SubPcp tables."""
+    #     # CHIRPS pcp data implicitly uses a grid of width and depth 0.05 degrees, and the stations are situated at the centre points.
+    #     # Dividing centre points' latitude and longitude by 0.5 and rounding gives row and column numbers of the CHIRPS grid.
+    #     # So doing the same for grid cell centroid gives the position in the grid, if any.  
+    #     # If this fails we search for the nearest.
+    #     
+    #     #========currently not used===============================================================
+    #     # def indexToLL(index: int) -> float: 
+    #     #     """Convert row or column index to latitude or longitude."""
+    #     #     if index < 0:
+    #     #         return index * 0.05 - 0.025
+    #     #     else:
+    #     #         return index * 0.05 + 0.025
+    #     #=======================================================================
+    #     
+    #     def nearestCHIRPS(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
+    #         """Return data of nearest CHIRPS station to point, plus distance in km"""
+    #     
+    #         def bestCHIRPS(candidates: List[Tuple[int, str, float, float, float]], point: QgsPointXY, latitudeFactor: float) -> Tuple[Tuple[int, str, float, float, float], float]:
+    #             """Return nearest candidate to point."""
+    #             px = point.x()
+    #             py = point.y()   
+    #             best = candidates.pop(0)
+    #             dy = best[2] - py
+    #             dx = (best[3] - px) * latitudeFactor
+    #             measure = dx * dx + dy * dy
+    #             for nxt in candidates:
+    #                 dy1 = nxt[2] - py
+    #                 dx1 = (nxt[3] - px) * latitudeFactor 
+    #                 measure1 = dx1 * dx1 + dy1 * dy1
+    #                 if measure1 < measure:
+    #                     best = nxt
+    #                     dy = best[2] - py
+    #                     dx = best[3] - px
+    #             return best, QSWATTopology.distance(py, px, best[2], best[3])    
+    #                         
+    #         cx = point.x()
+    #         cy = point.y()
+    #         # fraction to reduce E-W distances to allow for latitude 
+    #         latitudeFactor = math.cos(math.radians(cy))
+    #         centreRow = round(cy / 0.05)
+    #         centreCol = round(cx / 0.05)
+    #         offset = 0
+    #         candidates: List[Tuple[int, str, float, float, float]] = []
+    #         # search in an expanding square centred on centreRow, centreCol
+    #         while True:
+    #             for row in range(centreRow - offset, centreRow + offset + 1):
+    #                 tbl = self.CHIRPSpcpStations.get(row, None)
+    #                 if tbl is not None:
+    #                     for col in range(centreCol - offset, centreCol + offset + 1):
+    #                         # check we are on perimeter, since inner checked on previous iterations
+    #                         if row in {centreRow - offset, centreRow + offset} or col in {centreCol - offset, centreCol + offset}:
+    #                             data = tbl.get(col, None)
+    #                             if data is not None:
+    #                                 candidates.append(data)
+    #             if len(candidates) > 0:
+    #                 return bestCHIRPS(candidates, point, latitudeFactor)
+    #             offset += 1
+    #             if offset >= 1000:
+    #                 QSWATUtils.error('Failed to find CHIRPS precipitation station for point ({0},{1})'.format(cy, cx), self._gv.isBatch)
+    #                 #QSWATUtils.loginfo('Failed to find CHIRPS precipitation station for point ({0},{1})'.format(cy, cx))
+    #                 return None, 0  
+    #         
+    #     CHIRPSGrids = os.path.join(self._gv.globaldata, os.path.join(Parameters.CHIRPSpcpDir, Parameters.CHIRPSGridsDir))
+    #     #print('CHIRPSGrids: {0}'.format(CHIRPSGrids))
+    #     self.CHIRPSpcpStations = dict()
+    #     minLon, minLat, maxLon, maxLat = extent
+    #     for f in Parameters.CHIRPSpcpStationsCsv.get(continent, []):
+    #         inFile = os.path.join(CHIRPSGrids, f)
+    #         with open(inFile,'r') as csvFile:
+    #             reader= csv.reader(csvFile)
+    #             _ = next(reader)  # skip header
+    #             for line in reader:  # ID, NAME, LAT, LONG, ELEVATION
+    #                 lat = float(line[2])
+    #                 lon = float(line[3])
+    #                 if minLon <= lon <= maxLon and minLat <= lat <= maxLat:
+    #                     row = round(lat / 0.05)
+    #                     col = round(lon / 0.05)
+    #                     tbl = self.CHIRPSpcpStations.get(row, dict())
+    #                     tbl[col] = (int(line[0]), line[1], lat, lon, float(line[4]))   #ID, NAME, LAT, LONG, ELEVATION
+    #                     self.CHIRPSpcpStations[row] = tbl 
+    #     with self._db.connect() as conn:          
+    #         sql0 = 'DELETE FROM pcp'
+    #         conn.execute(sql0)
+    #         sql0 = 'DELETE FROM SubPcp'
+    #         conn.execute(sql0)
+    #         sql1 = 'INSERT INTO pcp VALUES(?,?,?,?,?)'
+    #         sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'
+    #         # map of CHIRPS station name to column in data txt file and position in pcp table
+    #         # don't use id as will not be unique if more than one set of CHIRPS data: eg Europe also uses Asia
+    #         pcpIds: Dict[str, Tuple[int, int]] = dict()
+    #         minRec = 0
+    #         orderId = 0
+    #         oid = 0
+    #         poid = 0
+    #         for basin, (centreX, centreY) in self._gv.topo.basinCentroids.items():
+    #             SWATBasin = self._gv.topo.basinToSWATBasin.get(basin, 0)
+    #             if SWATBasin > 0:
+    #                 centroidll = self._gv.topo.pointToLatLong(QgsPointXY(centreX, centreY))
+    #                 data, distance = nearestCHIRPS(centroidll)
+    #                 if data is not None:
+    #                     pcpId = data[1]
+    #                     minRec1, orderId1 = pcpIds.get(pcpId, (0,0))
+    #                     if minRec1 == 0:
+    #                         minRec += 1
+    #                         minRec1 = minRec
+    #                         orderId += 1
+    #                         orderId1 = orderId
+    #                         poid += 1
+    #                         conn.execute(sql1, (poid, pcpId, data[2], data[3], data[4]))
+    #                         pcpIds[pcpId] = (minRec, orderId)
+    #                     oid += 1
+    #                     conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
+    #         conn.commit()                
+    #===========================================================================
         
-        #========currently not used===============================================================
-        # def indexToLL(index: int) -> float: 
-        #     """Convert row or column index to latitude or longitude."""
-        #     if index < 0:
-        #         return index * 0.05 - 0.025
-        #     else:
-        #         return index * 0.05 + 0.025
-        #=======================================================================
+    def addCHIRPS(self, extent: Tuple[float, float, float, float], continent: str) -> None:
+        """Make table row -> col -> station data, create pcp, tmp, SubPcp and SubTmp tables."""
         
         def nearestCHIRPS(point: QgsPointXY) -> Tuple[Tuple[int, str, float, float, float], float]:
             """Return data of nearest CHIRPS station to point, plus distance in km"""
@@ -257,34 +384,30 @@ class Weather:
                         dx = best[3] - px
                 return best, Weather.distance(py, px, best[2], best[3])    
                             
-            cx = point.x()
-            cy = point.y()
             # fraction to reduce E-W distances to allow for latitude 
-            latitudeFactor = math.cos(math.radians(cy))
-            centreRow = round(cy / 0.05)
-            centreCol = round(cx / 0.05)
+            latitudeFactor = math.cos(math.radians(point.y()))
+            x = round(point.x())
+            y = round(point.y())
             offset = 0
             candidates: List[Tuple[int, str, float, float, float]] = []
-            # search in an expanding square centred on centreRow, centreCol
+            # search in an expanding square centred on (x, y)
             while True:
-                for row in range(centreRow - offset, centreRow + offset + 1):
-                    tbl = self.CHIRPSStations.get(row, None)
+                for offsetY in range(-offset, offset+1):
+                    tbl = self.CHIRPSStations.get(y + offsetY, None)
                     if tbl is not None:
-                        for col in range(centreCol - offset, centreCol + offset + 1):
+                        for offsetX in range(-offset, offset+1):
                             # check we are on perimeter, since inner checked on previous iterations
-                            if row in {centreRow - offset, centreRow + offset} or col in {centreCol - offset, centreCol + offset}:
-                                data = tbl.get(col, None)
-                                if data is not None:
-                                    candidates.append(data)
+                            if abs(offsetY) == offset or abs(offsetX) == offset:
+                                candidates.extend(tbl.get(x + offsetX, []))
                 if len(candidates) > 0:
                     return bestCHIRPS(candidates, point, latitudeFactor)
                 offset += 1
                 if offset >= 1000:
-                    print('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx))
+                    print('Failed to find CHIRPS station for point ({0},{1})'.format(point.x(), point.y()))
                     #QSWATUtils.loginfo('Failed to find CHIRPS station for point ({0},{1})'.format(cy, cx))
                     return None, 0  
             
-        CHIRPSGrids = os.path.join(self.globaldata, os.path.join(Parameters.CHIRPSDir, Parameters.CHIRPSGridsDir))
+        CHIRPSGrids = os.path.join(self.globaldata, Parameters.CHIRPSDir)
         self.CHIRPSStations = dict()
         minLon, minLat, maxLon, maxLat = extent
         for f in Parameters.CHIRPSStationsCsv.get(continent, []):
@@ -292,23 +415,32 @@ class Weather:
             with open(inFile,'r') as csvFile:
                 reader= csv.reader(csvFile)
                 _ = next(reader)  # skip header
-                for line in reader:  # ID, NAME, LAT, LONG, ELEVATION
+                #print('Reading {0}'.format(f))
+                for line in reader:  # ID, ELEVATION, LAT, LONG, NAME
                     lat = float(line[2])
                     lon = float(line[3])
                     if minLon <= lon <= maxLon and minLat <= lat <= maxLat:
-                        row = round(lat / 0.05)
-                        col = round(lon / 0.05)
-                        tbl = self.CHIRPSStations.get(row, dict())
-                        tbl[col] = (int(line[0]), line[1], lat, lon, float(line[4]))   #ID, NAME, LAT, LONG, ELEVATION
-                        self.CHIRPSStations[row] = tbl 
-        with sqlite3.connect(self.projDb) as conn:          
+                        intLat = round(lat)
+                        intLon = round(lon)
+                        tbl = self.CHIRPSStations.get(intLat, dict())
+                        tbl.setdefault(intLon, []).append((int(line[0]), line[4], lat, lon, float(line[1])))   #ID, NAME, LAT, LONG, ELEVATION
+                        self.CHIRPSStations[intLat] = tbl
+                #print('Stations has {0} latitudes'.format(len(self.CHIRPSStations)))
+        with sqlite3.connect(self.projDb) as conn:   
+            conn.execute('PRAGMA journal_mode=OFF')       
             sql0 = 'DELETE FROM pcp'
             conn.execute(sql0)
             sql0 = 'DELETE FROM SubPcp'
+            conn.execute(sql0)      
+            sql0 = 'DELETE FROM tmp'
+            conn.execute(sql0)
+            sql0 = 'DELETE FROM SubTmp'
             conn.execute(sql0)
             sql1 = 'INSERT INTO pcp VALUES(?,?,?,?,?)'
-            sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'
-            #map of CHIRPS station name to column in data txt file and position in pcp table
+            sql2 = 'INSERT INTO SubPcp VALUES(?,?,?,?,?,?,0)'    
+            sql3 = 'INSERT INTO tmp VALUES(?,?,?,?,?)'
+            sql4 = 'INSERT INTO SubTmp VALUES(?,?,?,?,?,?,0)'
+            #map of CHIRPS station name to column in data txt file and position in pcp table.  tmp uses same data
             pcpIds: Dict[str, Tuple[int, int]] = dict()
             minRec = 0
             orderId = 0
@@ -328,10 +460,12 @@ class Weather:
                             orderId1 = orderId
                             poid += 1
                             conn.execute(sql1, (poid, pcpId, data[2], data[3], data[4]))
+                            conn.execute(sql3, (poid, pcpId, data[2], data[3], data[4]))
                             pcpIds[pcpId] = (minRec, orderId)
                         oid += 1
                         conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
-            conn.commit()                
+                        conn.execute(sql4, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
+            conn.commit()               
         
     def addERA5(self, extent: Tuple[float, float, float, float], continent: str) -> None:
         """Make table row -> col -> station data, create pcp and SubPcp tables, plus tmp and SubTmp tables."""
@@ -397,7 +531,8 @@ class Weather:
                         tbl = self.ERA5Stations.get(intLat, dict())
                         tbl.setdefault(intLon, []).append((int(line[0]), line[1], lat, lon, float(line[4])))   #ID, NAME, LAT, LONG, ELEVATION
                         self.ERA5Stations[intLat] = tbl
-        with sqlite3.connect(self.projDb) as conn:          
+        with sqlite3.connect(self.projDb) as conn: 
+            conn.execute('PRAGMA journal_mode=OFF')         
             sql0 = 'DELETE FROM pcp'
             conn.execute(sql0)
             sql0 = 'DELETE FROM SubPcp'
@@ -436,6 +571,105 @@ class Weather:
                         conn.execute(sql2, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
                         conn.execute(sql4, (oid, SWATBasin, distance, minRec1, pcpId, orderId1))
             conn.commit()
+            
+    def doCatchments(self):
+        """Populate SubPcp, pcp, SubTmp, tmp, SubWgn and wgn tables in catchment databases, if there is a Catchments directory."""
+        catchmentsDir = os.path.split(self.projDb)[0] + '/Catchments/'
+        if not os.path.isdir(catchmentsDir):
+            return
+        pattern = catchmentsDir + '*'
+        sql0 = 'PRAGMA journal_mode=OFF'
+        sql1 = 'SELECT Subbasin, CatchmentBasin FROM catchmentBasins'
+        sql2 = """DELETE FROM SubPcp;
+                DELETE FROM pcp;
+                DELETE FROM SubTmp;
+                DELETE FROM tmp;
+                DELETE FROM SubWgn;
+                DELETE FROM wgn;
+                ATTACH "{0}" AS P;""".format(self.projDb)
+        # restrict to directories only
+        for d in glob.iglob(pattern):
+            if os.path.isdir(d):
+                catchmentName = os.path.split(d)[1]
+                catchment = catchmentName[2:]
+                catchmentDb = catchmentsDir + '{0}/{0}.sqlite'.format(catchmentName)
+                with sqlite3.connect(catchmentDb) as catchmentConn:
+                    catchmentConn.execute(sql0)
+                    basinMap = dict()
+                    for row in catchmentConn.execute(sql1):
+                        basinMap[row[0]] = row[1]
+                    def catchmentBasin(subbasin):
+                        return basinMap.get(subbasin, 0)
+                    catchmentConn.create_function('catchmentBasin', 1, catchmentBasin)
+                    catchmentConn.executescript(sql2) 
+                    # pcp and SubPcp
+                    sql = """INSERT INTO SubPcp SELECT SubPcp.* FROM P.SubPcp JOIN catchmentBasins ON 
+                            SubPcp.Subbasin = catchmentBasins.Subbasin;
+                            UPDATE SubPcp SET Subbasin = catchmentBasin(Subbasin);
+                            INSERT INTO pcp SELECT pcp.* FROM P.pcp JOIN SubPcp ON
+                            pcp.NAME = SubPcp.Station GROUP BY SubPcp.Station;"""
+                    catchmentConn.executescript(sql)
+                    sqlIn1 = 'SELECT Subbasin, Station FROM SubPcp'
+                    sqlIn2 = 'SELECT ID FROM pcp WHERE NAME=?'
+                    sqlOut1 = 'UPDATE SubPcp SET (MinRec, OrderId) = (?,?) WHERE Subbasin=?'
+                    minRec = 0
+                    orderId = 0
+                    pcpIds: Dict[int, Tuple[int, int]] = dict()
+                    for row1 in catchmentConn.execute(sqlIn1).fetchall():
+                        # note that Subbasin in SubPcp has already been updated to catchmentBasin
+                        catchmentBasin = int(row1[0])
+                        station = row1[1]
+                        row2 = catchmentConn.execute(sqlIn2, (station,)).fetchone()
+                        if row2 is None:
+                            print('Precipitation station {0} not found in pcp table for catchment {1}'.format(station, catchment))
+                        else:
+                            pcpId = int(row2[0])
+                            minRec1, orderId1 = pcpIds.get(pcpId, (0,0))
+                            if minRec1 == 0:
+                                minRec += 1
+                                minRec1 = minRec
+                                orderId += 1
+                                orderId1 = orderId
+                                pcpIds[pcpId] = (minRec, orderId)
+                            catchmentConn.execute(sqlOut1, (minRec1, orderId1, catchmentBasin))
+                    # tmp and SubTmp
+                    sql = """INSERT INTO SubTmp SELECT SubTmp.* FROM P.SubTmp JOIN catchmentBasins ON 
+                            SubTmp.Subbasin = catchmentBasins.Subbasin;
+                            UPDATE SubTmp SET Subbasin = catchmentBasin(Subbasin);
+                            INSERT INTO tmp SELECT tmp.* FROM P.tmp JOIN SubTmp ON
+                            tmp.NAME = SubTmp.Station GROUP BY SubTmp.Station;"""
+                    catchmentConn.executescript(sql)
+                    sqlIn1 = 'SELECT Subbasin, Station FROM SubTmp'
+                    sqlIn2 = 'SELECT ID FROM tmp WHERE NAME=?'
+                    sqlOut1 = 'UPDATE SubTmp SET (MinRec, OrderId) = (?,?) WHERE Subbasin=?'
+                    minRec = 0
+                    orderId = 0
+                    tmpIds: Dict[int, Tuple[int, int]] = dict()
+                    for row1 in catchmentConn.execute(sqlIn1).fetchall():
+                        # note that Subbasin in SubPcp has already been updated to catchmentBasin
+                        catchmentBasin = int(row1[0])
+                        station = row1[1]
+                        row2 = catchmentConn.execute(sqlIn2, (station,)).fetchone()
+                        if row2 is None:
+                            print('Temperature station {0} not found in tmp table for catchment {1}'.format(station, catchment))
+                        else:
+                            tmpId = int(row2[0])
+                            minRec1, orderId1 = tmpIds.get(tmpId, (0,0))
+                            if minRec1 == 0:
+                                minRec += 1
+                                minRec1 = minRec
+                                orderId += 1
+                                orderId1 = orderId
+                                tmpIds[tmpId] = (minRec, orderId)
+                            catchmentConn.execute(sqlOut1, (minRec1, orderId1, catchmentBasin))
+                    # SubWgn and wgn
+                    sql = """INSERT INTO SubWgn SELECT SubWgn.* FROM P.SubWgn JOIN catchmentBasins ON 
+                            SubWgn.Subbasin = catchmentBasins.Subbasin;
+                            UPDATE SubWgn SET Subbasin = catchmentBasin(Subbasin);
+                            INSERT INTO wgn SELECT wgn.* FROM P.wgn JOIN SubWgn ON
+                            wgn.STATION = SubWgn.Station GROUP BY wgn.STATION;"""
+                    catchmentConn.executescript(sql)
+                    catchmentConn.commit()
                 
     @staticmethod
     def distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -455,6 +689,7 @@ if __name__ == '__main__':
     try:
         w = Weather()
         w.addWeather()
+        w.doCatchments()
     except Exception:
         print('ERROR: exception: {0}'.format(traceback.format_exc()))
     app.exitQgis()

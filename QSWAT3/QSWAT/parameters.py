@@ -161,14 +161,20 @@ class Parameters:
                   'Asia': (-0.1, -11.1, 180, 60.0)}
     wgnDb = 'swatplus_wgn.sqlite'
     CHIRPSDir = 'CHIRPS'
-    CHIRPSGridsDir = 'grids_with_elevation'
-    CHIRPSStationsCsv = {'CentralAmerica': ['North_America_grids_w_elevation.csv', 'South_America_grids_w_elevation.csv'],
-                  'NorthAmerica': ['North_America_grids_w_elevation.csv'],
-                  'SouthAmerica': ['South_America_grids_w_elevation.csv'],
-                  'Australia': ['Australia_grids_w_elevation.csv', 'Asia_grids_w_elevation_02.csv'],
-                  'Africa': ['Africa_grids_w_elevation.csv'],
-                  'Europe': ['Europe_grids_w_elevation.csv', 'Asia_grids_w_elevation_01.csv', 'Asia_grids_w_elevation_02.csv'],
-                  'Asia': ['Europe_grids_w_elevation.csv', 'Asia_grids_w_elevation_01.csv', 'Asia_grids_w_elevation_02.csv']}
+    # CHIRPSpcpStationsCsv = {'CentralAmerica': ['North_America_grids_w_elevation.csv', 'South_America_grids_w_elevation.csv'],
+    #               'NorthAmerica': ['North_America_grids_w_elevation.csv'],
+    #               'SouthAmerica': ['South_America_grids_w_elevation.csv'],
+    #               'Australia': ['Australia_grids_w_elevation.csv', 'Asia_grids_w_elevation_02.csv'],
+    #               'Africa': ['Africa_grids_w_elevation.csv'],
+    #               'Europe': ['Europe_grids_w_elevation.csv', 'Asia_grids_w_elevation_01.csv', 'Asia_grids_w_elevation_02.csv'],
+    #               'Asia': ['Europe_grids_w_elevation.csv', 'Asia_grids_w_elevation_01.csv', 'Asia_grids_w_elevation_02.csv']}
+    CHIRPSStationsCsv = {'CentralAmerica': ['north_america_grids.csv', 'south_america_grids.csv'],
+                  'NorthAmerica': ['north_america_grids.csv'],
+                  'SouthAmerica': ['south_america_grids.csv'],
+                  'Australia': ['australia_grids.csv', 'asia_02_grids.csv'],
+                  'Africa': ['africa_grids.csv'],
+                  'Europe': ['europe_grids.csv', 'asia_01_grids.csv', 'asia_02_grids.csv'],
+                  'Asia': ['europe_grids.csv', 'asia_01_grids.csv', 'asia_02_grids.csv']}
     ERA5Dir = 'ERA5'
     ERA5GridsDir = 'Weather'
     ERA5StationsCsv = {'CentralAmerica': ['north_america_grids.csv', 'south_america_grids.csv'],

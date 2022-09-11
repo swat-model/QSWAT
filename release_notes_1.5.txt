@@ -1,0 +1,31 @@
+QSWAT
+
+QSWAT is a QGIS interface for SWAT. Join the QSWAT Google group to interact with other members of the community. Download QSWAT3 v1.5 for QGIS3 (6 April 2022).
+# add button for Download QSWAT3_9
+
+Release Notes for QSWAT3, QSWAT3_64 and QSWAT3_9 version 1.5
+
+QSWAT3 is 32 bit and QSWAT3_64 and QSWAT3_9 are 64 bit versions of QSWAT. Existing users of QSWAT and ArcSWAT can continue to use their current installation of the SWAT Editor and the SWAT executable with QSWAT3, QSWAT3_64 and QSWAT3_9.
+
+You choose between QSWAT3 and QSWAT3_64 or QSWAT3_9 based primarily not on what machine you have but on whether you have a 32 bit version of Microsoft Office, or a 64 bit, or don't have Microsoft Office at all.
+
+If you have a 32 bit machine or you have a 32 bit version of Microsoft Office on a 64 bit machine, you need a 32 bit version of QGIS (you should choose 3.16 and the 32 bit .exe stand alone installer, not the MSI version) and QSWAT3.  You should also download and install Microsoft Access Database Engine Redistributable 2016#link#, and choose the 32 bit version (called accessdatabaseengine.exe).
+
+If you have a 64 bit machine with no Microsoft Office, or with a 64 bit version of Microsoft Office, you you need a 64 bit version of QGIS.  There are two 64 bit versions of QGIS available.  The older one has a .exe stand alone installer and you should choose version 3.16 and QSWAT3_64.  The newer one has a .msi stand alone installer and you should choose version 3.22 and QSWAT3_9.  The two are not compatible as the older one uses Python 3.7 and the newer uses Python 3.9.  Only choose the older if you have an existing project to finish, though it should be safe to switch to the newer one.  You will get a warning that the newer one will change your project file and it may not be possible to revert to the old one.  You can always play safe and make a copy of your project first.  It is possible to install both versions of QGIS and QSWAT3 at the same time.  You should also download and install Microsoft Access Database Engine Redistributable 2016#link#, and choose the 64 bit version (called accessdatabaseengine_X64.exe).
+
+If you make a mistake and there is a mismatch between your version of Microsoft Office and the database engine you choose, you will get a warning that you need to uninstall Microsoft Office. Don't do that! Back out without uninstalling Office and check these release notes again.
+
+-------------------------------------------------------
+
+Installation
+
+
+    Install QGIS3 by going to the QGIS download page#link# and selecting a suitable stand alone installer, version 3.16 or 3.22, as these are the long term release versions.  See the Release Notes above for advice on which QGIS installer and which QSWAT3 plugin you need.    Use the default folder in C:\Program Files (or C:\Program Files (x86)) to install in.  We recommend that you select a long term release version of QGIS (currently 3.16 or 3.22) because that is what we test QSWAT3 against.
+    Install SWAT Editor 2012 in its standard place C:\SWAT\SWATEditor. 
+        Refer to Appendix I of the QSWAT Manual for help updating a database.
+        Refer to the SWATEditor_Documentation.pdf in C:\SWAT\SWATEditor\SWATEditorHelp for help getting started.
+    Install QSWAT3. This adds some files to the SWATEditor: a project database and a reference database in Databases, SWATGraph in the SWATGraph folder, and also stores the TauDEM executables in two versions in new directories C:\SWAT\SWATEditor\TauDEM5Bin and C:\SWAT\SWATEditor\TauDEM539Bin. You are given a choice to install QSWAT3 just for yourself or everyone. It is recommended to choose the first, and this causes the QGIS plugin QSWAT3 or QSWAT3_64 or QSWAT3_9 to be put into the user's home folder, in
+    AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins. If you instead choose to install for everyone, administrator privileges are required.
+
+
+

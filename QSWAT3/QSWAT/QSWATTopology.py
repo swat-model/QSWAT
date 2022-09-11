@@ -153,6 +153,8 @@ class QSWATTopology:
         self.basinCentroids = dict()
         ## catchment outlets, map of basin to basin, only used with grid meodels
         self.catchmentOutlets = dict()
+        ## catchment to downstream catchment or -1
+        self.downCatchments = dict()
         ## link to reach length in metres
         self.streamLengths = dict()
         ## reach slopes in m/m
@@ -564,6 +566,9 @@ class QSWATTopology:
         if not self.forTNC:
             return True
         outlet = self.catchmentOutlets[basin]
+        if outlet < 0:
+            print('Polygon {0} is not in any catchment'.format(basin))
+            return False
         outletLink = self.basinToLink[outlet]
         catchmentArea = self.drainAreas[outletLink]
         return catchmentArea / 1E6 >= self.TNCCatchmentThreshold
@@ -667,6 +672,7 @@ class QSWATTopology:
                         for feature in subProvider.getFeatures(polyRequest):
                             polyMap[feature.id()] = {dsPolyIndex: -1}
                         QSWATUtils.loginfo('Link {0} and polygon {1} made into an exit'.format(maxLink, basin))
+                        print('Link {0} and polygon {1} made into an exit'.format(maxLink, basin))
                 streamProvider.changeAttributeValues(streamMap)
                 subProvider.changeAttributeValues(polyMap)
     
@@ -1154,6 +1160,18 @@ class QSWATTopology:
                 curs.execute(sql0)
                 sql1 = QSWATTopology._REACHCREATESQL
                 curs.execute(sql1)
+                # now done by catchments.py
+                # if self.forTNC:
+                #     sql2 = 'DROP TABLE IF EXISTS catchmentstree'
+                #     curs.execute(sql2)
+                #     sql3 = 'CREATE TABLE catchmentstree (catchment INTEGER, dsCatchment INTEGER)'
+                #     curs.execute(sql3)
+                #     sql4 = 'INSERT INTO catchmentstree VALUES(?, ?)'
+                #     for catchment, dsCatchment in self.downCatchments.items():
+                #         SWATCatchment = self.basinToSWATBasin.get(catchment, 0)
+                #         if SWATCatchment > 0:
+                #             dsSWATCatchment = self.basinToSWATBasin.get(dsCatchment, -1)
+                #             curs.execute(sql4, (SWATCatchment, dsSWATCatchment))
             else:
                 clearSQL = 'DELETE FROM ' + table
                 curs.execute(clearSQL)

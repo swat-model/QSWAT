@@ -76,6 +76,8 @@ class GridData:
         self.maxCol = maxCol
         ## polygonId of outlet cell
         self.outlet = -1  # -1 means not yet set
+        ## number of cells draining directly to this one (so zero means a leaf cell)
+        self.incount = 0
 
 class Delineation(QObject):
     
@@ -2244,30 +2246,53 @@ class Delineation(QObject):
     
     def createGridShapefile(self, demLayer: QgsRasterLayer, pFile: str, ad8File: str, wFile: str) -> None:
         """Create grid shapefile for watershed."""
+        
+        def readInletsFile(fileName: str) -> Set[int]:
+            """Read numbers of grid cells which are inlets"""
+            result: Set[int] = set()
+            with open(fileName, 'r') as f:
+                for line in f:
+                    nums = line.split(',')
+                    for num in nums:
+                        try:
+                            val = int(num)
+                            if val in result:
+                                QSWATUtils.error('PolygonId {0} appears more than once in {1}'.format(val, fileName))
+                            else:
+                                result.add(val)
+                        except:
+                            pass
+            return result   
+                
         gridSize = self._dlg.GridSize.value()
+        inlets: Set[int] = set()
         if self._gv.forTNC:
             # store grid and gridstreams with DEM so can be reused for same grid size
             gridFile = QSWATUtils.join(self._gv.sourceDir, 'grid{0}.shp'.format(gridSize))
             gridStreamsFile = QSWATUtils.join(self._gv.sourceDir, 'grid{0}streams.shp'.format(gridSize))
+            # inletsFile = QSWATUtils.join(self._gv.sourceDir, 'inlets.txt')  # inlets now added for TNC models by catchments.py
+            # if os.path.isfile(inletsFile):
+            #     inlets = readInletsFile(inletsFile)
         else:
             gridFile = QSWATUtils.join(self._gv.shapesDir, 'grid.shp')
             gridStreamsFile = QSWATUtils.join(self._gv.shapesDir, 'gridstreams.shp')
         if QSWATUtils.isUpToDate(self._gv.demFile, gridFile) and QSWATUtils.isUpToDate(self._gv.demFile, gridStreamsFile):
-            # restore settings of wshed and streams shapefiles
-            self._gv.wshedFile = gridFile
-            self._gv.streamFile = gridStreamsFile
-            # make sure grid layers are loaded
-            root = QgsProject.instance().layerTreeRoot()
-            gridLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), gridFile, FileTypes._GRID, 
-                                                          self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
-            if not gridLayer:
-                QSWATUtils.error('Failed to load grid shapefile {0}'.format(gridFile), self._gv.isBatch)
+            if not self._gv.forTNC: # or QSWATUtils.isUpToDate(inletsFile, gridFile):
+                # restore settings of wshed and streams shapefiles
+                self._gv.wshedFile = gridFile
+                self._gv.streamFile = gridStreamsFile
+                # make sure grid layers are loaded
+                root = QgsProject.instance().layerTreeRoot()
+                gridLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), gridFile, FileTypes._GRID, 
+                                                              self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+                if not gridLayer:
+                    QSWATUtils.error('Failed to load grid shapefile {0}'.format(gridFile), self._gv.isBatch)
+                    return
+                gridStreamsLayer = QSWATUtils.getLayerByFilename(root.findLayers(), gridStreamsFile, FileTypes._GRIDSTREAMS, 
+                                                                 self._gv, gridLayer, QSWATUtils._WATERSHED_GROUP_NAME)[0]
+                if not gridStreamsLayer:
+                    QSWATUtils.error('Failed to load grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
                 return
-            gridStreamsLayer = QSWATUtils.getLayerByFilename(root.findLayers(), gridStreamsFile, FileTypes._GRIDSTREAMS, 
-                                                             self._gv, gridLayer, QSWATUtils._WATERSHED_GROUP_NAME)[0]
-            if not gridStreamsLayer:
-                QSWATUtils.error('Failed to load grid streams shapefile {0}'.format(gridStreamsFile), self._gv.isBatch)
-            return
         self.progress('Creating grid ...')
         accFile = ad8File
         flowFile = pFile
@@ -2280,10 +2305,13 @@ class Delineation(QObject):
             if self.addDownstreamData(storeGrid, flowFile, gridSize, accTransform):
                 time4 = time.process_time()
                 QSWATUtils.loginfo('Adding downstream data took {0} seconds'.format(int(time4 - time3)))
-                self.addGridOutlets(storeGrid)
+                # inlets: Dict[int, Dict[int, int]] = dict()
+                # self.addGridOutletsAuto(storeGrid, inlets)  # moved to catchments.py
+                self.addGridOutlets(storeGrid, inlets)
                 time4a = time.process_time()
-                QSWATUtils.loginfo('Adding outlets took {0} seconds'.format(int(time4a - time4)))
-                self.writeGridShapefile(storeGrid, gridFile, flowFile, gridSize, accTransform)
+                # QSWATUtils.loginfo('Adding outlets took {0} seconds'.format(int(time4a - time4)))
+                print('Adding outlets took {0} seconds'.format(time4a - time4))
+                self.writeGridShapefile(storeGrid, gridFile, flowFile, gridSize, accTransform, None)
                 time5 = time.process_time()
                 QSWATUtils.loginfo('Writing grid shapefile took {0} seconds'.format(int(time5 - time4a)))
                 numOutlets = self.writeGridStreamsShapefile(storeGrid, gridStreamsFile, flowFile, minDrainArea, maxDrainArea, accTransform)
@@ -2461,6 +2489,8 @@ class Delineation(QObject):
                             x, y = QSWATTopology.cellToProj(currentAccCol, currentAccRow, accTransform)
                             QSWATUtils.error('Loop in flow directions in grid id {4} starting from ({0},{1}) and so far reaching ({2},{3})'.
                                              format(int(x0), int(y0), int(x), int(y), gridData.num), self._gv.isBatch)
+                            print('Loop in flow directions in grid id {4} starting from ({0},{1}) and so far reaching ({2},{3})'.
+                                             format(int(x0), int(y0), int(x), int(y), gridData.num))
                             break
                 if found:
                     cols =  storeGrid.get(currentGridRow, None)
@@ -2473,6 +2503,7 @@ class Delineation(QObject):
                             gridData.downNum = currentData.num
                             gridData.downRow = currentGridRow
                             gridData.downCol = currentGridCol
+                            currentData.incount += 1
                             #if gridData.num <= 5:
                             #    QSWATUtils.loginfo('Grid ({0},{1}) drains to acc ({2},{3}) in grid ({4},{5})'.format(gridRow, gridCol, currentAccCol, currentAccRow, currentGridRow, currentGridCol))
                             #    QSWATUtils.loginfo('{0} at {1},{2} given down id {3}'.format(gridData.num, gridRow, gridCol, gridData.downNum))
@@ -2489,16 +2520,77 @@ class Delineation(QObject):
         pArray = None
         return True
     
+    #=========No longer used.  Subcatchments defined by catchments module for TNC models==================================================================
+    # @staticmethod
+    # def addGridOutletsAuto(storeGrid: Dict[int, Dict[int, GridData]], inlets: Dict[int, Dict[int, int]]) -> None:
+    #     """Add outlets to grid data, marking inlet points automatically."""
+    #     maxChainlength = 30  # length of path without encountering an inlet before one is added
+    #     inlets.clear()
+    #     for gridRow, gridCols in storeGrid.items():
+    #         for gridCol, gridData in gridCols.items():
+    #             # start from leaf nodes
+    #             if gridData.incount == 0:
+    #                 current  = gridRow, gridCol
+    #                 downChain: List[Tuple[int, int]] = [] 
+    #                 while True:
+    #                     currentGrid = storeGrid[current[0]][current[1]]
+    #                     if currentGrid.outlet > 0:
+    #                         # already been here
+    #                         for row, col in downChain:
+    #                             storeGrid[row][col].outlet = currentGrid.outlet
+    #                         break
+    #                     if currentGrid.downNum < 0:
+    #                         currentGrid.outlet = currentGrid.num
+    #                     elif len(downChain) == maxChainlength:
+    #                         # before making an inlet here
+    #                         # make sure next cell down is not already marked with an outlet
+    #                         # to avoid the possibility of multiple inlets sharing a downstream node
+    #                         # since there cannot be more than two such inlets
+    #                         nextGrid = storeGrid.get(currentGrid.downRow, dict()).get(currentGrid.downCol, None)
+    #                         if nextGrid is not None and nextGrid.outlet > 0:
+    #                             # make currentGrid part of downstream catchment
+    #                             currentGrid.outlet = nextGrid.outlet
+    #                             # upstream cell is last in downChain
+    #                             prevRow, prevCol = downChain[len(downChain) - 1]
+    #                             prevGrid = storeGrid[prevRow][prevCol]
+    #                             inlets.setdefault(prevRow, dict())[prevCol] = prevGrid.num
+    #                             for row, col in downChain:
+    #                                 storeGrid[row][col].outlet = prevGrid.num
+    #                             print('Inlet at {0} moved upstream from {1}'.format(prevGrid.num, currentGrid.num))
+    #                             break
+    #                         else:
+    #                             inlets.setdefault(current[0], dict())[current[1]] = currentGrid.num
+    #                             print('Inlet at {0}'.format(currentGrid.num))
+    #                             currentGrid.outlet = currentGrid.num
+    #                         
+    #                     if currentGrid.outlet > 0:
+    #                         for row, col in downChain:
+    #                             storeGrid[row][col].outlet = currentGrid.outlet
+    #                         downChain = []
+    #                     if currentGrid.downNum < 0:
+    #                         break
+    #                     if current in downChain:
+    #                         QSWATUtils.loginfo('Row {0} column {1} links to itself in the grid'.format(current[0], current[1]))
+    #                         print('Row {0} column {1} links to itself in the grid'.format(current[0], current[1]))
+    #                         for row, col in downChain:
+    #                             storeGrid[row][col].outlet = currentGrid.num
+    #                         break
+    #                     if currentGrid.outlet < 0:
+    #                         downChain.append(current)
+    #                     current = currentGrid.downRow, currentGrid.downCol
+    #                 
+    #===========================================================================
+    
     @staticmethod
-    def addGridOutlets(storeGrid: Dict[int, Dict[int, GridData]]) -> None:
-        """Add outlets to grid data."""
+    def addGridOutlets(storeGrid: Dict[int, Dict[int, GridData]], inlets: Set[int]) -> None:
+        """Add outlets to grid data.  inlets now always an empty set, as added for TNC modesl in catchments.py"""
         for gridRow, gridCols in storeGrid.items():
             for gridCol in gridCols:
                 current  = gridRow, gridCol
                 downChain: List[int] = []
                 while True:
                     currentGrid = storeGrid[current[0]][current[1]]
-                    if currentGrid.downNum < 0:
+                    if currentGrid.downNum < 0 or currentGrid.num in inlets:
                         currentGrid.outlet = currentGrid.num
                     if currentGrid.outlet >= 0:
                         for row, col in downChain:
@@ -2511,9 +2603,45 @@ class Delineation(QObject):
                         break
                     downChain.append(current)
                     current = currentGrid.downRow, currentGrid.downCol
+    
+    #===========================================================================
+    # @staticmethod
+    # def addGridOutlets(storeGrid: Dict[int, Dict[int, GridData]], inlets: Set[int]) -> None:
+    #     """Add outlets to grid data."""
+    #     print('Inlets: {0}'.format(inlets))
+    #     for gridRow, gridCols in storeGrid.items():
+    #         for gridCol, gridData in gridCols.items():
+    #             if gridData.num in {5839, 5875}:
+    #                 print('PolygonId: {0}, downNum {1}, incount: {2}, outlet {3}'.format(gridData.num, gridData.downNum, gridData.incount, gridData.outlet))
+    #             # start from leaf nodes
+    #             if gridData.incount == 0:
+    #                 current  = gridRow, gridCol
+    #                 downChain: List[Tuple[int, int]] = []
+    #                 while True:
+    #                     currentGrid = storeGrid[current[0]][current[1]]
+    #                     if currentGrid.downNum < 0 or currentGrid.num in inlets:
+    #                         currentGrid.outlet = currentGrid.num
+    #                         # if currentGrid.num in inlets:
+    #                         #     print('Inlet at {0}'.format(currentGrid.num))
+    #                     if currentGrid.outlet >= 0:
+    #                         for row, col in downChain:
+    #                             storeGrid[row][col].outlet = currentGrid.outlet
+    #                         if currentGrid.downNum < 0:
+    #                             break
+    #                     if current in downChain:
+    #                         QSWATUtils.loginfo('Row {0} column {1} links to itself in the grid'.format(current[0], current[1]))
+    #                         for row, col in downChain:
+    #                             storeGrid[row][col].outlet = currentGrid.num
+    #                         break
+    #                     if currentGrid.num in inlets:
+    #                         downChain = []
+    #                     else:
+    #                         downChain.append(current)
+    #                     current = currentGrid.downRow, currentGrid.downCol
+    #===========================================================================
         
     def writeGridShapefile(self, storeGrid: Dict[int, Dict[int, GridData]], gridFile: str,
-                           flowFile: str, gridSize: int, accTransform: Transform) -> None:
+                           flowFile: str, gridSize: int, accTransform: Transform, inlets=None) -> None:
         """Write grid data to grid shapefile.  Also writes centroids dictionary."""
         self.progress('Writing grid ...')
         fields = QgsFields()
@@ -2533,15 +2661,27 @@ class Delineation(QObject):
         downIndex = fields.indexFromName(QSWATTopology._DOWNID)
         areaIndex = fields.indexFromName(QSWATTopology._AREA)
         outletIndex = fields.indexFromName(QSWATTopology._OUTLET)
+        if inlets is not None:
+            fields2 = QgsFields()
+            fields2.append(QgsField('Catchment', QVariant.Int))
+            inletsFile = os.path.split(gridFile)[0] + '/inletsshapes.shp'
+            QSWATUtils.removeLayer(inletsFile, root)
+            writer2 = QgsVectorFileWriter.create(inletsFile, fields2, QgsWkbTypes.Point, self._gv.topo.crsProject,
+                                                transform_context, self._gv.vectorFileWriterOptions)
+            if writer2.hasError() != QgsVectorFileWriter.NoError:
+                QSWATUtils.error('Cannot create inlets shapefile {0}: {1}'.format(inletsFile, writer2.errorMessage()), self._gv.isBatch)
+                inlets = None
         ul_x, x_size, _, ul_y, _, y_size = accTransform
         xDiff = x_size * gridSize * 0.5
         yDiff = y_size * gridSize * 0.5
         self._gv.topo.basinCentroids = dict()
         self._gv.topo.catchmentOutlets = dict()
+        self._gv.topo.downCatchments = dict()
         for gridRow, gridCols in storeGrid.items():
             # grids can be big so we'll add one row at a time
             centreY = (gridRow + 0.5) * gridSize * y_size + ul_y
             features = list()
+            features2 = list()
             for gridCol, gridData in gridCols.items():
                 centreX = (gridCol + 0.5) * gridSize * x_size + ul_x
                 # this is strictly not the centroid for incomplete grid squares on the edges,
@@ -2550,6 +2690,13 @@ class Delineation(QObject):
                 # when creating HRUs.
                 self._gv.topo.basinCentroids[gridData.num] = (centreX, centreY)
                 self._gv.topo.catchmentOutlets[gridData.num] = gridData.outlet
+                if gridData.num == gridData.outlet:
+                    # this is an outlet of a catchment: see if there is one downstream
+                    dsGridData = storeGrid.get(gridData.downRow, dict()).get(gridData.downCol, None)
+                    if dsGridData is None or gridData.outlet == dsGridData.outlet:
+                        self._gv.topo.downCatchments[gridData.outlet] = -1
+                    else:
+                        self._gv.topo.downCatchments[gridData.outlet] = dsGridData.outlet
                 x1 = centreX - xDiff
                 x2 = centreX + xDiff
                 y1 = centreY - yDiff
@@ -2564,13 +2711,28 @@ class Delineation(QObject):
                 geometry = QgsGeometry.fromPolygonXY([ring])
                 feature.setGeometry(geometry)
                 features.append(feature)
+                if inlets is not None:
+                    inletCatchment = inlets.get(gridRow, dict()).get(gridCol, -1)
+                    if inletCatchment > 0:
+                        feature2 = QgsFeature()
+                        feature2.setFields(fields2)
+                        feature2.setAttribute(0, inletCatchment)
+                        geometry2 = QgsGeometry.fromPointXY(QgsPointXY(centreX, centreY))
+                        feature2.setGeometry(geometry2)
+                        features2.append(feature2)
             if not writer.addFeatures(features):
                 QSWATUtils.error('Unable to add features to grid shapefile {0}'.format(gridFile), self._gv.isBatch)
                 return
+            if len(features2) > 0:
+                if not writer2.addFeatures(features2):
+                    QSWATUtils.error('Unable to add features to inlets shapefile {0}'.format(inletsFile), self._gv.isBatch)
         # load grid shapefile
         # need to release writer before making layer
         writer = None  # type: ignore
         QSWATUtils.copyPrj(flowFile, gridFile)
+        if inlets is not None:
+            writer2 = None
+            QSWATUtils.copyPrj(flowFile, inletsFile)
         # make wshed layer active so loads above it
         wshedTreeLayer = QSWATUtils.getLayerByLegend(QSWATUtils._WATERSHEDLEGEND, root.findLayers())
         if wshedTreeLayer:
