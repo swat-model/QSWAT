@@ -20,11 +20,11 @@
  ***************************************************************************/
 """
 # parameters controlling what runs
-# run QSWAT to make HRUs.  Rerun if dem, grid size, weather, landuses or soils change
+# run QSWAT to make HRUs.  Rerun if dem, grid size, landuses or soils change
 runQSWAT = False
-# run partition to set up catchment folders.  Rerun if maxChainLength changes
+# run partition to set up catchment folders.  Rerun if maxSubCatchment changes
 runPartition = False 
-# run SWATEditor on global project.  Rerun if editing inputs
+# run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
 runEditor = False 
 # run SWAT executable on catchments
 runSWAT = True
@@ -33,20 +33,20 @@ runCollect = False
 
 # Parameters to be set befure run
 
-TNCDir = r'K:/TNC'  # r'E:/Chris/TNC'
-Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'CentralAmerica' # can be same as Continent or Continent plus underscore plus anything for a part project
+TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
+Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'Africa_Nigeria' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
-maxSubCatchment = 10000 # maximum size of subcatchment, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
+maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
 weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 catchmentThreshold = 1000  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
-maxHRUs = 5  # maximum number of HRUs per gid cell
+maxHRUs = 5  # maximum number of HRUs per grid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
 SWATEditorTNC = TNCDir + '/SwatEditorTNC/SwatEditorTNC.exe'
-SWATApp = TNCDir + '/SWAT/Rev_684_64rel_heap0.exe' 
+SWATApp = TNCDir + '/SWAT/Rev_684_recday_ext_64rel.exe' 
 
 # abbreviations for continents.  Assumed in several places these are precisely 2 characters long
 contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
