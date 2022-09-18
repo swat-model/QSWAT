@@ -34,7 +34,10 @@ PrivilegesRequiredOverridesAllowed=dialog
 UsePreviousPrivileges=no
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "english"; MessagesFile: "compiler:Default.isl" 
+
+[InstallDelete]
+Type: filesandordirs; Name: "C:\SWAT\SWATEditor\TauDEM539Bin"
 
 [Files]
 Source: "C:\Users\Chris\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\{#MyAppName}\*"; DestDir: "{code:QGISPLuginDir}\{#MyAppName}"; Excludes: "testdata\test"; Flags: ignoreversion recursesubdirs createallsubdirs 

@@ -485,11 +485,17 @@ class QSWATUtils:
             except:
                 continue
             
+    @staticmethod 
+    def setFileModifiedNow(path: str) -> None:
+        """Set access and modification time of file to now"""
+        os.utime(path)
+            
     @staticmethod
     def copyFiles(inInfo: QFileInfo, saveDir: str) -> None:
         """
         Copy files with same basename as file with info  inInfo to saveDir, 
         i.e. regardless of suffix.
+        Set last modified time to now.
         """
         inFile: str = inInfo.fileName()
         inPath: str = inInfo.path()
@@ -506,10 +512,12 @@ class QSWATUtils:
             pattern: str = QSWATUtils.join(inPath, inInfo.baseName()) + '.*'
             for f in glob.iglob(pattern):
                 shutil.copy(f, saveDir)
+                QSWATUtils.setFileModifiedNow(QSWATUtils.join(saveDir, f))
                 
     @staticmethod
     def copyShapefile(inFile: str, outBase: str, outDir: str) -> None:
-        """Copy files with same basename as infile to outdir, setting basename to outbase."""
+        """Copy files with same basename as infile to outdir, setting basename to outbase,
+        and last modified time to now."""
         inDir, inName = os.path.split(inFile)
         if QSWATUtils.samePath(inDir, outDir) and os.path.splitext(inName)[0] == outBase:
             # avoid copying to same file
@@ -519,6 +527,7 @@ class QSWATUtils:
             suffix: str = os.path.splitext(f)[1]
             outfile: str = QSWATUtils.join(outDir, outBase + suffix)
             shutil.copy(f, outfile)
+            QSWATUtils.setFileModifiedNow(outfile)
             
     @staticmethod
     def shapefileExists(infile: str) -> bool:
