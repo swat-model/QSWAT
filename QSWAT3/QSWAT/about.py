@@ -21,13 +21,13 @@
 '''
 # Import the PyQt and QGIS libraries
 try:
-    from qgis.PyQt.QtCore import Qt
+    from qgis.PyQt.QtCore import Qt  # @UnusedImport
     #from PyQt5.QtGui import * # @UnusedWildImport
     #from qgis.core import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import Qt
+    from PyQt5.QtCore import Qt  # @Reimport
 # Import the code for the dialog
-from .aboutdialog import aboutDialog  # @UnresolvedImport
+from .aboutdialog import aboutDialog
 import webbrowser
 
 class AboutQSWAT:
