@@ -41,9 +41,11 @@ maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at w
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
 weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
-catchmentThreshold = 1000  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
+catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
 maxHRUs = 5  # maximum number of HRUs per grid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
+maxCPUSWATCount = 40 # maximum number of CPUs used to run SWAT
+maxCPUCollectCount = 10 # maximum number of CPUs to collect outputs (may be lower than maxCPUSWATCount because of memory requirement)
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
 SWATEditorTNC = TNCDir + '/SwatEditorTNC/SwatEditorTNC.exe'
 SWATApp = TNCDir + '/SWAT/Rev_684_recday_ext_64rel.exe' 
@@ -681,7 +683,7 @@ def collectOutputs(dirs, projDir):
     with sqlite3.connect(outputDb) as conn:
         makeOutputTables(conn)
     cpuCount = os.cpu_count()
-    numProcesses = min(cpuCount, 24)
+    numProcesses = min(cpuCount, maxCPUCollectCount)
     with Manager() as manager:
         lock = manager.Lock()
         args = [(d, outputDb, lock) for d in dirs]
@@ -792,13 +794,13 @@ if __name__ == '__main__':
         print('Dependencies: {0}'.format(deps))
         if runEditor:
             runSWATEditor(tnc.projDir)
+        pattern = tnc.projDir + '/Catchments/*'
+        # restrict to directories only
+        dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]
         if runSWAT:
             sizes = getSizes(tnc.projDb)
-            pattern = tnc.projDir + '/Catchments/*'
-            # restrict to directories only
-            dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]
             cpuCount = os.cpu_count()
-            numProcesses = min(cpuCount, 24)
+            numProcesses = min(cpuCount, maxCPUSWATCount)
             waitingList = []
             todoList = []
             vals = deps.keys()

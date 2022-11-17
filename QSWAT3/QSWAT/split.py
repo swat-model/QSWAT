@@ -20,10 +20,15 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import Qt
-#from qgis.PyQt.QtGui import * # @UnusedWildImport
-from qgis.PyQt.QtWidgets import QMessageBox, QTableWidgetItem
-#from qgis.core import * # @UnusedWildImport
+try:
+    from qgis.PyQt.QtCore import Qt
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
+    from qgis.PyQt.QtWidgets import QMessageBox, QTableWidgetItem
+    #from qgis.core import * # @UnusedWildImport
+except:
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
+    
 # Import the code for the dialog
 from .splitdialog import SplitDialog
 from .selectlu import Selectlu

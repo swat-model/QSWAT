@@ -31,12 +31,15 @@ TRANSLATIONS =
 ifeq ($(QSWAT_PROJECT), QSWAT3)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
+	EXTRAPACKAGES = imageio PIL
 else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp39-win_amd64.pyd)
+	EXTRAPACKAGES = imageio
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
+	EXTRAPACKAGES = imageio PIL
 endif
 
 PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py raster.py \
@@ -44,7 +47,7 @@ PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.
 		selectludialog.py parameters.py parametersdialog.py elevationbands.py elevationbandsdialog.py \
 		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py QSWATData.py \
 		QSWATUtils.py DBUtils.py polygonize.py QSWATTopology.py TauDEMUtils.py globals.py swatgraph.py graphdialog.py graphdialog1.py \
-		convertToPlus.py convertdialog.py convertFromArc.py arc_convertdialog.py \
+		convertToPlus.py convertdialog.py convertFromArc.py arc_convertdialog.py comparedialog.py \
 		setuppyx.py setuppyx3_9.py make_uis.py				
 
 PYC_FILES = $(PY_FILES:.py=.pyc)
@@ -57,7 +60,7 @@ LOGO = SWAT32.png
 
 UI_FILES = ui_qswat.py ui_delineation.py ui_hrus.py ui_outlets.py ui_exempt.py ui_split.py ui_selectlu.py \
 		ui_parameters.py ui_elevationbands.py ui_selectsubs.py ui_about.py ui_visualise.py ui_graph.py ui_graph1.py \
-		ui_convert.py ui_arc_convert.py
+		ui_convert.py ui_arc_convert.py ui_mainwindow.py ui_comparescenarios.py
 
 QML_FILES = dem.qml fullhrus.qml outlets.qml stream.qml subresults.qml wshed.qml wshed2.qml existingwshed.qml subbasins.qml \
 		outletsHUC.qml grid.qml catchments.qml
@@ -76,8 +79,6 @@ RESOURCE_FILES = resources_rc.py
 EXTRAS = Makefile
 
 DATABASES = Databases
-
-EXTRAPACKAGES = imageio PIL
 
 default: deploy
 

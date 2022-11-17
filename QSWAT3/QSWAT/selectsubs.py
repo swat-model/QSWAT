@@ -20,9 +20,12 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import Qt
-#from qgis.PyQt.QtGui import * # @UnusedWildImport
-#from qgis.core import * # @UnusedWildImport
+try:
+    from qgis.PyQt.QtCore import Qt
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
+    #from qgis.core import * # @UnusedWildImport
+except:
+    from PyQt5.QtCore import Qt
 # Import the code for the dialog
 from .selectsubsdialog import SelectSubbasinsDialog
 from .QSWATUtils import QSWATUtils

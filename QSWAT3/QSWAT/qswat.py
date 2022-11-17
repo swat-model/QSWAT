@@ -20,18 +20,32 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
+# try:
+#     from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
+#     from qgis.PyQt.QtGui import QIcon
+#     from qgis.PyQt.QtWidgets import QAction
+#     from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsUnitTypes, QgsApplication
+#     from qgis.analysis import QgsNativeAlgorithms
+#     from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
+#     runningQGIS = True
+# except:
+#     from PyQt5.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
+#     from PyQt5.QtGui import QIcon
+#     from PyQt5.QtWidgets import QAction, QMessageBox, QDialog
+#     runningQGIS = False
+    
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsUnitTypes, QgsApplication
 from qgis.analysis import QgsNativeAlgorithms
+from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
+    
 import os.path
 import subprocess
 import time
 import sys
 import traceback
-#import processing
-from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
 from typing import Dict, List, Set, Tuple, Optional, Union, Any, TYPE_CHECKING, cast  # @UnusedImport
 
 # Import the code for the dialog
@@ -63,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.5.10'
+    __version__ = '1.6.0'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -112,7 +126,7 @@ class QSwat(QObject):
         # font = QFont('MS Shell Dlg 2', 8)
         # Create the dialog (after translation) and keep reference
         self._odlg = QSwatDialog()
-        self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        #self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
         self._odlg.move(0, 0)
         #=======================================================================
         # font = self._odlg.font()

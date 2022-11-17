@@ -19,8 +19,10 @@
  *                                                                         *
  ***************************************************************************/
 """
-
-from qgis.PyQt import QtWidgets
+try:
+    from qgis.PyQt import QtWidgets
+except:
+    from PyQt5 import QtWidgets
 
 from .ui_exempt import Ui_ExemptDialog
 

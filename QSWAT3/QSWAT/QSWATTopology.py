@@ -19,11 +19,22 @@
  *                                                                         *
  ***************************************************************************/
 """
+from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import QVariant
-#from qgis.PyQt.QtGui import * # @UnusedWildImport
-#from qgis.PyQt.QtWidgets import * # @UnusedWildImport
-from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL
+try:
+    from qgis.PyQt.QtCore import QVariant
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
+    #from qgis.PyQt.QtWidgets import * # @UnusedWildImport
+    from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL
+except:
+    from PyQt5.QtCore import QVariant
+    QgsRasterLayer = Any
+    QgsVectorLayer = Any
+    QgsFeature = Any
+    QgsPointXY = Any
+    QgsVectorDataProvider = Any
+    QgsLayerTreeGroup = Any
+    
 from osgeo import gdal  # type: ignore
 from numpy import * # @UnusedWildImport
 import os.path
@@ -32,7 +43,6 @@ import time
 import traceback
 import math
 #import processing  # type: ignore  # @UnresolvedImport
-from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 
 if not TYPE_CHECKING:
     try:

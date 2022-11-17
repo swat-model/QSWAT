@@ -20,10 +20,14 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import QSettings, Qt
-#from qgis.PyQt.QtGui import * # @UnusedWildImport
-from qgis.PyQt.QtWidgets import QFileDialog
-#from qgis.core import *
+try:
+    from qgis.PyQt.QtCore import QSettings, Qt
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
+    from qgis.PyQt.QtWidgets import QFileDialog
+    #from qgis.core import *
+except:
+    from PyQt5.QtCore import QSettings, Qt
+    from PyQt5.QtWidgets import QFileDialog
 import os.path
 
 # Import the code for the dialog
@@ -252,7 +256,7 @@ class Parameters:
         if not os.path.exists(dbRefTemplate):
             QSWATUtils.error('Cannot find the SWAT parameter database {0}'.format(dbRefTemplate), self.isBatch)
             return
-        TauDEMDir = QSWATUtils.join(SWATEditorDir, Parameters._TAUDEMDIR)
+        TauDEMDir = QSWATUtils.join(SWATEditorDir, Parameters._TAUDEM539DIR)
         if not os.path.isdir(TauDEMDir):
             QSWATUtils.error('Cannot find the TauDEM directory {0}'.format(TauDEMDir), self.isBatch)
             return   

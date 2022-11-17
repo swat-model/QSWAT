@@ -20,10 +20,14 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import QFileInfo, QPoint, QSettings
-#from PyQt5.QtGui import * # @UnusedWildImport
-from qgis.PyQt.QtWidgets import QComboBox
-from qgis.core import QgsProject, QgsVectorFileWriter, Qgis
+try:
+    from qgis.PyQt.QtCore import QFileInfo, QPoint, QSettings
+    #from PyQt5.QtGui import * # @UnusedWildImport
+    from qgis.PyQt.QtWidgets import QComboBox
+    from qgis.core import QgsProject, QgsVectorFileWriter, Qgis
+except:
+    from PyQt5.QtCore import QFileInfo, QPoint, QSettings
+    from PyQt5.QtWidgets import QComboBox
 import os.path
 import shutil
 import xml.etree.ElementTree as ET
@@ -86,8 +90,8 @@ class GlobalVars:
             self.dbRefTemplate = QSWATUtils.join(QSWATUtils.join(SWATEditorDir, Parameters._DBDIR), Parameters._DBREF)
         if self.forTNC:
             self.globaldata = QSWATUtils.join(TNCDir, '../globaldata')
-        ## Directory of TauDEM executables
-        self.TauDEMDir = QSWATUtils.join(SWATEditorDir, Parameters._TAUDEMDIR)
+        ## Directory of TauDEM executables, version 5.3.9
+        self.TauDEMDir = QSWATUtils.join(SWATEditorDir, Parameters._TAUDEM539DIR)
         ## Path of mpiexec
         if settings.contains('/QSWAT/mpiexecDir'):
             self.mpiexecPath = QSWATUtils.join(settings.value('/QSWAT/mpiexecDir'), Parameters._MPIEXEC)

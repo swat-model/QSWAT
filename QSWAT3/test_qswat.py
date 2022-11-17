@@ -100,7 +100,7 @@ is64 = True
 HashTable1 = dict()
 if is64:
     HashTable1['Reach'] = '5df53e60043bfb56b4a9e4b71ddedb7f'
-    HashTable1['MonitoringPoint'] = '902a3418990a6298ae1247991cebfc04'
+    HashTable1['MonitoringPoint'] = '10791d312036b96392dd9490679d02d6'
     HashTable1['BASINSDATA1'] = 'd0e1da9eef76b2264b14d9eba40853a3'
     HashTable1['BASINSDATA2'] = '98b52342a67ba2e960cb43bcb6059bf6'
     HashTable1['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
@@ -108,7 +108,7 @@ if is64:
     HashTable1['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable1['hrus'] = '947a2f86346fb1ed4d163ed3e41cd15c'
     HashTable1['uncomb'] = '34b08d63db85a21f670adeb31d976827'
-    HashTable1['Watershed'] = '105552fff2ef368886d50f85769f330a'
+    HashTable1['Watershed'] = 'cb78a21d54b9d9f7a35d9f94a7d442bf'
 else:
     HashTable1['Reach'] = 'cc31e557caeafd9e64b30937b9969511'
     HashTable1['MonitoringPoint'] = '602737473d13d63fffba571d1c48184e'
@@ -137,7 +137,7 @@ else:
 HashTable2 = dict()
 if is64:
     HashTable2['Reach'] = 'c4e518524e3d6db955cfe617eee1bcfc'
-    HashTable2['MonitoringPoint'] = '7602feaa82b46c6099436846365e0f7c'
+    HashTable2['MonitoringPoint'] = '5886a0570d2de5d3a6066a7ee8ab7bcb'
     HashTable2['BASINSDATA1'] = '0735497fef27f345d53f4695deb147c6'
     HashTable2['BASINSDATA2'] = '471057b700f5cadca604fb81b8ef3cf3'
     HashTable2['ElevationBand'] = 'df71197f4bdf33993c7cc4700e6d58aa'
@@ -145,7 +145,7 @@ if is64:
     HashTable2['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
     HashTable2['hrus'] = '534f86bfc6fede76bbde04c649c33208'
     HashTable2['uncomb'] = 'd4fd3ca14cefc3c0ecdae6f7d03c3505'
-    HashTable2['Watershed'] = 'd99333c3aa33cca33163ddc751119ced'
+    HashTable2['Watershed'] = '16b6360bffa7689777424e57dc9aeee3'
 else:
     HashTable2['Reach'] = 'd61559c99ba10bcd9ac6d3e4b7270d77'
     HashTable2['MonitoringPoint'] = '1f7ce3c15b4b5a73b3b9ed1fc8c51036'
@@ -197,7 +197,7 @@ HashTable3['SplitHRUs'] = '5c3f1888ea4e1064e3f6d1b2025ebbe7'
 
 HashTable4 = dict()
 HashTable4['Reach'] = '1d1ba67148c3fc11e0abd679679221b6'  if is64 else 'c8ce13a5b31229a1a4225c6f20306423'
-HashTable4['MonitoringPoint'] = 'b3ce02e9cb72d16192319f7b95a0c0c4'  if is64 else 'a0da75a8df134d0c7277aa3f6e815704'
+HashTable4['MonitoringPoint'] = '08427e6ac841be2f887147d10fb1ab15'  if is64 else 'a0da75a8df134d0c7277aa3f6e815704'
 HashTable4['BASINSDATA1'] = '98dfbc15e8b8fbb055c8aa026399d90d'
 HashTable4['BASINSDATA2'] = '20948c80e093272ad85412170a696d79'
 HashTable4['ElevationBand'] = '1188632392838f5ecce923892d35bdfc'
@@ -205,7 +205,7 @@ HashTable4['LUExempt'] = 'd41d8cd98f00b204e9800998ecf8427e'
 HashTable4['SplitHRUs'] = 'd41d8cd98f00b204e9800998ecf8427e'
 HashTable4['hrus'] = 'fd8a0a5c3934a301585af55eacbe3188'
 HashTable4['uncomb'] = 'ff2decfc7c329f1b0e7b8c09e117487c'
-HashTable4['Watershed'] = '0dc41dc09dd3dae28fd49cf60cf13818'  if is64 else 'e4a6968263af4739a6267ed434176d88'
+HashTable4['Watershed'] = '0e2d4837134678e149dfdf37279685b8'  if is64 else 'e4a6968263af4739a6267ed434176d88'
 
 #===============================================================================
 # Test5:
@@ -634,7 +634,7 @@ class TestQswat(unittest.TestCase):
         self.assertTrue(hrudlg.exemptButton.isEnabled(), 'Exempt landuses button not enabled')
         self.assertTrue(hrudlg.filterAreaButton.isEnabled(), 'Filter by area button not enabled')
         QtTest.QTest.mouseClick(hrudlg.filterAreaButton, Qt.LeftButton)
-        self.assertTrue(hrudlg.percentButton.isEnabled(), 'Area button not enabled')
+        self.assertTrue(hrudlg.percentButton.isEnabled(), 'Percent button not enabled')
         QtTest.QTest.mouseClick(hrudlg.percentButton, Qt.LeftButton)
         self.assertTrue(hrudlg.stackedWidget.currentIndex() == 1, 'Wrong threshold page {0} selected'.format(hrudlg.stackedWidget.currentIndex()))
         hrudlg.areaSlider.setValue(10)

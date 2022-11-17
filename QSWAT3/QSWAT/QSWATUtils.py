@@ -19,35 +19,50 @@
  *                                                                         *
  ***************************************************************************/
 """
+from typing import List, Dict, Tuple, Callable, TypeVar, Any, Optional, Generic, cast  # @UnusedImport
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
-from qgis.PyQt.QtGui import QColor
-from qgis.PyQt.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
-from qgis.PyQt.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap
-from qgis.core import Qgis, \
-                        QgsApplication, \
-                        QgsColorRampShader, \
-                        QgsFeature, \
-                        QgsLayerTree, \
-                        QgsLayerTreeGroup, \
-                        QgsLayerTreeLayer, \
-                        QgsLayerTreeNode, \
-                        QgsLimitedRandomColorRamp, \
-                        QgsMapLayer, \
-                        QgsPalettedRasterRenderer, \
-                        QgsPointXY, \
-                        QgsProject, \
-                        QgsProviderRegistry, \
-                        QgsRasterBandStats, \
-                        QgsRasterLayer, \
-                        QgsRasterShader, \
-                        QgsSingleBandPseudoColorRenderer, \
-                        QgsUnitTypes, \
-                        QgsVectorLayer, \
-                        QgsGeometry, \
-                        QgsWkbTypes, \
-                        QgsFeatureRequest, \
-                        QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem
+try:
+    from qgis.PyQt.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
+    from qgis.PyQt.QtGui import QColor
+    from qgis.PyQt.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
+    from qgis.PyQt.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap
+    from qgis.core import Qgis, \
+                            QgsApplication, \
+                            QgsColorRampShader, \
+                            QgsFeature, \
+                            QgsLayerTree, \
+                            QgsLayerTreeGroup, \
+                            QgsLayerTreeLayer, \
+                            QgsLayerTreeNode, \
+                            QgsLimitedRandomColorRamp, \
+                            QgsMapLayer, \
+                            QgsPalettedRasterRenderer, \
+                            QgsPointXY, \
+                            QgsProject, \
+                            QgsProviderRegistry, \
+                            QgsRasterBandStats, \
+                            QgsRasterLayer, \
+                            QgsRasterShader, \
+                            QgsSingleBandPseudoColorRenderer, \
+                            QgsUnitTypes, \
+                            QgsVectorLayer, \
+                            QgsGeometry, \
+                            QgsWkbTypes, \
+                            QgsFeatureRequest, \
+                            QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem
+except:
+    from PyQt5.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
+    from PyQt5.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap  
+    QgsMapLayer = Any
+    QgsLayerTreeGroup = Any
+    QgsLayerTreeLayer = Any
+    QgsVectorLayer = Any
+    QgsRasterLayer = Any
+    QgsGeometry = Any
+    QgsFeature = Any   
+    QgsPointXY = Any              
 import os.path
 import posixpath
 import ntpath
@@ -57,7 +72,6 @@ import shutil
 import datetime
 import sys
 from osgeo import gdal, ogr  # type: ignore
-from typing import List, Dict, Tuple, Callable, TypeVar, Any, Optional, Generic, cast  # @UnusedImport
 import traceback
 import time
 
@@ -192,11 +206,14 @@ class QSWATUtils:
     def loginfo(msg: str) -> None:
         """Log message as information."""
         #print(msg)
-        app = QgsApplication.instance()
-        # allow to fail if no application
-        if app is not None:
-            log: QgsMessageLog = QgsApplication.instance().messageLog()
-            log.logMessage(msg, QSWATUtils._QSWATNAME, Qgis.Info)
+        try:
+            app = QgsApplication.instance()
+            # allow to fail if no application
+            if app is not None:
+                log: QgsMessageLog = QgsApplication.instance().messageLog()
+                log.logMessage(msg, QSWATUtils._QSWATNAME, Qgis.Info)
+        except:
+            print(msg)         
         
     @staticmethod
     def logerror(msg: str) -> None:
@@ -352,7 +369,7 @@ class QSWATUtils:
             info = QSWATUtils.layerFileInfo(mapLayer)
             if info == fileInfo:
                 lIds.append(layer.layerId())
-                layers.append(layer)
+                # layers.append(layer)
         QgsProject.instance().removeMapLayers(lIds)
         for layer in layers:
             del layer

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>470</width>
-    <height>634</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,10 +35,10 @@
    <iconset>
     <normaloff>:/plugins/qswat/QSWAT-Icon/QSWAT-Icon-SWAT-16.ico</normaloff>:/plugins/qswat/QSWAT-Icon/QSWAT-Icon-SWAT-16.ico</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
+  <layout class="QGridLayout" name="gridLayout_11">
    <item row="0" column="0">
     <widget class="QWidget" name="widget" native="true">
-     <layout class="QGridLayout" name="gridLayout_13">
+     <layout class="QGridLayout" name="gridLayout_12">
       <item row="0" column="0">
        <widget class="QGroupBox" name="scenarioBox">
         <property name="title">
@@ -77,6 +77,146 @@
         </layout>
        </widget>
       </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QGroupBox" name="periodBox">
+        <property name="title">
+         <string>Choose period</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="3" colspan="3">
+          <widget class="QLabel" name="label_4">
+           <property name="toolTip">
+            <string>The finish date defaults to the earliest finish date amongst the scenarios chosen, but can be set to an  earlier date by the user.</string>
+           </property>
+           <property name="text">
+            <string>Finish date</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QComboBox" name="startDay">
+           <property name="maxVisibleItems">
+            <number>31</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="startMonth">
+           <property name="maxVisibleItems">
+            <number>12</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="startYear">
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QComboBox" name="finishDay">
+           <property name="maxVisibleItems">
+            <number>31</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QComboBox" name="finishMonth">
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
+           <property name="maxVisibleItems">
+            <number>12</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QLineEdit" name="finishYear">
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Day</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Month</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Year</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Day</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Month</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="5">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Year</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="3">
+          <widget class="QLabel" name="label_3">
+           <property name="toolTip">
+            <string>The start date defaults to the latest start date amongst the scenarios chosen, but can be set to a  later date by the user.</string>
+           </property>
+           <property name="text">
+            <string>Start date</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="2" column="0" colspan="2">
        <widget class="QWidget" name="widget_3" native="true">
         <property name="minimumSize">
@@ -85,7 +225,7 @@
           <height>391</height>
          </size>
         </property>
-        <layout class="QGridLayout" name="gridLayout_12">
+        <layout class="QGridLayout" name="gridLayout_10">
          <item row="0" column="0">
           <widget class="QTabWidget" name="tabWidget">
            <property name="sizePolicy">
@@ -99,211 +239,334 @@
            </property>
            <widget class="QWidget" name="staticTab">
             <attribute name="title">
-             <string>Static data</string>
+             <string>Static maps</string>
             </attribute>
-            <layout class="QGridLayout" name="gridLayout_16">
-             <item row="0" column="0" colspan="2">
-              <widget class="QGroupBox" name="resultsFileBox">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="title">
-                <string>Choose results shapefile</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_8">
-                <item row="0" column="0">
-                 <widget class="QLineEdit" name="resultsFileEdit"/>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QPushButton" name="resultsFileButton">
-                  <property name="text">
-                   <string>...</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="1" column="0" rowspan="3">
-              <widget class="QGroupBox" name="variablesBox">
-               <property name="title">
-                <string>Choose variables</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_15">
-                <item row="0" column="1">
-                 <widget class="QComboBox" name="variableCombo">
-                  <property name="toolTip">
-                   <string>Select variable to be added to list.</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QPushButton" name="addButton">
-                  <property name="toolTip">
-                   <string>Add chosen variable to list.</string>
-                  </property>
-                  <property name="text">
-                   <string>Add</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1" rowspan="4">
-                 <widget class="QListWidget" name="variableList">
-                  <property name="font">
-                   <font>
-                    <family>MS Shell Dlg 2</family>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string>List of variables to be included in results file.  One must be selected before you click Create.</string>
-                  </property>
-                  <property name="editTriggers">
-                   <set>QAbstractItemView::NoEditTriggers</set>
-                  </property>
-                  <property name="showDropIndicator" stdset="0">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="allButton">
-                  <property name="toolTip">
-                   <string>Add all variables in current output table to list</string>
-                  </property>
-                  <property name="text">
-                   <string>All</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QPushButton" name="delButton">
-                  <property name="toolTip">
-                   <string>Delete selected variable from list.</string>
-                  </property>
-                  <property name="text">
-                   <string>Del</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QPushButton" name="clearButton">
-                  <property name="toolTip">
-                   <string>Remove all variables from the list.</string>
-                  </property>
-                  <property name="text">
-                   <string>Clear</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QGroupBox" name="summaryBox">
-               <property name="title">
-                <string>Choose summary</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_14">
-                <item row="0" column="0">
-                 <widget class="QComboBox" name="summaryCombo">
-                  <property name="minimumSize">
-                   <size>
-                    <width>126</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>126</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="3" column="1">
-              <widget class="QPushButton" name="saveButton">
-               <property name="toolTip">
-                <string>Write data to results shapefile and display summary values for selected variable.</string>
-               </property>
-               <property name="text">
-                <string>Create</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0" colspan="2">
-              <widget class="QGroupBox" name="printGroup">
-               <property name="title">
-                <string>Print</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_4">
-                <item row="0" column="0">
-                 <widget class="QRadioButton" name="landscapeButton">
-                  <property name="text">
-                   <string>Landscape</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QRadioButton" name="portraitButton">
-                  <property name="text">
-                   <string>Portrait</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="label_15">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The print composer can record 1, 2, 3, 4 or 6 maps, in landscape or portrait mode. If the number of maps is &lt;span style=&quot; font-style:italic;&quot;&gt;n, &lt;/span&gt;the first &lt;span style=&quot; font-style:italic;&quot;&gt;n &lt;/span&gt;maps in the Results group are used, whether visible or not. Visible maps in the Watershed group are included as background.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="text">
-                   <string>Number of maps</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="QSpinBox" name="printCount">
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>6</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="4">
-                 <widget class="QPushButton" name="printButton">
-                  <property name="toolTip">
-                   <string>Create print composition.</string>
-                  </property>
-                  <property name="text">
-                   <string>Print</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
+            <widget class="QGroupBox" name="resultsFileBox">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>9</y>
+               <width>401</width>
+               <height>56</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="title">
+              <string>Choose results shapefile</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="0">
+               <widget class="QLineEdit" name="resultsFileEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="resultsFileButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>23</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QGroupBox" name="variablesBox">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>86</y>
+               <width>231</width>
+               <height>176</height>
+              </rect>
+             </property>
+             <property name="title">
+              <string>Choose variables</string>
+             </property>
+             <widget class="QComboBox" name="variableCombo">
+              <property name="geometry">
+               <rect>
+                <x>91</x>
+                <y>24</y>
+                <width>131</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="toolTip">
+               <string>Select variable to be added to list.</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="addButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>51</y>
+                <width>75</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="toolTip">
+               <string>Add chosen variable to list.</string>
+              </property>
+              <property name="text">
+               <string>Add</string>
+              </property>
+             </widget>
+             <widget class="QListWidget" name="variableList">
+              <property name="geometry">
+               <rect>
+                <x>91</x>
+                <y>51</y>
+                <width>131</width>
+                <height>113</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>MS Shell Dlg 2</family>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>List of variables to be included in results file.  One must be selected before you click Create.</string>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="allButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>81</y>
+                <width>75</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="toolTip">
+               <string>Add all variables in current output table to list</string>
+              </property>
+              <property name="text">
+               <string>All</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="delButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>111</y>
+                <width>75</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="toolTip">
+               <string>Delete selected variable from list.</string>
+              </property>
+              <property name="text">
+               <string>Del</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="clearButton">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>141</y>
+                <width>75</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="toolTip">
+               <string>Remove all variables from the list.</string>
+              </property>
+              <property name="text">
+               <string>Clear</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QGroupBox" name="summaryBox">
+             <property name="geometry">
+              <rect>
+               <x>250</x>
+               <y>86</y>
+               <width>151</width>
+               <height>51</height>
+              </rect>
+             </property>
+             <property name="title">
+              <string>Choose summary</string>
+             </property>
+             <widget class="QComboBox" name="summaryCombo">
+              <property name="geometry">
+               <rect>
+                <x>30</x>
+                <y>20</y>
+                <width>69</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>20</height>
+               </size>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QGroupBox" name="compareGroup">
+             <property name="geometry">
+              <rect>
+               <x>251</x>
+               <y>142</y>
+               <width>151</width>
+               <height>91</height>
+              </rect>
+             </property>
+             <property name="title">
+              <string>Compare scenarios</string>
+             </property>
+             <widget class="QLabel" name="compareLabel">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>23</y>
+                <width>82</width>
+                <height>31</height>
+               </rect>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Compare X&lt;br&gt;and Y&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="compareButton">
+              <property name="geometry">
+               <rect>
+                <x>40</x>
+                <y>60</y>
+                <width>75</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Compare</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QPushButton" name="saveButton">
+             <property name="geometry">
+              <rect>
+               <x>320</x>
+               <y>240</y>
+               <width>75</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="toolTip">
+              <string>Write data to results shapefile and display summary values for selected variable.</string>
+             </property>
+             <property name="text">
+              <string>Create</string>
+             </property>
+            </widget>
+            <widget class="QGroupBox" name="printGroup">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>268</y>
+               <width>401</width>
+               <height>56</height>
+              </rect>
+             </property>
+             <property name="title">
+              <string>Print</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="0" column="0">
+               <widget class="QRadioButton" name="landscapeButton">
+                <property name="text">
+                 <string>Landscape</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QRadioButton" name="portraitButton">
+                <property name="text">
+                 <string>Portrait</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_15">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The print composer can record 1, 2, 3, 4 or 6 maps, in landscape or portrait mode. If the number of maps is &lt;span style=&quot; font-style:italic;&quot;&gt;n, &lt;/span&gt;the first &lt;span style=&quot; font-style:italic;&quot;&gt;n &lt;/span&gt;maps in the Results group are used, whether visible or not. Visible maps in the Watershed group are included as background.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Number of maps</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QSpinBox" name="printCount">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>6</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="QPushButton" name="printButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>23</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Create print composition.</string>
+                </property>
+                <property name="text">
+                 <string>Print</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
            <widget class="QWidget" name="animationTab">
             <attribute name="title">
-             <string>Animation</string>
+             <string>Animated maps</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_9">
              <item row="0" column="0" colspan="8">
@@ -451,7 +714,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../resources.qrc">
+                <iconset resource="resources.qrc">
                  <normaloff>:/QSWAT/play-24x24.png</normaloff>:/QSWAT/play-24x24.png</iconset>
                </property>
                <property name="iconSize">
@@ -489,7 +752,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../resources.qrc">
+                <iconset resource="resources.qrc">
                  <normaloff>:/QSWAT/pause-24x24.png</normaloff>:/QSWAT/pause-24x24.png</iconset>
                </property>
                <property name="iconSize">
@@ -527,7 +790,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../resources.qrc">
+                <iconset resource="resources.qrc">
                  <normaloff>:/QSWAT/rewind-24x24.png</normaloff>:/QSWAT/rewind-24x24.png</iconset>
                </property>
                <property name="iconSize">
@@ -687,26 +950,70 @@ Can also be controlled manually by dragging or by using left and right arrows on
            </widget>
            <widget class="QWidget" name="tab">
             <attribute name="title">
-             <string>Plot</string>
+             <string>Plots</string>
             </attribute>
-            <layout class="QGridLayout" name="gridLayout_17">
+            <layout class="QGridLayout" name="gridLayout_13">
              <item row="0" column="0" colspan="4">
               <widget class="QGroupBox" name="observedFileBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>51</height>
+                </size>
+               </property>
                <property name="title">
                 <string>Choose observed data file (optional)</string>
                </property>
                <layout class="QGridLayout" name="gridLayout">
                 <item row="0" column="0">
-                 <widget class="QLineEdit" name="observedFileEdit"/>
+                 <widget class="QLineEdit" name="observedFileEdit">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </widget>
                 </item>
                 <item row="0" column="1">
                  <widget class="QPushButton" name="observedFileButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>23</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>...</string>
                   </property>
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QComboBox" name="plotType">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="currentText">
+                <string/>
+               </property>
+               <property name="currentIndex">
+                <number>-1</number>
+               </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QComboBox::AdjustToContents</enum>
+               </property>
               </widget>
              </item>
              <item row="1" column="1">
@@ -775,6 +1082,9 @@ Can also be controlled manually by dragging or by using left and right arrows on
                <property name="horizontalScrollBarPolicy">
                 <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QAbstractScrollArea::AdjustToContents</enum>
+               </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
@@ -794,7 +1104,10 @@ Can also be controlled manually by dragging or by using left and right arrows on
                 <number>5</number>
                </property>
                <attribute name="horizontalHeaderDefaultSectionSize">
-                <number>90</number>
+                <number>65</number>
+               </attribute>
+               <attribute name="horizontalHeaderMinimumSectionSize">
+                <number>20</number>
                </attribute>
                <attribute name="verticalHeaderVisible">
                 <bool>false</bool>
@@ -906,153 +1219,13 @@ observed</string>
         </layout>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QGroupBox" name="periodBox">
-        <property name="title">
-         <string>Choose period</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="3" colspan="3">
-          <widget class="QLabel" name="label_4">
-           <property name="toolTip">
-            <string>The finish date defaults to the earliest finish date amongst the scenarios chosen, but can be set to an  earlier date by the user.</string>
-           </property>
-           <property name="text">
-            <string>Finish date</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QComboBox" name="startDay">
-           <property name="maxVisibleItems">
-            <number>31</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="startMonth">
-           <property name="maxVisibleItems">
-            <number>12</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLineEdit" name="startYear">
-           <property name="inputMethodHints">
-            <set>Qt::ImhNone</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QComboBox" name="finishDay">
-           <property name="maxVisibleItems">
-            <number>31</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4">
-          <widget class="QComboBox" name="finishMonth">
-           <property name="currentIndex">
-            <number>-1</number>
-           </property>
-           <property name="maxVisibleItems">
-            <number>12</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5">
-          <widget class="QLineEdit" name="finishYear">
-           <property name="inputMethodHints">
-            <set>Qt::ImhNone</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Day</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Month</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>Year</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="3">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Day</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="4">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>Month</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="5">
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Year</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" colspan="3">
-          <widget class="QLabel" name="label_3">
-           <property name="toolTip">
-            <string>The start date defaults to the latest start date amongst the scenarios chosen, but can be set to a  later date by the user.</string>
-           </property>
-           <property name="text">
-            <string>Start date</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

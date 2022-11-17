@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
- QSwatDialog
+ QSWAT
                                  A QGIS plugin
  Create SWAT inputs
                              -------------------
@@ -24,14 +23,14 @@ try:
     from qgis.PyQt import QtWidgets
 except:
     from PyQt5 import QtWidgets
-
-from .ui_outlets import Ui_OutletsDialog
-
-class OutletsDialog(QtWidgets.QDialog, Ui_OutletsDialog):
+ 
+from .ui_comparescenarios import Ui_compareScenarios
+ 
+class compareDialog(QtWidgets.QDialog, Ui_compareScenarios):
     """Set up dialog from designer."""
     def __init__(self, parent=None):
         """Constructor."""
-        super(OutletsDialog, self).__init__(parent)
+        super(compareDialog, self).__init__(parent)
         # Set up the user interface from Designer.
         # After setupUI you can access any designer object by doing
         # self.<objectname>, and you can use autoconnect slots - see

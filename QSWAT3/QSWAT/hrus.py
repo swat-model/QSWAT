@@ -19,12 +19,22 @@
  *                                                                         *
  ***************************************************************************/
 '''
+from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
-from qgis.PyQt.QtGui import QDoubleValidator, QTextCursor
-from qgis.PyQt.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
-from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry, QgsProcessingContext
-#from qgis.gui import * # @UnusedWildImport
+try:
+    from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
+    from qgis.PyQt.QtGui import QDoubleValidator, QTextCursor
+    from qgis.PyQt.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
+    from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry, QgsProcessingContext
+    #from qgis.gui import * # @UnusedWildImport
+except:
+    from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
+    from PyQt5.QtGui import QDoubleValidator, QTextCursor
+    from PyQt5.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
+    QgsLayerTree = Any
+    QgsVectorLayer = Any
+    QgsFields = Any
+    QgsPointXY = Any
 import os.path
 from osgeo import gdal  # type: ignore
 from osgeo.gdalconst import *  # type: ignore # @UnusedWildImport
@@ -36,7 +46,6 @@ import csv
 from datetime import datetime
 import processing
 #from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
-from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
     
 
 from .hrusdialog import HrusDialog  # type: ignore
@@ -54,7 +63,10 @@ useSlowPolygonize = False
 if useSlowPolygonize:
     from .polygonize import Polygonize  # type: ignore  # @UnusedImport @UnresolvedImport
 else:
-    from .polygonizeInC2 import Polygonize  # type: ignore  # @UnusedImport @UnresolvedImport @Reimport
+    try:
+        from .polygonizeInC2 import Polygonize  # type: ignore  # @UnusedImport @UnresolvedImport @Reimport
+    except:
+        from .polygonize import Polygonize  # type: ignore  # @UnusedImport @UnresolvedImport
 
 
 class HRUs(QObject):
@@ -773,14 +785,14 @@ class HRUs(QObject):
             with open(inFile,'r') as csvFile:
                 reader= csv.reader(csvFile)
                 _ = next(reader)  # skip header
-                for line in reader:  # ID, ELEVATION, LAT, LONG, NAME
+                for line in reader:  # ID, NAME, LAT, LONG, ELEVATION
                     lat = float(line[2])
                     lon = float(line[3])
                     if minLon <= lon <= maxLon and minLat <= lat <= maxLat:
                         intLat = round(lat)
                         intLon = round(lon)
                         tbl = self.CHIRPSStations.get(intLat, dict())
-                        tbl.setdefault(intLon, []).append((int(line[0]), line[4], lat, lon, float(line[1])))   #ID, NAME, LAT, LONG, ELEVATION
+                        tbl.setdefault(intLon, []).append((int(line[0]), line[1], lat, lon, float(line[4])))   #ID, NAME, LAT, LONG, ELEVATION
                         self.CHIRPSStations[intLat] = tbl
         with self._db.connect() as conn:         
             sql0 = 'DELETE FROM pcp'

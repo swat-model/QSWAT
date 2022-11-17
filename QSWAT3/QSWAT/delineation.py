@@ -19,13 +19,25 @@
  *                                                                         *
  ***************************************************************************/
 """
+from typing import Optional, Tuple, Dict, Set, List, Any, TYPE_CHECKING, cast  # @UnusedImport
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant
-from qgis.PyQt.QtGui import QIntValidator, QDoubleValidator, QColor
-from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext 
-from qgis.gui import QgsMapTool, QgsMapToolEmitPoint
-from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry   
+try:
+    from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant
+    from qgis.PyQt.QtGui import QIntValidator, QDoubleValidator, QColor
+    from qgis.PyQt.QtWidgets import QMessageBox
+    from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext 
+    from qgis.gui import QgsMapTool, QgsMapToolEmitPoint
+    from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry  
+except:
+    from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant
+    from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor
+    from PyQt5.QtWidgets import QMessageBox
+    QgsLayerTree = Any 
+    QgsRasterLayer = Any
+    QgsMapTool = Any
+    QgsPointXY = Any
+    QgsVectorLayer = Any
+    QgsLayerTreeGroup = Any 
 import os
 import glob
 import shutil
@@ -34,7 +46,6 @@ import subprocess
 import time
 from osgeo import gdal, ogr  # type: ignore
 import traceback
-from typing import Optional, Tuple, Dict, Set, List, Any, TYPE_CHECKING, cast  # @UnusedImport
 
 # Import the code for the dialog
 
@@ -2235,7 +2246,7 @@ class Delineation(QObject):
         ySize = demLayer.rasterUnitsPerPixelY()
         extent = demLayer.extent()
         # need to use extent to align basin raster cells with DEM
-        command = 'gdal_rasterize -a {0} -tr {1!s} {2!s} -te {6} {7} {8} {9} -a_nodata -9999 -l "{3}" "{4}" "{5}"' \
+        command = 'gdal_rasterize -a {0} -tr {1!s} {2!s} -te {6} {7} {8} {9} -a_nodata -9999 -ot Int32 -of GTiff -l "{3}" "{4}" "{5}"' \
         .format(QSWATTopology._POLYGONID, xSize, ySize, baseName, wshedFile, wFile,
                 extent.xMinimum(), extent.yMinimum(), extent.xMaximum(), extent.yMaximum())
         QSWATUtils.loginfo(command)

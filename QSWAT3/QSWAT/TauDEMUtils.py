@@ -20,9 +20,13 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import QSettings, Qt
-from qgis.PyQt.QtGui import QTextCursor
-from qgis.core import QgsProject
+try:
+    from qgis.PyQt.QtCore import QSettings, Qt
+    from qgis.PyQt.QtGui import QTextCursor
+    from qgis.core import QgsProject
+except:
+    from PyQt5.QtCore import QSettings, Qt
+    from PyQt5.QtGui import QTextCursor
 import os.path
 import subprocess
 

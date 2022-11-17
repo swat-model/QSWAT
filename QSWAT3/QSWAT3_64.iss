@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QSWAT3_64"
-#define MyAppVersion "1.5" 
-#define MyAppSubVersion "10"
+#define MyAppVersion "1.6" 
+#define MyAppSubVersion "0"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 

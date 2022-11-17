@@ -416,14 +416,14 @@ class Weather:
                 reader= csv.reader(csvFile)
                 _ = next(reader)  # skip header
                 #print('Reading {0}'.format(f))
-                for line in reader:  # ID, ELEVATION, LAT, LONG, NAME
+                for line in reader:  # ID, NAME, LAT, LONG, ELEVATION
                     lat = float(line[2])
                     lon = float(line[3])
                     if minLon <= lon <= maxLon and minLat <= lat <= maxLat:
                         intLat = round(lat)
                         intLon = round(lon)
                         tbl = self.CHIRPSStations.get(intLat, dict())
-                        tbl.setdefault(intLon, []).append((int(line[0]), line[4], lat, lon, float(line[1])))   #ID, NAME, LAT, LONG, ELEVATION
+                        tbl.setdefault(intLon, []).append((int(line[0]), line[1], lat, lon, float(line[4])))   #ID, NAME, LAT, LONG, ELEVATION
                         self.CHIRPSStations[intLat] = tbl
                 #print('Stations has {0} latitudes'.format(len(self.CHIRPSStations)))
         with sqlite3.connect(self.projDb) as conn:   

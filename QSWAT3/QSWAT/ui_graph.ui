@@ -21,23 +21,15 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="1">
-    <widget class="QTableWidget" name="table">
+   <item row="2" column="1" colspan="2">
+    <widget class="QWidget" name="graph" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
+     <layout class="QVBoxLayout" name="graphvl"/>
     </widget>
    </item>
    <item row="3" column="2" rowspan="2">
@@ -61,7 +53,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>90</y>
+        <y>120</y>
         <width>82</width>
         <height>23</height>
        </rect>
@@ -74,7 +66,7 @@
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>90</y>
+        <y>120</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -87,7 +79,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>50</y>
+        <y>80</y>
         <width>82</width>
         <height>20</height>
        </rect>
@@ -96,11 +88,11 @@
        <number>2</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="chartLabel">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>30</y>
+        <y>60</y>
         <width>82</width>
         <height>16</height>
        </rect>
@@ -116,7 +108,7 @@
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>50</y>
+        <y>80</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -125,15 +117,72 @@
        <string>Update</string>
       </property>
      </widget>
+     <widget class="QComboBox" name="plotType">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>161</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Plot Type</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="QTextBrowser" name="coeffs">
+   <item row="3" column="1">
+    <widget class="QTableWidget" name="table">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QTextBrowser" name="coeffs">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>100</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -141,17 +190,6 @@
        <pointsize>9</pointsize>
       </font>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QWidget" name="graph" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <layout class="QVBoxLayout" name="graphvl"/>
     </widget>
    </item>
   </layout>

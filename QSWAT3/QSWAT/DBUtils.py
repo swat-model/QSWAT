@@ -20,10 +20,14 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import Qt
-#from PyQt5.QtGui import * # @UnusedWildImport
-from qgis.PyQt.QtWidgets import QComboBox, QListWidget
-#from qgis.core import QgsPointXY
+try:
+    from qgis.PyQt.QtCore import Qt
+    #from PyQt5.QtGui import * # @UnusedWildImport
+    from qgis.PyQt.QtWidgets import QComboBox, QListWidget
+    #from qgis.core import QgsPointXY
+except:
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtWidgets import QComboBox, QListWidget
 import os.path
 import pyodbc  # type: ignore
 import sqlite3
@@ -307,10 +311,18 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             # since purpose is to make sure any data in table is not accessible
             # ignore problems such as table not existing
             pass
+        
+    def tableExists(self, table: str, db: str) -> bool:
+        """Return True if table exists in db"""
+        with self.connectDb(db, readonly=True) as conn:
+            cursor = conn.cursor()
+            for row in cursor.tables(tableType='TABLE'):
+                if row.table_name == table:
+                    return True
+        return False
     
     @staticmethod
     def sqlSelect(table: str, selection: str, order: str, where: str) -> str:
-        
         """Create SQL select statement."""
         
         orderby = '' if order == '' else ' ORDER BY ' + order

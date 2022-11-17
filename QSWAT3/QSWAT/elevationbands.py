@@ -20,9 +20,12 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import Qt
-#from qgis.PyQt.QtGui import * # @UnusedWildImport
-#from qgis.core import *
+try:
+    from qgis.PyQt.QtCore import Qt
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
+    #from qgis.core import *
+except:
+    from PyQt5.QtCore import Qt
 # Import the code for the dialog
 from .elevationbandsdialog import ElevatioBandsDialog  # @UnresolvedImport
 from .QSWATUtils import QSWATUtils  # @UnresolvedImport

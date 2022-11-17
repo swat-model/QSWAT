@@ -20,9 +20,12 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import pyqtSignal, QObject, QRunnable
-#from qgis.PyQt.QtGui import *  # @UnusedWildImport
-from qgis.core import QgsGeometry, QgsPointXY
+try:
+    from qgis.PyQt.QtCore import pyqtSignal, QObject, QRunnable
+    #from qgis.PyQt.QtGui import *  # @UnusedWildImport
+    from qgis.core import QgsGeometry, QgsPointXY
+except:
+    from PyQt5.QtCore import pyqtSignal, QObject, QRunnable
 # from multiprocessing import Pool
 import time
 from .QSWATUtils import QSWATUtils  # @UnresolvedImport

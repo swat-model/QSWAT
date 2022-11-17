@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QSWAT3"
-#define MyAppVersion "1.5" 
-#define MyAppSubVersion "4"
+#define MyAppVersion "1.6" 
+#define MyAppSubVersion "0"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 
@@ -37,7 +37,7 @@ UsePreviousPrivileges=no
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Users\Chris\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\{#MyAppName}\*"; DestDir: "{code:QGISPLuginDir}\{#MyAppName}"; Excludes: "testdata\test"; Flags: ignoreversion recursesubdirs createallsubdirs 
+Source: "C:\Users\Chris\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\{#MyAppName}\*"; DestDir: "{code:QGISPLuginDir}\{#MyAppName}"; Excludes: "testdata\test,__pycache__,PIL"; Flags: ignoreversion recursesubdirs createallsubdirs 
 Source: "C:\SWAT\SWATEditor\runConvertFromArc.bat"; DestDir: "C:\SWAT\SWATEditor"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\runConvertToPlus.bat"; DestDir: "C:\SWAT\SWATEditor"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\TauDEM5Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM5Bin"; Check: IsWin64; Flags: ignoreversion 
@@ -45,8 +45,8 @@ Source: "C:\SWAT\SWATEditor\TauDEM5x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDE
 Source: "C:\SWAT\SWATEditor\TauDEM539x86Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM539Bin"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\Databases\QSWATProj2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
 Source: "C:\SWAT\SWATEditor\Databases\QSWATRef2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
-Source: "C:\SWAT\SWATEditor\runSWATGraph.bat"; DestDir: "C:\SWAT\SWATEditor"; Check: IsWin64; Flags: ignoreversion   
-Source: "C:\SWAT\SWATEditor\runSWATGraphx86.bat"; DestDir: "C:\SWAT\SWATEditor"; Check: not IsWin64; DestName: "runSWATGraph.bat"; Flags: ignoreversion    
+Source: "C:\SWAT\SWATEditor\runSWATGraph_3_16.bat"; DestDir: "C:\SWAT\SWATEditor"; DestName: "runSWATGraph.bat"; Check: IsWin64; Flags: ignoreversion   
+Source: "C:\SWAT\SWATEditor\runSWATGraphx86.bat"; DestDir: "C:\SWAT\SWATEditor"; DestName: "runSWATGraph.bat"; Check: not IsWin64; Flags: ignoreversion    
 Source: "C:\SWAT\SWATEditor\WeatherCheck\runWeatherCheck.bat"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "runWeatherCheck.bat"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\WeatherCheck\weathercheck.py"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "weathercheck.py"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\WeatherCheck\SWATWeatherCheck.pdf"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "SWATWeatherCheck.pdf"; Flags: ignoreversion 
