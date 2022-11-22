@@ -805,8 +805,12 @@ class Visualise(QObject):
         if numRows == 0:
             QSWATUtils.information('There are no rows to plot', self._gv.isBatch)
             return
-        if self._dlg.plotType.currentText() == Visualise._SCATTER and numRows != 2:
-            QSWATUtils.information('You need 2 rows for a scatter plot, and you have {0}'.format(numRows), self._gv.isBatch)
+        if self._dlg.plotType.currentText() == Visualise._SCATTER:
+            if numRows == 1:
+                QSWATUtils.information('You need two rows for a scatter plot', self._gv.isBatch)
+                return
+            if numRows > 2:
+                QSWATUtils.information('You need 2 rows for a scatter plot, and you have {0}.  Only the first two will be used.'.format(numRows), self._gv.isBatch)
         plotData: Dict[int, List[str]] = dict()
         labels: Dict[int, str] = dict()
         dates: List[str] = []
@@ -904,7 +908,7 @@ class Visualise(QObject):
             QSWATUtils.error('You must have at least one non-observed plot', self._gv.isBatch)
             return
         # data all collected: write csv file
-        csvFile, _ = QFileDialog.getSaveFileName(None, 'Choose a csv file', self._gv.scenariosDir, 'CSV files (*.csv)')
+        csvFile, _ = QFileDialog.getSaveFileName(None, 'Choose a csv file', self._gv.scenariosDir, 'CSV files (*.csv);;All files (*.*)')
         if not csvFile:
             return
         with fileWriter(csvFile) as fw:
@@ -2351,6 +2355,7 @@ class Visualise(QObject):
             resultsGroup.insertLayer(0, layer2)
             addedLayers.append(layer2)
         if needLayer3:
+            # note that string 'difference' is used to find variable name in MapTitle, so change there if you change here
             legend3 = '{0} {1} {2} {3} {4}'.format(selectVar, 'difference', self.scenario2, 'minus', self.scenario1)
             layer3 = QgsVectorLayer(diffFile, legend3, 'ogr')
             provider3 = layer3.dataProvider()
@@ -2367,7 +2372,8 @@ class Visualise(QObject):
             resultsGroup.insertLayer(0, layer3)
             addedLayers.append(layer3)
         if needLayer4:
-            legend4 = '{0} {1} {2} {3} {4}'.format(selectVar, '% change from', self.scenario1, 'to', self.scenario2)
+            # note that string '%change' is used to find variable name in MapTitle, so change there if you change here
+            legend4 = '{0} {1} {2} {3} {4}'.format(selectVar, '%change from', self.scenario1, 'to', self.scenario2)
             layer4 = QgsVectorLayer(changeFile, legend4, 'ogr')
             provider4 = layer4.dataProvider()
             if self.hasAreas and provider4.fieldNameIndex(Visualise._AREA) < 0 and not provider4.addAttributes([areaField]):

@@ -139,7 +139,7 @@ class SWATGraph(QObject):
             path = settings.value('/QSWAT/LastInputPath')
         else:
             path = ''
-        filtr = self.trans('CSV files (*.csv)')
+        filtr = self.trans('CSV files (*.csv);;All files (*.*)')
         csvFile, _ = QFileDialog.getOpenFileName(None, 'Open csv file', path, filtr)
         if csvFile is not None and csvFile != '':
             settings.setValue('/QSWAT/LastInputPath', os.path.dirname(csvFile))
@@ -272,7 +272,7 @@ class SWATGraph(QObject):
             xVals = [datetime.strptime(str(self._dlg.table.item(i, 0).text()).strip(), fmt) for i in rng]
             for col in range(1, numPlots+1):
                 yVals = [self.makeFloat(self._dlg.table.item(i, col).text()) for i in rng]
-                colour = SWATGraph.getColour(col)
+                colour = self.getColour(col)
                 h = self._dlg.table.horizontalHeaderItem(col).text()
                 indx = colToTwin.get(col, -1)
                 if indx < 0:  # axis on left
@@ -312,7 +312,7 @@ class SWATGraph(QObject):
             exceedence *= 100
             for col in range(1, numPlots+1):
                 yVals = sorted([self.makeFloat(self._dlg.table.item(i, col).text()) for i in rng], reverse=True)
-                colour = SWATGraph.getColour(col)
+                colour = self.getColour(col)
                 h = self._dlg.table.horizontalHeaderItem(col).text()
                 indx = colToTwin.get(col, -1)
                 if indx < 0:  # axis on left
@@ -381,7 +381,7 @@ class SWATGraph(QObject):
                 ax = axs[indx] if len(count) > 1 else axs
                 p = ax.boxplot(npArray, labels=labelsDict[indx])
                 ax.grid(True)
-                #SWATGraph.colourBoxplot(p, SWATGraph.getColour(indx))
+                #SWATGraph.colourBoxplot(p, self.getColour(indx))
             # cannot get this to give other than a very spread layout with narrow boxplots
             #plt.tight_layout(w_pad=-0.5)
         # reinstate title and labels
@@ -429,7 +429,8 @@ class SWATGraph(QObject):
                 twins[i] = self.ax1.twinx()
                 if i > 1:
                     # offset the second and later right spines
-                    twins[i].spines.right.set_position(("axes", 1 + 0.1 * (i - 1)))
+                    # spines.right syntax only in matplotlib >= 3.4.0
+                    twins[i].spines['right'].set_position(("axes", 1 + 0.1 * (i - 1)))
                 twins[i].set_ylabel(var)
         return colToTwin, twins
     
@@ -495,13 +496,13 @@ class SWATGraph(QObject):
         ax1.set_axes_locator(divider.new_locator(0))
         ax2.set_axes_locator(divider.new_locator(2))
 
-        
-    @staticmethod 
-    def getColour(col):
+         
+    def getColour(self, col):
         """Colour to use for coloumn in table."""
         # column indexess run 1 to n, since first is date
-        # cannot imagine more than 7, but use shades of grey if necessary         
-        return colours[col-1] if col <= len(colours) else str(float((col - 7)/(self._dlg.table.columnCount() - 7)))
+        # cannot imagine more than 7 (numColours), but use shades of grey if necessary
+        numColours = len(colours)         
+        return colours[col-1] if col <= len(colours) else str(float((col - numColours)/(self._dlg.table.columnCount() - numColours)))
     
     @staticmethod 
     def colourBoxplot(p, colour):
