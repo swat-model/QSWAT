@@ -49,7 +49,7 @@ from .parameters import Parameters  # type: ignore
     
 class GlobalVars:
     """Data used across across the plugin, and some utilities on it."""
-    def __init__(self, iface: Any, isBatch: bool, isHUC=False, isHAWQS=False, logFile=None, fromGRASS=False, TNCDir='') -> None:
+    def __init__(self, iface: Any, isBatch: bool, isHUC=False, isHAWQS=False, useSQLite=False, logFile=None, fromGRASS=False, TNCDir='') -> None:
         """Initialise class variables."""
         ## QGIS interface
         self.iface = iface
@@ -171,7 +171,7 @@ class GlobalVars:
         ## Number of elevation bands
         self.numElevBands = 0
         ## Topology object
-        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS, fromGRASS, self.forTNC, self.TNCCatchmentThreshold)
+        self.topo = QSWATTopology(isBatch, isHUC, isHAWQS, fromGRASS, self.forTNC, useSQLite, self.TNCCatchmentThreshold)
         projFile = QgsProject.instance().fileName()
         projPath = QFileInfo(projFile).canonicalFilePath()
         # avoid / on Windows because of SWAT Editor
@@ -220,6 +220,8 @@ class GlobalVars:
         self.isHUC = isHUC
         ## flag for HAWQS projects
         self.isHAWQS = isHAWQS
+        ## flag to use SQLite
+        self.useSQLite = useSQLite
         ## log file for message output for HUC projects
         self.logFile = logFile
         ## data directory for HUC projects
@@ -228,7 +230,7 @@ class GlobalVars:
         # flag for projects using GRASS to do delineation
         self.fromGRASS = fromGRASS
         ## Path of project database
-        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isHAWQS, self.forTNC, self.logFile, self.isBatch)
+        self.db = DBUtils(self.projDir, self.projName, self.dbProjTemplate, self.dbRefTemplate, self.isHUC, self.isHAWQS, self.forTNC, self.useSQLite, self.logFile, self.isBatch)
         ## multiplier to turn elevations to metres
         self.verticalFactor = 1.0
         ## vertical units
@@ -394,7 +396,7 @@ class GlobalVars:
                     oid += 1
                     cursor.execute(sql, (oid, luse, subluse, percent))
             conn.commit()
-            if not (self.isHUC or self.isHAWQS or self.forTNC):
+            if not (self.isHUC or self.useSQLite or self.forTNC):
                 self.db.hashDbTable(conn, exemptTable)
                 self.db.hashDbTable(conn, splitTable)
         return True
@@ -456,11 +458,11 @@ class GlobalVars:
                 row = None    
             if row:
                 if doneDelin == -1:
-                    doneDelinNum = row['DoneWSDDel'] if self.isHUC or self.isHAWQS or self.forTNC else row.DoneWSDDel
+                    doneDelinNum = row['DoneWSDDel'] if self.isHUC or self.useSQLite or self.forTNC else row.DoneWSDDel
                 else:
                     doneDelinNum = doneDelin
                 if doneSoilLand == -1:
-                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC or self.isHAWQS or self.forTNC else row.DoneSoilLand
+                    doneSoilLandNum = row['DoneSoilLand'] if self.isHUC or self.useSQLite or self.forTNC else row.DoneSoilLand
                 else:
                     doneSoilLandNum = doneSoilLand
                 sql = 'UPDATE ' + table + ' SET SoilOption=?,NumLuClasses=?,DoneWSDDel=?,DoneSoilLand=?'
@@ -480,7 +482,7 @@ class GlobalVars:
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     conn.cursor().execute(sql, (workdir, gdb, '', swatgdb, '', '', soilOption, numLUs, \
                                           doneDelinNum, doneSoilLandNum, 0, 0, 1, 0, '', swatEditorVersion, '', 0))
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 conn.commit()
                     
     def isDelinDone(self) -> bool:

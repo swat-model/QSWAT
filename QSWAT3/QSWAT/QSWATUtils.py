@@ -49,7 +49,7 @@ try:
                             QgsGeometry, \
                             QgsWkbTypes, \
                             QgsFeatureRequest, \
-                            QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem
+                            QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem, QgsRasterSymbolLegendNode
 except:
     from PyQt5.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
     from PyQt5.QtGui import QColor
@@ -1452,6 +1452,56 @@ class FileTypes:
         renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
         layer.setRenderer(renderer)
         layer.triggerRepaint()
+            
+    @staticmethod
+    def colourHAWQSLanduses(treeLayer: QgsLayerTreeLayer, gv: Any) -> None:
+        """Layer colouring function for landuse grid for HAWQS projects.
+        This is used without running QSWAT, so uses lookup table and assumes all landuses in that are used"""
+        proj = QgsProject.instance()
+        title = proj.title()
+        table, found = proj.readEntry(title, 'landuse/table', '')
+        if not found:
+            QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
+        sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)
+        landuseCodes: Dict[int, str] = dict()
+        with gv.db.connect(readonly=True) as conn:
+            for row in conn.execute(sql):
+                landuseCodes[int(row[0])] = row[1] 
+        items: List[QgsPalettedRasterRenderer.Class] = []
+        colours = QgsLimitedRandomColorRamp.randomColors(len(landuseCodes))
+        index = 0
+        # allow for duplicated landuses while using same colour for same landuse
+        colourMap: Dict[str, QColor] = dict()
+        for lid, luse in landuseCodes.items():
+            colour = colourMap.setdefault(luse, colours[index])
+            item = QgsPalettedRasterRenderer.Class(int(lid), colour, luse)
+            items.append(item)
+            index += 1
+        layer = treeLayer.layer()
+        renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
+        layer.setRenderer(renderer)
+        layer.triggerRepaint()
+        # remove duplicate landuses from legend
+        # this code removes the nodes from the list, but I cannot find a way to write them back to change the legend
+        # legend = layer.legend()
+        # nodes = legend.createLayerTreeModelLegendNodes(treeLayer)
+        # landuses = set()
+        # lim = len(nodes)
+        # for i in range(lim):
+        #     if i >= len(nodes):
+        #         break
+        #     node = nodes[i]
+        #     # need to ignore 'Band 1 (Gray)' item
+        #     if not isinstance(node, QgsRasterSymbolLegendNode):
+        #         continue
+        #     label = node.data(0)
+        #     if label in landuses:
+        #         del nodes[i]
+        #         i = i-1
+        #         continue
+        #     else:
+        #         landuses.add(label)
+        # QSWATUtils.loginfo('Landuse legend items reduced from {0} to {1}'.format(lim, len(nodes)))
     
     @staticmethod
     def colourSoils(layer: QgsRasterLayer, gv: Any) -> None:

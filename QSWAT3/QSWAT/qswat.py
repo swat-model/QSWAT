@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.6.0'
+    __version__ = '1.6.1'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -263,7 +263,7 @@ class QSwat(QObject):
         self._odlg.raise_()
         self.setupProject(proj, False)
     
-    def setupProject(self, proj, isBatch, isHUC=False, isHAWQS=False, logFile=None, fromGRASS=False, TNCDir='') -> None:
+    def setupProject(self, proj, isBatch, isHUC=False, isHAWQS=False, useSQLite=False, logFile=None, fromGRASS=False, TNCDir='') -> None:
         """Set up the project."""
         self._odlg.mainBox.setVisible(True)
         self._odlg.mainBox.setEnabled(False)
@@ -293,6 +293,16 @@ class QSwat(QObject):
             isHAWQSFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHAWQS', False)
             isHAWQS = isHAWQSFromProjfile
             #QSWATUtils.information('isHAWQS found in proj file: set to {0}'.format(isHAWQS), isBatch)
+        # same as isHUC for useSQLite
+        _, found = proj.readNumEntry(title, 'delin/useSQLite', -1)
+        if not found:
+            # useSQLite not previously set.  Use parameter above and record
+            proj.writeEntryBool(title, 'delin/useSQLite', useSQLite)
+        else:
+            # use value in project file
+            useSQLiteFromProjfile, _ = proj.readBoolEntry(title, 'delin/useSQLite', False)
+            useSQLite = useSQLiteFromProjfile
+            #QSWATUtils.information('useSQLite found in proj file: set to {0}'.format(useSQLite), isBatch)
         # same as isHUC for fromGRASS
         _, found = proj.readNumEntry(title, 'delin/fromGRASS', -1)
         if not found:
@@ -312,7 +322,7 @@ class QSwat(QObject):
         
         # now have project so initiate global vars
         # if we do this earlier we cannot for example find the project database
-        self._gv = GlobalVars(self._iface, isBatch, isHUC, isHAWQS, logFile, fromGRASS, TNCDir)
+        self._gv = GlobalVars(self._iface, isBatch, isHUC, isHAWQS, useSQLite, logFile, fromGRASS, TNCDir)
         assert self._gv is not None
         self._gv.plugin_dir = self.plugin_dir
         self._odlg.projPath.repaint()
@@ -331,13 +341,13 @@ class QSwat(QObject):
         self._gv.useGridModel = proj.readBoolEntry(title, 'delin/useGridModel', False)[0]
         if self._gv.useGridModel:
             self._gv.gridSize = proj.readNumEntry(title, 'delin/gridSize', 1)[0]
-        if self.demProcessed():
+        if isHAWQS or self.demProcessed():
             self._demIsProcessed = True
             self.allowCreateHRU()
             hrus = HRUs(self._gv, self._odlg.reportsBox)
             #result = hrus.tryRun()
             #if result == 1:
-            if hrus.HRUsAreCreated():
+            if isHAWQS or hrus.HRUsAreCreated():
                 QSWATUtils.progress('Done', self._odlg.hrusLabel)
                 self.showReports()
                 self._odlg.editLabel.setEnabled(True)
@@ -349,6 +359,11 @@ class QSwat(QObject):
             self._odlg.visualiseLabel.setVisible(True)
             self._odlg.visualiseButton.setVisible(True)
             self.loadVisualisationLayers()
+        if isHAWQS:
+            # fix landuse layer legend from lookup table
+            root = proj.layerTreeRoot()
+            treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._LANDUSES), root.findLayers())
+            FileTypes.colourHAWQSLanduses(treeLayer, self._gv)
         self._odlg.projPath.setText(self._gv.projDir)
         self._odlg.mainBox.setEnabled(True)
         self._odlg.setCursor(Qt.ArrowCursor)

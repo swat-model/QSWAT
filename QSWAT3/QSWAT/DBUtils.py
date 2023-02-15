@@ -47,7 +47,7 @@ class DBUtils:
     
     """Functions for interacting with project and reference databases."""
     
-    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isHAWQS: bool, forTNC: bool, logFile: Optional[str], isBatch: bool) -> None:
+    def __init__(self, projDir: str, projName: str, dbProjTemplate: str, dbRefTemplate: str, isHUC: bool, isHAWQS: bool, forTNC: bool, useSQLite: bool, logFile: Optional[str], isBatch: bool) -> None:
         """Initialise class variables."""
         ## Flag showing if batch run
         self.isBatch = isBatch
@@ -57,6 +57,8 @@ class DBUtils:
         self.isHAWQS = isHAWQS
         ## flag for TNC projects
         self.forTNC = forTNC
+        ## flage to use SQLite
+        self.useSQLite = useSQLite
         ## message logging file for HUC projects
         self.logFile = logFile
         ## project directory
@@ -65,10 +67,10 @@ class DBUtils:
         self.projName = projName
         ## project database
         dbSuffix = os.path.splitext(dbProjTemplate)[1]
-        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC or isHAWQS or forTNC else QSWATUtils.join(projDir,  projName + dbSuffix)
+        self.dbFile = QSWATUtils.join(projDir,  projName + '.sqlite') if isHUC or useSQLite or forTNC else QSWATUtils.join(projDir,  projName + dbSuffix)
         if forTNC and not os.path.isfile(self.dbFile):
             shutil.copyfile(dbProjTemplate, self.dbFile)
-        if not (isHUC or isHAWQS or forTNC):
+        if not (isHUC or useSQLite or forTNC):
             self._connStr = Parameters._ACCESSSTRING + self.dbFile
             # copy template project database to project folder if not already there
             if not os.path.exists(self.dbFile):
@@ -76,9 +78,9 @@ class DBUtils:
             else:
                 self.updateProjDb(Parameters._SWATEDITORVERSION)
         ## reference database
-        dbRefName = 'QSWATRef2012.sqlite' if isHUC or isHAWQS or forTNC else Parameters._DBREF
+        dbRefName = 'QSWATRef2012.sqlite' if isHUC or useSQLite or forTNC else Parameters._DBREF
         self.dbRefFile = QSWATUtils.join(projDir, dbRefName)
-        if isHUC or isHAWQS or forTNC:
+        if isHUC or useSQLite or forTNC:
             if isHUC and not os.path.isfile(self.dbRefFile):
                 # look one up from project directory for reference database, so allowing it to be shared
                 self.dbRefFile = QSWATUtils.join(projDir + '/..', dbRefName)
@@ -211,7 +213,7 @@ class DBUtils:
         if not os.path.exists(self.dbFile):
             QSWATUtils.error('Cannot find project database {0}.  Have you opened the project?'.format(self.dbFile), self.isBatch) 
         try:
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 conn = sqlite3.connect(self.dbFile)  # @UndefinedVariable
                 conn.row_factory = sqlite3.Row  # @UndefinedVariable
             elif readonly:
@@ -236,7 +238,7 @@ class DBUtils:
     #         QSWATUtils.error('Cannot find reference database {0}'.format(self.dbRefFile), self.isBatch)
     #         return None 
     #     try:
-    #         if self.isHUC or self.isHAWQS or self.forTNC:
+    #         if self.isHUC or self.useSQLite or self.forTNC:
     #             conn = sqlite3.connect(self.dbRefFile)  # @UndefinedVariable
     #             conn.row_factory = sqlite3.Row  # @UndefinedVariable
     #         elif readonly:
@@ -401,7 +403,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         with self.connect(readonly=True) as conn:
             if conn:
                 try:
-                    if self.isHUC or self.isHAWQS or self.forTNC:
+                    if self.isHUC or self.useSQLite or self.forTNC:
                         sql = 'SELECT name FROM sqlite_master WHERE TYPE="table"'
                         for row in conn.execute(sql):
                             table = row[0]
@@ -442,8 +444,8 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 try:
                     sql = self.sqlSelect(landuseTable, 'LANDUSE_ID, SWAT_CODE', '', '')
                     for row in conn.cursor().execute(sql):
-                        nxt = int(row['LANDUSE_ID'] if self.isHUC or self.isHAWQS or self.forTNC else row.LANDUSE_ID)
-                        landuseCode = row['SWAT_CODE'] if self.isHUC or self.isHAWQS or self.forTNC else row.SWAT_CODE
+                        nxt = int(row['LANDUSE_ID'] if self.isHUC or self.useSQLite or self.forTNC else row.LANDUSE_ID)
+                        landuseCode = row['SWAT_CODE'] if self.isHUC or self.useSQLite or self.forTNC else row.SWAT_CODE
                         if nxt == 0 or self.defaultLanduse < 0:
                             self.defaultLanduse = nxt
                             self.defaultLanduseCode = landuseCode
@@ -914,7 +916,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         
         Return true if successful, else false.
         """
-        if self.isHUC or self.isHAWQS or self.forTNC:
+        if self.isHUC or self.useSQLite or self.forTNC:
             cursor = conn.cursor()
             sql0 = 'DROP TABLE IF EXISTS MasterProgress'
             cursor.execute(sql0)
@@ -959,7 +961,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         conn = self.connect()
         cursor = conn.cursor()
         # remove old table completely, for backward compatibility, since structure changed
-        table = self._BASINSDATAHUC1 if self.isHUC or self.isHAWQS else self._BASINSDATA1
+        table = self._BASINSDATAHUC1 if self.isHUC or self.useSQLite else self._BASINSDATA1
         if table in self._allTableNames:
             dropSQL = 'DROP TABLE ' + table
             try:
@@ -1017,7 +1019,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
             if index < 0:
                 # error occurred - no point in repeating the failure
                 break
-        if self.isHUC or self.isHAWQS or self.forTNC:
+        if self.isHUC or self.useSQLite or self.forTNC:
             conn.commit()
         else:
             self.hashDbTable(conn, self._BASINSDATA1)
@@ -1027,7 +1029,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 
         # note we coerce all double values to float to avoid 'SQLBindParameter' error if an int becomes a long
         try:
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
                              float(data.pondArea), float(data.reservoirArea), float(data.playaArea), float(data.lakeArea), \
                              float(data.wetlandArea), float(data.totalElevation), float(data.totalSlope), \
@@ -1062,7 +1064,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             basins = dict()
             with self.connect(readonly=True) as conn:
-                if self.isHUC or self.isHAWQS or self.forTNC:
+                if self.isHUC or self.useSQLite or self.forTNC:
                     conn.row_factory = sqlite3.Row  # @UndefinedVariable
                     try:
                         for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
@@ -1163,7 +1165,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 return
             cursor = conn.cursor()
             table = 'ElevationBand'
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.useSQLite:
                 dropSQL = 'DROP TABLE IF EXISTS ' + table
                 try:
                     cursor.execute(dropSQL)
@@ -1222,7 +1224,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 except Exception:
                     QSWATUtils.error('Could not write to table {0} in project database {1}: {2}'.format(table, self.dbFile, traceback.format_exc()), self.isBatch)
                     return
-            if self.isHUC or self.isHAWQS:
+            if self.isHUC or self.useSQLite:
                 conn.commit()
             else:
                 self.hashDbTable(conn, table)

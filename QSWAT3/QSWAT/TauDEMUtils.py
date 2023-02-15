@@ -223,7 +223,7 @@ class TauDEMUtils:
         proc = subprocess.run(commands, 
                               shell=True, 
                               stdout=subprocess.PIPE, 
-                              stderr=subprocess.STDOUT, 
+                              stderr=subprocess.PIPE, 
                               universal_newlines=True)
         if hasQGIS:
             assert output is not None

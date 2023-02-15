@@ -131,7 +131,7 @@ class QSWATTopology:
     
     _HUCPointId = 100000  # for HUC models all point ids are this number or greater (must match value in HUC12Models.py in HUC12Watersheds 
     
-    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool, fromGRASS: bool, forTNC: bool, TNCCatchmentThreshold: float) -> None:
+    def __init__(self, isBatch: bool, isHUC: bool, isHAWQS: bool, fromGRASS: bool, forTNC: bool, useSQLite: bool, TNCCatchmentThreshold: float) -> None:
         """Initialise class variables."""
         ## Link to project database
         self.db = None
@@ -219,6 +219,8 @@ class QSWATTopology:
         self.fromGRASS = fromGRASS
         ## flag for TNC projects
         self.forTNC = forTNC
+        ## flag to use SQLite
+        self.useSQLite = useSQLite
         ## minimum catchment size for TNC projects in sq km
         self.TNCCatchmentThreshold = TNCCatchmentThreshold
         
@@ -754,13 +756,13 @@ class QSWATTopology:
         finishVal = QSWATTopology.valueAtPoint(pFinish, demLayer)
         if startVal is None or startVal == self.demNodata:
             if finishVal is None or finishVal == self.demNodata:
-                if self.isHUC or self.isHAWQS:
+                if self.isHUC or self.isHAWQS or self.forTNC:
                     # allow for streams outside DEM
                     startVal = 0
                     finishVal = 0
                 else:
                     QSWATUtils.error('Stream link {4} ({0!s},{1!s}) to ({2!s},{3!s}) seems to be outside DEM'
-                                       .format(pStart.x(), pStart.y(), pFinish.x(), pFinish.y(), reach[self.linkIndex]), self.isbatch)
+                                       .format(pStart.x(), pStart.y(), pFinish.x(), pFinish.y(), reach[self.linkIndex]), self.isBatch)
                     return None
             else:
                 startVal = finishVal
@@ -934,7 +936,7 @@ class QSWATTopology:
                 return
             curs = conn.cursor()
             table = 'MonitoringPoint'
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 sql0 = 'DROP TABLE IF EXISTS MonitoringPoint'
                 curs.execute(sql0)
                 sql1 = QSWATTopology._MONITORINGPOINTCREATESQL
@@ -1025,7 +1027,7 @@ class QSWATTopology:
                             self.addMonitoringPoint(curs, demLayer, streamLayer, link, data, resId, 'R')
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing MonitoringPoint table took {0} seconds'.format(int(time2 - time1)))
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 conn.commit()
             else:
                 self.db.hashDbTable(conn, table)
@@ -1165,7 +1167,7 @@ class QSWATTopology:
                 return None
             table = 'Reach'
             curs = conn.cursor()
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 sql0 = 'DROP TABLE IF EXISTS Reach'
                 curs.execute(sql0)
                 sql1 = QSWATTopology._REACHCREATESQL
@@ -1256,7 +1258,7 @@ class QSWATTopology:
                         break
             time2 = time.process_time()
             QSWATUtils.loginfo('Writing Reach table took {0} seconds'.format(int(time2 - time1)))
-            if self.isHUC or self.isHAWQS or self.forTNC:
+            if self.isHUC or self.useSQLite or self.forTNC:
                 conn.commit()
             else:
                 self.db.hashDbTable(conn, table)

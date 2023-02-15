@@ -579,6 +579,9 @@ class Delineation(QObject):
         # changing default number of cells 
         if not self.setDefaultNumCells(demLayer):
             return
+        # delete existing subs and rivs layers from earlier runs as they will be out of date
+        QSWATUtils.removeLayerByLegend('Subbasins', root.findLayers())
+        QSWATUtils.removeLayerByLegend(QSWATUtils._REACHESLEGEND, root.findLayers())
         (base, suffix) = os.path.splitext(self._gv.demFile)
         # burn in if required
         if self._dlg.checkBurn.isChecked():

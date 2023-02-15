@@ -21,7 +21,7 @@
 """
 # parameters controlling what runs
 # run QSWAT to make HRUs.  Rerun if dem, grid size, landuses or soils change
-runQSWAT = False
+runQSWAT = True
 # run partition to set up catchment folders.  Rerun if maxSubCatchment changes
 runPartition = False 
 # run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
@@ -34,8 +34,8 @@ runCollect = False
 # Parameters to be set befure run
 
 TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
-Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'Africa_Nigeria' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'CentralAmerica' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
 maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
@@ -790,6 +790,12 @@ if __name__ == '__main__':
             p.run()
             t2 = time.process_time()
             print('Partitioned project {0} into {1} catchments in {2} seconds'.format(tnc.projName, p.countCatchments, round(t2-t1)))
+        elif runQSWAT:
+            # just exit as there will be no catchmentstree table
+            app.exitQgis()
+            app.exit()
+            del app
+            sys.exit()
         deps, ds = getDeps(tnc.projDb)
         print('Dependencies: {0}'.format(deps))
         if runEditor:

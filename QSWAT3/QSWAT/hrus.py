@@ -4254,7 +4254,7 @@ class CreateHRUs(QObject):
                     if not conn:
                         return
                     curs = conn.cursor()
-                    if self._gv.isHUC or self._gv.isHAWQS:
+                    if self._gv.isHUC or self._gv.useSQLite:
                         sql0 = 'DROP TABLE IF EXISTS hrus'
                         curs.execute(sql0)
                         sql0a = 'DROP TABLE IF EXISTS uncomb'
@@ -4275,7 +4275,7 @@ class CreateHRUs(QObject):
                         clearSQL = 'DELETE FROM ' + table
                         curs.execute(clearSQL)
                     self.printBasinsDetails(basinHa, True, fw, hrusCsv, conn, fullHRUsLayer, horizLine)
-                    if self._gv.isHUC or self._gv.isHAWQS:
+                    if self._gv.isHUC or self._gv.useSQLite:
                         conn.commit()
                     else:
                         self._gv.db.hashDbTable(conn, 'hrus')
@@ -4798,7 +4798,7 @@ class CreateHRUs(QObject):
                 return
             table = 'Watershed'
             curs = conn.cursor()
-            if self._gv.isHUC or self._gv.isHAWQS or self._gv.forTNC:
+            if self._gv.isHUC or self._gv.useSQLite or self._gv.forTNC:
                 sql0 = 'DROP TABLE IF EXISTS Watershed'
                 curs.execute(sql0)
                 sql1 = DBUtils._WATERSHEDCREATESQL
@@ -4875,7 +4875,7 @@ class CreateHRUs(QObject):
                     mmap[fid][shapeAreaIdx] = basinData.polyArea 
                     mmap[fid][hydroIdIdx] = SWATBasin + 300000 
                     mmap[fid][OutletIdIdx] = SWATBasin + 100000 
-                if self._gv.isHUC or self._gv.isHAWQS or self._gv.forTNC:
+                if self._gv.isHUC or self._gv.useSQLite or self._gv.forTNC:
                     sql = 'INSERT INTO ' + table + ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                     curs.execute(sql, (SWATBasin, 0, SWATBasin, SWATBasin, float(areaHa), float(meanSlopePercent), \
                                  float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
@@ -4887,7 +4887,7 @@ class CreateHRUs(QObject):
                                  float(farDistance), float(slsubbsn), float(farSlopePercent), float(tribChannelWidth), float(tribChannelDepth), \
                                  float(lat), float(lon), float(meanElevation), float(elevMin), float(elevMax), '', 0, float(basinData.area), \
                                  SWATBasin + 300000, SWATBasin + 100000)
-            if self._gv.isHUC or self._gv.isHAWQS or self._gv.forTNC:
+            if self._gv.isHUC or self._gv.useSQLite or self._gv.forTNC:
                 conn.commit()
             else:
                 self._gv.db.hashDbTable(conn, table)
