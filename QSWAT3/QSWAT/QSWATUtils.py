@@ -49,7 +49,8 @@ try:
                             QgsGeometry, \
                             QgsWkbTypes, \
                             QgsFeatureRequest, \
-                            QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem, QgsRasterSymbolLegendNode
+                            QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem, QgsRasterSymbolLegendNode, QgsProcessingContext
+    from qgis.analysis import QgsNativeAlgorithms
 except:
     from PyQt5.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
     from PyQt5.QtGui import QColor
@@ -74,6 +75,8 @@ import sys
 from osgeo import gdal, ogr  # type: ignore
 import traceback
 import time
+import processing
+from processing.core.Processing import Processing
 
 class QSWATUtils:
     """Various utilities."""
@@ -1456,52 +1459,43 @@ class FileTypes:
     @staticmethod
     def colourHAWQSLanduses(treeLayer: QgsLayerTreeLayer, gv: Any) -> None:
         """Layer colouring function for landuse grid for HAWQS projects.
-        This is used without running QSWAT, so uses lookup table and assumes all landuses in that are used"""
+        This is used without running QSWAT, so fills landusevals by anlysing landuse raster,
+        and landuseCodes from lookup table.
+        """
+        # collect landusevals from landuse layer
+        Processing.initialize()
+        if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
+            QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
+        context = QgsProcessingContext()
+        layer = treeLayer.layer()
+        filename = QSWATUtils.layerFilename(layer)
+        # have to load result to get actual memory table in result
+        processing.runAndLoadResults("native:rasterlayeruniquevaluesreport", 
+                   { 'BAND' : 1, 
+                    'INPUT' : filename, 
+                    'OUTPUT_HTML_FILE' : '', 
+                    'OUTPUT_TABLE' : 'memory:' }, context=context)
         proj = QgsProject.instance()
+        root = proj.layerTreeRoot()
+        outTreeLayer = QSWATUtils.getLayerByLegend('Unique values table', root.findLayers())
+        outLayer = outTreeLayer.layer()
+        gv.db.landuseVals = []
+        for feature in outLayer.getFeatures():
+            val = int(feature[0])
+            ListFuns.insertIntoSortedList(val, gv.db.landuseVals, True)
+        # remove unique values table layer
+        proj.removeMapLayer(outTreeLayer.layerId())
+        # make landuseCodes table from lookup table
+        gv.db.landuseCodes.clear()
         title = proj.title()
         table, found = proj.readEntry(title, 'landuse/table', '')
         if not found:
             QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
         sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)
-        landuseCodes: Dict[int, str] = dict()
         with gv.db.connect(readonly=True) as conn:
             for row in conn.execute(sql):
-                landuseCodes[int(row[0])] = row[1] 
-        items: List[QgsPalettedRasterRenderer.Class] = []
-        colours = QgsLimitedRandomColorRamp.randomColors(len(landuseCodes))
-        index = 0
-        # allow for duplicated landuses while using same colour for same landuse
-        colourMap: Dict[str, QColor] = dict()
-        for lid, luse in landuseCodes.items():
-            colour = colourMap.setdefault(luse, colours[index])
-            item = QgsPalettedRasterRenderer.Class(int(lid), colour, luse)
-            items.append(item)
-            index += 1
-        layer = treeLayer.layer()
-        renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
-        layer.setRenderer(renderer)
-        layer.triggerRepaint()
-        # remove duplicate landuses from legend
-        # this code removes the nodes from the list, but I cannot find a way to write them back to change the legend
-        # legend = layer.legend()
-        # nodes = legend.createLayerTreeModelLegendNodes(treeLayer)
-        # landuses = set()
-        # lim = len(nodes)
-        # for i in range(lim):
-        #     if i >= len(nodes):
-        #         break
-        #     node = nodes[i]
-        #     # need to ignore 'Band 1 (Gray)' item
-        #     if not isinstance(node, QgsRasterSymbolLegendNode):
-        #         continue
-        #     label = node.data(0)
-        #     if label in landuses:
-        #         del nodes[i]
-        #         i = i-1
-        #         continue
-        #     else:
-        #         landuses.add(label)
-        # QSWATUtils.loginfo('Landuse legend items reduced from {0} to {1}'.format(lim, len(nodes)))
+                gv.db.landuseCodes[int(row[0])] = row[1] 
+        FileTypes.colourLanduses(layer, gv)
     
     @staticmethod
     def colourSoils(layer: QgsRasterLayer, gv: Any) -> None:
@@ -1529,6 +1523,50 @@ class FileTypes:
                 item = QgsPalettedRasterRenderer.Class(int(i), colour, name)
                 items.append(item)
                 index += 1    
+        renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
+        layer.setRenderer(renderer)
+        layer.triggerRepaint()
+        
+    @staticmethod 
+    def colourHAWQSSoils(treeLayer: QgsLayerTreeLayer, gv: Any) -> None:
+        """Layer colouring function for soil grid for HAWQS projects.
+        This is used without running QSWAT, so fills soilvals by anlysing soil raster,
+        and soilCodes from lookup table.
+        """
+        # collect soilvals from soil layer
+        # Processing.initialize()
+        # if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
+        #     QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
+        context = QgsProcessingContext()
+        layer = treeLayer.layer()
+        filename = QSWATUtils.layerFilename(layer)
+        # have to load result to get actual memory table in result
+        processing.runAndLoadResults("native:rasterlayeruniquevaluesreport", 
+                   { 'BAND' : 1, 
+                    'INPUT' : filename, 
+                    'OUTPUT_HTML_FILE' : '', 
+                    'OUTPUT_TABLE' : 'memory:' }, context=context)
+        proj = QgsProject.instance()
+        root = proj.layerTreeRoot()
+        outTreeLayer = QSWATUtils.getLayerByLegend('Unique values table', root.findLayers())
+        outLayer = outTreeLayer.layer()
+        soilVals = []
+        for feature in outLayer.getFeatures():
+            val = int(feature[0])
+            ListFuns.insertIntoSortedList(val, soilVals, True)
+        # remove unique values table layer
+        proj.removeMapLayer(outTreeLayer.layerId())
+        index = 0
+        items: List[QgsPalettedRasterRenderer.Class] = []
+        colours = QgsLimitedRandomColorRamp.randomColors(len(soilVals))
+        sql = 'SELECT MUKEY FROM statsgo_ssurgo_lkey WHERE LKEY=?'
+        with gv.db.connect(readonly=True) as conn:
+            for val in soilVals:
+                row = conn.execute(sql, (val,)).fetchone()
+                if row is not None:
+                    item = QgsPalettedRasterRenderer.Class(int(val), colours[index], row[0])
+                    items.append(item)
+                    index += 1 
         renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
         layer.setRenderer(renderer)
         layer.triggerRepaint()

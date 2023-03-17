@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.6.1'
+    __version__ = '1.6.2'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -360,10 +360,23 @@ class QSwat(QObject):
             self._odlg.visualiseButton.setVisible(True)
             self.loadVisualisationLayers()
         if isHAWQS:
-            # fix landuse layer legend from lookup table
+            # fix landuse layer legend
             root = proj.layerTreeRoot()
-            treeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._LANDUSES), root.findLayers())
-            FileTypes.colourHAWQSLanduses(treeLayer, self._gv)
+            treeLayerLanduse = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._LANDUSES), root.findLayers())
+            if treeLayerLanduse is not None:
+                FileTypes.colourHAWQSLanduses(treeLayerLanduse, self._gv)
+                # since DEM is not set visible, set landuse and soil similarly so subbasins are clear.
+                treeLayerLanduse.setItemVisibilityChecked(False)
+            # fix soil layer legend
+            treeLayerSoil = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._SOILS), root.findLayers())
+            if treeLayerSoil is not None:
+                FileTypes.colourHAWQSSoils(treeLayerSoil, self._gv)
+                treeLayerSoil.setItemVisibilityChecked(False)
+            # make rivs and subs shapefiles if not already there
+            self._gv.topo.makeRivsShapefile(self._gv)
+            self._gv.topo.makeSubsShapefile(self._gv)
+            canvas = self._iface.mapCanvas()
+            canvas.zoomToFullExtent()
         self._odlg.projPath.setText(self._gv.projDir)
         self._odlg.mainBox.setEnabled(True)
         self._odlg.setCursor(Qt.ArrowCursor)

@@ -1065,6 +1065,57 @@ class QSWATTopology:
         cursor.execute(sql, (self.MonitoringPointFid, POINTID, GRID_CODE, \
                            float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID))
         self.MonitoringPointFid += 1;
+        
+    def makeRivsShapefile(self, gv):
+        """For HAWQS projects, when starting in case going straight to editor, running SWAT and visualise.
+        Make rivs.shp if not done previously."""
+        rivFile = QSWATUtils.join(gv.tablesOutDir, Parameters._RIVS + '.shp')
+        if os.path.isfile(rivFile):
+            return
+        root = QgsProject.instance().layerTreeRoot()
+        ft = FileTypes._STREAMS
+        streamTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(ft), root.findLayers())
+        if streamTreeLayer is None:
+            QSWATUtils('Cannot find {0} layer'.format(FileTypes.legend(ft)))
+        streamLayer = streamTreeLayer.layer()
+        streamFile = QSWATUtils.layerFilename(streamLayer)
+        QSWATUtils.copyShapefile(streamFile, Parameters._RIVS, gv.tablesOutDir)
+        rivLayer = QgsVectorLayer(rivFile, 'Stream reaches', 'ogr')
+        rivProvider = rivLayer.dataProvider()
+        self.removeFields(rivProvider, [QSWATTopology._SUBBASIN], rivFile, self.isBatch)
+        wid2Data = dict()
+        streamProvider = streamLayer.dataProvider()
+        subIdx = self.getIndex(streamLayer, QSWATTopology._SUBBASIN)
+        drainIdx = self.getIndex(streamLayer, QSWATTopology._TOTDASQKM)
+        for stream in streamProvider.getFeatures():
+            SWATBasin = int(stream[subIdx])
+            drainAreaKm = float(stream[drainIdx])
+            channelWidth = float(1.29 * drainAreaKm ** 0.6)
+            wid2Data[SWATBasin] = channelWidth
+        OK = rivProvider.addAttributes([QgsField(QSWATTopology._PENWIDTH, QVariant.Double)])
+        if OK:
+            QSWATTopology.setPenWidth(wid2Data, rivProvider, self.isBatch)
+        else:
+            QSWATUtils.error('Cannot add {0} field to stream reaches results template {1}'.format(QSWATTopology._PENWIDTH, rivFile), self.isBatch)
+            
+    def makeSubsShapefile(self, gv):
+        """For HAWQS projects, when starting in case going straight to editor, running SWAT and visualise.
+        Make subs.shp if not done previously."""
+        subsFile = QSWATUtils.join(gv.tablesOutDir, Parameters._SUBS + '.shp')
+        if os.path.isfile(subsFile):
+            return
+        root = QgsProject.instance().layerTreeRoot()
+        ft = FileTypes._WATERSHED
+        wshedTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(ft), root.findLayers())
+        if wshedTreeLayer is None:
+            QSWATUtils('Cannot find {0} layer'.format(FileTypes.legend(ft)))
+        wshedLayer = wshedTreeLayer.layer()
+        wshedFile = QSWATUtils.layerFilename(wshedLayer)
+        QSWATUtils.copyShapefile(wshedFile, Parameters._SUBS, gv.tablesOutDir)
+        subsLayer = QgsVectorLayer(subsFile, 'Subbasins', 'ogr')
+        provider = subsLayer.dataProvider()
+        self.removeFields(provider, [QSWATTopology._SUBBASIN], subsFile, self.isBatch)
+        
     
     def writeReachTable(self, streamLayer: QgsVectorLayer, gv: Any) -> Optional[QgsVectorLayer]:  # setting type of gv to GlobalVars prevents plugin loading
         """

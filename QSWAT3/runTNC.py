@@ -21,26 +21,26 @@
 """
 # parameters controlling what runs
 # run QSWAT to make HRUs.  Rerun if dem, grid size, landuses or soils change
-runQSWAT = True
+runQSWAT = False
 # run partition to set up catchment folders.  Rerun if maxSubCatchment changes
 runPartition = False 
 # run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
-runEditor = False 
+runEditor = True
 # run SWAT executable on catchments
-runSWAT = True
+runSWAT = False
 # collect SWAT outputs into catchment and main results database
-runCollect = False 
+runCollect = False  
 
 # Parameters to be set befure run
 
 TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
-Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'CentralAmerica' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'Africa_gh_mining' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
-maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
+maxSubCatchment = 100 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
-weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
-gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
+weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
+gridSize = 10  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
 maxHRUs = 5  # maximum number of HRUs per grid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev

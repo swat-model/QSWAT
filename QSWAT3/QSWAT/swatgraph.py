@@ -528,9 +528,11 @@ class SWATGraph(QObject):
         for i in range(1, numCols):
             for j in range(i+1, numCols):
                 self.pearson(i, j, numRows)
-        for i in range(1, numCols):
-            for j in range(i+1, numCols):
-                self.nash(i, j, numRows)
+        for i in range(1, numCols - 1):
+            # only compute NSE for pairs where second is observed
+            h = self._dlg.table.horizontalHeaderItem(i+1).text()
+            if 'observed' in h:
+                self.nash(i+1, i, numRows)
         
     def multiSums(self, idx1, idx2, N):
         """Return various sums for two series, only including points where both are numbers, plus count of such values."""
@@ -586,7 +588,7 @@ class SWATGraph(QObject):
         self._dlg.coeffs.append(SWATGraph.trans(msg))
 
     def nash(self, idx1, idx2, N):
-        """Calculate and display Nash-Sutcliffe efficiency coefficients for pair of plots."""
+        """Calculate and display Nash-Sutcliffe efficiency coefficients for pair of plots, taking idx1 as observed."""
         s1, count = self.sum1(idx1, idx2, N)
         if count == 0: return
         mean = s1 / count
