@@ -232,7 +232,7 @@ class Partition():
                     oldHRU = int(row1[3])
                     catchmentBasin = basinsMap[SWATBasin]
                     relHru = int(row1[4][7:9]) 
-                    hruGis = '{0:07d}{1:02d}'.format(catchmentBasin, relHru)
+                    hruGis = '{0:05d}{1:04d}'.format(catchmentBasin, relHru)    # reverting to 5+4.  Was  '{0:07d}{1:02d}'.format(catchmentBasin, relHru)
                     landuses.add(row1[2])
                     catchmentConn.execute(sqlOut1, (catchmentBasin, hruNum, hruGis, oid))
                     catchmentConn.execute(sqlOut3, (SWATBasin, oldHRU, catchmentBasin, hruNum))

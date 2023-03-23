@@ -3,7 +3,7 @@
 /***************************************************************************
  QSWAT
                                  A QGIS plugin
- Run TNC project
+ Fix TNC project
                               -------------------
         begin                : 2022-04-03
         copyright            : (C) 2022 by Chris George
@@ -20,16 +20,13 @@
  ***************************************************************************/
 """
 # parameters controlling what runs
-# run QSWAT to make HRUs.  Rerun if dem, grid size, landuses or soils change
-runQSWAT = False
-# run partition to set up catchment folders.  Rerun if maxSubCatchment changes
-runPartition = False
-# run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
-runEditor = False
+
+# run FixTNC on global project and propagate changes to catchments.  Run to editing inputs
+runFixEditor = True
 # run SWAT executable on catchments
 runSWAT = True
 # collect SWAT outputs into catchment and main results database
-runCollect = True  
+runCollect = True 
 
 # Parameters to be set befure run
 
@@ -48,7 +45,8 @@ maxCPUSWATCount = 40 # maximum number of CPUs used to run SWAT
 maxCPUCollectCount = 10 # maximum number of CPUs to collect outputs (may be lower than maxCPUSWATCount because of memory requirement)
 slopeLimits = [2, 8]  # bands will be 0-2, 2-8, 8+
 SWATEditorTNC = TNCDir + '/SwatEditorTNC/SwatEditorTNC.exe'
-SWATApp = TNCDir + '/SWAT/Rev_688_CG_64rel.exe'
+FixEditorTNC = TNCDir + '/FixEditorTNC/FixEditorTNC.exe'
+SWATApp = TNCDir + '/SWAT/Rev_688_CG_64rel.exe' 
 
 # abbreviations for continents.  Assumed in several places these are precisely 2 characters long
 contAbbrev = {'CentralAmerica': 'ca', 'NorthAmerica': 'na', 'SouthAmerica': 'sa', 'Asia': 'as', 
@@ -77,10 +75,10 @@ from multiprocessing import Pool, Manager, Lock
 #for alg in QgsApplication.processingRegistry().algorithms():
 #    print("{}:{} --> {}".format(alg.provider().name(), alg.name(), alg.displayName()))
 
-from QSWAT import qswat  # @UnresolvedImport
+#from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
 from QSWAT.hrus import HRUs  # @UnresolvedImport
-from catchments import Partition  # @UnresolvedImport
+#from catchments import Partition  # @UnresolvedImport
 #from QSWAT.parameters import Parameters  # @UnresolvedImport
 
 
@@ -131,36 +129,36 @@ class runTNC():
         ## project directory
         self.projName = contAbbrev + '_' + soilAbbrev + '_' + weatherSource + '_' + str(gridSize) + '_' + str(maxHRUs)
         self.projDir = TNCDir + '/' + ContDir + '/Projects/' + self.projName
-        os.makedirs(self.projDir, exist_ok=True)
+        # os.makedirs(self.projDir, exist_ok=True)
         self.projDb = self.projDir + '/' + self.projName + '.sqlite'
         logFile = self.projDir + '/runTNClog.txt'
         if os.path.isfile(logFile):
             os.remove(logFile)
-        projFile = self.projDir + '.qgs'
+        # projFile = self.projDir + '.qgs'
         #print('replacing {0} with {1}'.format('continent', self.projName))
-        with open(TNCDir + '/continent.qgs') as inFile, open(projFile, 'w') as outFile:
-            for line in inFile.readlines():
-                outFile.write(line.replace('continent', self.projName))
-        ## QSWAT plugin
-        self.plugin = qswat.QSwat(iface)
-        ## QGIS project
-        self.proj = QgsProject.instance()
-        self.proj.read(projFile)
-        self.plugin.setupProject(self.proj, True, logFile=logFile, fromGRASS=True, TNCDir=TNCDir)
-        ## main dialogue
-        self.dlg = self.plugin._odlg
-        ## delineation object
-        self.delin = None
-        ## hrus object
-        self.hrus = None
-        ## connection to output database
-        self.outConn = None
+        # with open(TNCDir + '/continent.qgs') as inFile, open(projFile, 'w') as outFile:
+        #     for line in inFile.readlines():
+        #         outFile.write(line.replace('continent', self.projName))
+        # ## QSWAT plugin
+        # self.plugin = qswat.QSwat(iface)
+        # ## QGIS project
+        # self.proj = QgsProject.instance()
+        # self.proj.read(projFile)
+        # self.plugin.setupProject(self.proj, True, logFile=logFile, fromGRASS=True, TNCDir=TNCDir)
+        # ## main dialogue
+        # self.dlg = self.plugin._odlg
+        # ## delineation object
+        # self.delin = None
+        # ## hrus object
+        # self.hrus = None
+        # ## connection to output database
+        # self.outConn = None
         ## DEM
-        fileBase = contAbbrev + demBase
-        self.demFile = self.projDir + '/../../DEM/' + fileBase + '_burned.tif'
-        ## crs
-        demLayer = QgsRasterLayer(self.demFile, 'DEM')
-        self.crs = demLayer.crs()
+        # fileBase = contAbbrev + demBase
+        # self.demFile = self.projDir + '/../../DEM/' + fileBase + '_burned.tif'
+        # ## crs
+        # demLayer = QgsRasterLayer(self.demFile, 'DEM')
+        # self.crs = demLayer.crs()
         # Prevent annoying "error 4 .shp not recognised" messages.
         # These should become exceptions but instead just disappear.
         # Safer in any case to raise exceptions if something goes wrong.
@@ -784,34 +782,34 @@ def runCatchment(i, todo, waiting, done, lock, projDir, deps):
             done.append(num)
             
     
-def runSWATEditor(projDir):
-    cmd = SWATEditorTNC
+def runFixEditor(projDir):
+    cmd = FixEditorTNC
     _ = subprocess.run([cmd, projDir])
                 
 if __name__ == '__main__':
     try:
         tnc = runTNC()
         print('Project {0}'.format(tnc.projName))
-        if runQSWAT:
-            tnc.runProject()
-            print('Created project {0}'.format(tnc.projName))
-        if runPartition:
-            print('Partitioning project {0} into catchments'.format(tnc.projName))
-            p = Partition(tnc.projDb, tnc.projDir, maxSubCatchment, tnc.crs, tnc.proj)
-            t1 = time.process_time()
-            p.run()
-            t2 = time.process_time()
-            print('Partitioned project {0} into {1} catchments in {2} seconds'.format(tnc.projName, p.countCatchments, round(t2-t1)))
-        elif runQSWAT:
-            # just exit as there will be no catchmentstree table
-            app.exitQgis()
-            app.exit()
-            del app
-            sys.exit()
+        # if runQSWAT:
+        #     tnc.runProject()
+        #     print('Created project {0}'.format(tnc.projName))
+        # if runPartition:
+        #     print('Partitioning project {0} into catchments'.format(tnc.projName))
+        #     p = Partition(tnc.projDb, tnc.projDir, maxSubCatchment, tnc.crs, tnc.proj)
+        #     t1 = time.process_time()
+        #     p.run()
+        #     t2 = time.process_time()
+        #     print('Partitioned project {0} into {1} catchments in {2} seconds'.format(tnc.projName, p.countCatchments, round(t2-t1)))
+        # elif runQSWAT:
+        #     # just exit as there will be no catchmentstree table
+        #     app.exitQgis()
+        #     app.exit()
+        #     del app
+        #     sys.exit()
         deps, ds = getDeps(tnc.projDb)
         print('Dependencies: {0}'.format(deps))
-        if runEditor:
-            runSWATEditor(tnc.projDir)
+        if runFixEditor:
+            runFixEditor(tnc.projDir)
         pattern = tnc.projDir + '/Catchments/*'
         # restrict to directories only
         dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]
@@ -867,237 +865,3 @@ if __name__ == '__main__':
     app.exitQgis()
     app.exit()
     del app 
-    
-    
-# Access versions of tables  
-#===============================================================================
-#     
-#     createHRU = """CREATE TABLE hru (
-#     LULC CHAR,
-#     HRU  INTEGER,
-#     HRUGIS  CHAR,
-#     SUB  INTEGER,
-#     YEAR  INTEGER,  
-#     MON   INTEGER,
-#      AREAkm2  FLOAT,
-#       PRECIPmm  FLOAT,
-#       SNOWFALLmm  FLOAT,
-#       SNOWMELTmm  FLOAT,
-#       IRRmm  FLOAT,
-#       PETmm  FLOAT,
-#       ETmm   FLOAT,
-#      SW_INITmm  FLOAT,
-#       SW_ENDmm  FLOAT,
-#       PERCmm   FLOAT,
-#      GW_RCHGmm FLOAT,
-#        DA_RCHGmm FLOAT,
-#        REVAPmm   FLOAT,
-#      SA_IRRmm  FLOAT,
-#       DA_IRRmm  FLOAT,
-#       SA_STmm  FLOAT,
-#       DA_STmm  FLOAT,
-#       SURQ_GENmm FLOAT,
-#        SURQ_CNTmm   FLOAT,
-#      TLOSS_mm  FLOAT,
-#       LATQ_mm  FLOAT,
-#       GW_Qmm  FLOAT,
-#       WYLD_Qmm FLOAT,
-#        DAILYCN   FLOAT,
-#      TMP_AVdgC   FLOAT,
-#      TMP_MXdgC   FLOAT,
-#      TMP_MNdgC   FLOAT,
-#      SOL_TMPdgC  FLOAT,
-#       SOLARmj_m2 FLOAT,
-#        SYLDt_ha  FLOAT,
-#       USLEt_ha  FLOAT,
-#       N_APPkg_ha FLOAT,
-#        P_APPkg_ha   FLOAT,
-#      N_AUTOkg_ha FLOAT,
-#        P_AUTOkg_ha  FLOAT,
-#       NGRZkg_ha  FLOAT,
-#       PGRZkg_ha FLOAT,
-#        NCFRTkg_ha FLOAT,
-#        PCFRTkg_ha FLOAT,
-#        NRAINkg_ha FLOAT,
-#        NFIXkg_ha  FLOAT,
-#       F_MNkg_ha  FLOAT,
-#       A_MNkg_ha  FLOAT,
-#       A_SNkg_ha  FLOAT,
-#       F_MPkg_aha  FLOAT,
-#       AO_LPkg_ha  FLOAT,
-#       L_APkg_ha  FLOAT,
-#       A_SPkg_ha   FLOAT,
-#      DNITkg_ha  FLOAT,
-#       NUP_kg_ha  FLOAT,
-#       PUPkg_ha  FLOAT,
-#       ORGNkg_ha  FLOAT,
-#       ORGPkg_ha  FLOAT,
-#       SEDPkg_h   FLOAT,
-#      NSURQkg_ha  FLOAT,
-#       NLATQkg_ha FLOAT,
-#        NO3Lkg_ha FLOAT,
-#        NO3GWkg_ha  FLOAT,
-#       SOLPkg_ha FLOAT,
-#        P_GWkg_ha  FLOAT,
-#       W_STRS  FLOAT,
-#       TMP_STRS  FLOAT,
-#       N_STRS  FLOAT,
-#       P_STRS FLOAT,
-#        BIOMt_ha FLOAT,
-#        LAI  FLOAT,
-#       YLDt_ha FLOAT,
-#        BACTPct  FLOAT,
-#       BACTLPct  FLOAT,
-#       WATB_CLI  FLOAT,
-#       WATB_SOL  FLOAT,
-#       SNOmm  FLOAT,
-#       [CMUPkg/ha] FLOAT,
-#        [CMTOTkg/ha] FLOAT,
-#        QTILEmm  FLOAT,
-#       [TNO3kg/ha]  FLOAT,
-#       [LNO3kg/ha]  FLOAT,
-#       GW_Q_Dmm FLOAT,
-#       LATQCNTmm FLOAT,
-#       [TVAPkg/ha] FLOAT
-#       );"""
-#       
-#     createSUB = """CREATE TABLE sub (
-#     SUB INTEGER,
-#        YEAR INTEGER,
-#        MON  INTEGER,
-#       AREAkm2 FLOAT,
-#        PRECIPmm  FLOAT,
-#       SNOWMELTmm FLOAT,
-#        PETmm FLOAT,
-#        ETmm FLOAT,
-#        SWmm  FLOAT,
-#       PERCmm  FLOAT,
-#       SURQmm  FLOAT,
-#       GW_Qmm  FLOAT,
-#       WYLDmm  FLOAT,
-#       SYLDt_ha FLOAT,
-#        ORGNkg_ha FLOAT,
-#        ORGPhg_ha FLOAT,
-#        NSURQkg_ha  FLOAT,
-#       SOLPkg_ha FLOAT,
-#        SEDPkg_ha FLOAT,
-#        LAT_Qmm FLOAT,
-#        LATNO3kg_ha FLOAT,
-#        GWNO3kg_ha FLOAT,
-#        [CHOLAmic/L] FLOAT,
-#        [CBODUmg/L] FLOAT,
-#        [DOXQmg/L]  FLOAT,
-#       [TNO3kg/ha]  FLOAT,
-#       QTILEmm FLOAT,
-#       [TVAPkg/ha] FLOAT
-#     );"""
-# 
-#     createRCH = """CREATE TABLE rch (
-#         SUB INTEGER,
-#          YEAR INTEGER,
-#          MON  INTEGER,
-#         AREAkm2 FLOAT,
-#          FLOW_INcms FLOAT,
-#          FLOW_OUTcms  FLOAT,
-#         EVAPcms FLOAT,
-#          TLOSScms FLOAT,
-#          SED_INtons FLOAT,
-#          SED_OUTtons FLOAT,
-#          SEDCONCmg_kg FLOAT,
-#          ORGN_INkg  FLOAT,
-#         ORGN_OUTkg  FLOAT,
-#         ORGP_INkg  FLOAT,
-#         ORGP_OUTkg FLOAT,
-#          NO3_INkg  FLOAT,
-#         NO3_OUTkg FLOAT,
-#          NH4_INkg FLOAT,
-#          NH4_OUTkg FLOAT,
-#          NO2_INkg  FLOAT,
-#         NO2_OUTkg  FLOAT,
-#         MINP_INkg FLOAT,
-#          MINP_OUTkg FLOAT,
-#          CHLA_INkg  FLOAT,
-#         CHLA_OUTkg  FLOAT,
-#         CBOD_INkg  FLOAT,
-#         CBOD_OUTkg FLOAT,
-#          DISOX_INkg  FLOAT,
-#         DISOX_OUTkg  FLOAT,
-#         SOLPST_INmg  FLOAT,
-#         SOLPST_OUTmg FLOAT,
-#          SORPST_INmg FLOAT,
-#          SORPST_OUTmg FLOAT,
-#          REACTPTmg  FLOAT,
-#         VOLPSTmg FLOAT,
-#          SETTLPST_mg  FLOAT,
-#         RESUSP_PSTmg  FLOAT,
-#         DIFUSEPSTmg FLOAT,
-#          REACHBEDPSTmg FLOAT,
-#          BURYPSTmg  FLOAT,
-#         BED_PSTmg FLOAT,
-#          BACTP_OUTct FLOAT,
-#          BACTLP_OUTct FLOAT,
-#          CMETAL1kg  FLOAT,
-#         CMETAL2kg FLOAT,
-#          CMETAL3kg FLOAT,
-#          TOT_Nkg  FLOAT,
-#         TOT_Pkg  FLOAT,
-#         [NO3CONCmg/l] FLOAT,
-#          WTMPdegc FLOAT
-#     );"""   
-#     
-#     createWQL = """CREATE TABLE wql (
-#     YEAR INTEGER,
-#     RCH INTEGER,
-#     DAY INTEGER,
-#     WTEMP FLOAT,
-#     ALGAE_IN FLOAT,
-#     ALGAE_O FLOAT,
-#     ORGN_IN FLOAT,
-#     ORGN_OUT FLOAT,
-#     NH4_IN FLOAT,
-#     NH4_OUT FLOAT,
-#     NO2_IN FLOAT,
-#     NO2_OUT FLOAT,
-#     NO3_IN FLOAT,
-#     NO3_OUT FLOAT,
-#     ORGP_IN FLOAT,
-#     ORGP_OUT FLOAT,
-#     SOLP_IN FLOAT,
-#     SOLP_OUT FLOAT,
-#     CBOD_IN FLOAT,
-#     CBOD_OUT FLOAT,
-#     SAT_OX FLOAT,
-#     DISOX_IN FLOAT,
-#     DISOX_O FLOAT,
-#     H20VOLUME FLOAT,
-#     TRVL_TIME FLOAT
-#     );"""
-#     
-#     createSED = """CREATE TABLE sed (
-#     RCH INTEGER,
-#     YEAR INTEGER,
-#     MON INTEGER,
-#     AREA FLOAT,
-#     SED_IN FLOAT,
-#     SED_OUT FLOAT,
-#     SAND_IN FLOAT,
-#     SAND_OUT FLOAT,
-#     SILT_IN FLOAT,
-#     SILT_OUT FLOAT,
-#     CLAY_IN FLOAT,
-#     CLAY_OUT FLOAT,
-#     SMAG_IN FLOAT,
-#     SMAG_OUT FLOAT,
-#     LAG_IN FLOAT,
-#     LAG_OUT FLOAT,
-#     GRA_IN FLOAT,
-#     GRA_OUT FLOAT,
-#     CH_BNK FLOAT,
-#     CH_BED FLOAT,
-#     CH_DEP FLOAT,
-#     FP_DEP FLOAT,
-#     TSS FLOAT
-#     );"""
-# 
-#     
-#===============================================================================
