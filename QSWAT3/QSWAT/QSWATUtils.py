@@ -1257,6 +1257,8 @@ class FileTypes:
     _GRIDSTREAMS = 15
     _HRUS = 16
     _OUTLETSHUC = 17
+    _LAKES = 18
+    _EXTRAPTSRC = 19
     
     @staticmethod
     def filter(ft: int) -> str:
@@ -1269,7 +1271,8 @@ class FileTypes:
                     ft == FileTypes._STREAMS or ft == FileTypes._SUBBASINS or \
                     ft == FileTypes._REACHES or ft == FileTypes._WATERSHED or \
                     ft == FileTypes._EXISTINGSUBBASINS or ft == FileTypes._EXISTINGWATERSHED or \
-                    ft == FileTypes._GRID or ft == FileTypes._GRIDSTREAMS:
+                    ft == FileTypes._GRID or ft == FileTypes._GRIDSTREAMS or ft == FileTypes._LAKES or \
+                    ft == FileTypes._EXTRAPTSRC:
             return QgsProviderRegistry.instance().fileVectorFilters()
         return ''  # for mypy
     
@@ -1312,6 +1315,10 @@ class FileTypes:
             return QSWATUtils._GRIDLEGEND
         elif ft == FileTypes._GRIDSTREAMS:
             return QSWATUtils._GRIDSTREAMSLEGEND
+        elif ft == FileTypes._LAKES:
+            return 'Reservoirs'
+        elif ft == FileTypes._EXTRAPTSRC:
+            return 'Point Sources'
         return ''  # for mypy
         
     @staticmethod
@@ -1347,6 +1354,10 @@ class FileTypes:
             return None
         elif ft == FileTypes._OUTLETSHUC:
             return 'outletsHUC.qml'
+        elif ft == FileTypes._LAKES:
+            return 'lakes.qml'
+        elif ft == FileTypes._EXTRAPTSRC:
+            return 'ptsrc.qml'
         return None  # for mypy
 
     @staticmethod
@@ -1564,7 +1575,7 @@ class FileTypes:
             for val in soilVals:
                 row = conn.execute(sql, (val,)).fetchone()
                 if row is not None:
-                    item = QgsPalettedRasterRenderer.Class(int(val), colours[index], row[0])
+                    item = QgsPalettedRasterRenderer.Class(int(val), colours[index], str(row[0]))
                     items.append(item)
                     index += 1 
         renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)

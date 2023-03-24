@@ -375,6 +375,13 @@ class QSwat(QObject):
             # make rivs and subs shapefiles if not already there
             self._gv.topo.makeRivsShapefile(self._gv)
             self._gv.topo.makeSubsShapefile(self._gv)
+            # load reservoir and point sources shapefiles if they exist
+            reservoirsFile = QSWATUtils.join(self._gv.shapesDir, 'reservoirs.shp')
+            if os.path.isfile(reservoirsFile):
+                QSWATUtils.getLayerByFilename(root.findLayers(), reservoirsFile, FileTypes._LAKES, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+            pointSourcesFile = QSWATUtils.join(self._gv.shapesDir, 'pointsources.shp')
+            if os.path.isfile(pointSourcesFile):
+                QSWATUtils.getLayerByFilename(root.findLayers(), pointSourcesFile, FileTypes._EXTRAPTSRC, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
             canvas = self._iface.mapCanvas()
             canvas.zoomToFullExtent()
         self._odlg.projPath.setText(self._gv.projDir)

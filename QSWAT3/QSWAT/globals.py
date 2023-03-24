@@ -531,7 +531,9 @@ class GlobalVars:
             elif key == refDbKey:
                 item.set('value', self.db.dbRefFile)
             elif key == soilDbKey:
-                if self.db.useSSURGO:
+                if self.isHUC or self.isHAWQS:
+                    soilDb = self.db.SSURGODbFile
+                elif self.db.useSSURGO:
                     soilDb = Parameters._SSURGODB
                 else:
                     soilDb = Parameters._USSOILDB

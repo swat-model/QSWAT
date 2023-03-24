@@ -196,11 +196,15 @@ class DBUtils:
             if isHUC:
                 # changed to use copy one up frpm projDir
                 self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
-            else:
-                self.SSURGODbFile = QSWATUtils.join(os.path.split(dbRefTemplate)[0], Parameters._SSURGODB_HUC)
-            self.SSURGOConn = sqlite3.connect(self.SSURGODbFile)  # @UndefinedVariable
-        ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC and HAWQS)
-        self.SSURGOUndefined = -1
+            else: # HAWQS
+                if self.useSQLite:
+                    self.SSURGODbFile = QSWATUtils.join(self.projDir, Parameters._SSURGODB_HUC)
+                    self.SSURGOConn = sqlite3.connect(self.SSURGODbFile)  # @UndefinedVariable
+                else:
+                    self.SSURGODbFile = QSWATUtils.join(self.projDir, os.path.splitext(Parameters._SSURGODB_HUC)[0] + '.mdb')
+                    self.SSURGOConn = self.connectDb(self.SSURGODbFile, readonly=True)        
+            ## nodata value from soil map to replace undefined SSURGO soils (only used with HUC and HAWQS)
+            self.SSURGOUndefined = -1
         ## regular expression for checking if SSURGO soils are water (only used with HUC and HAWQS)
         self.waterPattern = re.compile(r'\bwaters?\b', re.IGNORECASE)  # @UndefinedVariable
         if self.isHUC:
