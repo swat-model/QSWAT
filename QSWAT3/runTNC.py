@@ -23,7 +23,7 @@
 # run QSWAT to make HRUs.  Rerun if dem, grid size, landuses or soils change
 runQSWAT = False
 # run partition to set up catchment folders.  Rerun if maxSubCatchment changes
-runPartition = False
+runPartition = True
 # run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
 runEditor = False
 # run SWAT executable on catchments
@@ -34,13 +34,13 @@ runCollect = True
 # Parameters to be set befure run
 
 TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
-Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'Africa_gh_mining' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'CentralAmerica' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
-maxSubCatchment = 100 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
+maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
-weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
-gridSize = 10  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
+weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
+gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
 maxHRUs = 5  # maximum number of HRUs per grid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
@@ -704,6 +704,34 @@ def collectOutputs(dirs, projDir):
             res = pool.starmap_async(collectOutput, args, chunk)
             _ = res.get()
     sys.stdout.flush()
+    
+def runCheck(tnc):
+    """Check every subbasin in the main project's Watershed table is in the output database sub table."""
+    print('Checking {0} results ...'.format(tnc.projName))
+    subs = set()
+    outputDb = tnc.projDir + '/Scenarios/Default/TablesOut/SWATOutput.sqlite'
+    with sqlite3.connect(tnc.projDb) as projConn, sqlite3.connect(outputDb) as outConn:
+        sql1 = 'SELECT SUB FROM sub'
+        sql2 = 'SELECT Subbasin, CatchmentId FROM Watershed'
+        for row1 in outConn.execute(sql1):
+            subs.add(row1[0])
+            count = len(subs)
+            if count % 1000 == 0:
+                print('Collected {0} subbasins ...'.format(count))
+        count = 0
+        catchments = set()
+        for row2 in projConn.execute(sql2):
+            count += 1
+            if row2[0] not in subs:
+                print('ERROR: Subbasin {0} in catchment {1} has no results data'.format(row2[0], row2[1]))
+                catchments.add(row2[1])
+            if count % 1000 == 0:
+                print('Checked {0} subbasins ...'.format(count))
+        if len(catchments) > 0:
+            print('Uncollected catchments:')
+            for catchment in catchments:
+                print('{0}'.format(catchment))
+    print('Check completed')
                 
 def getDeps(db):
     """Get catchment dependencies from catchmentstree table, stored as upstream table deps and as downstream table ds."""
@@ -781,7 +809,9 @@ def runCatchment(i, todo, waiting, done, lock, projDir, deps):
             direc = projDir + '/Catchments/' + contAbbrev + str(num)
             sys.stdout.flush()
             _ = subprocess.run([cmd, direc, SWATApp], capture_output=True)
+            lock.acquire()
             done.append(num)
+            lock.release()
             
     
 def runSWATEditor(projDir):
@@ -862,6 +892,7 @@ if __name__ == '__main__':
             collectOutputs(dirs, tnc.projDir)
             time2 = time.perf_counter()
             print('Collecting output data took {0} seconds'.format(int(time2 - time1)))
+            runCheck(tnc)
     except Exception:
         print('ERROR: exception: {0}'.format(traceback.format_exc()))
     app.exitQgis()

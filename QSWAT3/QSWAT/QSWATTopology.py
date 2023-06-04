@@ -1758,7 +1758,10 @@ class QSWATTopology:
                 for j in range(numLines):
                     if i != j:
                         linej = mpl[j]
-                        if QSWATTopology.pointOnLine(start, linej, dx, dy):
+                        # linei is connected to linej (ie continues from linej) if the first point of linei (start) is on linej AND
+                        # linej has preceding point(s).
+                        # So exclude the start of linej in the search for a connection point
+                        if len(linej) > 0 and QSWATTopology.pointOnLine(start, linej[1:], dx, dy):
                             connected = True
                             break
             if not connected:
@@ -1787,7 +1790,10 @@ class QSWATTopology:
                 for j in range(numLines):
                     if i != j:
                         linej = mpl[j]
-                        if QSWATTopology.pointOnLine(finish, linej, dx, dy):
+                        # linei is connected to linej if the last point of linei (finish) is on linej AND
+                        # linej extends further.
+                        # So exclude the finish of linej in the search for a connection point
+                        if len(linej) > 0 and QSWATTopology.pointOnLine(finish, linej[:-1], dx, dy):
                             connected = True
                             break
             if not connected:

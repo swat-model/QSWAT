@@ -14,4 +14,4 @@ rem user installed plugins
 set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\AppData/Roaming/QGIS/QGIS3/profiles/default\python\plugins
 set QGIS_PREFIX_PATH=%OSGEO4W_ROOT%\apps\qgis-ltr
 
-"%OSGEO4W_ROOT%\bin\python3.exe" "%~dp0runTNC.py"
+"%OSGEO4W_ROOT%\bin\python3.exe" "%~dp0runTNC.py" "%0"

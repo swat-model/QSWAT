@@ -24,20 +24,20 @@
 # run FixTNC on global project and propagate changes to catchments.  Run to editing inputs
 runFixEditor = True
 # run SWAT executable on catchments
-runSWAT = True
+runSWAT = False
 # collect SWAT outputs into catchment and main results database
-runCollect = True 
+runCollect = False 
 
 # Parameters to be set befure run
 
 TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
-Continent = 'Africa' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'Africa_gh_mining' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'CentralAmerica' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
-maxSubCatchment = 100 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
+maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
-weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
-gridSize = 10  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
+weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
+gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
 maxHRUs = 5  # maximum number of HRUs per grid cell
 demBase = '100albers' # name of non-burned-in DEM, when prefixed with contAbbrev
@@ -65,6 +65,7 @@ from osgeo import gdal, ogr  # type: ignore
 import traceback
 import sqlite3
 import time
+import shutil
 
 from multiprocessing import Pool, Manager, Lock
 #import processing
@@ -131,6 +132,10 @@ class runTNC():
         self.projDir = TNCDir + '/' + ContDir + '/Projects/' + self.projName
         # os.makedirs(self.projDir, exist_ok=True)
         self.projDb = self.projDir + '/' + self.projName + '.sqlite'
+        # fix reference db by copying master
+        masterRefDb = TNCDir + '/QSWATRef2012_TNC.sqlite'
+        projRefDb = self.projDir + '/QSWATRef2012.sqlite'
+        shutil.copyfile(masterRefDb, projRefDb)
         logFile = self.projDir + '/runTNClog.txt'
         if os.path.isfile(logFile):
             os.remove(logFile)
