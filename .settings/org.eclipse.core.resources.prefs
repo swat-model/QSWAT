@@ -63,6 +63,7 @@ encoding//QSWAT3/__init__.py=utf-8
 encoding//QSWAT3/catchments.py=utf-8
 encoding//QSWAT3/catchpatch.py=utf-8
 encoding//QSWAT3/checkResults.py=utf-8
+encoding//QSWAT3/continentChange.py=utf-8
 encoding//QSWAT3/runFixTNC.py=utf-8
 encoding//QSWAT3/runHUC.py=utf-8
 encoding//QSWAT3/runTNC.py=utf-8

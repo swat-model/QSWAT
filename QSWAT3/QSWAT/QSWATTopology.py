@@ -541,6 +541,13 @@ class QSWATTopology:
                     if self.catchmentLargeEnoughForTNC(basin):
                         SWATBasin += 1
                         self.basinToSWATBasin[basin] = SWATBasin
+                elif dsLink < 0:
+                    if self.forTNC:
+                        print('Basin {0} rejected as subbasin with dsLink {1}'.format(basin, dsLink))
+                elif self.forTNC:
+                    print('Basin {0} rejected as subbasin with drain area {1} less than minimum {2}'
+                          .format(basin, self.drainAreas[link], minDrainArea))
+                    
         else:
             # if not grid, try existing subbasin numbers as SWAT basin numbers
             ok = subbasinIndex >= 0 and self.trySubbasinAsSWATBasin(wshedLayer, polyIndex, subbasinIndex)
@@ -583,7 +590,13 @@ class QSWATTopology:
             return False
         outletLink = self.basinToLink[outlet]
         catchmentArea = self.drainAreas[outletLink]
-        return catchmentArea / 1E6 >= self.TNCCatchmentThreshold
+        if catchmentArea / 1E6 >= self.TNCCatchmentThreshold:
+            return True
+        else:
+            print('Basin {0} catchment outlet link {1} with area {2} km^2 not large enough'
+                  .format(basin, outlet, catchmentArea / 1E6)) 
+            return False
+        
     
     @staticmethod
     def reachable(link: int, links: List[int], us: Dict[int, List[int]]) -> bool:

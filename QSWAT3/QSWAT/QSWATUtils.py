@@ -1452,13 +1452,15 @@ class FileTypes:
         """Layer colouring function for landuse grid."""
         db = gv.db
         items: List[QgsPalettedRasterRenderer.Class] = []
-        colours = QgsLimitedRandomColorRamp.randomColors(len(db.landuseVals))
+        numColours = len(db.landuseVals)
+        colours = QgsLimitedRandomColorRamp.randomColors(numColours)
         index = 0
         # allow for duplicated landuses while using same colour for same landuse
         colourMap: Dict[str, QColor] = dict()
         #QSWATUtils.loginfo('Landuse values: {0}'.format(db.landuseVals))
         for i in db.landuseVals:
             luse: str = db.getLanduseCode(i)
+            # partial fix for mistake in HAWQS landuse lookup tables assigning 21 as WATR
             colour = colourMap.setdefault(luse, colours[index])
             item = QgsPalettedRasterRenderer.Class(int(i), colour, luse)
             items.append(item)
@@ -1471,7 +1473,7 @@ class FileTypes:
     def colourHAWQSLanduses(treeLayer: QgsLayerTreeLayer, gv: Any) -> None:
         """Layer colouring function for landuse grid for HAWQS projects.
         This is used without running QSWAT, so fills landusevals by anlysing landuse raster,
-        and landuseCodes from lookup table.
+        and landuseCodes and colours from standard NLCD names and colours table.
         """
         # collect landusevals from landuse layer
         Processing.initialize()
@@ -1496,17 +1498,30 @@ class FileTypes:
             ListFuns.insertIntoSortedList(val, gv.db.landuseVals, True)
         # remove unique values table layer
         proj.removeMapLayer(outTreeLayer.layerId())
-        # make landuseCodes table from lookup table
-        gv.db.landuseCodes.clear()
-        title = proj.title()
-        table, found = proj.readEntry(title, 'landuse/table', '')
-        if not found:
-            QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
-        sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)
-        with gv.db.connect(readonly=True) as conn:
-            for row in conn.execute(sql):
-                gv.db.landuseCodes[int(row[0])] = row[1] 
-        FileTypes.colourLanduses(layer, gv)
+        # # make landuseCodes table from lookup table: no longer used
+        # gv.db.landuseCodes.clear()
+        # title = proj.title()
+        # table, found = proj.readEntry(title, 'landuse/table', '')
+        # if not found:
+        #     QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
+        # sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)
+        # with gv.db.connect(readonly=True) as conn:
+        #     for row in conn.execute(sql):
+        #         gv.db.landuseCodes[int(row[0])] = row[1] 
+        # FileTypes.colourLanduses(layer, gv)
+        # make landuse code and colour table for NLCD landuses
+        items: List[QgsPalettedRasterRenderer.Class] = []
+        sql = 'SELECT Name, Red, Green, Blue FROM NLCD_CDL_color_scheme WHERE LANDUSE_ID=?'
+        for i in gv.db.landuseVals:
+            row = gv.db.connRef.execute(sql, (i,)).fetchone()
+            if row is None:
+                QSWATUtils.error('Unknown NLCD_CDL landuse value {0}'.format(i), gv.isBatch)
+                return
+            item = QgsPalettedRasterRenderer.Class(i, QColor(int(row[1]), int(row[2]), int(row[3])), row[0])
+            items.append(item)
+        renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
+        layer.setRenderer(renderer)
+        layer.triggerRepaint()
     
     @staticmethod
     def colourSoils(layer: QgsRasterLayer, gv: Any) -> None:

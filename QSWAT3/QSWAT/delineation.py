@@ -2412,7 +2412,7 @@ class Delineation(QObject):
                                     maxRow = accRow
                                     maxCol = accCol
                 if valCount == 0:
-                    # no data for this grid
+                    # no data for this grid cell
                     continue
                 polyId += 1
                 #if polyId <= 5:
@@ -2503,8 +2503,8 @@ class Delineation(QObject):
                             x, y = QSWATTopology.cellToProj(currentAccCol, currentAccRow, accTransform)
                             QSWATUtils.error('Loop in flow directions in grid id {4} starting from ({0},{1}) and so far reaching ({2},{3})'.
                                              format(int(x0), int(y0), int(x), int(y), gridData.num), self._gv.isBatch)
-                            print('Loop in flow directions in grid id {4} starting from ({0},{1}) and so far reaching ({2},{3})'.
-                                             format(int(x0), int(y0), int(x), int(y), gridData.num))
+                            #print('Loop in flow directions in grid id {4} starting from ({0},{1}) and so far reaching ({2},{3})'.
+                            #                 format(int(x0), int(y0), int(x), int(y), gridData.num))
                             break
                 if found:
                     cols =  storeGrid.get(currentGridRow, None)
@@ -2601,7 +2601,7 @@ class Delineation(QObject):
         for gridRow, gridCols in storeGrid.items():
             for gridCol in gridCols:
                 current  = gridRow, gridCol
-                downChain: List[int] = []
+                downChain: List[int, int] = []
                 while True:
                     currentGrid = storeGrid[current[0]][current[1]]
                     if currentGrid.downNum < 0 or currentGrid.num in inlets:
@@ -2612,8 +2612,29 @@ class Delineation(QObject):
                         break
                     if current in downChain:
                         QSWATUtils.loginfo('Row {0} column {1} links to itself in the grid'.format(current[0], current[1]))
+                        print('Row {0} column {1} links to itself in the grid'.format(current[0], current[1]))
+                        chainNums = [storeGrid[row][col].num for (row, col) in downChain]
+                        print('downChain is {0}'.format(str(chainNums)))
+                        # find the cell in the chain with the biggest drainage area to make it the outlet
+                        maxDrainage = 0
+                        maxRow = -1
+                        maxCol = -1
                         for row, col in downChain:
-                            storeGrid[row][col].outlet = currentGrid.num
+                            nextGrid = storeGrid[row][col]
+                            print('Drainage for {0} is {1}'.format(nextGrid.num, nextGrid.drainArea))
+                            if nextGrid.drainArea > maxDrainage:
+                                maxDrainage = nextGrid.drainArea
+                                maxRow = row
+                                maxCol = col
+                        if maxRow <0 or maxCol < 0:
+                            QSWATUtils.error('Failed to find max drainage cell in chain {0}'.format(str(downChain)))
+                            break
+                        outletNum = storeGrid[maxRow][maxCol].num
+                        storeGrid[maxRow][maxCol].downNum = -1
+                        print('Chosen outlet is {0}'.format(outletNum))
+                        # set outlet for cells in chain
+                        for row, col in downChain:
+                            storeGrid[row][col].outlet = outletNum
                         break
                     downChain.append(current)
                     current = currentGrid.downRow, currentGrid.downCol

@@ -417,7 +417,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         cursor.execute(ConvertToPlus._INSERTPROJECTCONFIG, 
                        (1, self.projNameNew, self.projDirNew, None, 
                         gisType, gisVersion, newProjDb, newRefDb, None, None, weatherDataDir, None, None, None, None, 
-                        1, 1, ConvertToPlus._SOILS_SOL_NAME, ConvertToPlus._SOILS_SOL_LAYER_NAME, None, 0, 0))
+                        1, 1, ConvertToPlus._SOILS_SOL_NAME, ConvertToPlus._SOILS_SOL_LAYER_NAME, None, 0, 0, 0))
                 
     def createUsersoilTable(self, cursorNew, cursorOld):
         """Create usersoil in new project database from usersoil in old."""
@@ -2003,11 +2003,13 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
     imported_gis             BOOLEAN  DEFAULT (0) 
                                       NOT NULL,
     is_lte                   BOOLEAN  DEFAULT (0) 
+                                      NOT NULL,
+    use_gwflow               BOOLEAN  DEFAULT (0)
                                       NOT NULL
     )
     """
     
-    _INSERTPROJECTCONFIG = 'INSERT INTO project_config VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)' 
+    _INSERTPROJECTCONFIG = 'INSERT INTO project_config VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)' 
         
     _SOILS_SOL_TABLE = \
     """

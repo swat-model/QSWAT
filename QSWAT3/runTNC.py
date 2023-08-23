@@ -23,7 +23,7 @@
 # run QSWAT to make HRUs.  Rerun if dem, grid size, landuses or soils change
 runQSWAT = False
 # run partition to set up catchment folders.  Rerun if maxSubCatchment changes
-runPartition = True
+runPartition = False
 # run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
 runEditor = False
 # run SWAT executable on catchments
@@ -567,14 +567,18 @@ def collectOutput(direc, outputDb, lock):
                         year += 1
                     lastMon = mon
                     if mon <= 12:  # omit summary lines
-                        catchmentSub = int(line[6:11])
-                        sub = subMap[catchmentSub]
+                        try:
+                            catchmentSub = int(line[6:11])
+                            sub = subMap[catchmentSub]
+                        except:
+                            print('Problem with output.sub for catchment {0}: year {1} month {2} sub {3}'.format(catchment, year, mon, line[6:11]))
+                            break
                         data = [year, mon] + line[25:].split()
                         mainSubData.append([sub] + data)
                         try:
                             catchmentOutConn.execute(sqlSub, [catchmentSub] + data)
                         except:
-                            print('Problem with sub data: {0}: {1}'.format(data, traceback.format_exc()))
+                            print('Problem with sub data for catchment {0} sub {1}: {2}: {3}'.format(catchment, catchmentSub, data, traceback.format_exc()))
             # collect output.rch
             mainRchData = []
             with open(txtInOut + 'output.rch', 'r') as inFile:
@@ -590,14 +594,18 @@ def collectOutput(direc, outputDb, lock):
                         year += 1
                     lastMon = mon
                     if mon <= 12:  # omit summary lines
-                        catchmentSub = int(line[5:10])
-                        sub = subMap[catchmentSub]
+                        try:
+                            catchmentSub = int(line[5:10])
+                            sub = subMap[catchmentSub]
+                        except:
+                            print('Problem with output.rch for catchment {0}: year {1} month {2} sub {3}'.format(catchment, year, mon, line[5:10]))
+                            break
                         data = [year, mon] + line[25:].split()
                         mainRchData.append([sub] + data)
                         try:
                             catchmentOutConn.execute(sqlRch, [catchmentSub] + data)
                         except:
-                            print('Problem with rch data: {0}: {1}'.format(data, traceback.format_exc()))
+                            print('Problem with rch data for catchment {0} sub {1}: {2}: {3}'.format(catchment, catchmentSub, data, traceback.format_exc()))
             # collect output.hru
             mainHruData = []
             with open(txtInOut + 'output.hru', 'r') as inFile:
@@ -615,8 +623,11 @@ def collectOutput(direc, outputDb, lock):
                     lastMon = mon
                     if mon <= 12:  # omit summary lines
                         lulc = line[:4]
-                        catchmentHru = int(line[5:9])
-                        hru = hruMap[catchmentHru]
+                        catchmentHru = int(line[4:9])
+                        hru = hruMap.get(catchmentHru, -1)
+                        if hru < 0:
+                            print('Problem with output.hru for catchment {0} year {1} month {2} hru {3}'.format(catchment, year, mon, line[4:9]))
+                            break
                         gisCatchment = '00' + line[10:15] + line[17:19] # 5+4 to 7+2
                         relHRU = int(gisCatchment[7:9])
                         catchmentSub = int(line[19:24])
@@ -627,7 +638,7 @@ def collectOutput(direc, outputDb, lock):
                         try:
                             catchmentOutConn.execute(sqlHru, [lulc, catchmentHru, gisCatchment, catchmentSub] + data)
                         except:
-                            print('Problem with hru data: {0}: {1}'.format(data, traceback.format_exc()))
+                            print('Problem with hru data for catchment {0} hru {1}: {2}: {3}'.format(catchment, catchmentHru, data, traceback.format_exc()))
             #===============================================================
             # # collect output.wql
             # with open(txtInOut + 'output.wql', 'r') as inFile:
@@ -663,14 +674,18 @@ def collectOutput(direc, outputDb, lock):
                         year += 1
                     lastMon = mon
                     if mon <= 12:  # omit summary lines
-                        catchmentSub = int(line[6:12])
-                        sub = subMap[catchmentSub]
+                        try:
+                            catchmentSub = int(line[6:12])
+                            sub = subMap[catchmentSub]
+                        except:
+                            print('Problem with output.sed for catchment {0}: year {1} month {2} sub {3}'.format(catchment, year, mon, line[6:12]))
+                            break
                         data = [year, mon] + line[27:].split()
                         mainSedData.append([sub] + data)
                         try:
                             catchmentOutConn.execute(sqlSed, [catchmentSub] + data)
                         except:
-                            print('Problem with sed data: {0}: {1}'.format(data, traceback.format_exc()))
+                            print('Problem with sed data for catchment {0} sub {1}: {2}: {3}'.format(catchment, catchmentSub, data, traceback.format_exc()))
             lock.acquire()
             with sqlite3.connect(outputDb) as outConn:
                 outConn.execute('PRAGMA journal_mode = OFF')
@@ -713,11 +728,13 @@ def runCheck(tnc):
     with sqlite3.connect(tnc.projDb) as projConn, sqlite3.connect(outputDb) as outConn:
         sql1 = 'SELECT SUB FROM sub'
         sql2 = 'SELECT Subbasin, CatchmentId FROM Watershed'
+        lastCount = 0
         for row1 in outConn.execute(sql1):
             subs.add(row1[0])
             count = len(subs)
-            if count % 1000 == 0:
+            if count % 1000 == 0 and count > lastCount:
                 print('Collected {0} subbasins ...'.format(count))
+                lastCount = count
         count = 0
         catchments = set()
         for row2 in projConn.execute(sql2):
@@ -731,7 +748,7 @@ def runCheck(tnc):
             print('Uncollected catchments:')
             for catchment in catchments:
                 print('{0}'.format(catchment))
-    print('Check completed')
+    print('Check of {0} completed'.format(tnc.projName))
                 
 def getDeps(db):
     """Get catchment dependencies from catchmentstree table, stored as upstream table deps and as downstream table ds."""

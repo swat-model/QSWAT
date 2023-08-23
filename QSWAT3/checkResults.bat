@@ -1,5 +1,5 @@
 @echo off
-SET OSGEO4W_ROOT=C:\Program Files\QGIS 3.28.9
+SET OSGEO4W_ROOT=C:\Program Files\QGIS 3.22.12
 call "%OSGEO4W_ROOT%\bin\o4w_env.bat"
 set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python
 rem QGIS binaries
@@ -14,4 +14,4 @@ rem user installed plugins
 set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\AppData/Roaming/QGIS/QGIS3/profiles/default\python\plugins
 set QGIS_PREFIX_PATH=%OSGEO4W_ROOT%\apps\qgis-ltr
 
-"%OSGEO4W_ROOT%\bin\python3.exe" "%~dp0runTNC.py" "%0"
+"%OSGEO4W_ROOT%\bin\python3.exe" "%~dp0checkResults.py"
