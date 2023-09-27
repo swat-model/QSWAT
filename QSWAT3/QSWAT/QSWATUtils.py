@@ -78,6 +78,7 @@ import time
 import processing
 from processing.core.Processing import Processing
 
+
 class QSWATUtils:
     """Various utilities."""
     
@@ -110,6 +111,9 @@ class QSWATUtils:
     _dX: List[int] = [1, 1, 0, -1, -1, -1, 0, 1]
     ## y-offsets for TauDEM D8 flow directions, which run 1-8, so we use dir - 1 as index
     _dY: List[int] = [0, -1, -1, -1, 0, 1, 1, 1]
+    
+    # each set contains EPSG numbers that can be regarded as equivalent
+    _EQUIVALENT_EPSGS = {frozenset({'EPSG:5070', 'EPSG:5072'})}
     
     @staticmethod
     def qgisName() -> str:
@@ -890,15 +894,23 @@ class QSWATUtils:
             QSWATUtils.writePrj(outFileName, layer)
             # check projection EPSG is same as project
             if gv.topo.crsProject is not None:  # it is None before DEM is loaded
-                epsgProject = gv.topo.crsProject.authid()
-                epsgLoad = layer.crs().authid()
+                epsgProject = gv.topo.crsProject.authid().strip()
+                epsgLoad = layer.crs().authid().strip()
+                QSWATUtils.loginfo('EPSGs are {0} and {1}'.format(epsgProject, epsgLoad))
                 if epsgProject != epsgLoad:
-                    QSWATUtils.information('WARNING: File {0} has a projection {1} which is different from the project projection {2}.  You may need to reproject and reload.'.
-                                     format(outFileName, epsgLoad, epsgProject), gv.isBatch)
-                    #QgsProject.instance().removeMapLayer(layer.id())
-                    #del layer
-                    #gv.iface.mapCanvas().refresh()
-                    #return (None, None)
+                    # check for assumed equivalences
+                    same = False
+                    for s in QSWATUtils._EQUIVALENT_EPSGS:
+                        if epsgProject in s and epsgLoad in s:
+                            same = True
+                            break
+                    if not same:
+                        QSWATUtils.information('WARNING: File {0} has a projection {1} which is different from the project projection {2}.  You may need to reproject and reload.'.
+                                               format(outFileName, epsgLoad, epsgProject), gv.isBatch)
+                        #QgsProject.instance().removeMapLayer(layer.id())
+                        #del layer
+                        #gv.iface.mapCanvas().refresh()
+                        #return (None, None)
             return (outFileName, layer)
         else:
             return (None, None)
@@ -1511,13 +1523,14 @@ class FileTypes:
         # FileTypes.colourLanduses(layer, gv)
         # make landuse code and colour table for NLCD landuses
         items: List[QgsPalettedRasterRenderer.Class] = []
-        sql = 'SELECT Name, Red, Green, Blue FROM NLCD_CDL_color_scheme WHERE LANDUSE_ID=?'
+        sql = 'SELECT SWAT_CODE, Name, Red, Green, Blue FROM NLCD_CDL_color_scheme WHERE LANDUSE_ID=?'
         for i in gv.db.landuseVals:
             row = gv.db.connRef.execute(sql, (i,)).fetchone()
             if row is None:
                 QSWATUtils.error('Unknown NLCD_CDL landuse value {0}'.format(i), gv.isBatch)
                 return
-            item = QgsPalettedRasterRenderer.Class(i, QColor(int(row[1]), int(row[2]), int(row[3])), row[0])
+            label = '{0} ({1})'.format(row[1], row[0])
+            item = QgsPalettedRasterRenderer.Class(i, QColor(int(row[2]), int(row[3]), int(row[4])), label)
             items.append(item)
         renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
         layer.setRenderer(renderer)

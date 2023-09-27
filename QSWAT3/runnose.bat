@@ -1,4 +1,4 @@
-SET OSGEO4W_ROOT=C:\Program Files\QGIS 3.28.4
+SET OSGEO4W_ROOT=C:\Program Files\QGIS 3.28.10
 call "%OSGEO4W_ROOT%\bin\o4w_env.bat"
 set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis-ltr\python
 rem QGIS binaries

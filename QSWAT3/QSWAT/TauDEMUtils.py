@@ -228,6 +228,7 @@ class TauDEMUtils:
         if hasQGIS:
             assert output is not None
             output.append(proc.stdout)
+            output.append(proc.stderr)
             output.moveCursor(QTextCursor.End)
         else:
             print(proc.stdout)
