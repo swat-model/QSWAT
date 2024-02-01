@@ -1,8 +1,8 @@
 @echo off
-SET OSGEO4W_ROOT=C:\Program Files\QGIS 3.16
+SET OSGEO4W_ROOT=C:\Program Files\QGIS 3.28.13
 call "%OSGEO4W_ROOT%\bin\o4w_env.bat"
-call "%OSGEO4W_ROOT%\bin\qt5_env.bat"
-call "%OSGEO4W_ROOT%\bin\py3_env.bat"
+rem call "%OSGEO4W_ROOT%\bin\qt5_env.bat"
+rem call "%OSGEO4W_ROOT%\bin\py3_env.bat"
 @echo off
 path %OSGEO4W_ROOT%\apps\qgis-ltr\bin;%PATH%
 set QGIS_PREFIX_PATH=%OSGEO4W_ROOT:\=/%/apps/qgis-ltr

@@ -196,6 +196,7 @@ class DBUtils:
             if isHUC:
                 # changed to use copy one up frpm projDir
                 self.SSURGODbFile = QSWATUtils.join(self.projDir + '/..', Parameters._SSURGODB_HUC)
+                self.SSURGOConn = sqlite3.connect(self.SSURGODbFile)  # @UndefinedVariable
             else: # HAWQS
                 if self.useSQLite:
                     self.SSURGODbFile = QSWATUtils.join(self.projDir, Parameters._SSURGODB_HUC)
@@ -718,7 +719,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         return sid1, True
     
     def translateSSURGOSoil(self, sid: int) -> Tuple[int, bool]:
-        """Use table to convert soil map values to SSURGO muids, plus flag indicating lookup success.  
+        """Use statsgo_ssurgo_lkey table to convert soil map lkey values to SSURGO muids, plus flag indicating lookup success.  
         Replace any soil with sname Water with Parameters._SSURGOWater.  
         Report undefined SSURGO soils.  Only used with HUC and HAWQS."""
         if sid in self._undefinedSoilIds:
@@ -738,7 +739,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 QSWATUtils.information('WARNING: SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch, logFile=self.logFile)
                 # self._undefinedSoilIds.append(sid)
                 # return sid
-            sql = self.sqlSelect('SSURGO_Soils', 'SNAM', '', 'MUID=?')
+            sql = self.sqlSelect('SSURGO_Soils', 'TEXTURE', '', 'MUID=?')
             row = self.SSURGOConn.execute(sql, (lookup_row[1],)).fetchone()
             if row is None:
                 QSWATUtils.information('WARNING: SSURGO soil lkey value {0} and MUID {1} not defined'.format(sid, lookup_row[1]), self.isBatch, logFile=self.logFile)

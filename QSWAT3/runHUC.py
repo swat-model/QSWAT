@@ -30,6 +30,12 @@ import glob
 from osgeo import gdal, ogr  # type: ignore
 from multiprocessing import Pool
 
+# create a new application object
+# without this importing processing causes the following error:
+# QWidget: Must construct a QApplication before a QPaintDevice
+# and initQgis crashes
+app = QgsApplication([], True)
+
 from QSWAT import qswat  # @UnresolvedImport
 from QSWAT.delineation import Delineation  # @UnresolvedImport
 from QSWAT.hrus import HRUs  # @UnresolvedImport
@@ -40,11 +46,6 @@ osGeo4wRoot = os.getenv('OSGEO4W_ROOT')
 QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis-ltr', True)
 
 
-# create a new application object
-# without this importing processing causes the following error:
-# QWidget: Must construct a QApplication before a QPaintDevice
-# and initQgis crashes
-app = QgsApplication([], True)
 
 
 QgsApplication.initQgis()

@@ -1279,7 +1279,7 @@ class FileTypes:
             return QgsProviderRegistry.instance().fileRasterFilters()
         elif ft == FileTypes._MASK:
             return 'All files (*)' # TODO: use dataprovider.fileRasterFilters + fileVectorFilters
-        elif ft == FileTypes._BURN or ft == FileTypes._OUTLETS or \
+        elif ft == FileTypes._BURN or ft == FileTypes._OUTLETS or ft == FileTypes._OUTLETSHUC or \
                     ft == FileTypes._STREAMS or ft == FileTypes._SUBBASINS or \
                     ft == FileTypes._REACHES or ft == FileTypes._WATERSHED or \
                     ft == FileTypes._EXISTINGSUBBASINS or ft == FileTypes._EXISTINGWATERSHED or \

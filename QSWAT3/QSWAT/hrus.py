@@ -2754,7 +2754,14 @@ class CreateHRUs(QObject):
             return -1 # for typecheck
             
         subbasinsFile = self._gv.wshedFile
-        waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5072Fixed.shp')
+        # QGIS 3.28 has new gdal check for winding rule (?) which old fixed lake file breaks.  
+        # May be check for clockwise order of outer polygon, but unclear.  So use fixed one if available.
+        waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5072FixedRightHand.shp')
+        if not os.path.isfile(waterPolygonsFile):
+            waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5072Fixed.shp')
+            if not os.path.isfile(waterPolygonsFile):
+                QSWATUtils.error('Cannot find NHDLake5072FixedRightHand.shp or NHDLake5072Fixed.shp in {0}'.format(self._gv.HUCDataDir), self._gv.isBatch)
+                return 0, -1
         subbasinsLayer = QgsVectorLayer(subbasinsFile, 'subbasins', 'ogr')
         polyIndex = subbasinsLayer.fields().lookupField('PolygonId')
         waterbodyLayer = QgsVectorLayer(waterPolygonsFile, 'water', 'ogr')

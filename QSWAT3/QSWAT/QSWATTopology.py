@@ -213,7 +213,7 @@ class QSWATTopology:
         self.isBatch = isBatch
         ## flag for HUC projects
         self.isHUC = isHUC
-        ## flage for HAWQS projects
+        ## flag for HAWQS projects
         self.isHAWQS = isHAWQS
         ## flag for projects using GRASS delineation
         self.fromGRASS = fromGRASS

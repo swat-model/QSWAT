@@ -1962,9 +1962,9 @@ class Delineation(QObject):
                     streamLayer.changeAttributeValue(idM, dropField, float(dropA + dropD))
                 elif slopeField >= 0:
                     dataA = self._gv.topo.getReachData(reachA, demLayer)
-                    dropA = dataA.upperZ = dataA.lowerZ
+                    dropA = dataA.upperZ - dataA.lowerZ
                     dataD = self._gv.topo.getReachData(reachD, demLayer)
-                    dropD = dataD.upperZ = dataD.lowerZ
+                    dropD = dataD.upperZ - dataD.lowerZ
                 if slopeField >= 0:
                     streamLayer.changeAttributeValue(idM, slopeField, float((dropA + dropD) / (lengthA + lengthD)))
                 if straight_lField >= 0:

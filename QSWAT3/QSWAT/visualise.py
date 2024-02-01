@@ -2313,7 +2313,7 @@ class Visualise(QObject):
         needLayer4 = True
         if changeFileExists:
             layer4 = QSWATUtils.getLayerByFilename(root.findLayers(), changeFile, ft, None, None, None)[0]
-            if layer3 is not None:
+            if layer4 is not None:
                 needLayer4 = False
         else:
             QSWATUtils.copyShapefile(resultsBase, changeBase, direc)
