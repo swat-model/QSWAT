@@ -796,7 +796,7 @@ previous run</string>
          <item>
           <widget class="QRadioButton" name="SSURGOButton">
            <property name="text">
-            <string>SSURGO/STATSGO2</string>
+            <string>SSURGO</string>
            </property>
           </widget>
          </item>

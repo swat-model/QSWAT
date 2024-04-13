@@ -39,7 +39,7 @@ ifeq ($(QSWAT_PROJECT), QSWAT3)
 	BAT_FILES = runnose32.bat runtestn32.bat runtestpoly32.bat runcovernose.bat
 else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
 	METADATA = metadata3_9.txt
-	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
+	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	METADATA = metadata64.txt
 	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat runHUC64.bat runTNC64.bat runCatchments64.bat runWeather64.bat

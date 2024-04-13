@@ -1765,6 +1765,7 @@ class CreateHRUs(QObject):
         if not soilDs:
             QSWATUtils.error('Cannot open soil file {0}'.format(self._gv.soilFile), self._gv.isBatch)
             return False
+        QSWATUtils.loginfo('Slope file is {0}'.format(self._gv.slopeFile))
         slopeDs = gdal.Open(self._gv.slopeFile, gdal.GA_ReadOnly)
         if not slopeDs:
             QSWATUtils.error('Cannot open slope file {0}'.format(self._gv.slopeFile), self._gv.isBatch)
@@ -2754,14 +2755,10 @@ class CreateHRUs(QObject):
             return -1 # for typecheck
             
         subbasinsFile = self._gv.wshedFile
-        # QGIS 3.28 has new gdal check for winding rule (?) which old fixed lake file breaks.  
-        # May be check for clockwise order of outer polygon, but unclear.  So use fixed one if available.
-        waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5072FixedRightHand.shp')
+        waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5070Fixed.shp')
         if not os.path.isfile(waterPolygonsFile):
-            waterPolygonsFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDLake5072Fixed.shp')
-            if not os.path.isfile(waterPolygonsFile):
-                QSWATUtils.error('Cannot find NHDLake5072FixedRightHand.shp or NHDLake5072Fixed.shp in {0}'.format(self._gv.HUCDataDir), self._gv.isBatch)
-                return 0, -1
+            QSWATUtils.error('Cannot find NHDLake5070Fixed.shp in {0}'.format(self._gv.HUCDataDir), self._gv.isBatch)
+            return 0, -1
         subbasinsLayer = QgsVectorLayer(subbasinsFile, 'subbasins', 'ogr')
         polyIndex = subbasinsLayer.fields().lookupField('PolygonId')
         waterbodyLayer = QgsVectorLayer(waterPolygonsFile, 'water', 'ogr')
@@ -4469,13 +4466,13 @@ class CreateHRUs(QObject):
     
     def writeWaterStats1(self) -> Dict[int, Tuple[str, float, float, float, float, float, float, float, float, float, float]]:
         """Write water statistics for HUC and HAWQS projects.  Write bodyStats file and return stats data so WATR reduction stats can be added."""
-#         NHDWaterFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDPlusNationalData/NHDWaterBody5072.sqlite')
+#         NHDWaterFile = QSWATUtils.join(self._gv.HUCDataDir, 'NHDPlusNationalData/NHDWaterBody5070.sqlite')
 #         NHDWaterConn = sqlite3.connect(NHDWaterFile)
 #         NHDWaterConn.enable_load_extension(True)
 #         NHDWaterConn.execute("SELECT load_extension('mod_spatialite')")
-#         sql = """SELECT AsText(GEOMETRY), ftype FROM nhdwaterbody5072
-#                     WHERE nhdwaterbody5072.ROWID IN (SELECT ROWID FROM SpatialIndex WHERE
-#                         ((f_table_name = 'nhdwaterbody5072') AND (search_frame = GeomFromText(?))));"""
+#         sql = """SELECT AsText(GEOMETRY), ftype FROM nhdwaterbody5070
+#                     WHERE nhdwaterbody5070.ROWID IN (SELECT ROWID FROM SpatialIndex WHERE
+#                         ((f_table_name = 'nhdwaterbody5070') AND (search_frame = GeomFromText(?))));"""
         wshedFile = self._gv.wshedFile
         wshedLayer = QgsVectorLayer(wshedFile, 'watershed', 'ogr')
         basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)

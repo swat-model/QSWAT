@@ -12,4 +12,4 @@ ui_*.py
 *.obj
 *.lib
 *.exp
-
+*.*~

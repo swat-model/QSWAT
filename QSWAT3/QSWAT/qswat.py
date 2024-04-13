@@ -604,7 +604,15 @@ class QSwat(QObject):
             QSWATUtils.loginfo('demProcessed failed: no DEM info')
             return False
         base = QSWATUtils.join(demInfo.absolutePath(), demInfo.baseName())
-        self._gv.slopeFile = base + 'slp.tif'
+        useBurn = False
+        burnFile, found = proj.readEntry(title, 'delin/burn', '')
+        if found and burnFile != '':
+            burnFile =  QSWATUtils.join(self._gv.projDir, burnFile)
+            useBurn = os.path.isfile(burnFile)
+        if useBurn:
+            self._gv.slopeFile = base + 'slope.tif'
+        else:
+            self._gv.slopeFile = base + 'slp.tif'
         # GRASS slope file should be based on original DEM
         if self._gv.fromGRASS and self._gv.slopeFile.endswith('_burnedslp.tif'):
             unburnedslp = self._gv.slopeFile.replace('_burnedslp.tif', 'slp.tif')
