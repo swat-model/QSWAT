@@ -37,6 +37,9 @@ export SUBDIR
 ifeq ($(QSWAT_PROJECT), QSWAT3)
 	METADATA = metadata32.txt
 	BAT_FILES = runnose32.bat runtestn32.bat runtestpoly32.bat runcovernose.bat
+else ifeq ($(QSWAT_PROJECT), QSWAT3_12)
+	METADATA = metadata3_12.txt
+	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
 else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
 	METADATA = metadata3_9.txt
 	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat

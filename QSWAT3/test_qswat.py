@@ -22,19 +22,20 @@
 
 # derived from http://snorf.net/blog/2014/01/04/writing-unit-tests-for-qgis-python-plugins/
 
-from qgis.core import QgsApplication, QgsUnitTypes, QgsProject, QgsProviderRegistry
-from qgis.gui import * # @UnusedWildImport
+from qgis.core import QgsApplication, QgsUnitTypes, QgsProject, QgsProviderRegistry  # @UnresolvedImport
+# from qgis.gui import * # @UnusedWildImport
+from qgis.analysis import QgsNativeAlgorithms  # @UnresolvedImport
 
-from qgis.PyQt.QtCore import Qt, pyqtSlot, QFileInfo, QObject
+from qgis.PyQt.QtCore import Qt, pyqtSlot, QCoreApplication, QFileInfo, QObject  # @UnresolvedImport
 # from PyQt5.QtGui import * # @UnusedWildImport
-from qgis.PyQt import QtTest
+from qgis.PyQt import QtTest  # @UnresolvedImport
 import os.path
 from osgeo import gdal
 import shutil
 
 import unittest
 import atexit
-# from processing.core.Processing import Processing  
+from processing.core.Processing import Processing    # @UnresolvedImport
 
 
 # create a new application object
@@ -83,8 +84,8 @@ class DummyInterface(object):
         return QgsProject.instance().mapLayers().values()
 iface = DummyInterface()
 
-#QCoreApplication.setOrganizationName('QGIS')
-#QCoreApplication.setApplicationName('QGIS2')
+QCoreApplication.setOrganizationName('QGIS')
+QCoreApplication.setApplicationName('QGIS3')
 
 is64 = True 
 
@@ -99,7 +100,7 @@ is64 = True
 
 HashTable1 = dict()
 if is64:
-    HashTable1['Reach'] = 'cc31e557caeafd9e64b30937b9969511'
+    HashTable1['Reach'] = '5df53e60043bfb56b4a9e4b71ddedb7f'
     HashTable1['MonitoringPoint'] = '10791d312036b96392dd9490679d02d6'
     HashTable1['BASINSDATA1'] = 'd0e1da9eef76b2264b14d9eba40853a3'
     HashTable1['BASINSDATA2'] = '98b52342a67ba2e960cb43bcb6059bf6'
@@ -136,7 +137,7 @@ else:
 
 HashTable2 = dict()
 if is64:
-    HashTable2['Reach'] = 'd61559c99ba10bcd9ac6d3e4b7270d77'
+    HashTable2['Reach'] = 'c4e518524e3d6db955cfe617eee1bcfc'
     HashTable2['MonitoringPoint'] = '5886a0570d2de5d3a6066a7ee8ab7bcb'
     HashTable2['BASINSDATA1'] = '0735497fef27f345d53f4695deb147c6'
     HashTable2['BASINSDATA2'] = '471057b700f5cadca604fb81b8ef3cf3'
@@ -196,7 +197,7 @@ HashTable3['SplitHRUs'] = '5c3f1888ea4e1064e3f6d1b2025ebbe7'
 #===============================================================================
 
 HashTable4 = dict()
-HashTable4['Reach'] = 'c8ce13a5b31229a1a4225c6f20306423'  if is64 else 'c8ce13a5b31229a1a4225c6f20306423'
+HashTable4['Reach'] = '1d1ba67148c3fc11e0abd679679221b6'  if is64 else 'c8ce13a5b31229a1a4225c6f20306423'
 HashTable4['MonitoringPoint'] = '08427e6ac841be2f887147d10fb1ab15'  if is64 else 'a0da75a8df134d0c7277aa3f6e815704'
 HashTable4['BASINSDATA1'] = '98dfbc15e8b8fbb055c8aa026399d90d'
 HashTable4['BASINSDATA2'] = '20948c80e093272ad85412170a696d79'
@@ -249,12 +250,12 @@ class TestQswat(unittest.TestCase):
     """Test cases for QSWAT."""
     def setUp(self):
         """Remove old project; read test project file; prepare for delineation."""
-#         Processing.initialize()
-#         if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
-#             QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
-#         # SRS path is not set properly.
-#         self.assertTrue(os.path.exists(QgsApplication.srsDbFilePath()), \
-#                          'Need to copy resources folder to make directory {0} exist, eg copy OSGeo4W/apps/qgis/resources to OSGeo4W'.format(QgsApplication.srsDbFilePath()))
+        Processing.initialize()
+        if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
+            QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
+        # SRS path is not set properly.
+        self.assertTrue(os.path.exists(QgsApplication.srsDatabaseFilePath()), \
+                         'Need to copy resources folder to make directory {0} exist, eg copy OSGeo4W/apps/qgis/resources to OSGeo4W'.format(QgsApplication.srsDatabaseFilePath()))
         ## QSWAT plugin
         self.plugin = qswat.QSwat(iface)
         ## Main QSWAT form

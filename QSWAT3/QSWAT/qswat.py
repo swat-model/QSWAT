@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.6.6'
+    __version__ = '1.7.1'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -604,13 +604,16 @@ class QSwat(QObject):
             QSWATUtils.loginfo('demProcessed failed: no DEM info')
             return False
         base = QSWATUtils.join(demInfo.absolutePath(), demInfo.baseName())
-        useBurn = False
-        burnFile, found = proj.readEntry(title, 'delin/burn', '')
-        if found and burnFile != '':
-            burnFile =  QSWATUtils.join(self._gv.projDir, burnFile)
-            useBurn = os.path.isfile(burnFile)
-        if useBurn:
-            self._gv.slopeFile = base + 'slope.tif'
+        if not self._gv.existingWshed:
+            burnFile, found = proj.readEntry(title, 'delin/burn', '')
+            if found and burnFile != '':
+                burnFile =  QSWATUtils.join(self._gv.projDir, burnFile)
+                if not os.path.exists(burnFile):
+                    QSWATUtils.loginfo('demProcessed failed: no burn file')
+                    return False
+                self._gv.slopeFile = base + 'slope.tif'
+            else:
+                self._gv.slopeFile = base + 'slp.tif'
         else:
             self._gv.slopeFile = base + 'slp.tif'
         # GRASS slope file should be based on original DEM

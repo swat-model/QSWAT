@@ -1447,7 +1447,7 @@ class QSWATTopology:
       
     @staticmethod      
     def burnStream(streamFile: str, demFile: str, burnFile: str, verticalFactor: float, burnDepth: float, isBatch: bool) -> None:
-        """Create as burnFile a copy of demFile with points on lines streamFile reduced in height by 50 metres."""
+        """Create as burnFile a copy of demFile with points on lines streamFile reduced in height by nurnDepth metres."""
         # use vertical factor to convert from metres to vertical units of DEM
         demReduction = burnDepth / verticalFactor # TODO: may want to change this value or allow user to change
         assert not os.path.exists(burnFile)

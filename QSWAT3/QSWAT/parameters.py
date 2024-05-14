@@ -155,6 +155,10 @@ class Parameters:
     # maximum slope for RICE
     _RICEMAXSLOPE = 0.005
     
+    # amount in metres to burn in streams (reduce height of DEM)
+    _BURNINDEPTH = 50
+    _GRASSBURNINDEPTH = 25
+    
     # TNC data
     TNCExtents = {'CentralAmerica': (-92.3, 7.2, -59.4, 23.2),
                   'NorthAmerica': (-178.3, 0, -29.9, 60.0),

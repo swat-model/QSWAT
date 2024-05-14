@@ -15,7 +15,7 @@ qgisMaximumVersion=3.18
 description=Create SWAT inputs
 version=1.5.4
 author=Chris George
-email=cgeorge@mcmaster.ca
+email=cgeorge@tamu.edu
 
 # end of mandatory metadata
 

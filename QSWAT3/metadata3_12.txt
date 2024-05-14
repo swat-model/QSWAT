@@ -9,11 +9,11 @@
 
 
 [general]
-name=QSWAT3_9
-qgisMinimumVersion=3.16.14
+name=QSWAT3_12
+qgisMinimumVersion=3.34.5
 #qgisMaximumVersion=
 description=Create SWAT inputs
-version=1.6.7
+version=1.7.1
 author=Chris George
 email=cgeorge@tamu.edu
 

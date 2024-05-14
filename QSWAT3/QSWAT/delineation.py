@@ -603,7 +603,7 @@ class Delineation(QObject):
                 self.progress('Burning streams ...')
                 #burnRasterFile = self.streamToRaster(demLayer, burnFile, root)
                 #processing.runalg('saga:burnstreamnetworkintodem', demFile, burnRasterFile, burnMethod, burnEpsilon, burnedFile)
-                burnDepth = 25.0 if self._gv.fromGRASS else 50.0
+                burnDepth = Parameters._GRASSBURNINDEPTH if self._gv.fromGRASS else Parameters._BURNINDEPTH
                 QSWATTopology.burnStream(burnFile, demFile, burnedDemFile, self._gv.verticalFactor, burnDepth, self._gv.isBatch)
                 if not os.path.exists(burnedDemFile):
                     self.cleanUp(-1)
