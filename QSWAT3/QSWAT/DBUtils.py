@@ -412,18 +412,18 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                         sql = 'SELECT name FROM sqlite_master WHERE TYPE="table"'
                         for row in conn.execute(sql):
                             table = row[0]
-                            if 'landuse' in table:
+                            if 'landuse' in table and table != 'config_landuse':
                                 self.landuseTableNames.append(table)
-                            elif 'soil' in table and 'usersoil' not in table:
+                            elif 'soil' in table and 'usersoil' not in table and table != 'config_soil':
                                 self.soilTableNames.append(table)
                             self._allTableNames.append(table)
                     
                     else:
                         for row in conn.cursor().tables(tableType='TABLE'):
                             table = row.table_name
-                            if 'landuse' in table:
+                            if 'landuse' in table and table != 'config_landuse':
                                 self.landuseTableNames.append(table)
-                            elif 'soil' in table and 'usersoil' not in table:
+                            elif 'soil' in table and 'usersoil' not in table and table != 'config_soil':
                                 self.soilTableNames.append(table)
                             self._allTableNames.append(table)
                 except Exception:
