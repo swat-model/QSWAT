@@ -2272,7 +2272,10 @@ class CreateHRUs(QObject):
                         # generate slope bands data and write it before reading next row
                         for i in range(slopeNumberCols):
                             slopeValue = cast(float, slopeData[0, i])
-                            slopeData[0, i] = self._gv.db.slopeIndex(slopeValue * 100) if slopeValue != slopeNoData else slopeBandsNoData
+                            # slopes will be nodata in pits
+                            if slopeValue == slopeNoData:
+                                slopeValue = Parameters._DEFAULTSLOPE
+                            slopeData[0, i] = self._gv.db.slopeIndex(slopeValue * 100)
                         slopeBandsBand.WriteArray(slopeData, 0, slopeCurrentRow)
                     slopeCurrentRow = slopeRow
                     slopeData = slopeBand.ReadAsArray(0, slopeRow, slopeNumberCols, 1)

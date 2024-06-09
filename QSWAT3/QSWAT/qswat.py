@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.7.1'
+    __version__ = '1.7.2'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -611,7 +611,12 @@ class QSwat(QObject):
                 if not os.path.exists(burnFile):
                     QSWATUtils.loginfo('demProcessed failed: no burn file')
                     return False
-                self._gv.slopeFile = base + 'slope.tif'
+                # used to calculate slope.tif on non-burned and slp.tif on burned-in
+                # so if slope.tif is newer than slp.tif keep it as Dinf slope file
+                if QSWATUtils.isUpToDate(base + 'slp.tif', base + 'slope.tif'):
+                    self._gv.slopeFile = base + 'slope.tif'
+                else:
+                    self._gv.slopeFile = base + 'slp.tif'
             else:
                 self._gv.slopeFile = base + 'slp.tif'
         else:

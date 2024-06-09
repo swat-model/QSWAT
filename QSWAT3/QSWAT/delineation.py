@@ -673,7 +673,8 @@ class Delineation(QObject):
         QSWATUtils.removeLayer(slpFile, root)
         QSWATUtils.removeLayer(angFile, root)
         self.progress('DinfFlowDir ...')
-        ok = TauDEMUtils.runDinfFlowDir(felFile, slpFile, angFile, numProcesses, self._dlg.taudemOutput)  
+        # Dinf slopes based on non-pitfilled and non-burned-in DEM
+        ok = TauDEMUtils.runDinfFlowDir(demFile, slpFile, angFile, numProcesses, self._dlg.taudemOutput)  
         if not ok:
             self.cleanUp(3)
             return
@@ -684,13 +685,14 @@ class Delineation(QObject):
         if not ok:
             self.cleanUp(3)
             return
-        scaFile = base + 'sca' + suffix
-        QSWATUtils.removeLayer(scaFile, root)
-        self.progress('AreaDinf ...')
-        ok = TauDEMUtils.runAreaDinf(angFile, scaFile, None, numProcesses, self._dlg.taudemOutput, mustRun=self.thresholdChanged)  
-        if not ok:
-            self.cleanUp(3)
-            return
+        # Dinf area not used
+        # scaFile = base + 'sca' + suffix
+        # QSWATUtils.removeLayer(scaFile, root)
+        # self.progress('AreaDinf ...')
+        # ok = TauDEMUtils.runAreaDinf(angFile, scaFile, None, numProcesses, self._dlg.taudemOutput, mustRun=self.thresholdChanged)  
+        # if not ok:
+        #     self.cleanUp(3)
+        #     return
         gordFile = base + 'gord' + suffix
         plenFile = base + 'plen' + suffix
         tlenFile = base + 'tlen' + suffix
@@ -833,27 +835,28 @@ class Delineation(QObject):
         self._dlg.taudemOutput.append('------------------- TauDEM finished -------------------\n')
         self._gv.pFile = pFile
         self._gv.basinFile = wFile
-        if self._dlg.checkBurn.isChecked():
-            # need to make slope file from original dem
-            felNoburn = base + 'felnoburn' + suffix
-            QSWATUtils.removeLayer(felNoburn, root)
-            self.progress('PitFill ...')
-            ok = TauDEMUtils.runPitFill(demFile, felNoburn, numProcesses, self._dlg.taudemOutput)  
-            if not ok:
-                self.cleanUp(3)
-                return
-            slopeFile = base + 'slope' + suffix
-            angleFile = base + 'angle' + suffix
-            QSWATUtils.removeLayer(slopeFile, root)
-            QSWATUtils.removeLayer(angleFile, root)
-            self.progress('DinfFlowDir ...')
-            ok = TauDEMUtils.runDinfFlowDir(felNoburn, slopeFile, angleFile, numProcesses, self._dlg.taudemOutput)  
-            if not ok:
-                self.cleanUp(3)
-                return
-            self._gv.slopeFile = slopeFile
-        else:
-            self._gv.slopeFile = slpFile
+        # already made Dinf slope file on non-pitfilled and anon-burned-in DEM
+        # if self._dlg.checkBurn.isChecked():
+        #     # need to make slope file from original dem
+        #     felNoburn = base + 'felnoburn' + suffix
+        #     QSWATUtils.removeLayer(felNoburn, root)
+        #     self.progress('PitFill ...')
+        #     ok = TauDEMUtils.runPitFill(demFile, felNoburn, numProcesses, self._dlg.taudemOutput)  
+        #     if not ok:
+        #         self.cleanUp(3)
+        #         return
+        #     slopeFile = base + 'slope' + suffix
+        #     angleFile = base + 'angle' + suffix
+        #     QSWATUtils.removeLayer(slopeFile, root)
+        #     QSWATUtils.removeLayer(angleFile, root)
+        #     self.progress('DinfFlowDir ...')
+        #     ok = TauDEMUtils.runDinfFlowDir(felNoburn, slopeFile, angleFile, numProcesses, self._dlg.taudemOutput)  
+        #     if not ok:
+        #         self.cleanUp(3)
+        #         return
+        #     self._gv.slopeFile = slopeFile
+        # else:
+        self._gv.slopeFile = slpFile
         self._gv.streamFile = streamFile
         if self._dlg.useOutlets.isChecked():
             assert outletFile is not None
@@ -932,7 +935,7 @@ class Delineation(QObject):
         self._dlg.setCursor(Qt.WaitCursor)
         self._dlg.taudemOutput.clear()
         # create Dinf slopes
-        felFile = base + 'fel' + suffix
+        # felFile = base + 'fel' + suffix # not used for Dinf slopes
         slpFile = base + 'slp' + suffix
         angFile = base + 'ang' + suffix
         QSWATUtils.removeLayer(slpFile, root)
@@ -940,16 +943,16 @@ class Delineation(QObject):
         willRun = not (QSWATUtils.isUpToDate(demFile, slpFile) and QSWATUtils.isUpToDate(demFile, angFile))
         if willRun:
             self.progress('DinfFlowDir ...')
-            if self._dlg.showTaudem.isChecked():
-                self._dlg.tabWidget.setCurrentIndex(3)
-            ok = TauDEMUtils.runPitFill(demFile, felFile, numProcesses, self._dlg.taudemOutput)
+            # if self._dlg.showTaudem.isChecked():
+            #     self._dlg.tabWidget.setCurrentIndex(3)
+            # ok = TauDEMUtils.runPitFill(demFile, felFile, numProcesses, self._dlg.taudemOutput)
+            # if not ok:
+            #     QSWATUtils.error('Cannot generate pitfilled file from dem {0}'.format(demFile), self._gv.isBatch)
+            #     self.cleanUp(3)
+            #     return
+            ok = TauDEMUtils.runDinfFlowDir(demFile, slpFile, angFile, numProcesses, self._dlg.taudemOutput)  
             if not ok:
-                QSWATUtils.error('Cannot generate pitfilled file from dem {0}'.format(demFile), self._gv.isBatch)
-                self.cleanUp(3)
-                return
-            ok = TauDEMUtils.runDinfFlowDir(felFile, slpFile, angFile, numProcesses, self._dlg.taudemOutput)  
-            if not ok:
-                QSWATUtils.error('Cannot generate slope file from pitfilled dem {0}'.format(felFile), self._gv.isBatch)
+                QSWATUtils.error('Cannot generate slope file from dem {0}'.format(demFile), self._gv.isBatch)
                 self.cleanUp(3)
                 return
             self.progress('DinfFlowDir done')
