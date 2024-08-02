@@ -28,7 +28,14 @@ QGISDIR=AppData/Roaming/QGIS/QGIS3/profiles/default
 #TRANSLATIONS = i18n/qswat_en.ts
 TRANSLATIONS =
 
-ifeq ($(QSWAT_PROJECT), QSWAT3)
+ifeq ($(QSWAT_PROJECT), QSWAT)
+	COMPILER = msvc
+	PYD_FILES12 = $(PYX_FILES:.pyx=.cp312-win_amd64.pyd)
+	PYD_FILES9 = $(PYX_FILES:.pyx=.cp39-win_amd64.pyd)
+	PYD_FILES7 = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
+	PYD_FILES = $(PYD_FILES12) $(PYD_FILES9) $(PYD_FILES7)
+	EXTRAPACKAGES = imageio
+else ifeq ($(QSWAT_PROJECT), QSWAT3)
 	COMPILER = msvc
 	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
 	EXTRAPACKAGES = imageio PIL

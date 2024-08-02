@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '1.7.2'
+    __version__ = '2.0.0'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -271,52 +271,54 @@ class QSwat(QObject):
         self._odlg.projPath.setText('Restarting project ...')
         title = QFileInfo(proj.fileName()).baseName()
         proj.setTitle(title)
+        # attribute used in project file is title without spaces
+        attTitle = title.replace(' ', '')
         #QSWATUtils.information('isHUC initially {0}'.format(isHUC), isBatch)
         # there is a bug in readBoolEntry that always returns found as true
         # readNumEntry seems to work properly, so we'll use it to see if delin/isHUC is present
-        # isHUCFromProjfile, found = proj.readBoolEntry(title, 'delin/isHUC', False)
-        _, found = proj.readNumEntry(title, 'delin/isHUC', -1)
+        # isHUCFromProjfile, found = proj.readBoolEntry(attTitle, 'delin/isHUC', False)
+        _, found = proj.readNumEntry(attTitle, 'delin/isHUC', -1)
         if not found:
             # isHUC not previously set.  Use parameter above and record
-            proj.writeEntryBool(title, 'delin/isHUC', isHUC)
+            proj.writeEntryBool(attTitle, 'delin/isHUC', isHUC)
         else:
             # use value in project file
-            isHUCFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHUC', False)
+            isHUCFromProjfile, _ = proj.readBoolEntry(attTitle, 'delin/isHUC', False)
             isHUC = isHUCFromProjfile
         # same as isHUC for isHAWQS
-        _, found = proj.readNumEntry(title, 'delin/isHAWQS', -1)
+        _, found = proj.readNumEntry(attTitle, 'delin/isHAWQS', -1)
         if not found:
             # isHAWQS not previously set.  Use parameter above and record
-            proj.writeEntryBool(title, 'delin/isHAWQS', isHAWQS)
+            proj.writeEntryBool(attTitle, 'delin/isHAWQS', isHAWQS)
         else:
             # use value in project file
-            isHAWQSFromProjfile, _ = proj.readBoolEntry(title, 'delin/isHAWQS', False)
+            isHAWQSFromProjfile, _ = proj.readBoolEntry(attTitle, 'delin/isHAWQS', False)
             isHAWQS = isHAWQSFromProjfile
             #QSWATUtils.information('isHAWQS found in proj file: set to {0}'.format(isHAWQS), isBatch)
         # same as isHUC for useSQLite
-        _, found = proj.readNumEntry(title, 'delin/useSQLite', -1)
+        _, found = proj.readNumEntry(attTitle, 'delin/useSQLite', -1)
         if not found:
             # useSQLite not previously set.  Use parameter above and record
-            proj.writeEntryBool(title, 'delin/useSQLite', useSQLite)
+            proj.writeEntryBool(attTitle, 'delin/useSQLite', useSQLite)
         else:
             # use value in project file
-            useSQLiteFromProjfile, _ = proj.readBoolEntry(title, 'delin/useSQLite', False)
+            useSQLiteFromProjfile, _ = proj.readBoolEntry(attTitle, 'delin/useSQLite', False)
             useSQLite = useSQLiteFromProjfile
             #QSWATUtils.information('useSQLite found in proj file: set to {0}'.format(useSQLite), isBatch)
         # same as isHUC for fromGRASS
-        _, found = proj.readNumEntry(title, 'delin/fromGRASS', -1)
+        _, found = proj.readNumEntry(attTitle, 'delin/fromGRASS', -1)
         if not found:
             # fromGRASS not previously set.  Use parameter above and record
-            proj.writeEntryBool(title, 'delin/fromGRASS', fromGRASS)
+            proj.writeEntryBool(attTitle, 'delin/fromGRASS', fromGRASS)
         else:
             # use value in project file
-            fromGRASSFromProjfile, _ = proj.readBoolEntry(title, 'delin/fromGRASS', False)
+            fromGRASSFromProjfile, _ = proj.readBoolEntry(attTitle, 'delin/fromGRASS', False)
             fromGRASS = fromGRASSFromProjfile
             #QSWATUtils.information('fromGRASS found in proj file: set to {0}'.format(fromGRASS), isBatch)
-        TNCDirFromProjFile, found = proj.readEntry(title, 'delin/TNCDir', '')
+        TNCDirFromProjFile, found = proj.readEntry(attTitle, 'delin/TNCDir', '')
         if not found:
             # TNCDir not previously set: use parameter above and record
-            proj.writeEntry(title, 'delin/TNCDir', TNCDir)
+            proj.writeEntry(attTitle, 'delin/TNCDir', TNCDir)
         else:
             TNCDir = TNCDirFromProjFile
         
@@ -332,15 +334,14 @@ class QSwat(QObject):
         if 'native' not in [p.id() for p in QgsApplication.processingRegistry().providers()]:
             QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
         # enable edit button if converted from Arc
-        title = proj.title()
-        choice, found = proj.readNumEntry(title, 'fromArc', -1)
+        choice, found = proj.readNumEntry(self._gv.attTitle, 'fromArc', -1)
         if found:
             if choice >= 0:  # NB values from convertFromArc.py, 0 for full, 1 for existing, 2 for no gis.
                 self._odlg.editLabel.setEnabled(True)
                 self._odlg.editButton.setEnabled(True)
-        self._gv.useGridModel = proj.readBoolEntry(title, 'delin/useGridModel', False)[0]
+        self._gv.useGridModel = proj.readBoolEntry(self._gv.attTitle, 'delin/useGridModel', False)[0]
         if self._gv.useGridModel:
-            self._gv.gridSize = proj.readNumEntry(title, 'delin/gridSize', 1)[0]
+            self._gv.gridSize = proj.readNumEntry(self._gv.attTitle, 'delin/gridSize', 1)[0]
         if isHAWQS or self.demProcessed():
             self._demIsProcessed = True
             self.allowCreateHRU()
@@ -521,9 +522,8 @@ class QSwat(QObject):
         if not proj:
             QSWATUtils.loginfo('demProcessed failed: no project')
             return False
-        title = proj.title()
         root = proj.layerTreeRoot()
-        demFile, found = proj.readEntry(title, 'delin/DEM', '')
+        demFile, found = proj.readEntry(self._gv.attTitle, 'delin/DEM', '')
         if not found or demFile == '':
             QSWATUtils.loginfo('demProcessed failed: no DEM')
             return False
@@ -544,7 +544,7 @@ class QSwat(QObject):
         self._gv.cellArea = demLayer.rasterUnitsPerPixelX() * demLayer.rasterUnitsPerPixelY() * factor * factor
         # hillshade
         Delineation.addHillshade(demFile, root, demLayer, self._gv)
-        outletFile, found = proj.readEntry(title, 'delin/outlets', '')
+        outletFile, found = proj.readEntry(self._gv.attTitle, 'delin/outlets', '')
         if found and outletFile != '':
             outletFile = QSWATUtils.join(self._gv.projDir, outletFile)
             ft = FileTypes._OUTLETSHUC if self._gv.isHUC or self._gv.isHAWQS else FileTypes._OUTLETS
@@ -557,9 +557,9 @@ class QSwat(QObject):
         else:
             outletLayer = None
         self._gv.outletFile = outletFile
-        self._gv.existingWshed = proj.readBoolEntry(title, 'delin/existingWshed', False)[0]
-        self._gv.useGridModel = proj.readBoolEntry(title, 'delin/useGridModel', False)[0]
-        streamFile, found = proj.readEntry(title, 'delin/net', '')
+        self._gv.existingWshed = proj.readBoolEntry(self._gv.attTitle, 'delin/existingWshed', False)[0]
+        self._gv.useGridModel = proj.readBoolEntry(self._gv.attTitle, 'delin/useGridModel', False)[0]
+        streamFile, found = proj.readEntry(self._gv.attTitle, 'delin/net', '')
         if not found or streamFile == '':
             QSWATUtils.loginfo('demProcessed failed: no stream reaches shapefile')
             return False
@@ -572,7 +572,7 @@ class QSwat(QObject):
             return False
         assert isinstance(streamLayer, QgsVectorLayer)
         self._gv.streamFile = streamFile
-        wshedFile, found = proj.readEntry(title, 'delin/wshed', '')
+        wshedFile, found = proj.readEntry(self._gv.attTitle, 'delin/wshed', '')
         if not found or wshedFile == '':
             QSWATUtils.loginfo('demProcessed failed: no subbasins shapefile')
             return False
@@ -587,7 +587,7 @@ class QSwat(QObject):
             return False
         assert isinstance(wshedLayer, QgsVectorLayer)
         self._gv.wshedFile = wshedFile
-        extraOutletFile, found = proj.readEntry(title, 'delin/extraOutlets', '')
+        extraOutletFile, found = proj.readEntry(self._gv.attTitle, 'delin/extraOutlets', '')
         if found and extraOutletFile != '':
             extraOutletFile = QSWATUtils.join(self._gv.projDir, extraOutletFile)
             extraOutletLayer, _ = \
@@ -605,7 +605,7 @@ class QSwat(QObject):
             return False
         base = QSWATUtils.join(demInfo.absolutePath(), demInfo.baseName())
         if not self._gv.existingWshed:
-            burnFile, found = proj.readEntry(title, 'delin/burn', '')
+            burnFile, found = proj.readEntry(self._gv.attTitle, 'delin/burn', '')
             if found and burnFile != '':
                 burnFile =  QSWATUtils.join(self._gv.projDir, burnFile)
                 if not os.path.exists(burnFile):

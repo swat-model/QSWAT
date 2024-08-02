@@ -22,12 +22,12 @@
 from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 # Import the PyQt and QGIS libraries
 try:
-    from qgis.PyQt.QtCore import QVariant
+    from qgis.PyQt.QtCore import QVariant  # @UnresolvedImport
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.PyQt.QtWidgets import * # @UnusedWildImport
-    from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL
+    from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL  # @UnresolvedImport
 except:
-    from PyQt5.QtCore import QVariant
+    from PyQt5.QtCore import QVariant  # @UnresolvedImport
     QgsRasterLayer = Any
     QgsVectorLayer = Any
     QgsFeature = Any
@@ -1011,8 +1011,8 @@ class QSWATTopology:
                     dams = f 
                     break
                 if dams is not None:
-                    import processing
-                    from processing.core.Processing import Processing
+                    import processing  # @UnresolvedImport
+                    from processing.core.Processing import Processing  # @UnresolvedImport
                     Processing.initialize()
                     alg = 'native:joinattributesbylocation'
                     params = { 'DISCARD_NONMATCHING' : False, 

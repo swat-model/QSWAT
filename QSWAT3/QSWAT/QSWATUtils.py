@@ -1513,7 +1513,7 @@ class FileTypes:
         # # make landuseCodes table from lookup table: no longer used
         # gv.db.landuseCodes.clear()
         # title = proj.title()
-        # table, found = proj.readEntry(title, 'landuse/table', '')
+        # table, found = proj.readEntry(gv.attTitle, 'landuse/table', '')
         # if not found:
         #     QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
         # sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)

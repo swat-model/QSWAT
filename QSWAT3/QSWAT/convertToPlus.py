@@ -256,7 +256,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
                                        format(self.projNameOld, self.projNameNew, self.projDirNew))
             response = ConvertToPlus.question('Run QGIS on the QSWAT+ project?')
             if response == QMessageBox.Yes:
-                osgeo4wroot = r'C:\Program Files\QGIS 3.16' # not os.environ['OSGEO4W_ROOT'] as this is probably 32 bit
+                osgeo4wroot = os.environ['OSGEO4W_ROOT']
                 qgisname = os.environ['QGISNAME']
                 batFile = r'{0}\bin\{1}.bat'.format(osgeo4wroot, qgisname)
                 if not os.path.exists(batFile):
@@ -1341,7 +1341,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         """Read parameters from project file."""
         proj = QgsProject.instance()
         proj.read(projFile)
-        title = proj.title()
+        title = proj.title().replace(' ','')
         self.demFile, _ = proj.readEntry(title, 'delin/DEM')
         self.landuseLookup, _ = proj.readEntry(title, 'landuse/table', '')
         self.soilLookup, _ = proj.readEntry(title, 'soil/table', '')

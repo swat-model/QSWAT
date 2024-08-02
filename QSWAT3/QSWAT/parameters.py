@@ -150,9 +150,7 @@ class Parameters:
     _TNCFAOWATERSOILS = {6997, 1972} # {'WATER-6997', 'WATER-1972'}
     _TNCHWSDWATERSOIL = 39997 # 'WATER-6997'
     _TNCHWSDWATERSOILS = {39997, 34972} # {'WATER-6997', 'WATER-1972'}
-    # default value for slope in grid models (to replace slope no data)
-    _GRIDDEFAULTSLOPE = 0.005
-    # default for non-grid models, used to replace slope no data
+    # default used to replace slope no data
     # slope no data can occur more often since change to using non-pitfilled data for dinf slopes
     _DEFAULTSLOPE = 0.005
     # maximum slope for RICE

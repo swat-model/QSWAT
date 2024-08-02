@@ -3110,21 +3110,20 @@ class Delineation(QObject):
     def readProj(self) -> None:
         """Read delineation data from project file."""
         proj = QgsProject.instance()
-        title = proj.title()
-        root = QgsProject.instance().layerTreeRoot()
+        root = proj.layerTreeRoot()
         self._dlg.tabWidget.setCurrentIndex(0)
-        self._gv.existingWshed, found = proj.readBoolEntry(title, 'delin/existingWshed', False)
+        self._gv.existingWshed, found = proj.readBoolEntry(self._gv.attTitle, 'delin/existingWshed', False)
         if found and self._gv.existingWshed:
             self._dlg.tabWidget.setCurrentIndex(1)
         QSWATUtils.loginfo('Existing watershed is {0!s}'.format(self._gv.existingWshed))
-        self._gv.useGridModel, _ = proj.readBoolEntry(title, 'delin/useGridModel', False)
+        self._gv.useGridModel, _ = proj.readBoolEntry(self._gv.attTitle, 'delin/useGridModel', False)
         QSWATUtils.loginfo('Use grid model is {0!s}'.format(self._gv.useGridModel))
         if self._gv.useGridModel:
-            gridSize, found = proj.readNumEntry(title, 'delin/gridSize', 1)
+            gridSize, found = proj.readNumEntry(self._gv.attTitle, 'delin/gridSize', 1)
             if found:
                 self._dlg.GridSize.setValue(gridSize)
                 self._gv.gridSize = gridSize
-        demFile, found = proj.readEntry(title, 'delin/DEM', '')
+        demFile, found = proj.readEntry(self._gv.attTitle, 'delin/DEM', '')
         demLayer = None
         if found and demFile != '':
             demFile = QSWATUtils.join(self._gv.projDir, demFile)
@@ -3145,19 +3144,19 @@ class Delineation(QObject):
             self.setDefaultNumCells(demLayer)
         else:
             self._gv.demFile = '' 
-        verticalUnits, found = proj.readEntry(title, 'delin/verticalUnits', Parameters._METRES)
+        verticalUnits, found = proj.readEntry(self._gv.attTitle, 'delin/verticalUnits', Parameters._METRES)
         if found:
             self._gv.verticalUnits = verticalUnits
             self._gv.setVerticalFactor()
-        threshold, found = proj.readNumEntry(title, 'delin/threshold', 0)
+        threshold, found = proj.readNumEntry(self._gv.attTitle, 'delin/threshold', 0)
         if found and threshold > 0:
             try:
                 self._dlg.numCells.setText(str(threshold))
             except Exception:
                 pass # leave default setting
-        snapThreshold, found = proj.readNumEntry(title, 'delin/snapThreshold', 300)
+        snapThreshold, found = proj.readNumEntry(self._gv.attTitle, 'delin/snapThreshold', 300)
         self._dlg.snapThreshold.setText(str(snapThreshold))
-        wshedFile, found = proj.readEntry(title, 'delin/wshed', '')
+        wshedFile, found = proj.readEntry(self._gv.attTitle, 'delin/wshed', '')
         wshedLayer = None
         ft = FileTypes._EXISTINGWATERSHED if self._gv.existingWshed else FileTypes._WATERSHED
         if found and wshedFile != '':
@@ -3177,7 +3176,7 @@ class Delineation(QObject):
             self._gv.wshedFile = wshedFile
         else:
             self._gv.wshedFile = ''
-        burnFile, found = proj.readEntry(title, 'delin/burn', '')
+        burnFile, found = proj.readEntry(self._gv.attTitle, 'delin/burn', '')
         burnLayer = None
         if found and burnFile != '':
             burnFile = QSWATUtils.join(self._gv.projDir, burnFile)
@@ -3197,7 +3196,7 @@ class Delineation(QObject):
             self._dlg.selectBurn.setText(burnFile)
         else:
             self._gv.burnFile = ''
-        streamFile, found = proj.readEntry(title, 'delin/net', '')
+        streamFile, found = proj.readEntry(self._gv.attTitle, 'delin/net', '')
         streamLayer = None
         if found and streamFile != '':
             streamFile = QSWATUtils.join(self._gv.projDir, streamFile)
@@ -3216,11 +3215,11 @@ class Delineation(QObject):
             self._gv.streamFile = streamFile
         else:
             self._gv.streamFile = ''
-        useOutlets, found = proj.readBoolEntry(title, 'delin/useOutlets', True)
+        useOutlets, found = proj.readBoolEntry(self._gv.attTitle, 'delin/useOutlets', True)
         if found:
             self._dlg.useOutlets.setChecked(useOutlets)
             self.changeUseOutlets()
-        outletFile, found = proj.readEntry(title, 'delin/outlets', '')
+        outletFile, found = proj.readEntry(self._gv.attTitle, 'delin/outlets', '')
         outletLayer = None
         if found and outletFile != '':
             outletFile = QSWATUtils.join(self._gv.projDir, outletFile)
@@ -3240,7 +3239,7 @@ class Delineation(QObject):
             self._dlg.selectOutlets.setText(self._gv.outletFile)
         else:
             self._gv.outletFile = ''
-        extraOutletFile, found = proj.readEntry(title, 'delin/extraOutlets', '')
+        extraOutletFile, found = proj.readEntry(self._gv.attTitle, 'delin/extraOutlets', '')
         extraOutletLayer = None
         if found and extraOutletFile != '':
             extraOutletFile = QSWATUtils.join(self._gv.projDir, extraOutletFile)
@@ -3275,30 +3274,29 @@ class Delineation(QObject):
     def saveProj(self) -> None:
         """Write delineation data to project file."""
         proj = QgsProject.instance()
-        title = proj.title()
-        proj.writeEntry(title, 'delin/existingWshed', self._gv.existingWshed)
+        proj.writeEntry(self._gv.attTitle, 'delin/existingWshed', self._gv.existingWshed)
         # grid model not official in version >= 1.4 , so normally keep invisible
         if self._dlg.useGrid.isVisible():
-            proj.writeEntry(title, 'delin/useGridModel', self._gv.useGridModel)
-            proj.writeEntry(title, 'delin/gridSize', self._dlg.GridSize.value())
-        proj.writeEntry(title, 'delin/net', QSWATUtils.relativise(self._gv.streamFile, self._gv.projDir))
-        proj.writeEntry(title, 'delin/wshed', QSWATUtils.relativise(self._gv.wshedFile, self._gv.projDir))
-        proj.writeEntry(title, 'delin/DEM', QSWATUtils.relativise(self._gv.demFile, self._gv.projDir))
-        proj.writeEntry(title, 'delin/useOutlets', self._dlg.useOutlets.isChecked())
-        proj.writeEntry(title, 'delin/outlets', QSWATUtils.relativise(self._gv.outletFile, self._gv.projDir))
-        proj.writeEntry(title, 'delin/extraOutlets', QSWATUtils.relativise(self._gv.extraOutletFile, self._gv.projDir)) 
-        proj.writeEntry(title, 'delin/burn', QSWATUtils.relativise(self._gv.burnFile, self._gv.projDir))
+            proj.writeEntry(self._gv.attTitle, 'delin/useGridModel', self._gv.useGridModel)
+            proj.writeEntry(self._gv.attTitle, 'delin/gridSize', self._dlg.GridSize.value())
+        proj.writeEntry(self._gv.attTitle, 'delin/net', QSWATUtils.relativise(self._gv.streamFile, self._gv.projDir))
+        proj.writeEntry(self._gv.attTitle, 'delin/wshed', QSWATUtils.relativise(self._gv.wshedFile, self._gv.projDir))
+        proj.writeEntry(self._gv.attTitle, 'delin/DEM', QSWATUtils.relativise(self._gv.demFile, self._gv.projDir))
+        proj.writeEntry(self._gv.attTitle, 'delin/useOutlets', self._dlg.useOutlets.isChecked())
+        proj.writeEntry(self._gv.attTitle, 'delin/outlets', QSWATUtils.relativise(self._gv.outletFile, self._gv.projDir))
+        proj.writeEntry(self._gv.attTitle, 'delin/extraOutlets', QSWATUtils.relativise(self._gv.extraOutletFile, self._gv.projDir)) 
+        proj.writeEntry(self._gv.attTitle, 'delin/burn', QSWATUtils.relativise(self._gv.burnFile, self._gv.projDir))
         try:
             numCells = int(self._dlg.numCells.text())
         except Exception:
             numCells = 0
-        proj.writeEntry(title, 'delin/verticalUnits', self._gv.verticalUnits)
-        proj.writeEntry(title, 'delin/threshold', numCells)
+        proj.writeEntry(self._gv.attTitle, 'delin/verticalUnits', self._gv.verticalUnits)
+        proj.writeEntry(self._gv.attTitle, 'delin/threshold', numCells)
         try:
             snapThreshold = int(self._dlg.snapThreshold.text())
         except Exception:
             snapThreshold = 300
-        proj.writeEntry(title, 'delin/snapThreshold', snapThreshold)
+        proj.writeEntry(self._gv.attTitle, 'delin/snapThreshold', snapThreshold)
         proj.write()
         
 

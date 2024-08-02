@@ -98,6 +98,9 @@ class GlobalVars:
         else:
             settings.setValue('/QSWAT/mpiexecDir', Parameters._MPIEXECDEFAULTDIR)
             self.mpiexecPath = QSWATUtils.join(Parameters._MPIEXECDEFAULTDIR, Parameters._MPIEXEC)
+        proj: QgsProject = QgsProject.instance()
+        # attribute used in project file is title without spaces
+        self.attTitle = proj.title().replace(' ', '')
         ## QGIS sub version number
         self.QGISSubVersion = int(Qgis.QGIS_VERSION.split('.')[1])
         ## Flag showing if using existing watershed
@@ -172,7 +175,7 @@ class GlobalVars:
         self.numElevBands = 0
         ## Topology object
         self.topo = QSWATTopology(isBatch, isHUC, isHAWQS, fromGRASS, self.forTNC, useSQLite, self.TNCCatchmentThreshold)
-        projFile = QgsProject.instance().fileName()
+        projFile = proj.fileName()
         projPath = QFileInfo(projFile).canonicalFilePath()
         # avoid / on Windows because of SWAT Editor
         if os.name == 'nt':
