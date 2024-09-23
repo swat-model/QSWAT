@@ -32,8 +32,7 @@ ifeq ($(QSWAT_PROJECT), QSWAT)
 	COMPILER = msvc
 	PYD_FILES12 = $(PYX_FILES:.pyx=.cp312-win_amd64.pyd)
 	PYD_FILES9 = $(PYX_FILES:.pyx=.cp39-win_amd64.pyd)
-	PYD_FILES7 = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
-	PYD_FILES = $(PYD_FILES12) $(PYD_FILES9) $(PYD_FILES7)
+	PYD_FILES = $(PYD_FILES12) $(PYD_FILES9)
 	EXTRAPACKAGES = imageio
 else ifeq ($(QSWAT_PROJECT), QSWAT3)
 	COMPILER = msvc
@@ -102,7 +101,7 @@ compile: $(RESOURCE_FILES) $(PYD_FILES)
 	python setuppyx.py build_ext --inplace --compiler=$(COMPILER)
 
 %.cp39-win_amd64.pyd : %.pyx
-	python setuppyx3_9.py build_ext --inplace --compiler=$(COMPILER)
+	$(OSGEO4W_39_ROOT)\apps\Python39\python setuppyx3_9.py build_ext --inplace --compiler=$(COMPILER)
 
 %.cp312-win_amd64.pyd : %.pyx
 	$(OSGEO4W_ROOT)\apps\Python312\python setuppyx3_12.py build_ext --inplace --compiler=$(COMPILER)

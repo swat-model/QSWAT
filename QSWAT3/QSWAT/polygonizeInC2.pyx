@@ -47,6 +47,7 @@ from qgis.core import * # @UnusedWildImport
 from collections import deque
 import numpy as np
 cimport numpy as np
+np.import_array() # recommended https://groups.google.com/g/cython-users/c/6qGmzvIv7Io
 import os
 
 cpdef str ringToString(object ring):

@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '2.0.0'
+    __version__ = '2.0.1'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -136,7 +136,7 @@ class QSwat(QObject):
         # size = font.pointSize()
         # QSWATUtils.information('Family: {2}.  Point size: {3!s}.\nWidth of "{0}" is {1} pixels.'.format(txt, fm.width(txt), family, size), False)
         #=======================================================================
-        self._odlg.setWindowTitle('QSWAT3 {0}'.format(QSwat.__version__))
+        self._odlg.setWindowTitle('QSWAT {0}'.format(QSwat.__version__))
         # flag used in initialising delineation form
         self._demIsProcessed = False
         ## deineation window

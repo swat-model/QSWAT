@@ -24,6 +24,7 @@ Acknowledgement: Copied from: https://github.com/perrygeo/jenks
 
 import numpy as np
 cimport numpy as np
+np.import_array() # recommended https://groups.google.com/g/cython-users/c/6qGmzvIv7Io
 cimport cython 
 
 # "ctypedef" assigns a corresponding compile-time type to DTYPE_t. For

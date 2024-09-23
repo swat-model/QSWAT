@@ -3,7 +3,7 @@ from distutils.core import setup
 from Cython.Build import cythonize  # @UnresolvedImport
 import os
 import numpy
-includePath = os.environ['OSGEO4W_ROOT'] + r'/apps/Python39/include'
+includePath = os.environ['OSGEO4W_39_ROOT'] + r'/apps/Python39/include'
 if 'INCLUDE' in os.environ:
     os.environ['INCLUDE'] = os.environ['INCLUDE'] + ';' + includePath + ';' + numpy.get_include()
 else:

@@ -32,14 +32,16 @@ runSWAT = True
 runCollect = True  
 
 # Parameters to be set befure run
+startYear = 2000  # setting this to a year causes it to be used instead of weather data start and length.  Ignored if 0
+numYears = 5   # setting this together with startyear causes the run to be from 1 Jan startYear to 31 December (startYear + numYears - 1). Ignored if startYear is 0.
 
 TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
-Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'CentralAmerica' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'NorthAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'NorthAmerica_1basin' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
 maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
-weatherSource = 'ERA5' # 'CHIRPS', 'ERA5'
+weatherSource = 'CHIRPS' # 'CHIRPS', 'ERA5'
 gridSize = 100  # DEM cells per side.  100 gives 10kmx10km grid when using 100m DEM
 catchmentThreshold = 150  # minimum catchment area in sq km.  With gridSize 100 and 100m DEM, this default of 1000 gives a minimum catchment of 10 grid cells
 maxHRUs = 5  # maximum number of HRUs per grid cell
@@ -92,7 +94,7 @@ QgsApplication.setPrefixPath(osGeo4wRoot + r'\apps\qgis-ltr', True)
 # without this importing processing causes the following error:
 # QWidget: Must construct a QApplication before a QPaintDevice
 # and initQgis crashes
-app = QgsApplication([], True)
+app = QgsApplication([], False)
 
 
 QgsApplication.initQgis()
@@ -246,9 +248,9 @@ def readCio(cioFile: str) -> int:
         #self.isAnnual = iprint == 2
         nyskipLine = cio.readline()
         nyskip = int(nyskipLine[:20])
-        startYear = cioStartYear + nyskip
-        #self.numYears = cioNumYears - nyskip
-        return startYear
+        startYr = cioStartYear + nyskip
+        #self.numYrs = cioNumYears - nyskip
+        return startYr
 # SQLITE versions 
 createHRU = """CREATE TABLE hru (
     LULC TEXT,
@@ -551,12 +553,12 @@ def collectOutput(direc, outputDb, lock):
             sqlHru = 'INSERT INTO hru VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
             #sqlWql = 'INSERT INTO wql VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
             sqlSed = 'INSERT INTO sed VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-            startYear = readCio(txtInOut + 'file.cio')
+            startYr = readCio(txtInOut + 'file.cio')
             # collect output.sub
             mainSubData = []
             with open(txtInOut + 'output.sub', 'r') as inFile:
                 for _ in range(9): next(inFile)
-                year = startYear
+                year = startYr
                 lastMon = 0
                 for line in inFile.readlines():
                     monStr = line[21:25]
@@ -583,7 +585,7 @@ def collectOutput(direc, outputDb, lock):
             mainRchData = []
             with open(txtInOut + 'output.rch', 'r') as inFile:
                 for _ in range(9): next(inFile)
-                year = startYear
+                year = startYr
                 lastMon = 0
                 for line in inFile.readlines():
                     monStr = line[21:25]
@@ -610,7 +612,7 @@ def collectOutput(direc, outputDb, lock):
             mainHruData = []
             with open(txtInOut + 'output.hru', 'r') as inFile:
                 for _ in range(9): next(inFile)
-                year = startYear
+                year = startYr
                 lastMon = 0
                 relHRU = 0
                 for line in inFile.readlines():
@@ -643,7 +645,7 @@ def collectOutput(direc, outputDb, lock):
             # # collect output.wql
             # with open(txtInOut + 'output.wql', 'r') as inFile:
             #     next(inFile)
-            #     year = startYear
+            #     year = startYr
             #     lastMon = 0
             #     for line in inFile.readlines():
             #         mon = int(line[11:16])
@@ -663,7 +665,7 @@ def collectOutput(direc, outputDb, lock):
             mainSedData = []
             with open(txtInOut + 'output.sed', 'r') as inFile:
                 next(inFile)
-                year = startYear
+                year = startYr
                 lastMon = 0
                 for line in inFile.readlines():
                     monStr = line[21:27]
@@ -721,7 +723,8 @@ def collectOutputs(dirs, projDir):
     sys.stdout.flush()
     
 def runCheck(tnc):
-    """Check every subbasin in the main project's Watershed table is in the output database sub table."""
+    """Check every subbasin in the main project's Watershed table is in the output database sub table.
+    Only checks for Catchments in the Catchments directory to allow this to have been reduced."""
     print('Checking {0} results ...'.format(tnc.projName))
     subs = set()
     outputDb = tnc.projDir + '/Scenarios/Default/TablesOut/SWATOutput.sqlite'
@@ -738,12 +741,15 @@ def runCheck(tnc):
         count = 0
         catchments = set()
         for row2 in projConn.execute(sql2):
-            count += 1
-            if row2[0] not in subs:
-                print('ERROR: Subbasin {0} in catchment {1} has no results data'.format(row2[0], row2[1]))
-                catchments.add(row2[1])
-            if count % 1000 == 0:
-                print('Checked {0} subbasins ...'.format(count))
+            catchmentNum = row2[1]
+            catchmentDir = tnc.projDir + '/Catchments/' + contAbbrev + str(catchmentNum)
+            if os.path.isdir(catchmentDir):
+                count += 1
+                if row2[0] not in subs:
+                    print('ERROR: Subbasin {0} in catchment {1} has no results data'.format(row2[0], catchmentNum))
+                    catchments.add(catchmentNum)
+                if count % 1000 == 0:
+                    print('Checked {0} subbasins ...'.format(count))
         if len(catchments) > 0:
             print('Uncollected catchments:')
             for catchment in catchments:
@@ -799,7 +805,7 @@ def runCatchment(i, todo, waiting, done, lock, projDir, deps):
         foundInWaiting = False
         foundInTodo = False
         for j in range(len(waiting)):
-            num = waiting[j-1]
+            num = waiting[j]
             prereqs = deps.get(num, set())
             ok = True
             for x in prereqs:
@@ -810,7 +816,7 @@ def runCatchment(i, todo, waiting, done, lock, projDir, deps):
             if ok:
                 foundInWaiting = True
                 print('Found {0} in waiting, prereqs {1} done.  {2} waiting, {3} todo'.format(num, prereqs, len(waiting)-1, len(todo))) 
-                del waiting[j-1]
+                del waiting[j]
                 break
         if not foundInWaiting and len(todo) > 0:
             num = todo.pop(0)
@@ -825,7 +831,10 @@ def runCatchment(i, todo, waiting, done, lock, projDir, deps):
             #    print('Running {0}'.format(num))
             direc = projDir + '/Catchments/' + contAbbrev + str(num)
             sys.stdout.flush()
-            _ = subprocess.run([cmd, direc, SWATApp], capture_output=True)
+            if startYear != 0:
+                _ = subprocess.run([cmd, direc, SWATApp, str(startYear), str(numYears)], capture_output=True)
+            else:
+                _ = subprocess.run([cmd, direc, SWATApp], capture_output=True)
             lock.acquire()
             done.append(num)
             lock.release()
@@ -862,6 +871,7 @@ if __name__ == '__main__':
         pattern = tnc.projDir + '/Catchments/*'
         # restrict to directories only
         dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]
+        #print('{0} catchments'.format(len(dirs)))
         if runSWAT:
             sizes = getSizes(tnc.projDb)
             cpuCount = os.cpu_count()
@@ -898,6 +908,7 @@ if __name__ == '__main__':
                     waiting.append(x)
                 done = manager.list()
                 lock = manager.Lock()
+                #print('Initially {0} todo {1} waiting and {2} done'.format(len(todo), len(waiting), len(done)))
                 with Pool(processes=numProcesses) as pool:
                     ress = [pool.apply_async(runCatchment, (i, todo, waiting, done, lock, tnc.projDir, deps)) for i in range(numProcesses)]
                     _ = [res.get() for res in ress]  # wait until all finished
