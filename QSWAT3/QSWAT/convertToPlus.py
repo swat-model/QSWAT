@@ -31,6 +31,8 @@ import subprocess
 from convertdialog import ConvertDialog  # @UnresolvedImport
 
 
+connString = 'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='
+
 class ConvertToPlus(QObject):
     """Convert ArcSWAT project to QSWAT project."""
     
@@ -204,6 +206,7 @@ class ConvertToPlus(QObject):
                         for i in range(len(patts)):
                             line = line.replace(patts[i], reps[i])
                         outFile.write(line)
+            print('Connection string is {0}'.format(connString))
             # copy files
             try:
                 print('Creating directories and copying files ...')
@@ -257,7 +260,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
             response = ConvertToPlus.question('Run QGIS on the QSWAT+ project?')
             if response == QMessageBox.Yes:
                 osgeo4wroot = os.environ['OSGEO4W_ROOT']
-                qgisname = os.environ['QGISNAME']
+                qgisname = 'qgis-ltr' # os.environ['QGISNAME']
                 batFile = r'{0}\bin\{1}.bat'.format(osgeo4wroot, qgisname)
                 if not os.path.exists(batFile):
                     title = 'Cannot find QGIS start file {0}.  Please select it.'.format(batFile)
@@ -334,7 +337,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         shutil.copy(projDbTemplate, projDbNew)
         shutil.copy(refDbTemplate, self.projDirNew)
         projDbOld = os.path.join(self.projDirOld, self.projNameOld + '.mdb')
-        connectionString = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ=' + projDbOld
+        connectionString = connString + projDbOld
         with pyodbc.connect(connectionString, readonly=True) as connOld:
             if connOld is None:
                 ConvertToPlus.error(u'Failed to connect to old project database {0}'.format(projDbOld))
@@ -366,7 +369,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
                 self.copyExemptSplitElevBand(cursorOld, cursorNew)
                 connNew.commit()
         refDbOld = os.path.join(self.projDirOld, 'QSWATRef2012.mdb')
-        connectionString = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ=' + refDbOld
+        connectionString = connString + refDbOld
         with pyodbc.connect(connectionString, readonly=True) as refConnOld:
             if refConnOld is None:
                 ConvertToPlus.error(u'Failed to connect to reference database {0}'.format(refDbOld))
@@ -623,7 +626,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         # subasin - reach relation is 1-1, so use same number for each
         downstreamSubbasin = dict()
         projDbOld = os.path.join(self.projDirOld, self.projNameOld + '.mdb')
-        connectionString = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ=' + projDbOld
+        connectionString = connString + projDbOld
         with pyodbc.connect(connectionString, readonly=True) as connOld:
             if connOld is None:
                 ConvertToPlus.error(u'Failed to connect to old project database {0}'.format(projDbOld))
@@ -1017,7 +1020,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
             return None
         
         projDbOld = os.path.join(self.projDirOld, self.projNameOld + '.mdb')
-        connectionString = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ=' + projDbOld
+        connectionString = connString + projDbOld
         with pyodbc.connect(connectionString, readonly=True) as connOld:
             if connOld is None:
                 ConvertToPlus.error(u'Failed to connect to old project database {0}'.format(projDbOld))
@@ -2262,7 +2265,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         def setStats(self, projDirOld, projNameOld):
             """Set gauge parameters from cio file."""
             projDbOld = os.path.join(projDirOld, projNameOld + '.mdb')
-            connectionString = 'DRIVER={Microsoft Access Driver (*.mdb)};DBQ=' + projDbOld
+            connectionString = connString + projDbOld
             with pyodbc.connect(connectionString, readonly=True) as connOld:
                 if connOld is None:
                     ConvertToPlus.error(u'Failed to connect to old project database {0}'.format(projDbOld))

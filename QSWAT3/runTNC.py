@@ -25,19 +25,20 @@ runQSWAT = False
 # run partition to set up catchment folders.  Rerun if maxSubCatchment changes
 runPartition = False
 # run SWATEditor on global project and propagate changes to catchments.  Run to editing inputs
-runEditor = False
+runEditor = True
 # run SWAT executable on catchments
-runSWAT = True
+runSWAT = False 
 # collect SWAT outputs into catchment and main results database
-runCollect = True  
+runCollect = False  
 
 # Parameters to be set befure run
+startCatchment = 1  # setting this to a valid catchment number causes runSWAT to run on this catchment and those upstream from it.  Ignored if 0.
 startYear = 2000  # setting this to a year causes it to be used instead of weather data start and length.  Ignored if 0
 numYears = 5   # setting this together with startyear causes the run to be from 1 Jan startYear to 31 December (startYear + numYears - 1). Ignored if startYear is 0.
 
 TNCDir = 'K:/TNC'  # 'E:/Chris/TNC'
-Continent = 'NorthAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
-ContDir = 'NorthAmerica_1basin' # can be same as Continent or Continent plus underscore plus anything for a part project
+Continent = 'CentralAmerica' # NorthAmerica, CentralAmerica, SouthAmerica, Asia, Europe, Africa, Australia
+ContDir = 'CentralAmerica_Jamaica2' # can be same as Continent or Continent plus underscore plus anything for a part project
                                 # DEM, landuse and soil will be sought in TNCDir/ContDir
 maxSubCatchment = 10000 # maximum size of subcatchment in sq km, i.e. point at which inlet is inserted to form subcatchment.  Default 10000 equivalent to 100 grid cells.
 soilName = 'FAO_DSMW' # 'FAO_DSMW', 'hwsd3'
@@ -722,9 +723,10 @@ def collectOutputs(dirs, projDir):
             _ = res.get()
     sys.stdout.flush()
     
-def runCheck(tnc):
+def runCheck(tnc, vals):
     """Check every subbasin in the main project's Watershed table is in the output database sub table.
-    Only checks for Catchments in the Catchments directory to allow this to have been reduced."""
+    Only checks for Catchments in the Catchments directory to allow this to have been reduced.
+    Only checks catchments in vals if startCatchment > 0."""
     print('Checking {0} results ...'.format(tnc.projName))
     subs = set()
     outputDb = tnc.projDir + '/Scenarios/Default/TablesOut/SWATOutput.sqlite'
@@ -742,29 +744,46 @@ def runCheck(tnc):
         catchments = set()
         for row2 in projConn.execute(sql2):
             catchmentNum = row2[1]
-            catchmentDir = tnc.projDir + '/Catchments/' + contAbbrev + str(catchmentNum)
-            if os.path.isdir(catchmentDir):
-                count += 1
-                if row2[0] not in subs:
-                    print('ERROR: Subbasin {0} in catchment {1} has no results data'.format(row2[0], catchmentNum))
-                    catchments.add(catchmentNum)
-                if count % 1000 == 0:
-                    print('Checked {0} subbasins ...'.format(count))
+            if startCatchment == 0 or catchmentNum in vals:
+                catchmentDir = tnc.projDir + '/Catchments/' + contAbbrev + str(catchmentNum)
+                if os.path.isdir(catchmentDir):
+                    count += 1
+                    if row2[0] not in subs:
+                        print('ERROR: Subbasin {0} in catchment {1} has no results data'.format(row2[0], catchmentNum))
+                        catchments.add(catchmentNum)
+                    if count % 1000 == 0:
+                        print('Checked {0} subbasins ...'.format(count))
         if len(catchments) > 0:
             print('Uncollected catchments:')
             for catchment in catchments:
                 print('{0}'.format(catchment))
     print('Check of {0} completed'.format(tnc.projName))
                 
+def getDepsUpstream(db, start, deps, ds, sql, conn):
+    """Return deps and ds augented with points upstream from start."""
+    for row in conn.execute(sql, (start,)):
+        catch = int(row[0])
+        deps.setdefault(start, set()).add(catch)
+        ds[catch] = start
+        deps, ds = getDepsUpstream(db, catch, deps, ds, sql, conn)
+    return deps, ds
+                
 def getDeps(db):
-    """Get catchment dependencies from catchmentstree table, stored as upstream table deps and as downstream table ds."""
+    """Get catchment dependencies from catchmentstree table, stored as upstream table deps and as downstream table ds.
+    If startCatchment is not zero only include catchments upstream of it."""
     deps = dict()
     ds = dict()
     with sqlite3.connect(db) as conn:
-        sql = 'SELECT catchment, dsCatchment FROM catchmentstree'
-        for row in conn.execute(sql):
-            deps.setdefault(row[1], set()).add(row[0])
-            ds[row[0]] = row[1]
+        if startCatchment == 0:
+            sql = 'SELECT catchment, dsCatchment FROM catchmentstree'
+            for row in conn.execute(sql):
+                catch = int(row[0])
+                dsCatch = int(row[1])
+                deps.setdefault(dsCatch, set()).add(catch)
+                ds[catch] = dsCatch
+        else:
+            sql = 'SELECT catchment FROM catchmentstree where dsCatchment = ?'
+            deps, ds = getDepsUpstream(db, startCatchment, deps, ds, sql, conn)
     return deps, ds
 
 def getSizes(db):
@@ -864,32 +883,45 @@ if __name__ == '__main__':
             app.exit()
             del app
             sys.exit()
+        if startCatchment > 0:
+            if not os.path.isdir(tnc.projDir + '/Catchments/{0}{1}'.format(contAbbrev, startCatchment)):
+                print('There is no catchment numbered {0}, the startCatchment number you set as the outlet catchment'.format(startCatchment))
+                app.exitQgis()
+                app.exit()
+                del app
+                sys.exit()
         deps, ds = getDeps(tnc.projDb)
         print('Dependencies: {0}'.format(deps))
+        #print('Downstream: {0}'.format(ds))
         if runEditor:
             runSWATEditor(tnc.projDir)
         pattern = tnc.projDir + '/Catchments/*'
         # restrict to directories only
         dirs = [d for d in glob.iglob(pattern) if os.path.isdir(d)]
         #print('{0} catchments'.format(len(dirs)))
+        vals = deps.keys()
+        for v in deps.keys():
+            vals = vals | deps[v]
         if runSWAT:
             sizes = getSizes(tnc.projDb)
             cpuCount = os.cpu_count()
             numProcesses = min(cpuCount, maxCPUSWATCount)
             waitingList = []
             todoList = []
-            vals = deps.keys()
-            for v in deps.keys():
-                vals = vals | deps[v]
             # todo holds all catchment numbers with no dependencies
             # waiting holds those with dependents plus the dependents so they are processed
             # with higher priority, not put on back end of todo
-            for d in dirs:
-                num = int(os.path.basename(d)[2:])
-                if num in vals:
-                    waitingList.append(num)
-                else:
-                    todoList.append(num)
+            if startCatchment == 0:
+                # include all catchments
+                for d in dirs:
+                    num = int(os.path.basename(d)[2:])
+                    if num in vals:
+                        waitingList.append(num)
+                    else:
+                        todoList.append(num)
+            else:
+                # only include catchments in vals.  todo remains empty
+                waitingList = list(vals)
             #print('Waiting: {0}'.format(waitingList))
             lengths = dict()
             # sizes should be under 1000, so sort by length as first priority plus size as second priority
@@ -917,10 +949,14 @@ if __name__ == '__main__':
             print('Running SWAT took {0} seconds'.format(int(timec2 - timec1)))
         if runCollect:
             time1 = time.perf_counter()
-            collectOutputs(dirs, tnc.projDir)
+            if startCatchment == 0:
+                collectDirs = dirs
+            else:
+                collectDirs = [d for d in dirs if int(os.path.basename(d)[2:]) in vals]
+            collectOutputs(collectDirs, tnc.projDir)
             time2 = time.perf_counter()
             print('Collecting output data took {0} seconds'.format(int(time2 - time1)))
-            runCheck(tnc)
+            runCheck(tnc, vals)
     except Exception:
         print('ERROR: exception: {0}'.format(traceback.format_exc()))
     app.exitQgis()
