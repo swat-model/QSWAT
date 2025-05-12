@@ -142,7 +142,7 @@ class Parameters:
     _NEARNESSTHRESHOLD = 0.1
     
     # landuses for which we use just one SSURGO soil and where we make the slope at most _WATERMAXSLOPE 
-    _WATERLANDUSES = {'WATR', 'WETN', 'WETF', 'RIWF', 'UPWF', 'RIWN', 'UPWN'}
+    _WATERLANDUSES = {'WATR', 'WETN', 'WETF', 'WETW', 'RIWF', 'UPWF', 'RIWN', 'UPWN'}
     _WATERMAXSLOPE = 0.00001
     # similar for TNC projects using FAO or HWSD soils
     _TNCWATERLANDUSES = {'WEWO', 'WETL', 'WEHB', 'WATR', 'TWEW', 'TWET', 'TWEH'}

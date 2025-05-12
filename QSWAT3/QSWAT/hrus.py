@@ -2345,6 +2345,10 @@ class CreateHRUs(QObject):
                             landuseCount += 1
                             # use an equivalent landuse if any
                             crop = self._gv.db.translateLanduse(int(crop))
+                        isWet = False
+                        if crop != cropNoData:
+                            cropCode = self._gv.db.getLanduseCode(crop)
+                            isWet = cropCode in Parameters._WATERLANDUSES 
                         soilCol = soilColFun(col, x)
                         if 0 <= soilCol < soilNumberCols and 0 <= soilRow < soilNumberRows:
                             soil = cast(int, soilData[0, soilCol])
@@ -2352,23 +2356,7 @@ class CreateHRUs(QObject):
                                 soil = soilNoData
                         else:
                             soil = soilNoData
-                        if soil == soilNoData:
-                            soilIsNoData = True
-                        else:
-                            soilIsNoData = False
-                            # use an equivalent soil if any
-                            soil, OK = self._gv.db.translateSoil(int(soil))
-                        if soilIsNoData:
-                            soilNoDataCount += 1
-                        elif OK:
-                            soilDefinedCount += 1
-                        else:
-                            soilUndefinedCount += 1
                         # make sure crop and soil do not conflict about water
-                        isWet = False
-                        if crop != cropNoData:
-                            cropCode = self._gv.db.getLanduseCode(crop)
-                            isWet = cropCode in Parameters._WATERLANDUSES 
                         if self._gv.db.useSSURGO:
                             if isWet:
                                 soil = Parameters._SSURGOWater
@@ -2377,6 +2365,21 @@ class CreateHRUs(QObject):
                                     isWet = True
                                     if crop == cropNoData or cropCode not in Parameters._WATERLANDUSES:
                                         crop = self._gv.db.getLanduseCat('WATR')
+                        if soil == soilNoData:
+                            soilIsNoData = True
+                        else:
+                            soilIsNoData = False
+                            if soil == Parameters._SSURGOWater:
+                                OK = True 
+                            else:   
+                                # use an equivalent soil if any
+                                soil, OK = self._gv.db.translateSoil(int(soil))
+                        if soilIsNoData:
+                            soilNoDataCount += 1
+                        elif OK:
+                            soilDefinedCount += 1
+                        else:
+                            soilUndefinedCount += 1
                         slopeCol = slopeColFun(col, x)
                         if 0 <= slopeCol < slopeNumberCols and 0 <= slopeRow < slopeNumberRows:
                             slopeValue = cast(float, slopeData[0, slopeCol])
