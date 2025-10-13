@@ -77,7 +77,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '2.0.1'
+    __version__ = '2.0.2'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -342,13 +342,13 @@ class QSwat(QObject):
         self._gv.useGridModel = proj.readBoolEntry(self._gv.attTitle, 'delin/useGridModel', False)[0]
         if self._gv.useGridModel:
             self._gv.gridSize = proj.readNumEntry(self._gv.attTitle, 'delin/gridSize', 1)[0]
-        if isHAWQS or self.demProcessed():
+        if (isHAWQS and isBatch) or self.demProcessed():
             self._demIsProcessed = True
             self.allowCreateHRU()
             hrus = HRUs(self._gv, self._odlg.reportsBox)
             #result = hrus.tryRun()
             #if result == 1:
-            if isHAWQS or hrus.HRUsAreCreated():
+            if (isHAWQS and isBatch) or hrus.HRUsAreCreated():
                 QSWATUtils.progress('Done', self._odlg.hrusLabel)
                 self.showReports()
                 self._odlg.editLabel.setEnabled(True)
@@ -537,8 +537,8 @@ class QSwat(QObject):
         self._gv.demFile = demFile
         self._gv.elevationNoData = demLayer.dataProvider().sourceNoDataValue(1)
         units = demLayer.crs().mapUnits()
-        factor = 1.0 if units == QgsUnitTypes.DistanceMeters else 0.3048 if units == QgsUnitTypes.DistanceFeet else 0.0
-        if factor == 0:
+        factor, OK = QSWATUtils.getHorizontalFactor(units)
+        if not OK:
             QSWATUtils.loginfo('demProcessed failed: units are {0!s}'.format(units))
             return False
         self._gv.cellArea = demLayer.rasterUnitsPerPixelX() * demLayer.rasterUnitsPerPixelY() * factor * factor
@@ -668,7 +668,7 @@ class QSwat(QObject):
                     if not os.path.exists(self._gv.distFile):
                         QSWATUtils.loginfo('demProcessed failed: no distance to outlet raster')
                         return False
-        if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
+        if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor, self._gv.existingWshed):
             return False
         basinIndex = self._gv.topo.getIndex(wshedLayer, QSWATTopology._POLYGONID)
         if basinIndex < 0:

@@ -3,7 +3,7 @@
 
 #define MyAppName "QSWAT"
 #define MyAppVersion "2.0" 
-#define MyAppSubVersion "1"
+#define MyAppSubVersion "2"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 
@@ -84,13 +84,13 @@ var
   pfDir: String;
 begin
   pfDir := ExpandConstant('{pf64}');
-  QGISDirectory := QGISDir(pfDir, 'QGIS 3.34');
+  QGISDirectory := QGISDir(pfDir, 'QGIS 3.40');
   if QGISDirectory = '' then begin
     QGISDirectory := QGISDir(pfDir, 'QGIS 3.34');
     if QGISDirectory = '' then begin
-      QGISDirectory := QGISDir(pfDir, 'QGIS 3.34');
+      QGISDirectory := QGISDir(pfDir, 'QGIS 3.42');
       if QGISDirectory = '' then begin
-        QGISDirectory := QGISDir(pfDir, 'QGIS 3.36');
+        QGISDirectory := QGISDir(pfDir, 'QGIS 3.44');
         if QGISDirectory = '' then begin 
           QGISDirectory := pfDir;
           if not BrowseForFolder('Please locate QGIS directory', QGISDirectory, False) then

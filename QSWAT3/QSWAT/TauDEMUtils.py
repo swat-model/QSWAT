@@ -222,9 +222,9 @@ class TauDEMUtils:
             output.moveCursor(QTextCursor.End)
         # In windows PROJ seems to need PROJ_LIB instead of the more recent PROJ_DATA
         # In windows gdalplugins now stored under TauDEMDir so they are compatible with gdal304 dlls stored there
-        if Parameters._ISWIN:
+        if True:   # Parameters._ISWIN:
             os.environ['PROJ_LIB'] = os.getenv('PROJ_DATA')
-            os.environ['GDAL_DRIVER_PATH'] = TauDEMDir + '/gdalplugins'
+            os.environ['GDAL_DRIVER_PATH'] = tauDEMDir + '/gdalplugins'
         proc = subprocess.run(commands, 
                               shell=True, 
                               stdout=subprocess.PIPE, 

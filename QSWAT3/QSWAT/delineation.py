@@ -22,14 +22,14 @@
 from typing import Optional, Tuple, Dict, Set, List, Any, TYPE_CHECKING, cast  # @UnusedImport
 # Import the PyQt and QGIS libraries
 try:
-    from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant
+    from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings
     from qgis.PyQt.QtGui import QIntValidator, QDoubleValidator, QColor
     from qgis.PyQt.QtWidgets import QMessageBox
     from qgis.core import Qgis, QgsWkbTypes, QgsUnitTypes, QgsLineSymbol, QgsLayerTree, QgsLayerTreeGroup, QgsLayerTreeModel, QgsFeature, QgsGeometry, QgsGradientColorRamp, QgsGraduatedSymbolRenderer, QgsRendererRangeLabelFormat, QgsPointXY, QgsField, QgsFields, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsCoordinateTransformContext 
     from qgis.gui import QgsMapTool, QgsMapToolEmitPoint
     from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry  
 except:
-    from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings, QVariant
+    from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings
     from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor
     from PyQt5.QtWidgets import QMessageBox
     QgsLayerTree = Any 
@@ -46,6 +46,7 @@ import subprocess
 import time
 from osgeo import gdal, ogr  # type: ignore
 import traceback
+from packaging.version import parse
 
 # Import the code for the dialog
 
@@ -352,8 +353,11 @@ class Delineation(QObject):
             # QSWATUtils.loginfo('Recreated watershed grid as {0}'.format(self._gv.basinFile))
         self.saveProj()
         if self.checkDEMProcessed():
+            # if isHAWQS on existing watershed extra point sources may have been checked but not acted on
+            if self._gv.isHAWQS and self._gv.existingWshed and self._dlg.checkAddPoints.isChecked() and self._gv.extraOutletFile == '':
+                self.addReservoirs()
             if self._gv.extraOutletFile != '':
-                extraOutletLayer = QSWATUtils.getLayerByFilename(layers, self._gv.extraOutletFile, FileTypes._OUTLETS, None, None, None)[0]
+                extraOutletLayer = QgsVectorLayer(self._gv.extraOutletFile, 'Extra outlets', 'ogr')
             else:
                 extraOutletLayer = None
             if not self._gv.existingWshed and not self._gv.useGridModel:
@@ -633,7 +637,7 @@ class Delineation(QObject):
             self.createGridShapefile(demLayer, self._gv.pFile, ad8File, self._gv.basinFile)
             streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.streamFile, FileTypes._STREAMS, 
                                                             self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
-            if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
+            if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor, self._gv.existingWshed):
                 self.cleanUp(-1)
                 return
             self.isDelineated = True
@@ -868,7 +872,7 @@ class Delineation(QObject):
         self._gv.wshedFile = wshedFile
         if self._dlg.GridBox.isChecked():
             self.createGridShapefile(demLayer, pFile, ad8File, wFile)
-        if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
+        if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor, self._gv.existingWshed):
             self.cleanUp(-1)
             return
         self.isDelineated = True
@@ -893,14 +897,25 @@ class Delineation(QObject):
             QSWATUtils.error('Please select a streams shapefile', self._gv.isBatch)
             return
         outletFile = self._dlg.selectExistOutlets.text()
+        root = QgsProject.instance().layerTreeRoot()
         if outletFile != '':
-            if not os.path.exists(outletFile):
+            if os.path.exists(outletFile):
+                if self._gv.isHAWQS and os.path.split(outletFile)[1] == 'points.shp':
+                    # HAWQS points files are unreliable: do not use; add point source to each subbasin
+                    outletLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), outletFile, FileTypes._OUTLETSHUC, 
+                                                           self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
+                    if outletLayer:
+                        QgsProject.instance().removeMapLayers([outletLayer.id()])
+                        self._dlg.selectExistOutlets.clear()
+                        # mark to add point source to each subbasin
+                        self._dlg.checkAddPoints.setChecked(True)
+                        outletFile = ''
+            else:
                 QSWATUtils.error('Cannot find inlets/outlets shapefile {0}'.format(outletFile), self._gv.isBatch)
                 return
         self.isDelineated = False
         self.setMergeResGroups()
         # find layers (or load them)
-        root = QgsProject.instance().layerTreeRoot()
         demLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), self._gv.demFile, FileTypes._DEM,
                                                     self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)  # type: ignore
         if not demLayer:
@@ -981,7 +996,7 @@ class Delineation(QObject):
         self._gv.wshedFile = wshedFile
         self._gv.streamFile = streamFile
         self._gv.outletFile = outletFile
-        if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor):
+        if not self._gv.topo.setUp0(demLayer, streamLayer, self._gv.verticalFactor, self._gv.existingWshed):
             return
         self.isDelineated = True
         self.setMergeResGroups()
@@ -1010,15 +1025,22 @@ class Delineation(QObject):
         Also sets DEM properties tab.
         
         """
+            
         # can fail if demLayer is None or not projected
         try:
             if self._gv.topo.crsProject is None:
-                self._gv.topo.crsProject = demLayer.crs()
+                crs = demLayer.crs()
+                self._gv.topo.crsProject = crs
+            else:
+                crs = self._gv.topo.crsProject
+            if crs.isGeographic():
+                QSWATUtils.error('DEM does not seem to be projected', self._gv.isBatch)
+                return False
             units = demLayer.crs().mapUnits()
         except Exception:
             QSWATUtils.loginfo('Failure to read DEM units: {0}'.format(traceback.format_exc()))
             return False
-        QgsProject.instance().setCrs(demLayer.crs())
+        QgsProject.instance().setCrs(crs)
         provider = demLayer.dataProvider()
         self._gv.xBlockSize = provider.xBlockSize()
         self._gv.yBlockSize = provider.yBlockSize()
@@ -1034,6 +1056,9 @@ class Delineation(QObject):
                 self._dlg.textBrowser.setText(txtFile.read())
         else:
             self._dlg.textBrowser.setText(demLayer.crs().toWkt()) # much poorer presentation
+        if not os.path.exists(demPrj):
+            with open(demPrj, 'x') as prjFile:
+                prjFile.write(self._dlg.textBrowser.toPlainText())
         try:
             epsg = demLayer.crs().authid()
             QSWATUtils.loginfo(epsg)
@@ -1056,22 +1081,24 @@ class Delineation(QObject):
         except Exception:
             # fail gracefully
             epsg = ''
+        qv = Qgis.QGIS_VERSION.split('-', 1)[0]
+        recent = parse(qv) >= parse('3.40')
         if units == QgsUnitTypes.DistanceMeters:
             factor = 1.0
             self._dlg.horizontalCombo.setCurrentIndex(self._dlg.horizontalCombo.findText(Parameters._METRES))
             self._dlg.horizontalCombo.setEnabled(False)
-        elif units == QgsUnitTypes.DistanceFeet:
-            factor = 0.3048
+        elif units == QgsUnitTypes.DistanceFeet or (recent and units == QgsUnitTypes.FeetUSSurvey):
+            factor = Parameters._FEETTOMETRES
             self._dlg.horizontalCombo.setCurrentIndex(self._dlg.horizontalCombo.findText(Parameters._FEET))
             self._dlg.horizontalCombo.setEnabled(False)
         else:
-            if units == QgsUnitTypes.AngleDegrees:
+            if units == QgsUnitTypes.AngleDegrees or (recent and QgsUnitTypes.unitType(units) == QgsUnitTypes.DistanceUnitType.Geographic):
                 string = 'degrees'
                 self._dlg.horizontalCombo.setCurrentIndex(self._dlg.horizontalCombo.findText(Parameters._DEGREES))
                 self._dlg.horizontalCombo.setEnabled(False)
             else:
                 string = 'unknown'
-                self._dlg.horizontalCombo.setCurrentIndex(self._dlg.horizontalCombo.findText(Parameters._DEGREES))
+                self._dlg.horizontalCombo.setCurrentIndex(self._dlg.horizontalCombo.findText(Parameters._UNKNOWN))
                 self._dlg.horizontalCombo.setEnabled(True)
             QSWATUtils.information('WARNING: DEM does not seem to be projected: its units are ' + string, self._gv.isBatch)
             return False
@@ -1584,6 +1611,8 @@ class Delineation(QObject):
                 QSWATUtils.error('Could not load extra outlets/inlets file {0}'.format(extraOutletFile), self._gv.isBatch)
                 return
             self._gv.extraOutletFile = extraOutletFile
+            proj = QgsProject.instance()
+            proj.writeEntry(self._gv.attTitle, 'delin/extraOutlets', QSWATUtils.relativise(self._gv.extraOutletFile, self._gv.projDir))
             # prevent merging of subbasins as point sources and/or reservoirs have been added
             self._dlg.mergeGroup.setEnabled(False)
         else:
@@ -2683,10 +2712,10 @@ class Delineation(QObject):
         """Write grid data to grid shapefile.  Also writes centroids dictionary."""
         self.progress('Writing grid ...')
         fields = QgsFields()
-        fields.append(QgsField(QSWATTopology._POLYGONID, QVariant.Int))
-        fields.append(QgsField(QSWATTopology._DOWNID, QVariant.Int))
-        fields.append(QgsField(QSWATTopology._AREA, QVariant.Int))
-        fields.append(QgsField(QSWATTopology._OUTLET, QVariant.Int))
+        fields.append(QgsField(QSWATTopology._POLYGONID, Parameters.intFieldType))
+        fields.append(QgsField(QSWATTopology._DOWNID, Parameters.intFieldType))
+        fields.append(QgsField(QSWATTopology._AREA, Parameters.intFieldType))
+        fields.append(QgsField(QSWATTopology._OUTLET, Parameters.intFieldType))
         root = QgsProject.instance().layerTreeRoot()
         QSWATUtils.removeLayer(gridFile, root)
         transform_context = QgsProject.instance().transformContext()
@@ -2701,7 +2730,7 @@ class Delineation(QObject):
         outletIndex = fields.indexFromName(QSWATTopology._OUTLET)
         if inlets is not None:
             fields2 = QgsFields()
-            fields2.append(QgsField('Catchment', QVariant.Int))
+            fields2.append(QgsField('Catchment', Parameters.intFieldType))
             inletsFile = os.path.split(gridFile)[0] + '/inletsshapes.shp'
             QSWATUtils.removeLayer(inletsFile, root)
             writer2 = QgsVectorFileWriter.create(inletsFile, fields2, QgsWkbTypes.Point, self._gv.topo.crsProject,
@@ -2796,12 +2825,12 @@ class Delineation(QObject):
         self.progress('Writing grid streams ...')
         root = QgsProject.instance().layerTreeRoot()
         fields = QgsFields()
-        fields.append(QgsField(QSWATTopology._LINKNO, QVariant.Int))
-        fields.append(QgsField(QSWATTopology._DSLINKNO, QVariant.Int))
-        fields.append(QgsField(QSWATTopology._WSNO, QVariant.Int))
-        fields.append(QgsField(QSWATTopology._OUTLET, QVariant.Int))
-        fields.append(QgsField('Drainage', QVariant.Double, len=10, prec=2))
-        fields.append(QgsField(QSWATTopology._PENWIDTH, QVariant.Double))
+        fields.append(QgsField(QSWATTopology._LINKNO, Parameters.intFieldType))
+        fields.append(QgsField(QSWATTopology._DSLINKNO, Parameters.intFieldType))
+        fields.append(QgsField(QSWATTopology._WSNO, Parameters.intFieldType))
+        fields.append(QgsField(QSWATTopology._OUTLET, Parameters.intFieldType))
+        fields.append(QgsField('Drainage', Parameters.doubleFieldType, len=10, prec=2))
+        fields.append(QgsField(QSWATTopology._PENWIDTH, Parameters.doubleFieldType))
         QSWATUtils.removeLayer(gridStreamsFile, root)
         transform_context = QgsProject.instance().transformContext()
         writer = QgsVectorFileWriter.create(gridStreamsFile, fields, QgsWkbTypes.LineString, self._gv.topo.crsProject,
@@ -3012,12 +3041,12 @@ class Delineation(QObject):
     # def createOutletFields(subWanted: bool) -> QgsFields:
     #     """Return felds for inlets/outlets file, adding Subbasin field if wanted."""
     #     fields = QgsFields()
-    #     fields.append(QgsField(QSWATTopology._ID, QVariant.Int))
-    #     fields.append(QgsField(QSWATTopology._INLET, QVariant.Int))
-    #     fields.append(QgsField(QSWATTopology._RES, QVariant.Int))
-    #     fields.append(QgsField(QSWATTopology._PTSOURCE, QVariant.Int))
+    #     fields.append(QgsField(QSWATTopology._ID, Parameters.intFieldType))
+    #     fields.append(QgsField(QSWATTopology._INLET, Parameters.intFieldType))
+    #     fields.append(QgsField(QSWATTopology._RES, Parameters.intFieldType))
+    #     fields.append(QgsField(QSWATTopology._PTSOURCE, Parameters.intFieldType))
     #     if subWanted:
-    #         fields.append(QgsField(QSWATTopology._SUBBASIN, QVariant.Int))
+    #         fields.append(QgsField(QSWATTopology._SUBBASIN, Parameters.intFieldType))
     #     return fields
     #===========================================================================
         
@@ -3267,7 +3296,6 @@ class Delineation(QObject):
                         self.extraReservoirBasins.add(attrs[basinIndex])
                     elif attrs[ptsrcIndex] == 1:
                         extraPointSources = True
-                self._dlg.checkAddPoints.setChecked(extraPointSources)
         else:
             self._gv.extraOutletFile = ''
                 

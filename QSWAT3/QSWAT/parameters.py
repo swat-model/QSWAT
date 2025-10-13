@@ -20,6 +20,7 @@
  ***************************************************************************/
 '''
 # Import the PyQt and QGIS libraries
+from qgis.core import Qgis
 try:
     from qgis.PyQt.QtCore import QSettings, Qt
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
@@ -29,6 +30,7 @@ except:
     from PyQt5.QtCore import QSettings, Qt
     from PyQt5.QtWidgets import QFileDialog
 import os.path
+from packaging.version import parse
 
 # Import the code for the dialog
 try:
@@ -159,6 +161,21 @@ class Parameters:
     # amount in metres to burn in streams (reduce height of DEM)
     _BURNINDEPTH = 50
     _GRASSBURNINDEPTH = 25
+    
+    # QgsField using QVariant deprecated since 3.38
+    qv = Qgis.QGIS_VERSION.split('-', 1)[0]
+    if parse(qv) >= parse('3.38'):
+        from qgis.PyQt.QtCore import QMetaType
+        intFieldType = QMetaType.Int
+        doubleFieldType = QMetaType.Double
+        stringFieldType = QMetaType.QString
+        longFieldType = QMetaType.LongLong
+    else:
+        from qgis.PyQt.QtCore import QVariant
+        intFieldType = QVariant.Int
+        doubleFieldType = QVariant.Double
+        stringFieldType = QVariant.String
+        longFieldType = QVariant.LongLong
     
     # TNC data
     TNCExtents = {'CentralAmerica': (-92.3, 7.2, -59.4, 23.2),

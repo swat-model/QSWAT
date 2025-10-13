@@ -58,7 +58,7 @@ PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.
 		selectsubs.py selectsubsdialog.py about.py aboutdialog.py visualise.py visualisedialog.py QSWATBatch.py QSWATData.py \
 		QSWATUtils.py DBUtils.py polygonize.py QSWATTopology.py TauDEMUtils.py globals.py swatgraph.py graphdialog.py graphdialog1.py \
 		convertToPlus.py convertdialog.py convertFromArc.py arc_convertdialog.py comparedialog.py \
-		setuppyx.py setuppyx3_9.py make_uis.py				
+		setuppyx.py setuppyx3_9.py setuppyx3_12.py make_uis.py				
 
 PYC_FILES = $(PY_FILES:.py=.pyc)
 

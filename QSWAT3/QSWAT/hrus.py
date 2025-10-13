@@ -22,13 +22,13 @@
 from typing import Dict, List, Tuple, Set, Optional, Any, TYPE_CHECKING, cast, Callable, Iterable  # @UnusedImport
 # Import the PyQt and QGIS libraries
 try:
-    from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
+    from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt
     from qgis.PyQt.QtGui import QDoubleValidator, QTextCursor
     from qgis.PyQt.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
     from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry, QgsProcessingContext
     #from qgis.gui import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt, QVariant
+    from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt
     from PyQt5.QtGui import QDoubleValidator, QTextCursor
     from PyQt5.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
     QgsLayerTree = Any
@@ -2614,42 +2614,69 @@ class CreateHRUs(QObject):
     def addWaterBodies(self) -> None:
         """For HUC and HAWQS projects only.  Write res, pnd, lake and playa tables.  Store reservoir, pond, lake and playa areas in basin data."""
         
-        def collectHUCs() -> str:
+        def collectHUCs() -> Tuple[Optional[str], Dict[str, int]]:
             """Make list of HUCs in watershed file"""
             # find HUCnn index
             wshedFile = self._gv.wshedFile
             wshedLayer = QgsVectorLayer(wshedFile, 'wshed', 'ogr')
             provider = wshedLayer.dataProvider()
             hucIndex, _ = QSWATTopology.getHUCIndex(wshedLayer)
+            if hucIndex < 0:
+                return None, dict()
+            polyMap = dict()
+            polyIndex = provider.fieldNameIndex(QSWATTopology._POLYGONID)
             hucs = '( '  # space guards against empty feasture list
             for feature in provider.getFeatures():
-                hucs += '"' + str(feature[hucIndex]) + '",'
+                huc = feature[hucIndex]
+                poly = int(feature[polyIndex])
+                hucs += '"' + str(huc) + '",'
+                polyMap[huc] = poly
             hucs = hucs[:-1] + ')'
-            return hucs
+            return hucs, polyMap
             
         if not os.path.isfile(self._gv.db.waterBodiesFile):
-            QSWATUtils.error('Cannot find water bodies file {0}'.format(self._gv.db.waterBodiesFile), self._gv.isBatch)
+            if self._gv.isHUC or self._gv.existingWshed:
+                QSWATUtils.error('Cannot find water bodies file {0}'.format(self._gv.db.waterBodiesFile), self._gv.isBatch)
+            else:
+                # just record that no waterbodies file was used
+                QSWATUtils.loginfo('No water bodies file: looked for {0}'.format(self._gv.db.waterBodiesFile))
             return
+        else:
+            QSWATUtils.loginfo('Using water bodies file'.format(self._gv.db.waterBodiesFile))
         if self._gv.isHUC:
             huc12_10_8_6 = self._gv.projName[3:]
             where = 'HUC12_10_8_6 LIKE "' + huc12_10_8_6 + '"'
         else:  # HAWQS
-            hucs = collectHUCs()
+            hucs, polyMap = collectHUCs()
+            if hucs is None:
+                if self._gv.existingWshed:
+                    QSWATUtils.error('Cannot use water bodies file {0}: wshed file has no HUC field'.format(self._gv.db.waterBodiesFile))
+                else:
+                    QSWATUtils.loginfo('Cannot use water bodies file {0}: wshed file has no HUC field'.format(self._gv.db.waterBodiesFile))
+                return
             where = 'HUC14_12_10_8 IN ' + hucs
+            QSWATUtils.loginfo('hucs: {0}'.format(hucs))
+            QSWATUtils.loginfo('polyMap: {0}'.format(polyMap))
         logFile = self._gv.logFile
         with self._gv.db.connect() as conn, sqlite3.connect(self._gv.db.waterBodiesFile) as waterConn:
             # first two may not exist in old projects: added November 2012
-            conn.execute('CREATE TABLE IF NOT EXISTS lake ' + DBUtils._LAKETABLESQL)
-            conn.execute('CREATE TABLE IF NOT EXISTS playa ' + DBUtils._PLAYATABLESQL)
+            if self._gv.isHUC:
+                conn.execute('CREATE TABLE IF NOT EXISTS lake ' + DBUtils._LAKETABLESQL)
+                conn.execute('CREATE TABLE IF NOT EXISTS playa ' + DBUtils._PLAYATABLESQL)
+            else:  # HAWQS
+                if not self._gv.db.connTableExists('lake', conn):
+                    conn.execute('CREATE TABLE lake ' + DBUtils._LAKETABLESQL)
+                if not self._gv.db.connTableExists('playa', conn):
+                    conn.execute('CREATE TABLE playa ' + DBUtils._PLAYATABLESQL)
             conn.execute('DELETE FROM pnd')
             conn.execute('DELETE FROM res')
             conn.execute('DELETE FROM lake')
             conn.execute('DELETE FROM playa')
-            sql0 = self._gv.db.sqlSelect('reservoirs', 'SUBBASIN, IYRES, RES_ESA, RES_EVOL, RES_PSA, RES_PVOL, RES_VOL, RES_DRAIN, RES_NAME, OBJECTID, HUC12_10_8_6, HUC14_12_10_8', '', where)
+            sql0 = self._gv.db.sqlSelect('reservoirs', 'SUBBASIN, IYRES, RES_ESA, RES_EVOL, RES_PSA, RES_PVOL, RES_VOL, RES_DRAIN, RES_NAME, OBJECTID, HUC12_10_8_6, HUC14_12_10_8, RES_LAT, RES_LONG', '', where)
             sql1 = 'INSERT INTO res (OID, SUBBASIN, IYRES, RES_ESA, RES_EVOL, RES_PSA, RES_PVOL, RES_VOL) VALUES(?,?,?,?,?,?,?,?);'
-            sql2 = self._gv.db.sqlSelect('ponds', 'SUBBASIN, PND_ESA, PND_EVOL, PND_PSA, PND_PVOL, PND_VOL, PND_DRAIN, PND_NAME, HUC12_10_8_6', '', where)
-            sql3 = self._gv.db.sqlSelect('wetlands', 'SUBBASIN, WET_AREA', '', where)
-            sql4 = self._gv.db.sqlSelect('playas', 'SUBBASIN, PLA_AREA, HUC12_10_8_6', '', where)
+            sql2 = self._gv.db.sqlSelect('ponds', 'SUBBASIN, PND_ESA, PND_EVOL, PND_PSA, PND_PVOL, PND_VOL, PND_DRAIN, PND_NAME, HUC12_10_8_6, HUC14_12_10_8', '', where)
+            sql3 = self._gv.db.sqlSelect('wetlands', 'SUBBASIN, WET_AREA, HUC14_12_10_8', '', where)
+            sql4 = self._gv.db.sqlSelect('playas', 'SUBBASIN, PLA_AREA, HUC12_10_8_6, HUC14_12_10_8', '', where)
             sql6 = self._gv.db.sqlSelect('lakes', 'SUBBASIN, LAKE_AREA, LAKE_NAME, OBJECTID, HUC12_10_8_6, HUC14_12_10_8', '', where)
             sql5 = 'INSERT INTO pnd (OID, SUBBASIN, PND_FR, PND_PSA, PND_PVOL, PND_ESA, PND_EVOL, PND_VOL) VALUES(?,?,?,?,?,?,?,?);'
             sql7 = 'INSERT INTO lake (OID, SUBBASIN, LAKE_AREA) VALUES(?,?,?);'
@@ -2665,12 +2692,12 @@ class CreateHRUs(QObject):
                 areaHa = float(row[4])
                 reduction, usedBasin = self.distributeWaterPolygons(oids, areaHa * 1E4, freeAreas, True)
                 if row[10] == row[11][:-2]:
-                    SWATBasin = int(row[0])
-                    basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                    huc = row[11]
+                    basin = polyMap[huc]
                 else:
                     # reservoir was assigned to a different huc12 from original, so SUBBASIN field not reliable
                     basin = usedBasin
-                    SWATBasin = self._gv.topo.basinToSWATBasin[basin]
+                SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                 if reduction > 0:
                     basinData = self.basins[basin]
                     QSWATUtils.information('WARNING: Reservoir {4} in huc{0} subbasin {1} area {2} ha reduced to {3}'.
@@ -2678,10 +2705,22 @@ class CreateHRUs(QObject):
                 # res table stores actual areas
                 oid += 1
                 conn.execute(sql1, (oid, SWATBasin, row[1], row[2], row[3], row[4], row[5], row[6]))
+                # add reservoir to MonitoringPoint table
+                ptll = QgsPointXY(row[13], row[12])
+                pt = self._gv.topo.pointFromLatLong(ptll)
+                elev = 0 # only used for weather gauges
+                name = '' # only used for weather gauges
+                HydroID = self._gv.topo.MonitoringPointFid + 400000
+                OutletID = self._gv.topo.MonitoringPointFid + 100000
+                sql = "INSERT INTO MonitoringPoint VALUES(?,0,?,?,?,?,?,?,?,?,?,?,?,?)"
+                conn.execute(sql, (self._gv.topo.MonitoringPointFid, 0, 0, \
+                                   float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, 'R', SWATBasin, HydroID, OutletID))
+                self._gv.topo.MonitoringPointFid += 1;
             oid = 0
             for row in waterConn.execute(sql2):
-                SWATBasin = int(row[0])
-                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                huc = row[9]
+                basin = polyMap[huc]
+                SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                 basinData = self.basins[basin]
                 pnd_fr = float(row[6]) / (basinData.area / 1E6)
                 pnd_fr = min(0.95, pnd_fr)
@@ -2700,12 +2739,12 @@ class CreateHRUs(QObject):
                 areaHa = float(row[1])
                 reduction, usedBasin = self.distributeWaterPolygons(oids, areaHa * 1E4, freeAreas, False)
                 if row[4] == row[5][:-2]:
-                    SWATBasin = int(row[0])
-                    basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                    huc = row[5]
+                    basin = polyMap[huc]
                 else:
                     # lake was assigned to a different huc12 from original, so SUBBASIN field not reliable
                     basin = usedBasin
-                    SWATBasin = self._gv.topo.basinToSWATBasin[basin]
+                SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                 if reduction > 0:
                     basinData = self.basins[basin]
                     QSWATUtils.information('WARNING: Lake {4} in huc{0} subbasin {1} area {2} ha reduced to {3}'.
@@ -2713,15 +2752,16 @@ class CreateHRUs(QObject):
                 oid += 1 
                 conn.execute(sql7, (oid, SWATBasin, row[1]))
             for row in waterConn.execute(sql3):
-                SWATBasin = int(row[0])
-                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                huc = row[2]
+                basin = polyMap[huc]
                 basinData = self.basins[basin]
                 # area is in hectares
                 basinData.wetlandArea = float(row[1]) * 1E4
             oid = 0
             for row in waterConn.execute(sql4):
-                SWATBasin = int(row[0])
-                basin = self._gv.topo.SWATBasinToBasin[SWATBasin]
+                huc = row[9]
+                basin = polyMap[huc]
+                SWATBasin = self._gv.topo.basinToSWATBasin[basin]
                 basinData = self.basins[basin]
                 areaHa = float(row[1])
                 # area is in hectares
@@ -2962,13 +3002,13 @@ class CreateHRUs(QObject):
         else:
             QSWATUtils.removeLayer(self._gv.fullHRUsFile, root)
             fields = QgsFields()
-            fields.append(QgsField(QSWATTopology._SUBBASIN, QVariant.Int))
-            fields.append(QgsField(Parameters._LANDUSE, QVariant.String, len=20))
-            fields.append(QgsField(Parameters._SOIL, QVariant.String, len=20))
-            fields.append(QgsField(Parameters._SLOPEBAND, QVariant.String, len=20))
-            fields.append(QgsField(Parameters._AREA, QVariant.Double, len=20, prec=2))
-            fields.append(QgsField(Parameters._PERCENT, QVariant.Double))
-            fields.append(QgsField(QSWATTopology._HRUGIS, QVariant.String, len=20))
+            fields.append(QgsField(QSWATTopology._SUBBASIN, Parameters.intFieldType))
+            fields.append(QgsField(Parameters._LANDUSE, Parameters.stringFieldType, len=20))
+            fields.append(QgsField(Parameters._SOIL, Parameters.stringFieldType, len=20))
+            fields.append(QgsField(Parameters._SLOPEBAND, Parameters.stringFieldType, len=20))
+            fields.append(QgsField(Parameters._AREA, Parameters.doubleFieldType, len=20, prec=2))
+            fields.append(QgsField(Parameters._PERCENT, Parameters.doubleFieldType))
+            fields.append(QgsField(QSWATTopology._HRUGIS, Parameters.stringFieldType, len=20))
             assert self._gv.topo.crsProject is not None
             writer = QgsVectorFileWriter.create(self._gv.fullHRUsFile, fields, QgsWkbTypes.MultiPolygon, self._gv.topo.crsProject, 
                                                 QgsProject.instance().transformContext(), self._gv.vectorFileWriterOptions)
@@ -4788,23 +4828,23 @@ class CreateHRUs(QObject):
         if addToSubs1:
             # add fields from Watershed table
             fields: List[QgsField] = []
-            fields.append(QgsField('Area', QVariant.Double, len=20, prec=0))
-            fields.append(QgsField('Slo1', QVariant.Double))
-            fields.append(QgsField('Len1', QVariant.Double))
-            fields.append(QgsField('Sll', QVariant.Double))
-            fields.append(QgsField('Csl', QVariant.Double))
-            fields.append(QgsField('Wid1', QVariant.Double))
-            fields.append(QgsField('Dep1', QVariant.Double))
-            fields.append(QgsField('Lat', QVariant.Double))
-            fields.append(QgsField('Long_', QVariant.Double))
-            fields.append(QgsField('Elev', QVariant.Double))
-            fields.append(QgsField('ElevMin', QVariant.Double))
-            fields.append(QgsField('ElevMax', QVariant.Double))
-            fields.append(QgsField('Bname', QVariant.String))
-            fields.append(QgsField('Shape_Len', QVariant.Double))
-            fields.append(QgsField('Shape_Area', QVariant.Double, len=20, prec=0))
-            fields.append(QgsField('HydroID', QVariant.Int))
-            fields.append(QgsField('OutletID', QVariant.Int))
+            fields.append(QgsField('Area', Parameters.doubleFieldType, len=20, prec=0))
+            fields.append(QgsField('Slo1', Parameters.doubleFieldType))
+            fields.append(QgsField('Len1', Parameters.doubleFieldType))
+            fields.append(QgsField('Sll', Parameters.doubleFieldType))
+            fields.append(QgsField('Csl', Parameters.doubleFieldType))
+            fields.append(QgsField('Wid1', Parameters.doubleFieldType))
+            fields.append(QgsField('Dep1', Parameters.doubleFieldType))
+            fields.append(QgsField('Lat', Parameters.doubleFieldType))
+            fields.append(QgsField('Long_', Parameters.doubleFieldType))
+            fields.append(QgsField('Elev', Parameters.doubleFieldType))
+            fields.append(QgsField('ElevMin', Parameters.doubleFieldType))
+            fields.append(QgsField('ElevMax', Parameters.doubleFieldType))
+            fields.append(QgsField('Bname', Parameters.stringFieldType))
+            fields.append(QgsField('Shape_Len', Parameters.doubleFieldType))
+            fields.append(QgsField('Shape_Area', Parameters.doubleFieldType, len=20, prec=0))
+            fields.append(QgsField('HydroID', Parameters.intFieldType))
+            fields.append(QgsField('OutletID', Parameters.intFieldType))
             subs1Layer = QgsVectorLayer(subs1File, 'Watershed ({0})'.format(Parameters._SUBS1), 'ogr')
             provider1 = subs1Layer.dataProvider()
             provider1.addAttributes(fields)

@@ -51,7 +51,7 @@ QSWAT3 version: {0}
 
 Minimum QGIS version: 3.16
 
-Python version: 3.7
+Python version: 3.9 or 3.12
 
 Current restrictions:
 - runs only in Windows

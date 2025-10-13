@@ -22,7 +22,7 @@
 from typing import Dict, List, Set, Tuple, Optional, Union, Any, TYPE_CHECKING, cast  # @UnusedImport
 # Import the PyQt and QGIS libraries
 try:
-    from qgis.PyQt.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer, QVariant  # @UnresolvedImport
+    from qgis.PyQt.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer  # @UnresolvedImport
     from qgis.PyQt.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
     from qgis.PyQt.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QListWidgetItem, QFileDialog, QMessageBox, QShortcut, QStyleOptionGraphicsItem
     from qgis.PyQt.QtXml import QDomDocument
@@ -32,7 +32,7 @@ try:
     import processing  # type: ignore # @UnresolvedImport 
     from processing.core.Processing import Processing  # type: ignore # @UnresolvedImport @UnusedImport 
 except:
-    from PyQt5.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer, QVariant
+    from PyQt5.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer
     from PyQt5.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
     from PyQt5.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QListWidgetItem, QFileDialog, QMessageBox, QShortcut, QStyleOptionGraphicsItem
     from PyQt5.QtXml import QDomDocument
@@ -299,7 +299,7 @@ class Visualise(QObject):
                     fields = subsProvider.fields()
                     catchmentIndex = fields.indexOf('Catchment')
                     if catchmentIndex < 0:
-                        subsProvider.addAttributes([QgsField('Catchment', QVariant.Int)])
+                        subsProvider.addAttributes([QgsField('Catchment', Parameters.intFieldType)])
                         fields = subsProvider.fields()
                         subIndex = fields.indexOf(QSWATTopology._SUBBASIN)
                         catchmentIndex = fields.indexOf('Catchment')
@@ -1404,13 +1404,13 @@ class Visualise(QObject):
             self.keepRivColours = False
             self.currentResultsLayer = self.rivResultsLayer
         if self.hasAreas:
-            field = QgsField(Visualise._AREA, QVariant.Double, len=20, prec=0)
+            field = QgsField(Visualise._AREA, Parameters.doubleFieldType, len=20, prec=0)
             if not self.currentResultsLayer.dataProvider().addAttributes([field]):
                 QSWATUtils.error('Could not add field {0} to results file {1}'.format(Visualise._AREA, self.resultsFile), self._gv.isBatch)
                 return False
         varz = self.varList(False)
         for var in varz:
-            field = QgsField(var, QVariant.Double)
+            field = QgsField(var, Parameters.doubleFieldType)
             if not self.currentResultsLayer.dataProvider().addAttributes([field]):
                 QSWATUtils.error('Could not add field {0} to results file {1}'.format(var, self.resultsFile), self._gv.isBatch)
                 return False
@@ -1660,7 +1660,7 @@ class Visualise(QObject):
         self.currentStillNumber = 0
         animateLayer = QgsVectorLayer(animateFile, '{0} {1}'.format(self.scenario, self.animateVar), 'ogr')
         provider = animateLayer.dataProvider()
-        field = QgsField(self.animateVar, QVariant.Double)
+        field = QgsField(self.animateVar, Parameters.doubleFieldType)
         if not provider.addAttributes([field]):
             QSWATUtils.error(u'Could not add field {0} to animation file {1}'.format(self.animateVar, animateFile), self._gv.isBatch)
             return False
@@ -2320,9 +2320,9 @@ class Visualise(QObject):
         resultsGroup = root.findGroup(QSWATUtils._RESULTS_GROUP_NAME)
         assert resultsGroup is not None
         if self.hasAreas:
-            areaField = QgsField(Visualise._AREA, QVariant.Double, len=20, prec=0)
+            areaField = QgsField(Visualise._AREA, Parameters.doubleFieldType, len=20, prec=0)
         selectVarShort = selectVar[:10]
-        varField = QgsField(selectVarShort, QVariant.Double)
+        varField = QgsField(selectVarShort, Parameters.doubleFieldType)
         addedLayers = []
         if needLayer1:
             legend1 = '{0} {1} {2}'.format(self.scenario1, selectVar, summary)

@@ -22,12 +22,10 @@
 from typing import Set, List, Dict, Tuple, Iterable, Iterator, cast, Any, Optional, Union, Callable, TYPE_CHECKING  # @UnusedImport @Reimport
 # Import the PyQt and QGIS libraries
 try:
-    from qgis.PyQt.QtCore import QVariant  # @UnresolvedImport
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.PyQt.QtWidgets import * # @UnusedWildImport
     from qgis.core import QgsUnitTypes, QgsProject, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsFeature, QgsFeatureRequest, QgsGeometry, QgsPointXY, QgsField, QgsVectorLayer, QgsExpression, QgsLayerTreeGroup, QgsRasterLayer, QgsVectorDataProvider, NULL  # @UnresolvedImport
 except:
-    from PyQt5.QtCore import QVariant  # @UnresolvedImport
     QgsRasterLayer = Any
     QgsVectorLayer = Any
     QgsFeature = Any
@@ -224,7 +222,7 @@ class QSWATTopology:
         ## minimum catchment size for TNC projects in sq km
         self.TNCCatchmentThreshold = TNCCatchmentThreshold
         
-    def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float) -> bool:
+    def setUp0(self, demLayer: QgsRasterLayer, streamLayer:  QgsVectorLayer, verticalFactor: float, existingWshed: bool) -> bool:
         """Set DEM size parameters and stream orientation, and store source and outlet points for stream reaches."""
         # can fail if demLayer is None or not projected
         try:
@@ -234,11 +232,8 @@ class QSWATTopology:
         except Exception:
             QSWATUtils.loginfo('Failure to read DEM units: {0}'.format(traceback.format_exc()))
             return False
-        if units == QgsUnitTypes.DistanceMeters:
-            factor = 1
-        elif units == QgsUnitTypes.DistanceFeet:
-            factor = 0.3048
-        else:
+        factor, OK = QSWATUtils.getHorizontalFactor(units)
+        if not OK:
             # unknown or degrees - will be reported in delineation - just quietly fail here
             QSWATUtils.loginfo('Failure to read DEM units: {0}'.format(str(units)))
             return False
@@ -249,7 +244,7 @@ class QSWATTopology:
         self.verticalFactor = verticalFactor
         self.outletAtStart = self.hasOutletAtStart(streamLayer)
         QSWATUtils.loginfo('Outlet at start is {0!s}'.format(self.outletAtStart))
-        if not self.saveOutletsAndSources(streamLayer):
+        if not self.saveOutletsAndSources(streamLayer, existingWshed):
             return False
         return True
         
@@ -567,7 +562,7 @@ class QSWATTopology:
         if subbasinIndex < 0:
             # need to add subbasin field
             wshedProvider = wshedLayer.dataProvider()
-            wshedProvider.addAttributes([QgsField(QSWATTopology._SUBBASIN, QVariant.Int)])
+            wshedProvider.addAttributes([QgsField(QSWATTopology._SUBBASIN, Parameters.intFieldType)])
             wshedLayer.updateFields()
             subbasinIndex = wshedProvider.fieldNameIndex(QSWATTopology._SUBBASIN)
         request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([polyIndex])
@@ -1078,7 +1073,7 @@ class QSWATTopology:
         cursor.execute(sql, (self.MonitoringPointFid, POINTID, GRID_CODE, \
                            float(pt.x()), float(pt.y()), float(ptll.y()), float(ptll.x()), float(elev), name, typ, SWATBasin, HydroID, OutletID))
         self.MonitoringPointFid += 1;
-        
+            
     def makeRivsShapefile(self, gv):
         """For HAWQS projects, when starting in case going straight to editor, running SWAT and visualise.
         Make rivs.shp if not done previously."""
@@ -1105,7 +1100,7 @@ class QSWATTopology:
             drainAreaKm = float(stream[drainIdx])
             channelWidth = float(1.29 * drainAreaKm ** 0.6)
             wid2Data[SWATBasin] = channelWidth
-        OK = rivProvider.addAttributes([QgsField(QSWATTopology._PENWIDTH, QVariant.Double)])
+        OK = rivProvider.addAttributes([QgsField(QSWATTopology._PENWIDTH, Parameters.doubleFieldType)])
         if OK:
             QSWATTopology.setPenWidth(wid2Data, rivProvider, self.isBatch)
         else:
@@ -1143,7 +1138,7 @@ class QSWATTopology:
         # add Subbasin field unless already has it
         subIdx = self.getIndex(riv1Layer, QSWATTopology._SUBBASIN, ignoreMissing=True)
         if subIdx < 0:
-            OK = provider1.addAttributes([QgsField(QSWATTopology._SUBBASIN, QVariant.Int)])
+            OK = provider1.addAttributes([QgsField(QSWATTopology._SUBBASIN, Parameters.intFieldType)])
             if not OK:
                 QSWATUtils.error('Cannot add {0} field to stream reaches shapefile {1}'.format(QSWATTopology._SUBBASIN, riv1File), self.isBatch)
                 return None
@@ -1192,23 +1187,23 @@ class QSWATTopology:
             self.removeFields(provider, [QSWATTopology._SUBBASIN], rivFile, self.isBatch)
         if not gv.useGridModel:
             # add PenWidth field to stream results template
-            OK = provider.addAttributes([QgsField(QSWATTopology._PENWIDTH, QVariant.Double)])
+            OK = provider.addAttributes([QgsField(QSWATTopology._PENWIDTH, Parameters.doubleFieldType)])
             if not OK:
                 QSWATUtils.error('Cannot add {0} field to stream reaches results template {1}'.format(QSWATTopology._PENWIDTH, rivFile), self.isBatch)
                 return None
         if addToRiv1:
             fields = []
-            fields.append(QgsField('SubbasinR', QVariant.Int))
-            fields.append(QgsField('AreaC', QVariant.Double, len=20, prec=0))
-            fields.append(QgsField('Len2', QVariant.Double))
-            fields.append(QgsField('Slo2', QVariant.Double))
-            fields.append(QgsField('Wid2', QVariant.Double))
-            fields.append(QgsField('Dep2', QVariant.Double))
-            fields.append(QgsField('MinEl', QVariant.Double))
-            fields.append(QgsField('MaxEl', QVariant.Double))
-            fields.append(QgsField('Shape_Len', QVariant.Double))
-            fields.append(QgsField('HydroID', QVariant.Int))
-            fields.append(QgsField('OutletID', QVariant.Int))
+            fields.append(QgsField('SubbasinR', Parameters.intFieldType))
+            fields.append(QgsField('AreaC', Parameters.doubleFieldType, len=20, prec=0))
+            fields.append(QgsField('Len2', Parameters.doubleFieldType))
+            fields.append(QgsField('Slo2', Parameters.doubleFieldType))
+            fields.append(QgsField('Wid2', Parameters.doubleFieldType))
+            fields.append(QgsField('Dep2', Parameters.doubleFieldType))
+            fields.append(QgsField('MinEl', Parameters.doubleFieldType))
+            fields.append(QgsField('MaxEl', Parameters.doubleFieldType))
+            fields.append(QgsField('Shape_Len', Parameters.doubleFieldType))
+            fields.append(QgsField('HydroID', Parameters.intFieldType))
+            fields.append(QgsField('OutletID', Parameters.intFieldType))
             riv1Layer = QgsVectorLayer(riv1File, 'Stream reaches ({0})'.format(Parameters._RIV1), 'ogr')
             provider1 = riv1Layer.dataProvider()
             provider1.addAttributes(fields)
@@ -1573,6 +1568,13 @@ class QSWATTopology:
         geom = QgsGeometry().fromPointXY(point)
         geom.transform(crsTransform)
         return geom.asPoint()
+    
+    def pointFromLatLong(self, point: QgsPointXY) -> QgsPointXY: 
+        """Convert a QgsPointXY from latlong coordinates and return it."""
+        crsTransform = QgsCoordinateTransform(self.crsLatLong, self.crsProject, QgsProject.instance())
+        geom = QgsGeometry().fromPointXY(point)
+        geom.transform(crsTransform)
+        return geom.asPoint()
             
     def getIndex(self, layer: QgsVectorLayer, name: str, ignoreMissing: bool=False) -> int:
         """Get the index of a shapefile layer attribute name, 
@@ -1698,7 +1700,7 @@ class QSWATTopology:
         QSWATUtils.information('Cannot find physically connected reaches in reaches shapefile {0}.  Try increasing nearness threshold'.format(QSWATUtils.layerFileInfo(streamLayer).filePath()), self.isBatch)  
         return True
     
-    def saveOutletsAndSources(self, streamLayer: QgsVectorLayer) -> bool:
+    def saveOutletsAndSources(self, streamLayer: QgsVectorLayer, existingWshed: bool) -> bool:
         """Write outlets, nearoutlets and nearsources tables."""
         # in case called twice
         self.outlets.clear()
@@ -1706,7 +1708,7 @@ class QSWATTopology:
         self.nearsources.clear()
         if self.fromGRASS:
             return True
-        isHUCOrHAWQS = self.isHUC or self.isHAWQS
+        isHUCOrHAWQS = self.isHUC or (self.isHAWQS and existingWshed)
         lengthIndex = self.getIndex(streamLayer, QSWATTopology._LENGTH, ignoreMissing=not isHUCOrHAWQS)
         wsnoIndex = self.getIndex(streamLayer, QSWATTopology._WSNO, ignoreMissing=not isHUCOrHAWQS)
         sourceXIndex = self.getIndex(streamLayer, QSWATTopology._SOURCEX, ignoreMissing=not isHUCOrHAWQS)

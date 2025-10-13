@@ -328,6 +328,14 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                     return True
         return False
     
+    def connTableExists(self, table: str, conn: Any) -> bool:
+        """Return True if table exists in Access db connexted by conn"""
+        cursor = conn.cursor()
+        for row in cursor.tables(tableType='TABLE'):
+            if row.table_name == table:
+                return True
+        return False
+    
     @staticmethod
     def sqlSelect(table: str, selection: str, order: str, where: str) -> str:
         """Create SQL select statement."""
@@ -739,6 +747,9 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 QSWATUtils.information('WARNING: SSURGO soil map value {0} is a STATSGO soil according to statsgo_ssurgo_lkey'.format(sid), self.isBatch, logFile=self.logFile)
                 # self._undefinedSoilIds.append(sid)
                 # return sid
+            # now fixed as SSURGO_Soils
+            # for some reason mdb version has table SSURGO_Soils_HUC and sqlite has table SSURGO_Soils
+            # table = 'SSURGO_Soils_HUC' if self.SSURGODbFile.endswith('.mdb') else 'SSURGO_Soils'
             sql = self.sqlSelect('SSURGO_Soils', 'TEXTURE', '', 'MUID=?')
             row = self.SSURGOConn.execute(sql, (lookup_row[1],)).fetchone()
             if row is None:
@@ -966,7 +977,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         conn = self.connect()
         cursor = conn.cursor()
         # remove old table completely, for backward compatibility, since structure changed
-        table = self._BASINSDATAHUC1 if self.isHUC or self.useSQLite else self._BASINSDATA1
+        table = self._BASINSDATAHUC1 if self.isHUC or self.isHAWQS or self.useSQLite else self._BASINSDATA1
         if table in self._allTableNames:
             dropSQL = 'DROP TABLE ' + table
             try:
@@ -1034,7 +1045,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 
         # note we coerce all double values to float to avoid 'SQLBindParameter' error if an int becomes a long
         try:
-            if self.isHUC or self.useSQLite or self.forTNC:
+            if self.isHUC or self.isHAWQS or self.useSQLite or self.forTNC:
                 curs.execute(sql1, (basin, data.cellCount, float(data.area), float(data.drainArea),  \
                              float(data.pondArea), float(data.reservoirArea), float(data.playaArea), float(data.lakeArea), \
                              float(data.wetlandArea), float(data.totalElevation), float(data.totalSlope), \
@@ -1069,46 +1080,85 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         try:
             basins = dict()
             with self.connect(readonly=True) as conn:
-                if self.isHUC or self.useSQLite or self.forTNC:
-                    conn.row_factory = sqlite3.Row  # @UndefinedVariable
+                if self.isHUC or self.isHAWQS or self.useSQLite or self.forTNC:
                     try:
-                        for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
-                            bd = BasinData(row1['outletCol'], row1['outletRow'], row1['outletElevation'], row1['startCol'],
-                                           row1['startRow'], row1['startToOutletDistance'], row1['startToOutletDrop'], row1['farDistance'], self.isBatch)
-                            bd.cellCount = row1['cellCount']
-                            bd.area = row1['area']
-                            bd.drainArea = row1['drainArea']
-                            bd.pondArea = row1['pondArea']
-                            bd.reservoirArea = row1['reservoirArea']
-                            bd.playaArea = row1['playaArea']
-                            bd.lakeArea = row1['lakeArea']
-                            bd.wetlandArea = row1['wetlandArea']
-                            bd.totalElevation = row1['totalElevation']
-                            bd.totalSlope = row1['totalSlope']
-                            bd.maxElevation = row1['maxElevation']
-                            bd.farCol = row1['farCol']
-                            bd.farRow = row1['farRow']
-                            bd.farthest = row1['farthest']
-                            bd.farElevation = row1['farElevation']
-                            bd.cropSoilSlopeArea = row1['cropSoilSlopeArea']
-                            bd.relHru = row1['hru']
-                            bd.streamArea = row1['streamArea']
-                            bd.WATRInStreamArea = row1['WATRInStreamArea']
-                            basin = int(row1['basin'])
-                            basins[basin] = bd
-                            sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
-                            for row2 in conn.cursor().execute(sql, (basin,)):
-                                crop = row2['crop']
-                                soil = row2['soil']
-                                slope = row2['slope']
-                                if crop not in bd.cropSoilSlopeNumbers:
-                                    bd.cropSoilSlopeNumbers[crop] = dict()
-                                    ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
-                                if soil not in bd.cropSoilSlopeNumbers[crop]:
-                                    bd.cropSoilSlopeNumbers[crop][soil] = dict()
-                                bd.cropSoilSlopeNumbers[crop][soil][slope] = row2['hru']
-                                cellData = CellData(row2['cellcount'], row2['area'], row2['totalSlope'], crop)
-                                bd.hruMap[row2['hru']] = cellData
+                        if self.isHAWQS:
+                            for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
+                                bd = BasinData(row1.outletCol, row1.outletRow, row1.outletElevation, row1.startCol,
+                                               row1.startRow, row1.startToOutletDistance, row1.startToOutletDrop, row1.farDistance, self.isBatch)
+                                bd.cellCount = row1.cellCount
+                                bd.area = row1.area
+                                bd.drainArea = row1.drainArea
+                                bd.pondArea = row1.pondArea
+                                bd.reservoirArea = row1.reservoirArea
+                                bd.playaArea = row1.playaArea
+                                bd.lakeArea = row1.lakeArea
+                                bd.wetlandArea = row1.wetlandArea
+                                bd.totalElevation = row1.totalElevation
+                                bd.totalSlope = row1.totalSlope
+                                bd.maxElevation = row1.maxElevation
+                                bd.farCol = row1.farCol
+                                bd.farRow = row1.farRow
+                                bd.farthest = row1.farthest
+                                bd.farElevation = row1.farElevation
+                                bd.cropSoilSlopeArea = row1.cropSoilSlopeArea
+                                bd.relHru = row1.hru
+                                bd.streamArea = row1.streamArea
+                                bd.WATRInStreamArea = row1.WATRInStreamArea
+                                basin = int(row1.basin)
+                                basins[basin] = bd
+                                sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
+                                for row2 in conn.cursor().execute(sql, (basin,)):
+                                    crop = row2.crop
+                                    soil = row2.soil
+                                    slope = row2.slope
+                                    if crop not in bd.cropSoilSlopeNumbers:
+                                        bd.cropSoilSlopeNumbers[crop] = dict()
+                                        ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
+                                    if soil not in bd.cropSoilSlopeNumbers[crop]:
+                                        bd.cropSoilSlopeNumbers[crop][soil] = dict()
+                                    bd.cropSoilSlopeNumbers[crop][soil][slope] = row2.hru
+                                    cellData = CellData(row2.cellcount, row2.area, row2.totalSlope, crop)
+                                    bd.hruMap[row2.hru] = cellData
+                        else:
+                            conn.row_factory = sqlite3.Row  # @UndefinedVariable
+                            for row1 in conn.cursor().execute(self.sqlSelect(self._BASINSDATAHUC1, '*', '', '')):
+                                bd = BasinData(row1['outletCol'], row1['outletRow'], row1['outletElevation'], row1['startCol'],
+                                               row1['startRow'], row1['startToOutletDistance'], row1['startToOutletDrop'], row1['farDistance'], self.isBatch)
+                                bd.cellCount = row1['cellCount']
+                                bd.area = row1['area']
+                                bd.drainArea = row1['drainArea']
+                                bd.pondArea = row1['pondArea']
+                                bd.reservoirArea = row1['reservoirArea']
+                                bd.playaArea = row1['playaArea']
+                                bd.lakeArea = row1['lakeArea']
+                                bd.wetlandArea = row1['wetlandArea']
+                                bd.totalElevation = row1['totalElevation']
+                                bd.totalSlope = row1['totalSlope']
+                                bd.maxElevation = row1['maxElevation']
+                                bd.farCol = row1['farCol']
+                                bd.farRow = row1['farRow']
+                                bd.farthest = row1['farthest']
+                                bd.farElevation = row1['farElevation']
+                                bd.cropSoilSlopeArea = row1['cropSoilSlopeArea']
+                                bd.relHru = row1['hru']
+                                bd.streamArea = row1['streamArea']
+                                bd.WATRInStreamArea = row1['WATRInStreamArea']
+                                basin = int(row1['basin'])
+                                basins[basin] = bd
+                                sql = self.sqlSelect(self._BASINSDATA2, '*', '', 'basin=?')
+                                for row2 in conn.cursor().execute(sql, (basin,)):
+                                    crop = row2['crop']
+                                    soil = row2['soil']
+                                    slope = row2['slope']
+                                    if crop not in bd.cropSoilSlopeNumbers:
+                                        bd.cropSoilSlopeNumbers[crop] = dict()
+                                        ListFuns.insertIntoSortedList(crop, self.landuseVals, True)
+                                    if soil not in bd.cropSoilSlopeNumbers[crop]:
+                                        bd.cropSoilSlopeNumbers[crop][soil] = dict()
+                                    bd.cropSoilSlopeNumbers[crop][soil][slope] = row2['hru']
+                                    cellData = CellData(row2['cellcount'], row2['area'], row2['totalSlope'], crop)
+                                    bd.hruMap[row2['hru']] = cellData
                     except Exception:
                         if not ignoreerrors:
                             QSWATUtils.error("""Could not read basins data from project database {0}: {1}.

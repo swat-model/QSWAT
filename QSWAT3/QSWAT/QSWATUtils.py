@@ -77,6 +77,7 @@ import traceback
 import time
 import processing
 from processing.core.Processing import Processing
+from packaging.version import parse
 
 
 class QSWATUtils:
@@ -598,6 +599,23 @@ class QSWATUtils:
                     if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, lgnd), isBatch, True) == QMessageBox.Yes:
                         return layer
         return None
+        
+    @staticmethod
+    def getHorizontalFactor(units) -> Tuple[float, bool]:
+        """Get horizontal factor (multiplier to metres from units, plus OK flag"""
+        
+        qv = Qgis.QGIS_VERSION.split('-', 1)[0]
+        recent = parse(qv) >= parse('3.40')
+        factor = 0.0
+        OK = False
+        if units == QgsUnitTypes.DistanceMeters:
+            factor = 1.0
+            OK = True 
+        elif units == QgsUnitTypes.DistanceFeet or (recent and units == QgsUnitTypes.FeetUSSurvey):
+            factor = 0.3048   # Parameters._FEETTOMETRES
+            OK = True
+        return (factor, OK)
+
     
     @staticmethod
     def clipLayerToDEM(treeLayers: List[QgsLayerTreeLayer], rasterLayer: QgsRasterLayer, fileName: str, legend: str, gv: Any) -> QgsRasterLayer:
@@ -608,11 +626,8 @@ class QSWATUtils:
         xMax: float = extent.xMaximum()
         xMin: float = extent.xMinimum()
         units: QgsUnitTypes.DistanceUnit = rasterLayer.crs().mapUnits()
-        if units == QgsUnitTypes.DistanceMeters:
-            factor: float = 1
-        elif units == QgsUnitTypes.DistanceFeet:
-            factor = 0.0348
-        else: # something odd has happened - probably in lat-long - reported elsewhere
+        factor, OK = QSWATUtils.getHorizontalFactor(units)
+        if not OK: # something odd has happened - probably in lat-long - reported elsewhere
             return rasterLayer
         xSize: float = rasterLayer.rasterUnitsPerPixelX() * factor
         ySize: float = rasterLayer.rasterUnitsPerPixelY() * factor
