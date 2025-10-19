@@ -1525,31 +1525,33 @@ class FileTypes:
             ListFuns.insertIntoSortedList(val, gv.db.landuseVals, True)
         # remove unique values table layer
         proj.removeMapLayer(outTreeLayer.layerId())
-        # # make landuseCodes table from lookup table: no longer used
-        # gv.db.landuseCodes.clear()
-        # title = proj.title()
-        # table, found = proj.readEntry(gv.attTitle, 'landuse/table', '')
-        # if not found:
-        #     QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
-        # sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)
-        # with gv.db.connect(readonly=True) as conn:
-        #     for row in conn.execute(sql):
-        #         gv.db.landuseCodes[int(row[0])] = row[1] 
-        # FileTypes.colourLanduses(layer, gv)
-        # make landuse code and colour table for NLCD landuses
-        items: List[QgsPalettedRasterRenderer.Class] = []
-        sql = 'SELECT SWAT_CODE, Name, Red, Green, Blue FROM NLCD_CDL_color_scheme WHERE LANDUSE_ID=?'
-        for i in gv.db.landuseVals:
-            row = gv.db.connRef.execute(sql, (i,)).fetchone()
-            if row is None:
-                QSWATUtils.error('Unknown NLCD_CDL landuse value {0}'.format(i), gv.isBatch)
-                return
-            label = '{0} ({1})'.format(row[1], row[0])
-            item = QgsPalettedRasterRenderer.Class(i, QColor(int(row[2]), int(row[3]), int(row[4])), label)
-            items.append(item)
-        renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
-        layer.setRenderer(renderer)
-        layer.triggerRepaint()
+        # # make landuseCodes table from lookup table if NLCD_CDL_color_scheme not available
+        if not gv.db.connTableExists('NLCD_CDL_color_scheme', gv.db.connRef):
+            gv.db.landuseCodes.clear()
+            title = proj.title()
+            table, found = proj.readEntry(gv.attTitle, 'landuse/table', '')
+            if not found:
+                QSWATUtils.loginfo('Cannot find landuse lookup table in project file')
+            sql = 'SELECT LANDUSE_ID, SWAT_CODE FROM {0}'.format(table)
+            with gv.db.connect(readonly=True) as conn:
+                for row in conn.execute(sql):
+                    gv.db.landuseCodes[int(row[0])] = row[1] 
+            FileTypes.colourLanduses(layer, gv)
+        else:
+            # make landuse code and colour table for NLCD landuses
+            items: List[QgsPalettedRasterRenderer.Class] = []
+            sql = 'SELECT SWAT_CODE, Name, Red, Green, Blue FROM NLCD_CDL_color_scheme WHERE LANDUSE_ID=?'
+            for i in gv.db.landuseVals:
+                row = gv.db.connRef.execute(sql, (i,)).fetchone()
+                if row is None:
+                    QSWATUtils.error('Unknown NLCD_CDL landuse value {0}'.format(i), gv.isBatch)
+                    return
+                label = '{0} ({1})'.format(row[1], row[0])
+                item = QgsPalettedRasterRenderer.Class(i, QColor(int(row[2]), int(row[3]), int(row[4])), label)
+                items.append(item)
+            renderer = QgsPalettedRasterRenderer(layer.dataProvider(), 1, items)
+            layer.setRenderer(renderer)
+            layer.triggerRepaint()
     
     @staticmethod
     def colourSoils(layer: QgsRasterLayer, gv: Any) -> None:

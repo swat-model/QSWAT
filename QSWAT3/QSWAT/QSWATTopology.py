@@ -805,13 +805,15 @@ class QSWATTopology:
         mmin = numShapes
         mmax = 0
         ignoreCount = 0
+        result = True
         request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([subIndex, polyIndex])
         for polygon in wshedLayer.getFeatures(request):
             attrs = polygon.attributes()
             nxt = attrs[subIndex]
             basin = attrs[polyIndex]
             if basin not in self.basinToLink:
-                return False
+                result = False 
+                break
             link = self.basinToLink[basin]
             if link not in self.upstreamFromInlets and basin not in self.emptyBasins:
                 if ((nxt > 0) and basin not in self.basinToSWATBasin and nxt not in self.SWATBasinToBasin):
@@ -820,14 +822,60 @@ class QSWATTopology:
                     self.basinToSWATBasin[basin] = nxt
                     self.SWATBasinToBasin[nxt] = basin
                 else:
-                    return False
+                    result = False 
+                    break
             elif nxt == 0:
                 # can be ignored
                 ignoreCount += 1
             else:
-                return False
+                result = False 
+                break
         expectedCount = numShapes - ignoreCount
-        return (mmin == 1) and (mmax == expectedCount) and (len(self.basinToSWATBasin) == expectedCount)
+        if result and (mmin == 1) and (mmax == expectedCount) and (len(self.basinToSWATBasin) == expectedCount):
+            return True
+        # we failed with wshedLayer but for HAWQS with existing Watershed table we can try using it by matching subbasins by area
+        if not self.isHAWQS:
+            return False 
+        if not self.db.hasData('Watershed'):
+            return False 
+        areaIndex = self.getIndex(wshedLayer, QSWATTopology._AREA, ignoreMissing=True)
+        if areaIndex < 0:
+            return False 
+        # failed attempt may have put data in these, so clear them
+        self.basinToSWATBasin.clear()
+        self.SWATBasinToBasin.clear()
+        mmin = numShapes
+        mmax = 0
+        watershedAreas = dict()
+        with self.db.connect() as conn:
+            sql = 'SELECT Subbasin, Area FROM Watershed'
+            for row in conn.execute(sql):
+                watershedAreas[int(row[0])] = double(row[1])
+        request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([polyIndex, areaIndex])
+        for polygon in wshedLayer.getFeatures(request):
+            attrs = polygon.attributes()
+            basin = attrs[polyIndex]
+            area = double(attrs[areaIndex])
+            if basin not in self.basinToLink:
+                result = False 
+                break
+            link = self.basinToLink[basin]
+            if link not in self.upstreamFromInlets and basin not in self.emptyBasins:
+                nxt = -1
+                for (sub, subArea) in watershedAreas.items():
+                    if abs(area - subArea) <= 1:
+                        nxt = sub
+                        break
+                if ((nxt > 0) and basin not in self.basinToSWATBasin and nxt not in self.SWATBasinToBasin):
+                    if nxt < mmin: mmin = nxt
+                    if nxt > mmax: mmax = nxt
+                    self.basinToSWATBasin[basin] = nxt
+                    self.SWATBasinToBasin[nxt] = basin
+                else:
+                    return False
+            else:
+                return False
+        return (mmin == 1) and (mmax == numShapes) and (len(self.basinToSWATBasin) == numShapes)
  
     @staticmethod
     def snapPointToReach(streamLayer: QgsVectorLayer, point: QgsPointXY, threshold: float, isBatch: bool) -> Optional[QgsPointXY]:
@@ -1084,7 +1132,8 @@ class QSWATTopology:
         ft = FileTypes._STREAMS
         streamTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(ft), root.findLayers())
         if streamTreeLayer is None:
-            QSWATUtils('Cannot find {0} layer'.format(FileTypes.legend(ft)))
+            QSWATUtils.error('Cannot find {0} layer'.format(FileTypes.legend(ft)), self.isBatch)
+            return
         streamLayer = streamTreeLayer.layer()
         streamFile = QSWATUtils.layerFilename(streamLayer)
         QSWATUtils.copyShapefile(streamFile, Parameters._RIVS, gv.tablesOutDir)
@@ -1116,7 +1165,8 @@ class QSWATTopology:
         ft = FileTypes._WATERSHED
         wshedTreeLayer = QSWATUtils.getLayerByLegend(FileTypes.legend(ft), root.findLayers())
         if wshedTreeLayer is None:
-            QSWATUtils('Cannot find {0} layer'.format(FileTypes.legend(ft)))
+            QSWATUtils.error('Cannot find {0} layer'.format(FileTypes.legend(ft)), self.isBatch)
+            return
         wshedLayer = wshedTreeLayer.layer()
         wshedFile = QSWATUtils.layerFilename(wshedLayer)
         QSWATUtils.copyShapefile(wshedFile, Parameters._SUBS, gv.tablesOutDir)

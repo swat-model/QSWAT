@@ -36,8 +36,8 @@
     
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
-from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsUnitTypes, QgsApplication
+from qgis.PyQt.QtWidgets import QAction, QMessageBox, QFileDialog, QInputDialog
+from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsApplication
 from qgis.analysis import QgsNativeAlgorithms
 from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
     
@@ -46,6 +46,8 @@ import subprocess
 import time
 import sys
 import traceback
+from zipfile import ZipFile
+import shutil
 from typing import Dict, List, Set, Tuple, Optional, Union, Any, TYPE_CHECKING, cast  # @UnusedImport
 
 # Import the code for the dialog
@@ -77,7 +79,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '2.0.2'
+    __version__ = '2.0.3'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -230,26 +232,113 @@ class QSwat(QObject):
         
     def newProject(self) -> None:
         """Call QGIS actions to create and name a new project."""
-        self._iface.actionNewProject().trigger()
-        # save the project to force user to supply a name and location
-        self._iface.actionSaveProjectAs().trigger()
-        self.initButtons()
-        # allow time for project to be created
-        time.sleep(2)
         proj = QgsProject.instance()
-        projFile = proj.fileName()
-        if not projFile or projFile == '':
-            # QSWATUtils.error('No project created', False)
-            return
-        if not QFileInfo(projFile).baseName()[0].isalpha():
-            QSWATUtils.error('Project name must start with a letter', False)
-            if os.path.exists(projFile):
-                os.remove(projFile)
-            return
+        madeCopy = False
+        if os.path.isfile(proj.fileName()):
+            query = QSWATUtils.question('Do you want to create a new copy of the current project?', False, False)
+            if query == QMessageBox.Yes:
+                self.copyProject(proj)
+                proj = QgsProject.instance()
+                madeCopy = True
+        if not madeCopy:
+            self._iface.actionNewProject().trigger()
+            # save the project to force user to supply a name and location
+            self._iface.actionSaveProjectAs().trigger()
+            self.initButtons()
+            # allow time for project to be created
+            time.sleep(2)
+            proj = QgsProject.instance()
+            projFile = proj.fileName()
+            if not projFile or projFile == '':
+                # QSWATUtils.error('No project created', False)
+                return
+            if not QFileInfo(projFile).baseName()[0].isalpha():
+                QSWATUtils.error('Project name must start with a letter', False)
+                if os.path.exists(projFile):
+                    os.remove(projFile)
+                return
         self._odlg.raise_()
         self.setupProject(proj, False)
         assert self._gv is not None
         self._gv.writeMasterProgress(0, 0)
+        
+    def copyProject(self, proj: QgsProject):
+        title = 'Select directory for copied project.  This is the directory where the .qgs file will be stored.'
+        projDir, qgsorzFile = os.path.split(proj.fileName())
+        projDir = os.path.abspath(projDir)
+        projName = os.path.splitext(qgsorzFile)[0] 
+        projPath = os.path.join(projDir, projName)
+        while True:
+            try:
+                newProjDir = QFileDialog.getExistingDirectory(None, title, projDir)
+                if not newProjDir:
+                    return ''
+                newProjDir = os.path.abspath(newProjDir)
+                newProjName, ok = QInputDialog.getText(None, u'QSWAT project name', u'Please enter the new project name, starting with a letter:')
+                if not ok:
+                    return ''
+                if not str(newProjName[0]).isalpha():
+                    QSWATUtils.error(u'Project name must start with a letter', False)
+                    continue
+                newProjPath = os.path.join(newProjDir, newProjName)
+                if projPath == newProjPath:
+                    QSWATUtils.error('You are trying to copy a project to itself.  Please choose a different directory or a different project name.', False)
+                    continue
+                elif os.path.samefile(projDir, newProjDir):
+                    # same directory but different project names: no problem
+                    break
+                elif newProjDir.startswith(projDir):
+                    QSWATUtils.error('Current project inside new project: please choose another directory', False)
+                    continue
+                elif projDir.startswith(newProjDir):
+                    QSWATUtils.error('New project inside current project: please choose another directory', False)
+                    continue
+                else: # ok
+                    break 
+            except:
+                QSWATUtils.error('Failed to copy project: {0}'.format(traceback.format_exc()), False)
+                return
+        if os.path.isdir(newProjPath):
+            result = QSWATUtils.question('Directory {0} already exists.  Do you want to overwrite it?'.format(newProjPath), False, False)
+            if result == QMessageBox.No:
+                return 
+        # copy files
+        shutil.copytree(projPath, newProjPath, dirs_exist_ok=True)
+        # expand .qgz if necessary
+        if qgsorzFile.endswith('.qgz'):
+            with ZipFile(proj.fileName()) as zf:
+                zf.extract(member=projName + '.qgs', path=newProjDir)
+                qgsFile = os.path.join(newProjDir, projName + '.qgs')
+            qgsExtracted = True 
+        else:
+            qgsFile = proj.fileName()
+            qgsExtracted = False 
+        sameProjName = projName == newProjName
+        if not sameProjName:    # new and old qgs will be same file if project names the same, and won't need fixing
+            # make new .qgs by editing old one, changing project name
+            newQgsFile = os.path.join(newProjDir, newProjName + '.qgs')
+            with open(qgsFile, 'r') as inqgs, open(newQgsFile, 'w', newline='') as outqgs:
+                for line in inqgs:
+                    line = line.replace('projectname="{0}"'.format(projName), 'projectname="{0}"'.format(newProjName))
+                    line = line.replace('<title>{0}</title>'.format(projName), '<title>{0}</title>'.format(newProjName))
+                    line = line.replace(' <{0}>'.format(projName), ' <{0}>'.format(newProjName))
+                    line = line.replace(' </{0}>'.format(projName), ' </{0}>'.format(newProjName))
+                    line = line.replace('./{0}/'.format(projName), './{0}/'.format(newProjName))
+                    outqgs.write(line)
+            # clean up
+            if qgsExtracted:
+                os.remove(qgsFile)
+            # rename project database
+            mdb2 = os.path.join(newProjPath, projName) + '.mdb'
+            newMdb = os.path.join(newProjPath, newProjName) + '.mdb'
+            # Cannot rename to existing file
+            if os.path.isfile(newMdb):
+                os.remove(newMdb)
+            os.rename(mdb2, newMdb)
+        proj.clear()
+        proj.read(newQgsFile)
+        
+                
         
     def existingProject(self) -> None:
         """Open an existing QGIS project."""
@@ -385,6 +474,16 @@ class QSwat(QObject):
                 QSWATUtils.getLayerByFilename(root.findLayers(), pointSourcesFile, FileTypes._EXTRAPTSRC, self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
             canvas = self._iface.mapCanvas()
             canvas.zoomToFullExtent()
+            # if running existing watershed and inlets/outlets file is 'points.shp' then make editor available
+            if self._gv.existingWshed:
+                useOutlets, found = proj.readBoolEntry(self._gv.attTitle, 'delin/useOutlets', True)
+                if found and useOutlets:
+                    outletFile, found = proj.readEntry(self._gv.attTitle, 'delin/outlets', '')
+                    if found and outletFile != '':
+                        outletFile = QSWATUtils.join(self._gv.projDir, outletFile)
+                        if os.path.split(outletFile)[1] == 'points.shp':
+                            self._odlg.editLabel.setEnabled(True)
+                            self._odlg.editButton.setEnabled(True)
         self._odlg.projPath.setText(self._gv.projDir)
         self._odlg.mainBox.setEnabled(True)
         self._odlg.setCursor(Qt.ArrowCursor)
