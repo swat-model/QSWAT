@@ -28,31 +28,33 @@ QGISDIR=AppData/Roaming/QGIS/QGIS3/profiles/default
 #TRANSLATIONS = i18n/qswat_en.ts
 TRANSLATIONS =
 
+OBJDIR = ./QSWAT3/QSWAT
+
 ifeq ($(QSWAT_PROJECT), QSWAT)
 	COMPILER = msvc
-	PYD_FILES12 = $(PYX_FILES:.pyx=.cp312-win_amd64.pyd)
-	PYD_FILES9 = $(PYX_FILES:.pyx=.cp39-win_amd64.pyd)
+	PYD_FILES12 = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp312-win_amd64.pyd))
+	PYD_FILES9 = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp39-win_amd64.pyd))
 	PYD_FILES = $(PYD_FILES12) $(PYD_FILES9)
 	EXTRAPACKAGES = imageio
 	PYTHON = $(OSGEO4W_ROOT)\apps\Python312\python
 	PYTHON39 = $(OSGEO4W_39_ROOT)\apps\Python39\python
 else ifeq ($(QSWAT_PROJECT), QSWAT3)
 	COMPILER = msvc
-	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win32.pyd)
+	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp37-win32.pyd))
 	EXTRAPACKAGES = imageio PIL
 else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
 	COMPILER = msvc
-	PYD_FILES = $(PYX_FILES:.pyx=.cp39-win_amd64.pyd)
+	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp39-win_amd64.pyd))
 	EXTRAPACKAGES = imageio
 	PYTHON39 = $(OSGEO4W_39_ROOT)\apps\Python39\python
 else ifeq ($(QSWAT_PROJECT), QSWAT3_12)
 	COMPILER = msvc
-	PYD_FILES = $(PYX_FILES:.pyx=.cp312-win_amd64.pyd)
+	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp312-win_amd64.pyd))
 	EXTRAPACKAGES = imageio
 	PYTHON = $(OSGEO4W_ROOT)\apps\Python312\python
 else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
 	COMPILER = msvc
-	PYD_FILES = $(PYX_FILES:.pyx=.cp37-win_amd64.pyd)
+	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp37-win_amd64.pyd))
 	EXTRAPACKAGES = imageio PIL
 endif
 
@@ -98,16 +100,16 @@ default: deploy
 
 compile: $(RESOURCE_FILES) $(PYD_FILES)
 
-%.cp37-win32.pyd : %.pyx
+$(OBJDIR)/%.cp37-win32.pyd : %.pyx
 	python setuppyx.py build_ext --inplace --compiler=$(COMPILER)
 
-%.cp37-win_amd64.pyd : %.pyx
+$(OBJDIR)/%.cp37-win_amd64.pyd : %.pyx
 	python setuppyx.py build_ext --inplace --compiler=$(COMPILER)
 
-%.cp39-win_amd64.pyd : %.pyx
+$(OBJDIR)/%.cp39-win_amd64.pyd : %.pyx
 	$(PYTHON39) setuppyx3_9.py build_ext --inplace --compiler=$(COMPILER)
 
-%.cp312-win_amd64.pyd : %.pyx
+$(OBJDIR)/%.cp312-win_amd64.pyd : %.pyx
 	$(PYTHON) setuppyx3_12.py build_ext --inplace --compiler=$(COMPILER)
 	
 #%_rc.py : %.qrc
@@ -135,7 +137,7 @@ deploy: compile # doc transcompile
 	cp -vuf $(RESOURCE_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vuf $(EXTRAS) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vuf $(PYX_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	cp -vuf $(addprefix QSWAT3/QSWAT/, $(PYD_FILES)) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
+	cp -vuf $(PYD_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vuf $(PY_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vuf $(UI_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
 	cp -vuf $(QML_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"

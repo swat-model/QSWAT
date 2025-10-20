@@ -20,12 +20,13 @@
  ***************************************************************************/
 """
 from typing import List, Dict, Tuple, Callable, TypeVar, Any, Optional, Generic, cast  # @UnusedImport
+from abc import abstractstaticmethod
 # Import the PyQt and QGIS libraries
 try:
     from qgis.PyQt.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
     from qgis.PyQt.QtGui import QColor
     from qgis.PyQt.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
-    from qgis.PyQt.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap
+    from qgis.PyQt.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap, QDomElement
     from qgis.core import Qgis, \
                             QgsApplication, \
                             QgsColorRampShader, \
@@ -55,7 +56,7 @@ except:
     from PyQt5.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
     from PyQt5.QtGui import QColor
     from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
-    from PyQt5.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap  
+    from PyQt5.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap, QDomElement  
     QgsMapLayer = Any
     QgsLayerTreeGroup = Any
     QgsLayerTreeLayer = Any
@@ -1136,6 +1137,43 @@ class QSWATUtils:
         elif meanSlope < 0.03: return 90
         elif meanSlope < 0.05: return 60
         else: return 30
+        
+    @staticmethod 
+    def setProjectNameTag(xmlFile: str, oldProjName: str, projName: str) -> Tuple[bool, str]:
+        """In project file, set <oldProjName> under <properties> to <projName> """
+        doc: QDomDocument = QDomDocument()
+        f: QFile = QFile(xmlFile)
+        if f.open(QIODevice.ReadWrite):
+            if doc.setContent(f):
+                qgisNode = doc.firstChild()
+                chNodes: QDomNodeList = qgisNode.childNodes()
+                propertiesNode = QDomElement()
+                for i in range(chNodes.length()):
+                    chNode = chNodes.item(i)
+                    if chNode.nodeType() == QDomNode.ElementNode and chNode.nodeName() == 'properties':
+                        propertiesNode = chNode
+                        break
+                if propertiesNode.isNull():
+                    return False, 'Failed to find <properties> in project file {0}'.format(xmlFile)
+                nodes: QDomNodeList = propertiesNode.childNodes()
+                projNode = QDomElement()
+                for i in range(nodes.length()):
+                    node = nodes.item(i)
+                    if node.nodeType() == QDomNode.ElementNode and node.nodeName() == oldProjName:
+                        projNode = node.toElement()
+                        break
+                if projNode.isNull():
+                    return False, 'Failed to find <{0}> in project file {1}'.format(oldProjName, xmlFile)
+                projNode.setTagName(projName)
+            else:
+                return False, 'Failed to read project file {0}'.format(xmlFile)
+        else:
+            return False, 'Failed to open project file {0}'.format(xmlFile)
+        f.resize(0)
+        strm: QTextStream = QTextStream(f)
+        doc.save(strm, 4)
+        f.close()
+        return True, ''
         
     @staticmethod
     def setXMLValue(xmlFile: str, tag: str, attName: str, attVal: str, tagVal: str) -> Tuple[bool, str]:

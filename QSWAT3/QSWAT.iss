@@ -3,7 +3,7 @@
 
 #define MyAppName "QSWAT"
 #define MyAppVersion "2.0" 
-#define MyAppSubVersion "2"
+#define MyAppSubVersion "3"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 
@@ -48,7 +48,7 @@ Source: "C:\SWAT\SWATEditor\runConvertToPlus.bat"; DestDir: "C:\SWAT\SWATEditor"
 Source: "C:\SWAT\SWATPlus\TauDEM539_304Bin\*"; DestDir: "C:\SWAT\SWATEditor\TauDEM539Bin"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\Databases\QSWATProj2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
 Source: "C:\SWAT\SWATEditor\Databases\QSWATRef2012.mdb"; DestDir: "C:\SWAT\SWATEditor\Databases"; Flags: ignoreversion
-Source: "C:\SWAT\SWATEditor\runSWATGraph_3_34_6.bat"; DestDir: "C:\SWAT\SWATEditor"; DestName: "runSWATGraph.bat"; Check: IsWin64; Flags: ignoreversion   
+Source: "C:\SWAT\SWATEditor\runSWATGraph_3_40_7.bat"; DestDir: "C:\SWAT\SWATEditor"; DestName: "runSWATGraph.bat"; Check: IsWin64; Flags: ignoreversion   
 ; Source: "C:\SWAT\SWATEditor\runSWATGraphx86.bat"; DestDir: "C:\SWAT\SWATEditor"; Check: not IsWin64; DestName: "runSWATGraph.bat"; Flags: ignoreversion  
 Source: "C:\SWAT\SWATEditor\WeatherCheck\runWeatherCheck.bat"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "runWeatherCheck.bat"; Flags: ignoreversion 
 Source: "C:\SWAT\SWATEditor\WeatherCheck\weathercheck.py"; DestDir: "C:\SWAT\SWATEditor\WeatherCheck"; DestName: "weathercheck.py"; Flags: ignoreversion 

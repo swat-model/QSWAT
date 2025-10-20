@@ -102,7 +102,7 @@ $(SUBDIR)/%.qm : $(SUBDIR)/%.ts
 # $HOME/$(QGISDIR)/python/plugins
 deploy: # doc transcompile
 	mkdir -p "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/$(SUBDIR)"
-	$(MAKE) -C $(SUBDIR)
+	cd $(SUBDIR) && $(MAKE) 
 	cp -vuf $(UPPER_PY_FILES) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"
 	cp -vuf $(METADATA) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/metadata.txt"
 	cp -vuf $(EXTRAS) "$(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)"

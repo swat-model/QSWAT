@@ -18,6 +18,5 @@ else:
 setup(
     name = "pyxes",
     package_dir = {'QSWAT': ''}, 
-    ext_modules = cythonize('*.pyx'),
-    include_dirs = [numpy.get_include()],
+    ext_modules = cythonize('*.pyx', include_path = [os.environ['INCLUDE']]),
 )

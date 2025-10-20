@@ -321,10 +321,14 @@ class QSwat(QObject):
                 for line in inqgs:
                     line = line.replace('projectname="{0}"'.format(projName), 'projectname="{0}"'.format(newProjName))
                     line = line.replace('<title>{0}</title>'.format(projName), '<title>{0}</title>'.format(newProjName))
-                    line = line.replace(' <{0}>'.format(projName), ' <{0}>'.format(newProjName))
-                    line = line.replace(' </{0}>'.format(projName), ' </{0}>'.format(newProjName))
+                    #line = line.replace(' <{0}>'.format(projName), ' <{0}>'.format(newProjName))
+                    #line = line.replace(' </{0}>'.format(projName), ' </{0}>'.format(newProjName))
                     line = line.replace('./{0}/'.format(projName), './{0}/'.format(newProjName))
                     outqgs.write(line)
+            ok, msg = QSWATUtils.setProjectNameTag(newQgsFile, projName, newProjName)
+            if not ok:
+                QSWATUtils.error(msg, False)
+                return
             # clean up
             if qgsExtracted:
                 os.remove(qgsFile)
