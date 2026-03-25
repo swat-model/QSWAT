@@ -42,58 +42,58 @@ class TestPoly(unittest.TestCase):
     def test1(self):
         """Simplest polygon with a hole."""
         shapes = Polygonize.Polygonize(True, 3, -1, QgsPointXY(0,0), 1, 1)
-        shapes.addRow(np.array([1,1,1]), 0)
-        shapes.addRow(np.array([1,2,1]), 1)
-        shapes.addRow(np.array([1,1,1]), 2)
+        shapes.addRow(np.array([1,1,1], dtype=np.int32), 0)
+        shapes.addRow(np.array([1,2,1], dtype=np.int32), 1)
+        shapes.addRow(np.array([1,1,1], dtype=np.int32), 2)
         shapes.finish()
         self.check(shapes, 3, 'Test1', True)
           
     def test2(self):
         """Nested polygons.  Note this fails geometry validation (nested polygons) if the central square is 1."""
         shapes = Polygonize.Polygonize(True, 5, -1, QgsPointXY(0,0), 1, 1)
-        shapes.addRow(np.array([1,1,1,1,1]), 0)
-        shapes.addRow(np.array([1,2,2,2,1]), 1)
-        shapes.addRow(np.array([1,2,3,2,1]), 2)
-        shapes.addRow(np.array([1,2,2,2,1]), 3)
-        shapes.addRow(np.array([1,1,1,1,1]), 4)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 0)
+        shapes.addRow(np.array([1,2,2,2,1], dtype=np.int32), 1)
+        shapes.addRow(np.array([1,2,3,2,1], dtype=np.int32), 2)
+        shapes.addRow(np.array([1,2,2,2,1], dtype=np.int32), 3)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 4)
         shapes.finish()
         self.check(shapes, 5, 'Test2', True)
            
     def test3(self):
         """Multiple holes.  Checks for holes after main polygon."""
         shapes = Polygonize.Polygonize(True, 5, -1, QgsPointXY(0,0), 1, 1)
-        shapes.addRow(np.array([1,1,1,1,1]), 0)
-        shapes.addRow(np.array([1,2,1,2,1]), 1)
-        shapes.addRow(np.array([1,1,1,1,1]), 2)
-        shapes.addRow(np.array([1,2,1,2,1]), 3)
-        shapes.addRow(np.array([1,1,1,1,1]), 4)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 0)
+        shapes.addRow(np.array([1,2,1,2,1], dtype=np.int32), 1)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 2)
+        shapes.addRow(np.array([1,2,1,2,1], dtype=np.int32), 3)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 4)
         shapes.finish()
         self.check(shapes, 5, 'Test3', True)
         
     def test4(self):
         """Single complex hole.  In practice makes 3 holes, but still valid."""
         shapes = Polygonize.Polygonize(True, 5, -1, QgsPointXY(0,0), 1, 1)
-        shapes.addRow(np.array([1,1,1,1,1]), 0)
-        shapes.addRow(np.array([1,2,1,2,1]), 1)
-        shapes.addRow(np.array([1,1,2,1,1]), 2)
-        shapes.addRow(np.array([1,2,1,2,1]), 3)
-        shapes.addRow(np.array([1,1,1,1,1]), 4)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 0)
+        shapes.addRow(np.array([1,2,1,2,1], dtype=np.int32), 1)
+        shapes.addRow(np.array([1,1,2,1,1], dtype=np.int32), 2)
+        shapes.addRow(np.array([1,2,1,2,1], dtype=np.int32), 3)
+        shapes.addRow(np.array([1,1,1,1,1], dtype=np.int32), 4)
         shapes.finish()
         self.check(shapes, 5, 'Test4', True)
 
     def test0(self):
         """Example of 1 inside 2 inside 1, which is classed as a geometry error."""
         shapes = Polygonize.Polygonize(True, 10, -1, QgsPointXY(0,0), 1, 1)
-        shapes.addRow(np.array([1, 1, 2, 1, 1, 1, 1, 1, 1, 1]), 0)
-        shapes.addRow(np.array([1, 1, 1, 2, 1, 1, 2, 2, 1, 2]), 1)
-        shapes.addRow(np.array([2, 2, 1, 2, 1, 2, 1, 1, 2, 1]), 2)
-        shapes.addRow(np.array([1, 1, 2, 1, 2, 1, 1, 1, 2, 1]), 3)
-        shapes.addRow(np.array([2, 1, 1, 1, 1, 2, 1, 1, 1, 2]), 4)
-        shapes.addRow(np.array([1, 1, 2, 2, 2, 1, 1, 1, 2, 1]), 5)
-        shapes.addRow(np.array([1, 1, 2, 1, 2, 1, 2, 1, 2, 1]), 6)
-        shapes.addRow(np.array([1, 1, 2, 2, 2, 1, 1, 1, 1, 1]), 7)
-        shapes.addRow(np.array([1, 1, 2, 1, 2, 1, 1, 1, 1, 2]), 8)
-        shapes.addRow(np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), 9)
+        shapes.addRow(np.array([1, 1, 2, 1, 1, 1, 1, 1, 1, 1], dtype=np.int32), 0)
+        shapes.addRow(np.array([1, 1, 1, 2, 1, 1, 2, 2, 1, 2], dtype=np.int32), 1)
+        shapes.addRow(np.array([2, 2, 1, 2, 1, 2, 1, 1, 2, 1], dtype=np.int32), 2)
+        shapes.addRow(np.array([1, 1, 2, 1, 2, 1, 1, 1, 2, 1], dtype=np.int32), 3)
+        shapes.addRow(np.array([2, 1, 1, 1, 1, 2, 1, 1, 1, 2], dtype=np.int32), 4)
+        shapes.addRow(np.array([1, 1, 2, 2, 2, 1, 1, 1, 2, 1], dtype=np.int32), 5)
+        shapes.addRow(np.array([1, 1, 2, 1, 2, 1, 2, 1, 2, 1], dtype=np.int32), 6)
+        shapes.addRow(np.array([1, 1, 2, 2, 2, 1, 1, 1, 1, 1], dtype=np.int32), 7)
+        shapes.addRow(np.array([1, 1, 2, 1, 2, 1, 1, 1, 1, 2], dtype=np.int32), 8)
+        shapes.addRow(np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.int32), 9)
         shapes.finish()
         self.check(shapes, 10, 'Test0', True)
          
@@ -110,7 +110,7 @@ class TestPoly(unittest.TestCase):
                     for _ in range(size):
                         val = 1 if random.random() <= 0.7 else 2
                         row.append(val)
-                    shapes.addRow(np.array(row), r)
+                    shapes.addRow(np.array(row, dtype=np.int32), r)
                     rows.append(row)
                 shapes.finish()
                 arrayString = 'Connected4' if isConnected4 else 'Connected8'

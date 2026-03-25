@@ -1037,9 +1037,9 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
                 break
         if self.isHUC or self.useSQLite or self.forTNC:
             conn.commit()
-        else:
-            self.hashDbTable(conn, self._BASINSDATA1)
-            self.hashDbTable(conn, self._BASINSDATA2)
+        # else:
+        #     self.hashDbTable(conn, self._BASINSDATA1)
+        #     self.hashDbTable(conn, self._BASINSDATA2)
         
     def writeBasinsDataItem(self, basin: int, data: BasinData, curs: Any, sql1: str, sql2: str, index: int) -> int:
         """Write data for one basin in BASINSDATA1 and 2 tables in project database.""" 

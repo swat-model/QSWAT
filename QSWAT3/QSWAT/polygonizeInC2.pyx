@@ -484,7 +484,7 @@ cdef class Polygonize:
         self.offset = Offset(p, dX, dY)
         self.fw = fw
         
-    cpdef addRow(self, np.ndarray[np.int_t] row, int rowNum):
+    cpdef addRow(self, np.ndarray[np.int32_t] row, int rowNum):
         """Add a row."""
         
         cdef:

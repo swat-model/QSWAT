@@ -2008,10 +2008,10 @@ class CreateHRUs(QObject):
             if self._gv.useGridModel:
                 transform = elevationTransform
                 # mumpy.core.full introduced in version 1.8
-                hruRows = numpy.full([elevationReadRows, elevationNumberCols], -1, dtype=int)  # type: ignore  # @UndefinedVariable
+                hruRows = numpy.full([elevationReadRows, elevationNumberCols], -1, dtype=numpy.int32)  # type: ignore  # @UndefinedVariable
             else:
                 transform = basinTransform
-                hruRow = numpy.empty((basinNumberCols,), dtype=int)  # type: ignore
+                hruRow = numpy.empty((basinNumberCols,), dtype=numpy.int32)  # type: ignore
             shapes = Polygonize(True, elevationNumberCols, -1, QgsPointXY(transform[0], transform[3]), transform[1], abs(transform[5]))
             hrusData = numpy.empty([basinReadRows, basinNumberCols], dtype=int)  # type: ignore
         cropCurrentRow = -1

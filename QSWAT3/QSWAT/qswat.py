@@ -79,7 +79,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '2.0.3'
+    __version__ = '2.1.0'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -454,8 +454,13 @@ class QSwat(QObject):
             self._odlg.visualiseButton.setVisible(True)
             self.loadVisualisationLayers()
         if isHAWQS:
-            # fix landuse layer legend
             root = proj.layerTreeRoot()
+            # run colourDEM
+            layerTreeDEM = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._DEM), root.findLayers())
+            if layerTreeDEM is not None:
+                layerDEM = layerTreeDEM.layer()
+                FileTypes.colourDEM(layerDEM, self._gv)
+            # fix landuse layer legend
             treeLayerLanduse = QSWATUtils.getLayerByLegend(FileTypes.legend(FileTypes._LANDUSES), root.findLayers())
             if treeLayerLanduse is not None:
                 FileTypes.colourHAWQSLanduses(treeLayerLanduse, self._gv)

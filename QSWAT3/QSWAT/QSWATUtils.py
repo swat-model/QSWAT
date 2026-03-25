@@ -1150,7 +1150,7 @@ class QSWATUtils:
                 propertiesNode = QDomElement()
                 for i in range(chNodes.length()):
                     chNode = chNodes.item(i)
-                    if chNode.nodeType() == QDomNode.ElementNode and chNode.nodeName() == 'properties':
+                    if chNode.isElement() and chNode.nodeName() == 'properties':
                         propertiesNode = chNode
                         break
                 if propertiesNode.isNull():
@@ -1159,7 +1159,7 @@ class QSWATUtils:
                 projNode = QDomElement()
                 for i in range(nodes.length()):
                     node = nodes.item(i)
-                    if node.nodeType() == QDomNode.ElementNode and node.nodeName() == oldProjName:
+                    if node.isElement() and node.nodeName() == oldProjName:
                         projNode = node.toElement()
                         break
                 if projNode.isNull():

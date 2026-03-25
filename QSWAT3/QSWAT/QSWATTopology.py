@@ -34,7 +34,7 @@ except:
     QgsLayerTreeGroup = Any
     
 from osgeo import gdal  # type: ignore
-from numpy import * # @UnusedWildImport
+from numpy import array, ndarray, zeros
 import os.path
 import glob
 import time
@@ -1465,7 +1465,7 @@ class QSWATTopology:
         assert len(self.outlets) > 0
         ad8Layer = QgsRasterLayer(ad8File, 'D8 contributing area')
         # calculate maximum contributing area at an outlet point
-        maxContrib = 0
+        maxContrib = 0.0
         for outlet in self.outlets.values():
             contrib = QSWATTopology.valueAtPoint(outlet, ad8Layer)
             # assume ad8nodata is negative

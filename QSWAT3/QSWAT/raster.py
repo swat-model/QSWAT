@@ -160,15 +160,16 @@ class Raster():
                 self.chunks[i] = chunk
             # we allocate space for the array early since we want to generate any memory exception early
             if self.canWrite:
-                dtype = np.int_ if self.isInt else np.float_
+                dtype = np.int64 if self.isInt else np.float64
                 # mumpy.core.full introduced in version 1.8
                 if LooseVersion(np.__version__) < LooseVersion('1.8'):
                     self.array = np.empty((chunkSize, self.numCols), dtype)
                     assert self.array is not None
-                    self.array.fill(noData)
+                elif Version(np.__version__) >= Version('2.0'):
+                    self.array = np._core.full((chunkSize, self.numCols), noData, dtype)
                 else:
                     self.array = np.core.full((chunkSize, self.numCols), noData, dtype)
-                    assert self.array is not None
+                assert self.array is not None
                 for ch in self.chunks.values():
                     self.band.WriteArray(self.array[:ch.numRows], 0, ch.rowOffset)
                 self.currentIndex = 0

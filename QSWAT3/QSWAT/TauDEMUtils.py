@@ -266,7 +266,14 @@ class TauDEMUtils:
     def taudemHelp():
         """Display TauDEM help file."""
         settings = QSettings()
-        taudemHelpFile = QSWATUtils.join(QSWATUtils.join(settings.value('/QSWAT/SWATEditorDir'), Parameters._TAUDEMDIR), Parameters._TAUDEMHELP)
+        swatEditorDir = settings.value('/QSWAT/SWATEditorDir', Parameters._SWATEDITORDEFAULTDIR)
+        tauDEM539Dir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEM539DIR)
+        if os.path.isdir(tauDEM539Dir):
+            tauDEMDir = tauDEM539Dir
+        else:
+            tauDEMDir = QSWATUtils.join(swatEditorDir, Parameters._TAUDEMDIR)
+        taudemHelpFile = QSWATUtils.join(tauDEMDir, Parameters._TAUDEMHELP)
+        QSWATUtils.loginfo('TauDEM help file is {0}'.format(taudemHelpFile))
         os.startfile(taudemHelpFile)
         
     @staticmethod

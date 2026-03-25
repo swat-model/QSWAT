@@ -236,7 +236,10 @@ class Visualise(QObject):
         self.setSummary()
         self.fillScenarios()
         self._dlg.scenariosCombo.activated.connect(self.setupDb)
-        self._dlg.scenariosCombo.setCurrentIndex(self._dlg.scenariosCombo.findText('Default'))
+        defaultIndex = self._dlg.scenariosCombo.findText('Default')
+        if defaultIndex < 0: # accept 'default'
+            defaultIndex = self._dlg.scenariosCombo.findText('default')
+        self._dlg.scenariosCombo.setCurrentIndex(defaultIndex)
         if self.db == '':
             self.setupDb()
         self._dlg.outputCombo.activated.connect(self.setVariables)
