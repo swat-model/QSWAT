@@ -16,8 +16,8 @@ try:
     #from qgis.PyQt.QtGui import *  # @UnusedWildImport
     from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QMessageBox, QTableWidgetItem
 except:
-    from PyQt5.QtCore import Qt, QObject, QSettings
-    from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox, QTableWidgetItem    
+    from qgis.PyQt.QtCore import Qt, QObject, QSettings
+    from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QMessageBox, QTableWidgetItem    
 
 import sys
 import os
@@ -52,7 +52,10 @@ class SWATGraph(QObject):
         """Initialise class variables."""
         QObject.__init__(self)
         self._dlg = GraphDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         ## csv file of results
         self.csvFile = csvFile
         ## Plot type: 1 for line graph or bar chart, 2 flor flow duration curve, 3 for scatter plot, 4 for box plot
@@ -91,7 +94,7 @@ class SWATGraph(QObject):
         self._dlg.updateButton.clicked.connect(self.updateGraph)
         self._dlg.closeForm.clicked.connect(self.closeFun)
         self.readCsv()
-        self._dlg.exec_()
+        self._dlg.exec()
         
     def addmpl(self):
         """Add graph defined in self.fig."""
@@ -127,9 +130,9 @@ class SWATGraph(QObject):
         """Report msg as an error."""
         msgbox = QMessageBox()
         msgbox.setWindowTitle('SWATGraph')
-        msgbox.setIcon(QMessageBox.Critical)
+        msgbox.setIcon(QMessageBox.Icon.Critical)
         msgbox.setText(SWATGraph.trans(msg))
-        msgbox.exec_()
+        msgbox.exec()
         return
     
     def getCsv(self):

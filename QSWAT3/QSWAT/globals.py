@@ -22,12 +22,12 @@
 # Import the PyQt and QGIS libraries
 try:
     from qgis.PyQt.QtCore import QFileInfo, QPoint, QSettings
-    #from PyQt5.QtGui import * # @UnusedWildImport
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
     from qgis.PyQt.QtWidgets import QComboBox
     from qgis.core import QgsProject, QgsVectorFileWriter, Qgis
 except:
-    from PyQt5.QtCore import QFileInfo, QPoint, QSettings
-    from PyQt5.QtWidgets import QComboBox
+    from qgis.PyQt.QtCore import QFileInfo, QPoint, QSettings
+    from qgis.PyQt.QtWidgets import QComboBox
 import os.path
 import shutil
 import xml.etree.ElementTree as ET

@@ -23,7 +23,7 @@
 try:
     from qgis.PyQt import QtWidgets
 except:
-    from PyQt5 import QtWidgets
+    from qgis.PyQt import QtWidgets
 
 from .ui_parameters import Ui_ParametersDialog
 

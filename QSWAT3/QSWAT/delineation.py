@@ -29,9 +29,9 @@ try:
     from qgis.gui import QgsMapTool, QgsMapToolEmitPoint
     from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry  
 except:
-    from PyQt5.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings
-    from PyQt5.QtGui import QIntValidator, QDoubleValidator, QColor
-    from PyQt5.QtWidgets import QMessageBox
+    from qgis.PyQt.QtCore import Qt, pyqtSignal, QFileInfo, QObject, QSettings
+    from qgis.PyQt.QtGui import QIntValidator, QDoubleValidator, QColor
+    from qgis.PyQt.QtWidgets import QMessageBox
     QgsLayerTree = Any 
     QgsRasterLayer = Any
     QgsMapTool = Any
@@ -101,14 +101,20 @@ class Delineation(QObject):
         self._gv = gv
         self._iface = gv.iface
         self._dlg = DelineationDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        except AttributeError:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() | Qt.WindowType.WindowMinimizeButtonHint)
         self._dlg.move(self._gv.delineatePos)
         ## when a snap file is created this is set to the file path
         self.snapFile = ''
         ## when not all points are snapped this is set True so snapping can be rerun
         self.snapErrors = False
         self._odlg = OutletsDialog()
-        self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         self._odlg.move(self._gv.outletsPos)
         ## Qgs vector layer for drawing inlet/outlet points
         self.drawOutletLayer: Optional[QgsVectorLayer] = None
@@ -231,7 +237,7 @@ class Delineation(QObject):
             self._dlg.GridBox.setVisible(False)
             self._dlg.GridSize.setVisible(False)
             self._dlg.GridSizeLabel.setVisible(False)
-        result = self._dlg.exec_()  # @UnusedVariable
+        result = self._dlg.exec()  # @UnusedVariable
         self._gv.delineatePos = self._dlg.pos()
         if self.delineationFinishedOK:
             if self.finishHasRun:
@@ -602,7 +608,7 @@ class Delineation(QObject):
                 ok, path = QSWATUtils.removeLayerAndFiles(burnedDemFile, root)
                 if not ok:
                     QSWATUtils.error('Failed to remove old burn file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-                    self._dlg.setCursor(Qt.ArrowCursor)
+                    self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
                     return
                 self.progress('Burning streams ...')
                 #burnRasterFile = self.streamToRaster(demLayer, burnFile, root)
@@ -654,7 +660,7 @@ class Delineation(QObject):
         QSettings().setValue('/QSWAT/NumProcesses', str(numProcesses))
         if self._dlg.showTaudem.isChecked():
             self._dlg.tabWidget.setCurrentIndex(3)
-        self._dlg.setCursor(Qt.WaitCursor)
+        self._dlg.setCursor(Qt.CursorShape.WaitCursor)
         self._dlg.taudemOutput.clear()
         felFile = base + 'fel' + suffix
         QSWATUtils.removeLayer(felFile, root)
@@ -947,7 +953,7 @@ class Delineation(QObject):
         (base, suffix) = os.path.splitext(self._gv.demFile)
         numProcesses = self._dlg.numProcesses.value()
         QSettings().setValue('/QSWAT/NumProcesses', str(numProcesses))
-        self._dlg.setCursor(Qt.WaitCursor)
+        self._dlg.setCursor(Qt.CursorShape.WaitCursor)
         self._dlg.taudemOutput.clear()
         # create Dinf slopes
         # felFile = base + 'fel' + suffix # not used for Dinf slopes
@@ -1254,12 +1260,12 @@ class Delineation(QObject):
             Select "Cancel" to abandon drawing.
             """.format(self._gv.outletFile)
             msgBox.setText(QSWATUtils.trans(text))
-            currentButton = msgBox.addButton(QSWATUtils.trans('Current'), QMessageBox.ActionRole)
-            newButton = msgBox.addButton(QSWATUtils.trans('New'), QMessageBox.ActionRole)  # @UnusedVariable
-            msgBox.setStandardButtons(QMessageBox.Cancel)
-            result = msgBox.exec_()
+            currentButton = msgBox.addButton(QSWATUtils.trans('Current'), QMessageBox.ButtonRole.ActionRole)
+            newButton = msgBox.addButton(QSWATUtils.trans('New'), QMessageBox.ButtonRole.ActionRole)  # @UnusedVariable
+            msgBox.setStandardButtons(QMessageBox.StandardButton.Cancel)
+            result = msgBox.exec()
             self._gv.selectOutletFilePos = msgBox.pos()
-            if result == QMessageBox.Cancel:
+            if result == QMessageBox.StandardButton.Cancel:
                 return
             drawCurrent = msgBox.clickedButton() == currentButton
         else:
@@ -1290,7 +1296,7 @@ class Delineation(QObject):
             self.drawOutletLayer.startEditing()
         self._dlg.showMinimized()
         self._odlg.show()
-        result = self._odlg.exec_()
+        result = self._odlg.exec()
         self._gv.outletsPos = self._odlg.pos()
         self._dlg.showNormal()
         canvas.setMapTool(None)
@@ -1413,14 +1419,14 @@ class Delineation(QObject):
         or "Cancel" to abandon the selection.
         """
         msgBox.setText(QSWATUtils.trans(text))
-        msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)  # type: ignore
-        msgBox.setWindowModality(Qt.NonModal)
+        msgBox.setStandardButtons(QMessageBox.StandardButton.Save | QMessageBox.StandardButton.Cancel)  # type: ignore
+        msgBox.setWindowModality(Qt.WindowModality.NonModal)
         self._dlg.showMinimized()
         msgBox.show()
-        result = msgBox.exec_()
+        result = msgBox.exec()
         self._gv.selectOutletPos = msgBox.pos()
         self._dlg.showNormal()
-        if result != QMessageBox.Save:
+        if result != QMessageBox.StandardButton.Save:
             selFromLayer.removeSelection()
             return
         selectedIds = selFromLayer.selectedFeatureIds()
@@ -1502,14 +1508,14 @@ class Delineation(QObject):
         or "Cancel" to abandon the selection.
         """
         msgBox.setText(QSWATUtils.trans(text))
-        msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)  # type: ignore
-        msgBox.setWindowModality(Qt.NonModal)
+        msgBox.setStandardButtons(QMessageBox.StandardButton.Save | QMessageBox.StandardButton.Cancel)  # type: ignore
+        msgBox.setWindowModality(Qt.WindowModality.NonModal)
         self._dlg.showMinimized()
         msgBox.show()
-        result = msgBox.exec_()
+        result = msgBox.exec()
         self._gv.selectResPos = msgBox.pos()
         self._dlg.showNormal()
-        if result != QMessageBox.Save:
+        if result != QMessageBox.StandardButton.Save:
             wshedLayer.removeSelection()
             return
         wsheds = wshedLayer.selectedFeatures()
@@ -1556,7 +1562,7 @@ class Delineation(QObject):
         extraOutletFile = QSWATUtils.join(self._gv.shapesDir, 'extra.shp')
         if not self.createOutletFile(extraOutletFile, self._gv.demFile, True, root):
             return
-        self._dlg.setCursor(Qt.WaitCursor)
+        self._dlg.setCursor(Qt.CursorShape.WaitCursor)
         extraOutletLayer = QgsVectorLayer(extraOutletFile, 'snapped points', 'ogr')
         idIndex = self._gv.topo.getIndex(extraOutletLayer, QSWATTopology._ID)
         inletIndex = self._gv.topo.getIndex(extraOutletLayer, QSWATTopology._INLET)
@@ -1623,7 +1629,7 @@ class Delineation(QObject):
             self._gv.extraOutletFile = ''
             # can now merge subbasins
             self._dlg.mergeGroup.setEnabled(True)
-        self._dlg.setCursor(Qt.ArrowCursor)   
+        self._dlg.setCursor(Qt.CursorShape.ArrowCursor)   
             
     def snapReview(self) -> None:
         """Load snapped inlets/outlets points."""
@@ -2145,7 +2151,7 @@ class Delineation(QObject):
         """
         if tabIndex >= 0:
             self._dlg.tabWidget.setCurrentIndex(tabIndex)
-        self._dlg.setCursor(Qt.ArrowCursor)
+        self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
         self.progress('')
         return
      
@@ -2166,7 +2172,7 @@ class Delineation(QObject):
             ok, path = QSWATUtils.removeLayerAndFiles(wshedFile, root)
             if not ok:
                 QSWATUtils.error('Failed to remove old watershed file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-                self._dlg.setCursor(Qt.ArrowCursor)
+                self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
                 return
             ds = driver.CreateDataSource(wshedFile)
             if ds is None:
@@ -2274,7 +2280,7 @@ class Delineation(QObject):
         ok, path = QSWATUtils.removeLayerAndFiles(wFile, root)
         if not ok:
             QSWATUtils.error('Failed to remove old {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
             return ''
         assert not os.path.exists(wFile)
         xSize = demLayer.rasterUnitsPerPixelX()
@@ -2948,7 +2954,7 @@ class Delineation(QObject):
     #     ok, path = QSWATUtils.removeLayerAndFiles(wFile, root)
     #     if not ok:
     #         QSWATUtils.error('Failed to remove {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-    #         self._dlg.setCursor(Qt.ArrowCursor)
+    #         self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
     #         return ''
     #     assert not os.path.exists(rasterFile)
     #     extent = demLayer.extent()
@@ -3076,7 +3082,7 @@ class Delineation(QObject):
         ok, path = QSWATUtils.removeLayerAndFiles(filePath, root)
         if not ok:
             QSWATUtils.error('Failed to remove old inlet/outlet file {0}: try repeating last click, else remove manually.'.format(path), self._gv.isBatch)
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
             return False
         shpDriver = ogr.GetDriverByName("ESRI Shapefile")
         if os.path.exists(filePath):
@@ -3163,7 +3169,7 @@ class Delineation(QObject):
             if treeLayer is not None:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._DEM)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._DEM)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     demLayer = layer
                     demFile = possFile
         if demLayer:
@@ -3197,7 +3203,7 @@ class Delineation(QObject):
             if treeLayer is not None:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(ft)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(ft)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     wshedLayer = layer
                     wshedFile = possFile
         if wshedLayer:
@@ -3216,7 +3222,7 @@ class Delineation(QObject):
             if treeLayer is not None:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._BURN)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._BURN)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     burnLayer = layer
                     burnFile = possFile
         if burnLayer:
@@ -3236,7 +3242,7 @@ class Delineation(QObject):
             if treeLayer:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._STREAMS)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._STREAMS)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     streamLayer = layer
                     streamFile = possFile
         if streamLayer:
@@ -3259,7 +3265,7 @@ class Delineation(QObject):
             if treeLayer:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._OUTLETS)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._OUTLETS)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     outletLayer = layer
                     outletFile = possFile
         if outletLayer:
@@ -3279,7 +3285,7 @@ class Delineation(QObject):
             if treeLayer:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, QSWATUtils._EXTRALEGEND), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, QSWATUtils._EXTRALEGEND), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     extraOutletLayer = layer
                     extraOutletFile = possFile 
         if extraOutletLayer:

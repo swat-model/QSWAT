@@ -24,8 +24,8 @@
 from qgis.core import QgsPointXY
 #from qgis.gui import * # @UnusedWildImport
 
-#from PyQt5.QtCore import * # @UnusedWildImport
-#from PyQt5.QtGui import * # @UnusedWildImport
+#from qgis.PyQt.QtCore import * # @UnusedWildImport
+#from qgis.PyQt.QtGui import * # @UnusedWildImport
 
 import unittest
 import random

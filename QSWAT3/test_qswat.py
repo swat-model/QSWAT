@@ -27,7 +27,7 @@ from qgis.core import QgsApplication, QgsUnitTypes, QgsProject, QgsProviderRegis
 from qgis.analysis import QgsNativeAlgorithms  # @UnresolvedImport
 
 from qgis.PyQt.QtCore import Qt, pyqtSlot, QCoreApplication, QFileInfo, QObject  # @UnresolvedImport
-# from PyQt5.QtGui import * # @UnusedWildImport
+# from qgis.PyQt.QtGui import * # @UnusedWildImport
 from qgis.PyQt import QtTest  # @UnresolvedImport
 import os.path
 from osgeo import gdal

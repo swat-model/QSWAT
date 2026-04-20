@@ -30,7 +30,7 @@ TRANSLATIONS =
 
 OBJDIR = ./QSWAT3/QSWAT
 
-ifeq ($(QSWAT_PROJECT), QSWAT)
+ifeq ($(QSWAT_PROJECT), QSWAT3)
 	COMPILER = msvc
 	PYD_FILES12 = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp312-win_amd64.pyd))
 	PYD_FILES9 = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp39-win_amd64.pyd))
@@ -38,24 +38,34 @@ ifeq ($(QSWAT_PROJECT), QSWAT)
 	EXTRAPACKAGES = imageio
 	PYTHON = $(OSGEO4W_ROOT)\apps\Python312\python
 	PYTHON39 = $(OSGEO4W_39_ROOT)\apps\Python39\python
-else ifeq ($(QSWAT_PROJECT), QSWAT3)
+	QGISDIR=AppData/Roaming/QGIS/QGIS3/profiles/default
+else ifeq ($(QSWAT_PROJECT), QSWAT4)
 	COMPILER = msvc
-	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp37-win32.pyd))
-	EXTRAPACKAGES = imageio PIL
-else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
-	COMPILER = msvc
-	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp39-win_amd64.pyd))
-	EXTRAPACKAGES = imageio
-	PYTHON39 = $(OSGEO4W_39_ROOT)\apps\Python39\python
-else ifeq ($(QSWAT_PROJECT), QSWAT3_12)
-	COMPILER = msvc
-	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp312-win_amd64.pyd))
+	PYD_FILES12 = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp312-win_amd64.pyd))
+	PYD_FILES9 = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp39-win_amd64.pyd))
+	PYD_FILES = $(PYD_FILES12) $(PYD_FILES9)
 	EXTRAPACKAGES = imageio
 	PYTHON = $(OSGEO4W_ROOT)\apps\Python312\python
-else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
-	COMPILER = msvc
-	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp37-win_amd64.pyd))
-	EXTRAPACKAGES = imageio PIL
+	PYTHON39 = $(OSGEO4W_39_ROOT)\apps\Python39\python
+	QGISDIR=AppData/Roaming/QGIS/QGIS4/profiles/default
+#else ifeq ($(QSWAT_PROJECT), QSWAT3)
+#	COMPILER = msvc
+#	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp37-win32.pyd))
+#	EXTRAPACKAGES = imageio PIL
+#else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
+#	COMPILER = msvc
+#	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp39-win_amd64.pyd))
+#	EXTRAPACKAGES = imageio
+#	PYTHON39 = $(OSGEO4W_39_ROOT)\apps\Python39\python
+#else ifeq ($(QSWAT_PROJECT), QSWAT3_12)
+#	COMPILER = msvc
+#	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp312-win_amd64.pyd))
+#	EXTRAPACKAGES = imageio
+#	PYTHON = $(OSGEO4W_ROOT)\apps\Python312\python
+#else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
+#	COMPILER = msvc
+#	PYD_FILES = $(addprefix $(OBJDIR)/, $(PYX_FILES:.pyx=.cp37-win_amd64.pyd))
+#	EXTRAPACKAGES = imageio PIL
 endif
 
 PY_FILES = __init__.py qswat.py qswatdialog.py delineation.py delineationdialog.py hrus.py raster.py \
@@ -75,8 +85,10 @@ C_FILES = $(PYX_FILES:.pyx=.c)
 LOGO = SWAT32.png
 
 UI_FILES = ui_qswat.py ui_delineation.py ui_hrus.py ui_outlets.py ui_exempt.py ui_split.py ui_selectlu.py \
-		ui_parameters.py ui_elevationbands.py ui_selectsubs.py ui_about.py ui_visualise.py ui_graph.py ui_graph1.py \
+		ui_parameters.py ui_elevationbands.py ui_selectsubs.py ui_about.py ui_visualise.py ui_graph.py \
 		ui_convert.py ui_arc_convert.py ui_mainwindow.py ui_comparescenarios.py
+			
+UI_SOURCE = $(UI_FILES:.py=.ui)
 
 QML_FILES = dem.qml fullhrus.qml outlets.qml stream.qml subresults.qml wshed.qml wshed2.qml existingwshed.qml subbasins.qml \
 		outletsHUC.qml grid.qml catchments.qml lakes.qml ptsrc.qml
@@ -98,7 +110,7 @@ DATABASES = Databases
 
 default: deploy
 
-compile: $(RESOURCE_FILES) $(PYD_FILES)
+compile: $(RESOURCE_FILES) $(PYD_FILES) make_ui
 
 $(OBJDIR)/%.cp37-win32.pyd : %.pyx
 	python setuppyx.py build_ext --inplace --compiler=$(COMPILER)
@@ -122,9 +134,9 @@ $(OBJDIR)/%.cp312-win_amd64.pyd : %.pyx
 
 #%.py : %.ui
 #	pyuic5 -o $@ $<
-# instead of the above, 
-# ui_*.py plus ui_arc_convert.py, ui_convert.py and ui_graph1.py were made by running
-# the script make_uis.py in QGIS
+# instead of the above
+make_ui: $(UI_SOURCE)
+	$(PYTHON) make_uis.py $(CURDIR)
 
 %.qm : %.ts
 	lrelease $<

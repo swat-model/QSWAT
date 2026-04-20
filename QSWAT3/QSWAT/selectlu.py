@@ -25,7 +25,7 @@ try:
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.core import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import Qt
+    from qgis.PyQt.QtCore import Qt
 # Import the code for the dialog
 from .selectludialog import SelectluDialog
 
@@ -37,7 +37,10 @@ class Selectlu:
         """Initialise class variables."""
         self._gv = gv
         self._dlg = SelectluDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         self._dlg.move(self._gv.selectLuPos)
         ## selected landuse
         self._luse = ''
@@ -47,7 +50,7 @@ class Selectlu:
         self._gv.db.populateAllLanduses(self._dlg.listBox)
         self._dlg.listBox.currentTextChanged.connect(self.select)
         self._dlg.show()
-        result = self._dlg.exec_()
+        result = self._dlg.exec()
         self._gv.selectLuPos = self._dlg.pos()
         if result == 1:
             return self._luse

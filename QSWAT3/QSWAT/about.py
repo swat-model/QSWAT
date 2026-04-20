@@ -22,10 +22,10 @@
 # Import the PyQt and QGIS libraries
 try:
     from qgis.PyQt.QtCore import Qt  # @UnusedImport
-    #from PyQt5.QtGui import * # @UnusedWildImport
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.core import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import Qt  # @Reimport
+    from qgis.PyQt.QtCore import Qt  # @Reimport
 # Import the code for the dialog
 from .aboutdialog import aboutDialog
 import webbrowser
@@ -38,7 +38,10 @@ class AboutQSWAT:
         """Initialise."""
         self._gv = gv
         self._dlg = aboutDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         if self._gv:
             self._dlg.move(self._gv.aboutPos)
         
@@ -47,9 +50,9 @@ class AboutQSWAT:
         self._dlg.SWATHomeButton.clicked.connect(self.openSWATUrl)
         self._dlg.closeButton.clicked.connect(self._dlg.close)
         text = """
-QSWAT3 version: {0}
+QSWAT version: {0}
 
-Minimum QGIS version: 3.16
+QSWAT runs with QGIS 3 (from version 3.16.14) and QGIS 4
 
 Python version: 3.9 or 3.12
 
@@ -57,7 +60,7 @@ Current restrictions:
 - runs only in Windows
         """.format(version)
         self._dlg.textBrowser.setText(text)
-        self._dlg.exec_()
+        self._dlg.exec()
         if self._gv:
             self._gv.aboutPos = self._dlg.pos()
         

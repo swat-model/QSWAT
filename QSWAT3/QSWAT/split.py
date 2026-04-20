@@ -26,8 +26,8 @@ try:
     from qgis.PyQt.QtWidgets import QMessageBox, QTableWidgetItem
     #from qgis.core import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
+    from qgis.PyQt.QtCore import Qt
+    from qgis.PyQt.QtWidgets import QMessageBox, QTableWidgetItem
     
 # Import the code for the dialog
 from .splitdialog import SplitDialog
@@ -42,7 +42,10 @@ class Split:
         """Initialise class variables."""
         self._gv = gv
         self._dlg = SplitDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         self._dlg.move(self._gv.splitPos)
         self._splitLanduses = dict()
         
@@ -65,7 +68,7 @@ class Split:
         self._dlg.newCombo.activated.connect(self.addNew)
         self._dlg.splitCombo.activated.connect(self.selectSplit)
         self._dlg.show()
-        self._dlg.exec_()
+        self._dlg.exec()
         self._gv.splitPos = self._dlg.pos()
         
     def add(self):
@@ -90,9 +93,9 @@ class Split:
         numRows = self._dlg.table.rowCount()
         luse1 = luse if numRows == 0 else ''
         self._dlg.table.insertRow(numRows)
-        self._dlg.table.setItem(numRows, 0, QTableWidgetItem(luse1, QTableWidgetItem.Type))
-        self._dlg.table.setItem(numRows, 1, QTableWidgetItem(subluse, QTableWidgetItem.Type))
-        self._dlg.table.setItem(numRows, 2, QTableWidgetItem(str(percent), QTableWidgetItem.Type))
+        self._dlg.table.setItem(numRows, 0, QTableWidgetItem(luse1, QTableWidgetItem.ItemType.Type))
+        self._dlg.table.setItem(numRows, 1, QTableWidgetItem(subluse, QTableWidgetItem.ItemType.Type))
+        self._dlg.table.setItem(numRows, 2, QTableWidgetItem(str(percent), QTableWidgetItem.ItemType.Type))
     
     def deleteRow(self):
         """Delete selected row from the table."""
@@ -108,7 +111,7 @@ class Split:
             else:
                 # need to copy luse being split into second row
                 luse = self._dlg.table.item(0, 0).text()
-                self._dlg.table.setItem(1, 0, QTableWidgetItem(luse, QTableWidgetItem.Type))
+                self._dlg.table.setItem(1, 0, QTableWidgetItem(luse, QTableWidgetItem.ItemType.Type))
         self._dlg.table.removeRow(row)
         # leaves currentRow set, so make current row negative
         self._dlg.table.setCurrentCell(-1, 0)
@@ -176,7 +179,7 @@ class Split:
         """Save the split landuses data and close the table."""
         if self._dlg.table.rowCount() > 0:
             result = QSWATUtils.question('Save split currently in table?', self._gv.isBatch, True)
-            if result == QMessageBox.Yes:
+            if result == QMessageBox.StandardButton.Yes:
                 if not self.saveEdit():
                     return
             else:
@@ -194,7 +197,7 @@ class Split:
         """Start a new landuse split."""
         if self._dlg.table.rowCount() > 0:
             result = QSWATUtils.question('Save split currently in table?', self._gv.isBatch, True)
-            if result == QMessageBox.Yes:
+            if result == QMessageBox.StandardButton.Yes:
                 self.saveEdit()
             else:
                 self.clearTable()
@@ -206,7 +209,7 @@ class Split:
         luse = self._dlg.splitCombo.currentText()
         if self._dlg.table.rowCount() > 0 and self._dlg.table.item(0, 0).text() != luse:
             result = QSWATUtils.question('Save split currently in table?', self._gv.isBatch, True)
-            if result == QMessageBox.Yes:
+            if result == QMessageBox.StandardButton.Yes:
                 self.saveEdit()
             else:
                 self.clearTable()

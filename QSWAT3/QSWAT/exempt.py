@@ -25,7 +25,7 @@ try:
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.core import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import Qt
+    from qgis.PyQt.QtCore import Qt
     
 # Import the code for the dialog
 from .exemptdialog import ExemptDialog  # @UnresolvedImport
@@ -38,7 +38,10 @@ class Exempt:
         """Initialise class variables."""
         self._gv = gv
         self._dlg = ExemptDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         self._dlg.move(self._gv.exemptPos)
         ## landuse codes occurring in landuse map, or used for a split, and not exempt
         self.landuses = []
@@ -62,7 +65,7 @@ class Exempt:
         self._dlg.chooseBox.activated.connect(self.addExempt)
         self._dlg.cancelExemptionButton.clicked.connect(self.delExempt)
         self._dlg.show()
-        result = self._dlg.exec_()
+        result = self._dlg.exec()
         self._gv.exemptPos = self._dlg.pos()
         if result == 1:
             self._gv.exemptLanduses = self.exemptLanduses

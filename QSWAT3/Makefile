@@ -23,7 +23,7 @@ DOXYGEN = 'C:\Program Files\doxygen\bin\doxygen.exe'
 
 PLUGIN_UPLOAD = $(CURDIR)/plugin_upload.py
 
-QGISDIR=AppData/Roaming/QGIS/QGIS3/profiles/default
+
 
 # Makefile for a PyQGIS plugin
 
@@ -34,27 +34,32 @@ PACKAGE = QSWAT
 SUBDIR = $(PACKAGE)
 export SUBDIR
 
-ifeq ($(QSWAT_PROJECT), QSWAT)
+ifeq ($(QSWAT_PROJECT), QSWAT3)
 	METADATA = metadata.txt
 	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
-else ifeq ($(QSWAT_PROJECT), QSWAT3)
-	METADATA = metadata32.txt
-	BAT_FILES = runnose32.bat runtestn32.bat runtestpoly32.bat runcovernose.bat
-else ifeq ($(QSWAT_PROJECT), QSWAT3_12)
-	METADATA = metadata3_12.txt
+	QGISDIR=AppData/Roaming/QGIS/QGIS3/profiles/default
+else ifeq ($(QSWAT_PROJECT), QSWAT4)
+	METADATA = metadata.txt
 	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
-else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
-	METADATA = metadata3_9.txt
-	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
-else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
-	METADATA = metadata64.txt
-	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat runHUC64.bat runTNC64.bat runCatchments64.bat runWeather64.bat
-else ifeq ($(QSWAT_PROJECT), QSWATGrid)
-	METADATA = metadatagrid.txt
-	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat
+	QGISDIR=AppData/Roaming/QGIS/QGIS4/profiles/default
+#else ifeq ($(QSWAT_PROJECT), QSWAT3)
+#	METADATA = metadata32.txt
+#	BAT_FILES = runnose32.bat runtestn32.bat runtestpoly32.bat runcovernose.bat
+#else ifeq ($(QSWAT_PROJECT), QSWAT3_12)
+#	METADATA = metadata3_12.txt
+#	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
+#else ifeq ($(QSWAT_PROJECT), QSWAT3_9)
+#	METADATA = metadata3_9.txt
+#	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runHUC.bat runHUC64.bat runTNC.bat runCatchments.bat runWeather.bat runContinentChange.bat
+#else ifeq ($(QSWAT_PROJECT), QSWAT3_64)
+#	METADATA = metadata64.txt
+#	BAT_FILES = runnose64.bat runtestn64.bat runtestpoly64.bat runHUC64.bat runTNC64.bat runCatchments64.bat runWeather64.bat
+#else ifeq ($(QSWAT_PROJECT), QSWATGrid)
+#	METADATA = metadatagrid.txt
+#	BAT_FILES = runnose.bat runtestn.bat runtestpoly.bat runcovernose.bat runHUC.bat
 endif
 
-PLUGINNAME = $(QSWAT_PROJECT)
+PLUGINNAME = QSWAT
 export PLUGINNAME
 
 UPPER_PY_FILES = __init__.py runHUC.py runTNC.py catchments.py runWeather.py \

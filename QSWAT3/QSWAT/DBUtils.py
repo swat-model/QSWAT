@@ -22,12 +22,12 @@
 # Import the PyQt and QGIS libraries
 try:
     from qgis.PyQt.QtCore import Qt
-    #from PyQt5.QtGui import * # @UnusedWildImport
+    #from qgis.PyQt.QtGui import * # @UnusedWildImport
     from qgis.PyQt.QtWidgets import QComboBox, QListWidget
     #from qgis.core import QgsPointXY
 except:
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtWidgets import QComboBox, QListWidget
+    from qgis.PyQt.QtCore import Qt
+    from qgis.PyQt.QtWidgets import QComboBox, QListWidget
 import os.path
 import pyodbc  # type: ignore
 import sqlite3
@@ -701,7 +701,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
     #         if self.checkUsersoilTable(table, conn):
     #             msg = 'Use {0} as usersoil table?'.format(table)
     #             reply = QSWATUtils.question(msg, parent, True)
-    #             if reply == QMessageBox.Yes:
+    #             if reply == QMessageBox.StandardButton.Yes:
     #                 self.usersoilTableName = table
     #                 return
     #     QSWATUtils.error('No usersoil table found', self.isBatch)
@@ -787,7 +787,7 @@ If you have a 32 bit version of Microsoft Access you need to install Microsoft's
         except Exception:
             QSWATUtils.error('Could not read table {0} in reference database {1}: {2}'.format(urbanTable, self.dbRefFile, traceback.format_exc()), self.isBatch)
             return
-        listBox.sortItems(Qt.AscendingOrder)
+        listBox.sortItems(Qt.SortOrder.AscendingOrder)
                     
     def populateMapLanduses(self, vals: List[int], combo: QComboBox) -> None:
         """Put all landuse codes from landuse values vals in combo box."""

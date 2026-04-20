@@ -816,7 +816,7 @@ class QSWATTopology:
                 break
             link = self.basinToLink[basin]
             if link not in self.upstreamFromInlets and basin not in self.emptyBasins:
-                if ((nxt > 0) and basin not in self.basinToSWATBasin and nxt not in self.SWATBasinToBasin):
+                if (nxt != NULL and nxt > 0 and basin not in self.basinToSWATBasin and nxt not in self.SWATBasinToBasin):
                     if nxt < mmin: mmin = nxt
                     if nxt > mmax: mmax = nxt
                     self.basinToSWATBasin[basin] = nxt
@@ -850,12 +850,12 @@ class QSWATTopology:
         with self.db.connect() as conn:
             sql = 'SELECT Subbasin, Area FROM Watershed'
             for row in conn.execute(sql):
-                watershedAreas[int(row[0])] = double(row[1])
+                watershedAreas[int(row[0])] = float(row[1])
         request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry).setSubsetOfAttributes([polyIndex, areaIndex])
         for polygon in wshedLayer.getFeatures(request):
             attrs = polygon.attributes()
             basin = attrs[polyIndex]
-            area = double(attrs[areaIndex])
+            area = float(attrs[areaIndex])
             if basin not in self.basinToLink:
                 result = False 
                 break

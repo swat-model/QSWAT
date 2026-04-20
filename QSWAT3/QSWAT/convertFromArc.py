@@ -86,7 +86,10 @@ class ConvertFromArc(QObject):
         ## wgn stations stored as station id -> (lat, long)
         self.wgnStations = dict()
         self._dlg = ConvertDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        except AttributeError:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() | Qt.WindowType.WindowMinimizeButtonHint)
         self._dlg.fullButton.clicked.connect(self.getChoice)
         self._dlg.existButton.clicked.connect(self.getChoice)
         self._dlg.editButton.clicked.connect(self.getChoice)
@@ -141,7 +144,7 @@ class ConvertFromArc(QObject):
                 continue
             # convert to string from QString
             projParent = str(projParent)
-            if ConvertFromArc.question(u'Use {0} as new project name?'.format(self.arcProjName)) == QMessageBox.Yes:
+            if ConvertFromArc.question(u'Use {0} as new project name?'.format(self.arcProjName)) == QMessageBox.StandardButton.Yes:
                 self.qProjName = self.arcProjName
             else:
                 self.qProjName, ok = QInputDialog.getText(None, u'QSWAT project name', u'Please enter the new project name, starting with a letter:')
@@ -153,7 +156,7 @@ class ConvertFromArc(QObject):
             self.qProjDir = os.path.join(projParent, self.qProjName)
             if os.path.exists(self.qProjDir):
                 response = ConvertFromArc.question(u'Project directory {0} already exists.  Do you wish to delete it?'.format(self.qProjDir))
-                if response != QMessageBox.Yes:
+                if response != QMessageBox.StandardButton.Yes:
                     continue
                 try:
                     shutil.rmtree(self.qProjDir, ignore_errors=True)
@@ -184,7 +187,7 @@ class ConvertFromArc(QObject):
         except Exception:
             ConvertFromArc.error(u'Problems creating databases or project file: {0}'.format(traceback.format_exc()))
             return
-        result = self._dlg.exec_()
+        result = self._dlg.exec()
         if result == 0:
             return
         self.proj = QgsProject.instance()
@@ -217,7 +220,7 @@ class ConvertFromArc(QObject):
         ConvertFromArc.information(u'ArcSWAT project {0} converted to QSWAT project {1} in {2}'.
                                   format(self.arcProjName, self.qProjName, projParent))
         response = ConvertFromArc.question(u'Run QGIS on the QSWAT project?')
-        if response == QMessageBox.Yes:
+        if response == QMessageBox.StandardButton.Yes:
             osgeo4wroot = os.environ['OSGEO4W_ROOT']
             # print('OSGEO4W_ROOT: {0}'.format(osgeo4wroot))
             qgisname = os.environ['QGISNAME']
@@ -824,9 +827,9 @@ class ConvertFromArc(QObject):
         """.format(landuseOrSoil)
         msgBox.setText(QSWATUtils.trans(text))
         msgBox.setInformativeText(QSWATUtils.trans(infoText))
-        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        result = msgBox.exec_()
-        if result == QMessageBox.Yes:
+        msgBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        result = msgBox.exec()
+        if result == QMessageBox.StandardButton.Yes:
             print('Creating {0} lookup table ...'.format(landuseOrSoil))
             self.generateCsv(landuseOrSoil)
             
@@ -1138,10 +1141,10 @@ class ConvertFromArc(QObject):
         """Ask msg as a question, returning Yes or No."""
         questionBox = QMessageBox()
         questionBox.setWindowTitle('QSWAT')
-        questionBox.setIcon(QMessageBox.Question)
-        questionBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        questionBox.setIcon(QMessageBox.Icon.Question)
+        questionBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         questionBox.setText(QSWATUtils.trans(msg))
-        result = questionBox.exec_()
+        result = questionBox.exec()
         return result
     
     @staticmethod
@@ -1149,9 +1152,9 @@ class ConvertFromArc(QObject):
         """Report msg as an error."""
         msgbox = QMessageBox()
         msgbox.setWindowTitle('QSWAT')
-        msgbox.setIcon(QMessageBox.Critical)
+        msgbox.setIcon(QMessageBox.Icon.Critical)
         msgbox.setText(QSWATUtils.trans(msg))
-        msgbox.exec_()
+        msgbox.exec()
         return
     
     @staticmethod
@@ -1159,9 +1162,9 @@ class ConvertFromArc(QObject):
         """Report msg."""
         msgbox = QMessageBox()
         msgbox.setWindowTitle('QSWAT')
-        msgbox.setIcon(QMessageBox.Information)
+        msgbox.setIcon(QMessageBox.Icon.Information)
         msgbox.setText(QSWATUtils.trans(msg))
-        msgbox.exec_()
+        msgbox.exec()
         return
     
 if __name__ == '__main__':

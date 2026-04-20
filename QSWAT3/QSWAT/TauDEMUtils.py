@@ -25,8 +25,8 @@ try:
     from qgis.PyQt.QtGui import QTextCursor
     from qgis.core import QgsProject
 except:
-    from PyQt5.QtCore import QSettings, Qt
-    from PyQt5.QtGui import QTextCursor
+    from qgis.PyQt.QtCore import QSettings, Qt
+    from qgis.PyQt.QtGui import QTextCursor
 import os.path
 import subprocess
 
@@ -219,7 +219,7 @@ class TauDEMUtils:
             commands.append(fileName)
         if hasQGIS:
             output.append(' '.join(commands) + '\n\n')
-            output.moveCursor(QTextCursor.End)
+            output.moveCursor(QTextCursor.MoveOperation.End)
         # In windows PROJ seems to need PROJ_LIB instead of the more recent PROJ_DATA
         # In windows gdalplugins now stored under TauDEMDir so they are compatible with gdal304 dlls stored there
         if True:   # Parameters._ISWIN:
@@ -234,7 +234,7 @@ class TauDEMUtils:
             assert output is not None
             output.append(proc.stdout)
             output.append(proc.stderr)
-            output.moveCursor(QTextCursor.End)
+            output.moveCursor(QTextCursor.MoveOperation.End)
         else:
             print(proc.stdout)
         # proc.returncode always seems to be None

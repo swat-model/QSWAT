@@ -32,10 +32,10 @@ try:
     import processing  # type: ignore # @UnresolvedImport 
     from processing.core.Processing import Processing  # type: ignore # @UnresolvedImport @UnusedImport 
 except:
-    from PyQt5.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer
-    from PyQt5.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
-    from PyQt5.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QListWidgetItem, QFileDialog, QMessageBox, QShortcut, QStyleOptionGraphicsItem
-    from PyQt5.QtXml import QDomDocument
+    from qgis.PyQt.QtCore import QFile, QIODevice, QObject, Qt, QRectF, QTimer
+    from qgis.PyQt.QtGui import QColor, QKeySequence, QGuiApplication, QFont, QFontMetricsF, QPainter, QTextDocument
+    from qgis.PyQt.QtWidgets import QAbstractItemView, QTableWidgetItem, QWidget, QListWidgetItem, QFileDialog, QMessageBox, QShortcut, QStyleOptionGraphicsItem
+    from qgis.PyQt.QtXml import QDomDocument
     QgsLayerTree = Any
     QgsRendererRange = Any
     QgsColorRamp = Any
@@ -90,10 +90,16 @@ class Visualise(QObject):
         self._gv = gv
         self._iface = gv.iface
         self._dlg = VisualiseDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        except AttributeError:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() | Qt.WindowType.WindowMinimizeButtonHint)
         self._dlg.move(self._gv.visualisePos)
         self._comparedlg = compareDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        except AttributeError:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() | Qt.WindowType.WindowMinimizeButtonHint)
         ## variables found in various tables that do not contain values used in results
         self.ignoredVars = ['LULC', 'HRU', 'HRUGIS', '', 'SUB', 'RCH', 'YEAR', 'MON', 'DAY', Visualise._AREA, 'YYYYDDD', 'YYYYMM']
         ## current scenario
@@ -362,8 +368,8 @@ class Visualise(QObject):
         # if os.path.isfile(streamFile):
         #     streamLayer, _ = QSWATUtils.getLayerByFilename(root.findLayers(), streamFile, FileTypes._STREAMS, 
         #                                                    self._gv, None, QSWATUtils._WATERSHED_GROUP_NAME)
-        leftShortCut = QShortcut(QKeySequence(Qt.Key_Left), self._dlg)
-        rightShortCut = QShortcut(QKeySequence(Qt.Key_Right), self._dlg)
+        leftShortCut = QShortcut(QKeySequence(Qt.Key.Key_Left), self._dlg)
+        rightShortCut = QShortcut(QKeySequence(Qt.Key.Key_Right), self._dlg)
         leftShortCut.activated.connect(self.animateStepLeft)  # type: ignore
         rightShortCut.activated.connect(self.animateStepRight)  # type: ignore
         self.title = proj.title()
@@ -388,11 +394,11 @@ class Visualise(QObject):
             
     def run(self) -> None:
         """Do visualisation."""
-        self._iface.mainWindow().setCursor(Qt.WaitCursor)
+        self._iface.mainWindow().setCursor(Qt.CursorShape.WaitCursor)
         self.init()
         self._dlg.show()
-        self._iface.mainWindow().setCursor(Qt.ArrowCursor)
-        self._dlg.exec_()
+        self._iface.mainWindow().setCursor(Qt.CursorShape.ArrowCursor)
+        self._dlg.exec()
         self._gv.visualisePos = self._dlg.pos()
         
     def fillScenarios(self) -> None:
@@ -520,8 +526,8 @@ class Visualise(QObject):
     def setupPlot(self) -> None:
         """Initialise the plot table."""
         self._dlg.tableWidget.setHorizontalHeaderLabels(['Scenario', 'Table', 'Sub', 'HRU', 'Variable'])
-        self._dlg.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self._dlg.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
+        self._dlg.tableWidget.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self._dlg.tableWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self._dlg.tableWidget.setColumnWidth(0, 100)
         self._dlg.tableWidget.setColumnWidth(1, 45)
         self._dlg.tableWidget.setColumnWidth(2, 45)
@@ -1368,7 +1374,7 @@ class Visualise(QObject):
         root = proj.layerTreeRoot()
         if os.path.exists(nextResultsFile):
             reply = QSWATUtils.question('Results file {0} already exists.  Do you wish to overwrite it?'.format(nextResultsFile), self._gv.isBatch, True)
-            if reply != QMessageBox.Yes:
+            if reply != QMessageBox.StandardButton.Yes:
                 return False
             if nextResultsFile == self.resultsFile:
                 ok, path = QSWATUtils.removeLayerAndFiles(self.resultsFile, root)
@@ -2219,7 +2225,7 @@ class Visualise(QObject):
         if self.scenario1 != '':
             _ = self.makeCompareResults()
             return
-        self._dlg.setCursor(Qt.WaitCursor)
+        self._dlg.setCursor(Qt.CursorShape.WaitCursor)
         self.resultsFileUpToDate = self.resultsFileUpToDate and self.resultsFile == self._dlg.resultsFileEdit.text()
         if not self.resultsFileUpToDate or not self.periodsUpToDate:
             if not self.readData('', True, self.table, '', ''):
@@ -2236,7 +2242,7 @@ class Visualise(QObject):
             else:
                 return
         self.colourResultsFile()
-        self._dlg.setCursor(Qt.ArrowCursor)
+        self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
         
     def makeCompareResults(self) -> bool:
         """Create and add to results 4 shapefiles:
@@ -2756,7 +2762,7 @@ class Visualise(QObject):
         if self._dlg.animationVariableCombo.currentText() == '':
             return
         # can take a while so set a wait cursor
-        self._dlg.setCursor(Qt.WaitCursor)
+        self._dlg.setCursor(Qt.CursorShape.WaitCursor)
         self.doRewind()
         self._dlg.calculateLabel.setText('Calculating breaks ...')
         self._dlg.repaint()
@@ -2787,7 +2793,7 @@ class Visualise(QObject):
             self.changeAnimate()
         finally:
             self._dlg.calculateLabel.setText('')
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
             
     def saveVideo(self) -> None:
         """Save animated GIF if still files found."""
@@ -2908,7 +2914,7 @@ class Visualise(QObject):
         
     def startCompareScenarios(self):
         """Run the compare scenarios form."""
-        self._comparedlg.exec_()
+        self._comparedlg.exec()
         
     def setupCompareScenarios(self):
         """Save chosen scenarios and exit form."""
@@ -3035,12 +3041,12 @@ class Visualise(QObject):
             self._dlg.recordLabel.setText('Stop recording')
             self._dlg.playButton.setEnabled(False)
         else:
-            self._dlg.setCursor(Qt.WaitCursor)
+            self._dlg.setCursor(Qt.CursorShape.WaitCursor)
             self._dlg.recordButton.setStyleSheet('background-color: green; border: none;')
             self._dlg.recordLabel.setText('Start recording')
             self.saveVideo()
             self._dlg.playButton.setEnabled(True)
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
     
     def playRecording(self) -> None:
         """Use default application to play video file (an animated gif)."""
@@ -3127,7 +3133,7 @@ class Visualise(QObject):
         self._dlg.tableWidget.setItem(size, 3, QTableWidgetItem(hru))
         self._dlg.tableWidget.setItem(size, 4, QTableWidgetItem(var))
         for col in range(5):
-            self._dlg.tableWidget.item(size, col).setTextAlignment(Qt.AlignCenter)
+            self._dlg.tableWidget.item(size, col).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self._dlg.tableWidget.selectRow(size)
         
     def doDelPlot(self) -> None:
@@ -3195,7 +3201,7 @@ class Visualise(QObject):
         self._dlg.tableWidget.setItem(size, 3, QTableWidgetItem('-'))
         self._dlg.tableWidget.setItem(size, 4, QTableWidgetItem(self._dlg.variablePlot.currentText()))
         for col in range(5):
-            self._dlg.tableWidget.item(size, col).setTextAlignment(Qt.AlignHCenter)
+            self._dlg.tableWidget.item(size, col).setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
         self._dlg.tableWidget.selectRow(size)
         
     def setObservedVars(self) -> None:
@@ -3583,9 +3589,9 @@ class MapTitle(QgsMapCanvasItem):
     def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: Optional[QWidget] = None) -> None:  # type: ignore # @UnusedVariable
         """Paint the text."""
 #         if self.line2 is None:
-#             painter.drawText(self.rect, Qt.AlignLeft, '{0}\n{1}'.format(self.line0, self.line1))
+#             painter.drawText(self.rect, Qt.AlignmentFlag.AlignLeft, '{0}\n{1}'.format(self.line0, self.line1))
 #         else:
-#             painter.drawText(self.rect, Qt.AlignLeft, '{0}\n{1}\n{2}'.format(self.line0, self.line1, self.line2))
+#             painter.drawText(self.rect, Qt.AlignmentFlag.AlignLeft, '{0}\n{1}\n{2}'.format(self.line0, self.line1, self.line2))
         text = QTextDocument()
         text.setDefaultFont(self.normFont)
         if self.line2 is None:

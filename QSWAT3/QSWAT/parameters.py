@@ -27,8 +27,8 @@ try:
     from qgis.PyQt.QtWidgets import QFileDialog
     #from qgis.core import *
 except:
-    from PyQt5.QtCore import QSettings, Qt
-    from PyQt5.QtWidgets import QFileDialog
+    from qgis.PyQt.QtCore import QSettings, Qt
+    from qgis.PyQt.QtWidgets import QFileDialog
 import os.path
 from packaging.version import parse
 
@@ -166,10 +166,10 @@ class Parameters:
     qv = Qgis.QGIS_VERSION.split('-', 1)[0]
     if parse(qv) >= parse('3.38'):
         from qgis.PyQt.QtCore import QMetaType
-        intFieldType = QMetaType.Int
-        doubleFieldType = QMetaType.Double
-        stringFieldType = QMetaType.QString
-        longFieldType = QMetaType.LongLong
+        intFieldType = QMetaType.Type.Int
+        doubleFieldType = QMetaType.Type.Double
+        stringFieldType = QMetaType.Type.QString
+        longFieldType = QMetaType.Type.LongLong
     else:
         from qgis.PyQt.QtCore import QVariant
         intFieldType = QVariant.Int
@@ -223,7 +223,10 @@ class Parameters:
         self.numProcesses = settings.value('/QSWAT/NumProcesses', '')
         self._gv = gv
         self._dlg = ParametersDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         if self._gv:
             self._dlg.move(self._gv.parametersPos)
             ## flag showing if batch run
@@ -244,7 +247,7 @@ class Parameters:
         self._dlg.MPIButton.clicked.connect(self.chooseMPIDir)
         self._dlg.cancelButton.clicked.connect(self._dlg.close)
         self._dlg.saveButton.clicked.connect(self.save)
-        self._dlg.exec_()
+        self._dlg.exec()
         if self._gv:
             self._gv.parametersPos = self._dlg.pos()
         
@@ -324,7 +327,7 @@ class Parameters:
         if startDir:
             dlg.setDirectory(startDir)
         dlg.setFileMode(QFileDialog.Directory)
-        if dlg.exec_():
+        if dlg.exec():
             dirs = dlg.selectedFiles()
             SWATEditorDir = dirs[0]
             self._dlg.editorBox.setText(SWATEditorDir)
@@ -343,7 +346,7 @@ class Parameters:
         if startDir:
             dlg.setDirectory(startDir)
         dlg.setFileMode(QFileDialog.Directory)
-        if dlg.exec_():
+        if dlg.exec():
             dirs = dlg.selectedFiles()
             mpiexecDir = dirs[0]
             self._dlg.MPIBox.setText(mpiexecDir)

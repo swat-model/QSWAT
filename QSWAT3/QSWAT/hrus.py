@@ -28,9 +28,9 @@ try:
     from qgis.core import Qgis, QgsWkbTypes, QgsFeature, QgsPointXY, QgsField, QgsFields, QgsVectorLayer, QgsProject, QgsVectorFileWriter, QgsExpression, QgsFeatureRequest, QgsLayerTree, QgsLayerTreeModel, QgsRasterLayer, QgsGeometry, QgsProcessingContext
     #from qgis.gui import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt
-    from PyQt5.QtGui import QDoubleValidator, QTextCursor
-    from PyQt5.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
+    from qgis.PyQt.QtCore import pyqtSignal, QFileInfo, QObject, QSettings, Qt
+    from qgis.PyQt.QtGui import QDoubleValidator, QTextCursor
+    from qgis.PyQt.QtWidgets import QComboBox, QFileDialog, QLabel, QMessageBox, QProgressBar
     QgsLayerTree = Any
     QgsVectorLayer = Any
     QgsFields = Any
@@ -80,7 +80,10 @@ class HRUs(QObject):
         self._db = self._gv.db
         self._iface = gv.iface
         self._dlg = HrusDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        except AttributeError:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() | Qt.WindowType.WindowMinimizeButtonHint)
         self._dlg.move(self._gv.hrusPos)
         self._reportsCombo = reportsCombo
         ## Landuse grid
@@ -170,7 +173,7 @@ class HRUs(QObject):
         self.init()
         self._dlg.show()
         self.progress('')
-        result = self._dlg.exec_()  # @UnusedVariable
+        result = self._dlg.exec()  # @UnusedVariable
         # TODO: result is always zero. Need to reset to discover if CreateHRUs was run successfully
         self._gv.hrusPos = self._dlg.pos()
         if self.completed:
@@ -337,15 +340,15 @@ class HRUs(QObject):
             luse = ''
             soil = ''
         self.progress('Checking landuses ...')
-        self._dlg.setCursor(Qt.WaitCursor)
+        self._dlg.setCursor(Qt.CursorShape.WaitCursor)
         if not self.initLanduses(luse):
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
             self.progress('')
             return False
         #QSWATUtils.information('Using {0} as landuse table'.format(self._gv.landuseTable), self._gv.isBatch)
         self.progress('Checking soils ...')
         if not self.initSoils(soil, self._dlg.readFromMaps.isChecked()):
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
             self.progress('')
             return False
         #QSWATUtils.information('Using {0} as soil table'.format(self._gv.soilTable), self._gv.isBatch)
@@ -401,7 +404,7 @@ class HRUs(QObject):
             self.progress('')
             if not OK:
                 self._dlg.progressBar.setVisible(False)
-                self._dlg.setCursor(Qt.ArrowCursor)
+                self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
                 return False
             # now have occurrences of landuses and soils, so can make proper colour schemes and legend entries
             # causes problems for HUC models, and no point in any case when batch
@@ -446,7 +449,7 @@ class HRUs(QObject):
             self._dlg.close()
         if self._gv.forTNC:
             self.addWeather()
-        self._dlg.setCursor(Qt.ArrowCursor)
+        self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
         return True
     
     def addWeather(self) -> None:
@@ -1020,7 +1023,7 @@ class HRUs(QObject):
         """Create HRUs."""
         self._gv.writeMasterProgress(-1, 0)
         try:
-            self._dlg.setCursor(Qt.WaitCursor)
+            self._dlg.setCursor(Qt.CursorShape.WaitCursor)
             self._dlg.slopeSlider.setEnabled(False)
             self._dlg.slopeVal.setEnabled(False)
             self._dlg.areaGroup.setEnabled(False)
@@ -1078,7 +1081,7 @@ class HRUs(QObject):
         #except Exception:
         #    QSWATUtils.error('Failed to create HRUs: {0}'.format(traceback.format_exc(), self._gv.isBatch)
         finally:
-            self._dlg.setCursor(Qt.ArrowCursor)
+            self._dlg.setCursor(Qt.CursorShape.ArrowCursor)
             if self.completed:
                 self._dlg.close()
                 
@@ -1279,7 +1282,7 @@ class HRUs(QObject):
             if self._dlg.areaSlider.minimum() <= val <= self._dlg.areaSlider.maximum():
                 self._dlg.areaSlider.setValue(val)
             self.CreateHRUs.areaVal = val
-            self._dlg.areaVal.moveCursor(QTextCursor.End)
+            self._dlg.areaVal.moveCursor(QTextCursor.MoveOperation.End)
         except Exception:
             return
         self._dlg.createButton.setEnabled(True)
@@ -1302,7 +1305,7 @@ class HRUs(QObject):
             if self._dlg.landuseSlider.minimum() <= val <= self._dlg.landuseSlider.maximum():
                 self._dlg.landuseSlider.setValue(val)
             self.CreateHRUs.landuseVal = val
-            self._dlg.landuseVal.moveCursor(QTextCursor.End)
+            self._dlg.landuseVal.moveCursor(QTextCursor.MoveOperation.End)
         except Exception:
             return
         
@@ -1323,7 +1326,7 @@ class HRUs(QObject):
             if self._dlg.soilSlider.minimum() <= val <= self._dlg.soilSlider.maximum():
                 self._dlg.soilSlider.setValue(val)
             self.CreateHRUs.soilVal = val
-            self._dlg.soilVal.moveCursor(QTextCursor.End)
+            self._dlg.soilVal.moveCursor(QTextCursor.MoveOperation.End)
         except Exception:
             return
         
@@ -1344,7 +1347,7 @@ class HRUs(QObject):
             if self._dlg.slopeSlider.minimum() <= val <= self._dlg.slopeSlider.maximum():
                 self._dlg.slopeSlider.setValue(val)
             self.CreateHRUs.slopeVal = val
-            self._dlg.slopeVal.moveCursor(QTextCursor.End)
+            self._dlg.slopeVal.moveCursor(QTextCursor.MoveOperation.End)
         except Exception:
             return
         
@@ -1363,7 +1366,7 @@ class HRUs(QObject):
             val = int(string)
             self._dlg.targetSlider.setValue(val)
             self.CreateHRUs.targetVal = val
-            self._dlg.targetVal.moveCursor(QTextCursor.End)
+            self._dlg.targetVal.moveCursor(QTextCursor.MoveOperation.End)
         except Exception:
             return
         
@@ -1469,7 +1472,7 @@ class HRUs(QObject):
             if treeLayer is not None:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._LANDUSES)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._LANDUSES)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     landuseLayer = layer
                     landuseFile = possFile
         if landuseLayer: 
@@ -1489,7 +1492,7 @@ class HRUs(QObject):
             if treeLayer is not None:
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
-                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._SOILS)), self._gv.isBatch, True) == QMessageBox.Yes:
+                if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._SOILS)), self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     soilLayer = layer
                     soilFile = possFile
         if soilLayer:
@@ -1557,7 +1560,7 @@ class HRUs(QObject):
                 layer = treeLayer.layer()
                 possFile = QSWATUtils.layerFileInfo(layer).absoluteFilePath()  # type: ignore
                 if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, FileTypes.legend(FileTypes._SLOPEBANDS)), 
-                                       self._gv.isBatch, True) == QMessageBox.Yes:
+                                       self._gv.isBatch, True) == QMessageBox.StandardButton.Yes:
                     slopeBandsLayer = layer
                     slopeBandsFile = possFile
         if slopeBandsLayer:

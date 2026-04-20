@@ -22,7 +22,7 @@
 
 
 from qgis.core import QgsApplication, QgsProject, QgsRasterLayer, QgsVectorLayer, QgsExpression,  QgsFeatureRequest # @UnresolvedImport
-#from PyQt5.QtCore import * # @UnusedWildImport
+#from qgis.PyQt.QtCore import * # @UnusedWildImport
 import atexit
 import sys
 import os

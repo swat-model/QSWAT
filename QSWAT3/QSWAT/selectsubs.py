@@ -25,7 +25,7 @@ try:
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.core import * # @UnusedWildImport
 except:
-    from PyQt5.QtCore import Qt
+    from qgis.PyQt.QtCore import Qt
 # Import the code for the dialog
 from .selectsubsdialog import SelectSubbasinsDialog
 from .QSWATUtils import QSWATUtils
@@ -39,7 +39,10 @@ class SelectSubbasins:
         """Initialise class variables."""
         self._gv = gv
         self._dlg = SelectSubbasinsDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         self._dlg.move(self._gv.selectSubsPos)
         ## Watershed layer
         self.wshedLayer = wshedLayer
@@ -65,7 +68,7 @@ class SelectSubbasins:
         """Run the dialog."""
         self.init()
         self._dlg.show()
-        self._dlg.exec_()
+        self._dlg.exec()
         self._gv.selectSubsPos = self._dlg.pos()
         
     def switchSelectSmall(self):

@@ -29,9 +29,9 @@
 #     from processing.core.Processing import Processing  # type: ignore   # @UnusedImport
 #     runningQGIS = True
 # except:
-#     from PyQt5.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
-#     from PyQt5.QtGui import QIcon
-#     from PyQt5.QtWidgets import QAction, QMessageBox, QDialog
+#     from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
+#     from qgis.PyQt.QtGui import QIcon
+#     from qgis.PyQt.QtWidgets import QAction, QMessageBox, QDialog
 #     runningQGIS = False
     
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QTranslator, QFileInfo, QCoreApplication, qVersion
@@ -79,7 +79,7 @@ class QSwat(QObject):
     """QGIS plugin to prepare geographic data for SWAT Editor."""
     _SWATEDITORVERSION = Parameters._SWATEDITORVERSION
     
-    __version__ = '2.1.0'
+    __version__ = '2.1.1'
 
     def __init__(self, iface: Any) -> None:
         """Constructor."""
@@ -205,11 +205,11 @@ class QSwat(QObject):
         if proj.fileName() == '':
             self._odlg.mainBox.setVisible(False)
         else:
-            self._iface.mainWindow().setCursor(Qt.WaitCursor)
+            self._iface.mainWindow().setCursor(Qt.CursorShape.WaitCursor)
             self.setupProject(proj, False)
-            self._iface.mainWindow().setCursor(Qt.ArrowCursor)
+            self._iface.mainWindow().setCursor(Qt.CursorShape.ArrowCursor)
         # Run the dialog event loop
-        result = self._odlg.exec_() 
+        result = self._odlg.exec() 
         # See if OK was pressed
         if result == 1:
             proj.write()
@@ -236,7 +236,7 @@ class QSwat(QObject):
         madeCopy = False
         if os.path.isfile(proj.fileName()):
             query = QSWATUtils.question('Do you want to create a new copy of the current project?', False, False)
-            if query == QMessageBox.Yes:
+            if query == QMessageBox.StandardButton.Yes:
                 self.copyProject(proj)
                 proj = QgsProject.instance()
                 madeCopy = True
@@ -300,7 +300,7 @@ class QSwat(QObject):
                 return
         if os.path.isdir(newProjPath):
             result = QSWATUtils.question('Directory {0} already exists.  Do you want to overwrite it?'.format(newProjPath), False, False)
-            if result == QMessageBox.No:
+            if result == QMessageBox.StandardButton.No:
                 return 
         # copy files
         shutil.copytree(projPath, newProjPath, dirs_exist_ok=True)
@@ -360,7 +360,7 @@ class QSwat(QObject):
         """Set up the project."""
         self._odlg.mainBox.setVisible(True)
         self._odlg.mainBox.setEnabled(False)
-        self._odlg.setCursor(Qt.WaitCursor)
+        self._odlg.setCursor(Qt.CursorShape.WaitCursor)
         self._odlg.projPath.setText('Restarting project ...')
         title = QFileInfo(proj.fileName()).baseName()
         proj.setTitle(title)
@@ -495,7 +495,7 @@ class QSwat(QObject):
                             self._odlg.editButton.setEnabled(True)
         self._odlg.projPath.setText(self._gv.projDir)
         self._odlg.mainBox.setEnabled(True)
-        self._odlg.setCursor(Qt.ArrowCursor)
+        self._odlg.setCursor(Qt.CursorShape.ArrowCursor)
             
     def runParams(self) -> None:
         """Run parameters form."""

@@ -53,10 +53,10 @@ try:
                             QgsMessageLog, QgsRectangle, QgsError, QgsCoordinateReferenceSystem, QgsRasterSymbolLegendNode, QgsProcessingContext
     from qgis.analysis import QgsNativeAlgorithms
 except:
-    from PyQt5.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
-    from PyQt5.QtGui import QColor
-    from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
-    from PyQt5.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap, QDomElement  
+    from qgis.PyQt.QtCore import QCoreApplication, QDir, QEventLoop, QFileInfo, QIODevice, QFile, QSettings, QTextStream
+    from qgis.PyQt.QtGui import QColor
+    from qgis.PyQt.QtWidgets import QApplication, QMessageBox, QFileDialog, QLabel, QLineEdit, QComboBox
+    from qgis.PyQt.QtXml import QDomAttr, QDomDocument, QDomNode, QDomNodeList, QDomText, QDomNamedNodeMap, QDomElement  
     QgsMapLayer = Any
     QgsLayerTreeGroup = Any
     QgsLayerTreeLayer = Any
@@ -152,9 +152,9 @@ class QSWATUtils:
         else:
             msgbox: QMessageBox = QMessageBox()
             msgbox.setWindowTitle(QSWATUtils._QSWATNAME)
-            msgbox.setIcon(QMessageBox.Critical)
+            msgbox.setIcon(QMessageBox.Icon.Critical)
             msgbox.setText(QSWATUtils.trans(msg))
-            msgbox.exec_()
+            msgbox.exec()
         return
     
     @staticmethod
@@ -164,16 +164,16 @@ class QSWATUtils:
         if not isBatch:
             questionBox: QMessageBox = QMessageBox()
             questionBox.setWindowTitle(QSWATUtils._QSWATNAME)
-            questionBox.setIcon(QMessageBox.Question)
-            questionBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)  # type: ignore
+            questionBox.setIcon(QMessageBox.Icon.Question)
+            questionBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)  # type: ignore
             questionBox.setText(QSWATUtils.trans(msg))
-            result: QMessageBox.StandardButton = questionBox.exec_()  # type: ignore
+            result: QMessageBox.StandardButton = questionBox.exec()  # type: ignore
         else: # batch: use affirm parameter
             if affirm:
-                result = QMessageBox.Yes
+                result = QMessageBox.StandardButton.Yes
             else:
-                result = QMessageBox.No
-        if result == QMessageBox.Yes:
+                result = QMessageBox.StandardButton.No
+        if result == QMessageBox.StandardButton.Yes:
             res = ' Yes'
         else:
             res = ' No'
@@ -201,9 +201,9 @@ class QSWATUtils:
         else:
             msgbox: QMessageBox = QMessageBox()
             msgbox.setWindowTitle(QSWATUtils._QSWATNAME)
-            msgbox.setIcon(QMessageBox.Information)
+            msgbox.setIcon(QMessageBox.Icon.Information)
             msgbox.setText(QSWATUtils.trans(msg))
-            msgbox.exec_()
+            msgbox.exec()
         return
     
     @staticmethod
@@ -297,7 +297,7 @@ class QSWATUtils:
             print(text)
             # calling processEvents after label.clear can cause QGIS to hang
             label.update()
-            QCoreApplication.processEvents(QEventLoop.ExcludeUserInputEvents)
+            QCoreApplication.processEvents(QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents)
         QCoreApplication.processEvents()
         
     @staticmethod 
@@ -597,7 +597,7 @@ class QSWATUtils:
                 info = QSWATUtils.layerFileInfo(layer)
                 if info is not None:
                     possFile: str = info.absoluteFilePath()
-                    if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, lgnd), isBatch, True) == QMessageBox.Yes:
+                    if QSWATUtils.question('Use {0} as {1} file?'.format(possFile, lgnd), isBatch, True) == QMessageBox.StandardButton.Yes:
                         return layer
         return None
         

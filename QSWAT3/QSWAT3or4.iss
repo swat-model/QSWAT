@@ -3,7 +3,7 @@
 
 #define MyAppName "QSWAT"
 #define MyAppVersion "2.1" 
-#define MyAppSubVersion "0"
+#define MyAppSubVersion "1"
 #define MyAppPublisher "SWAT"
 #define MyAppURL "https://swat.tamu.edu/"
 
@@ -19,13 +19,13 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={userappdata}\QGIS\QGIS3\profiles\default\python\plugins
+DefaultDirName={userappdata}\QGIS\QGIS{code:QGIS3or4}\profiles\default\python\plugins
 UsePreviousAppDir=no
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Chris\QSWAT
-OutputBaseFilename={#MyAppName}install{#MyAppVersion}.{#MyAppSubVersion}
+OutputBaseFilename={#MyAppName}install3or4.{#MyAppVersion}.{#MyAppSubVersion}
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest
@@ -57,12 +57,33 @@ Source: "C:\SWAT\SWATEditor\WeatherCheck\SWATWeatherCheck.pdf"; DestDir: "C:\SWA
 
 [Code]
 var
+   QGIS3or4HasRun: Boolean;
+   SWATPlusDirHasRun : Boolean;
    QGISPluginDirHasRun : Boolean;
    QGISPluginDirResult: String;
+   QGISMainVersion: String;
 
+function QGIS3or4(Param: String): String; forward;
 function MainQGISPluginDir(Param: String): String; forward;
 function QGISDir(Dir: String; PartName: String): String; forward;
 function SubSubVersion(Name: String): Integer; forward;
+
+function QGIS3or4(Param: String): String;
+begin
+  if not QGIS3or4HasRun then begin
+   case TaskDialogMsgBox('QGIS 3 or QGIS 4',
+                        'Installing for QGIS 3 or QGIS 4?',
+                        mbConfirmation,
+                        MB_YESNO, ['QGIS 3', 'QGIS 4'],
+                        0) of
+      IDYES: QGISMainVersion := '3';
+      IDNO:  QGISMainVersion := '4';
+    end;
+    //MsgBox('QGIS main version is ' + QGISMainVersion, mbInformation, MB_OK);
+  end;
+  QGIS3or4HasRun := True;
+  Result := QGISMainVersion;
+end;
 
 function QGISPluginDir(Param: String): String;
 begin
@@ -83,22 +104,25 @@ var
   MainQGISPluginDirResult: String;
   pfDir: String;
 begin
-  pfDir := ExpandConstant('{pf64}');
-  QGISDirectory := QGISDir(pfDir, 'QGIS 3.40');
+  pfDir := ExpandConstant('{pf64}'); 
+  if QGISMainVersion = '4' then begin
+    QGISDirectory := QGISDir(pfDir, 'QGIS 4.0');
+  end else begin
+  QGISDirectory := QGISDir(pfDir, 'QGIS 3.44');
   if QGISDirectory = '' then begin
-    QGISDirectory := QGISDir(pfDir, 'QGIS 3.34');
+    QGISDirectory := QGISDir(pfDir, 'QGIS 3.40');
     if QGISDirectory = '' then begin
-      QGISDirectory := QGISDir(pfDir, 'QGIS 3.42');
+      QGISDirectory := QGISDir(pfDir, 'QGIS 3.36');
       if QGISDirectory = '' then begin
-        QGISDirectory := QGISDir(pfDir, 'QGIS 3.44');
-        if QGISDirectory = '' then begin 
-          QGISDirectory := pfDir;
-          if not BrowseForFolder('Please locate QGIS directory', QGISDirectory, False) then
-            QGISDirectory := '';
-        end;
+        QGISDirectory := QGISDir(pfDir, 'QGIS 3.32');
       end;
     end;
-  end;     
+  end; 
+  if QGISDirectory = '' then begin 
+    QGISDirectory := pfDir;
+    if not BrowseForFolder('Please locate QGIS directory', QGISDirectory, False) then
+      QGISDirectory := '';
+  end;    
   if QGISDirectory = ''  then begin
     MainQGISPluginDirResult := '';
   end else

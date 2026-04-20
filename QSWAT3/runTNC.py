@@ -60,7 +60,7 @@ soilAbbrev = 'FAO' if soilName == 'FAO_DSMW' else 'HWSD'
               
 from qgis.core import QgsApplication, QgsProject, QgsRasterLayer # @UnresolvedImport
 #from qgis.analysis import QgsNativeAlgorithms
-#from PyQt5.QtCore import * # @UnusedWildImport
+#from qgis.PyQt.QtCore import * # @UnusedWildImport
 import atexit
 import sys
 import os

@@ -25,7 +25,7 @@ try:
     #from qgis.PyQt.QtGui import * # @UnusedWildImport
     #from qgis.core import *
 except:
-    from PyQt5.QtCore import Qt
+    from qgis.PyQt.QtCore import Qt
 # Import the code for the dialog
 from .elevationbandsdialog import ElevatioBandsDialog  # @UnresolvedImport
 from .QSWATUtils import QSWATUtils  # @UnresolvedImport
@@ -38,7 +38,10 @@ class ElevationBands:
         """Initialise class variables."""
         self._gv = gv
         self._dlg = ElevatioBandsDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        try:
+            self._odlg.setWindowFlags(self._odlg.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        except AttributeError:
+            pass
         self._dlg.move(self._gv.elevationBandsPos)
         self._dlg.okButton.clicked.connect(self.setBands)
         self._dlg.cancelButton.clicked.connect(self._dlg.close)
@@ -50,7 +53,7 @@ class ElevationBands:
     def run(self):
         """Run the form."""
         self._dlg.show()
-        self._dlg.exec_()
+        self._dlg.exec()
         self._gv.elevationBandsPos = self._dlg.pos()
         
     def setBands(self):

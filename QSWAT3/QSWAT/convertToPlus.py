@@ -13,7 +13,7 @@ Created on April 1, 2018
  '''
  
 from qgis.PyQt.QtCore import QObject, QSettings, Qt
-# from PyQt5.QtGui import QIcon
+# from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QApplication, QInputDialog, QMessageBox, QFileDialog
 from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsPointXY, QgsProject, QgsRasterLayer
 import os
@@ -69,7 +69,10 @@ class ConvertToPlus(QObject):
         ## wgn stations stored as station id -> (lat, long)
         self.wgnStations = dict()
         self._dlg = ConvertDialog()
-        self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        try:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() & ~Qt.WindowContextHelpButtonHint & Qt.WindowMinimizeButtonHint)
+        except AttributeError:
+            self._dlg.setWindowFlags(self._dlg.windowFlags() | Qt.WindowType.WindowMinimizeButtonHint)
         self._dlg.fullButton.clicked.connect(self.getChoice)
         self._dlg.noGISButton.clicked.connect(self.getChoice)
         ## choice of conversion
@@ -123,7 +126,7 @@ class ConvertToPlus(QObject):
                 continue
             # convert to string from QString
             projParentNew = str(projParentNew)
-            if ConvertToPlus.question(u'Use {0} as new project name?'.format(self.projNameOld)) == QMessageBox.Yes:
+            if ConvertToPlus.question(u'Use {0} as new project name?'.format(self.projNameOld)) == QMessageBox.StandardButton.Yes:
                 self.projNameNew = self.projNameOld
             else:
                 self.projNameNew, ok = QInputDialog.getText(None, u'QSWATPlus project name', u'Please enter the new project name, starting with a letter:')
@@ -135,7 +138,7 @@ class ConvertToPlus(QObject):
             self.projDirNew = os.path.join(projParentNew, self.projNameNew)
             if os.path.exists(self.projDirNew):
                 response = ConvertToPlus.question(u'Project directory {0} already exists.  Do you wish to delete it?'.format(self.projDirNew))
-                if response != QMessageBox.Yes:
+                if response != QMessageBox.StandardButton.Yes:
                     continue
                 try:
                     shutil.rmtree(self.projDirNew, ignore_errors=True)
@@ -153,7 +156,7 @@ class ConvertToPlus(QObject):
         # get basename of DEM
         demBase = self.demFile.replace('Source\\', '').replace('.tif', '')
         # select choice of full or no GIS
-        result = self._dlg.exec_()
+        result = self._dlg.exec()
         if result == 0:
             return
         settings.setValue('/QSWAT/LastInputPath', self.projDirNew)
@@ -244,7 +247,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
             ConvertToPlus.information('QSWAT project {0} converted to SWAT+ project {1} in {2}'.
                                        format(self.projNameOld, self.projNameNew, self.projDirNew))
             response = ConvertToPlus.question('Run SWAT+ Editor on the SWAT+ project?')
-            if response == QMessageBox.Yes:
+            if response == QMessageBox.StandardButton.Yes:
                 editorDir = 'C:/SWAT/SWATPlus/SWATPlusEditor'
                 editor = os.path.join(editorDir, 'SWATPlusEditor.exe')
                 if not os.path.isfile(editor):
@@ -258,7 +261,7 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
             ConvertToPlus.information('QSWAT project {0} converted to QSWAT+ project {1} in {2}'.
                                        format(self.projNameOld, self.projNameNew, self.projDirNew))
             response = ConvertToPlus.question('Run QGIS on the QSWAT+ project?')
-            if response == QMessageBox.Yes:
+            if response == QMessageBox.StandardButton.Yes:
                 osgeo4wroot = os.environ['OSGEO4W_ROOT']
                 qgisname = 'qgis-ltr' # os.environ['QGISNAME']
                 batFile = r'{0}\bin\{1}.bat'.format(osgeo4wroot, qgisname)
@@ -1455,10 +1458,10 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         """Ask msg as a question, returning Yes or No."""
         questionBox = QMessageBox()
         questionBox.setWindowTitle('QSWATPlus')
-        questionBox.setIcon(QMessageBox.Question)
-        questionBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        questionBox.setIcon(QMessageBox.Icon.Question)
+        questionBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         questionBox.setText(ConvertToPlus.trans(msg))
-        result = questionBox.exec_()
+        result = questionBox.exec()
         return result
     
     @staticmethod
@@ -1466,9 +1469,9 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         """Report msg as an error."""
         msgbox = QMessageBox()
         msgbox.setWindowTitle('QSWATPlus')
-        msgbox.setIcon(QMessageBox.Critical)
+        msgbox.setIcon(QMessageBox.Icon.Critical)
         msgbox.setText(ConvertToPlus.trans(msg))
-        msgbox.exec_()
+        msgbox.exec()
         return
     
     @staticmethod
@@ -1476,9 +1479,9 @@ You will have to start a new project called {1} in {2}.""".format(templateProjec
         """Report msg."""
         msgbox = QMessageBox()
         msgbox.setWindowTitle('QSWATPlus')
-        msgbox.setIcon(QMessageBox.Information)
+        msgbox.setIcon(QMessageBox.Icon.Information)
         msgbox.setText(ConvertToPlus.trans(msg))
-        msgbox.exec_()
+        msgbox.exec()
         return
     
     _LANDUSELOOKUPTABLE = \
