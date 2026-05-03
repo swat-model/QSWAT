@@ -108,16 +108,17 @@ begin
   if QGISMainVersion = '4' then begin
     QGISDirectory := QGISDir(pfDir, 'QGIS 4.0');
   end else begin
-  QGISDirectory := QGISDir(pfDir, 'QGIS 3.44');
-  if QGISDirectory = '' then begin
-    QGISDirectory := QGISDir(pfDir, 'QGIS 3.40');
+    QGISDirectory := QGISDir(pfDir, 'QGIS 3.44');
     if QGISDirectory = '' then begin
-      QGISDirectory := QGISDir(pfDir, 'QGIS 3.36');
+      QGISDirectory := QGISDir(pfDir, 'QGIS 3.40');
       if QGISDirectory = '' then begin
-        QGISDirectory := QGISDir(pfDir, 'QGIS 3.32');
+        QGISDirectory := QGISDir(pfDir, 'QGIS 3.36');
+        if QGISDirectory = '' then begin
+          QGISDirectory := QGISDir(pfDir, 'QGIS 3.32');
+        end;
       end;
-    end;
-  end; 
+    end; 
+  end;
   if QGISDirectory = '' then begin 
     QGISDirectory := pfDir;
     if not BrowseForFolder('Please locate QGIS directory', QGISDirectory, False) then
